@@ -251,9 +251,9 @@ If you use B<rdfpuml> or B<rdf2rml>, please cite them as follows. See this prese
 
 B<RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation>.
 Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16), Bonn, Germany, November 2016.
-L<Presentation|http://vladimiralexiev.github.io/pres/20161128-rdfpuml-rdf2rml/>,
-L<HTML|http://vladimiralexiev.github.io/pres/20161128-rdfpuml-rdf2rml/index-full.html>,
-L<PDF|http://vladimiralexiev.github.io/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf>,
+L<Presentation|http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index.html>,
+L<HTML|http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index-full.html>,
+L<PDF|http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf>,
 L<Video|https://youtu.be/4WoYlaGF6DE>
 
 The L<Stardog Mapping Syntax|https://www.stardog.com/docs/#_stardog_mapping_syntax>

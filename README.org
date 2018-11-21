@@ -15,13 +15,15 @@
 #+DESCRIPTION:
 #+KEYWORDS: RDF, visualization, PlantUML, cultural heritage, NLP, NIF, EHRI, R2RML, generation, model-driven, RDF by Example, rdfpuml, rdf2rml
 
-* RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation
-
-** Introduction
+* Introduction
 See this presentation:
 
-Vladimir Alexiev, RDF by Example: [[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index-full.html][rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation]]. 
-Semantic Web in Libraries 2016 (SWIB 16), Nov 2016, Bonn, Germany.
+*RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation*
+Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16), Bonn, Germany, November 2016.
+[[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index.html][Presentation]],
+[[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index-full.html][HTML]],
+[[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf][PDF]],
+[[https://youtu.be/4WoYlaGF6DE][Video]]
 
 RDF is a graph data model, so the best way to understand RDF data schemas (ontologies, application profiles, RDF shapes) is with a diagram. 
 Many RDF visualization tools exist, 
@@ -38,14 +40,14 @@ Multisensor (NIF and FrameNet), EHRI (Holocaust Research into Jewish social netw
 If the example instances include SQL queries and embedded field names, they can describe a mapping precisely. 
 Another tool *rdf2rdb* generates R2RML transformations from such examples, saving about 15x in complexity.
 
-See http://twitter.com/hashtag/rdfpuml for news and announcements.
+See http://twitter.com/hashtag/rdfpuml for news, diagrams and announcements.
 
-** Documentation
+* Documentation
 - http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdfpuml.html
 - http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdf2rml.html
 Source: [[./doc/rdfpuml.pod]], [[./doc/rdf2rml.pod]]
 
-** Installation
+* Installation
 Checkout this repo and add ~rdf2rml/bin~ to your path. 
 Install the following prerequisites:
 - both tools: Perl. Tested with version 5.22 on Windows (cygwin and Strawberry).
@@ -61,7 +63,7 @@ Install the following prerequisites:
   - [[https://jena.apache.org/download/][Apache Jena]]: ~riot~, ~update~. Tested with version 3.1.0 of 2016-05-10.
   - cat, grep, rm
 
-** TODO Future Work
+* TODO Future Work
 Help needed for the following tasks:
 - Modularize and package better, release on CPAN. *Please help*
 - Eliminate the dependency of *rdfpuml* on [[./lib/RDF/Prefixes/Curie.pm]] once [[https://github.com/kasei/perlrdf/issues/131][perlrdf#131]] is fixed
@@ -75,7 +77,7 @@ Help needed for the following tasks:
   - [[https://tarql.github.io/][tarql]]: handles TSV/CSV with SPARQL construct
 - Post bugs and enhancement requests to this repo!
 
-** Citation
+* Citation
 If you use this software, please cite it
 #+BEGIN_SRC bibtex
 @InProceedings{Alexiev-rdfpuml-rdf2rml,
@@ -85,7 +87,7 @@ If you use this software, please cite it
   year         = 2016,
   month        = nov,
   address      = {Bonn, Germany},
-  url_Slides   = {http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/},
+  url_Slides   = {http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index.html},
   url_HTML     = {http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index-full.html},
   keywords     = {RDF, visualization, PlantUML, cultural heritage, NLP, NIF, EHRI, R2RML, generation, model-driven, RDF by Example, rdfpuml, rdf2rml},
   url_PDF      = {http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf}, 

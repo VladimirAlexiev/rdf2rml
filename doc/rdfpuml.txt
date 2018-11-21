@@ -342,7 +342,7 @@ See F<img/OA-eg41.png>
     See test/*/Makefile for examples how to set up make.
 
 SEE ALSO
-    rdfrml: a tool to generate R2RML transformations from RDF examples.
+    rdf2rml: a tool to generate R2RML transformations from RDF examples.
 
     If you use rdfpuml or rdf2rml, please cite them as follows. See this
     presentation for numerous examples.
@@ -350,17 +350,18 @@ SEE ALSO
     RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML
     Generation. Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16),
     Bonn, Germany, November 2016. Presentation
-    <http://vladimiralexiev.github.io/pres/20161128-rdfpuml-rdf2rml/>, HTML
-    <http://vladimiralexiev.github.io/pres/20161128-rdfpuml-rdf2rml/index-fu
-    ll.html>, PDF
-    <http://vladimiralexiev.github.io/pres/20161128-rdfpuml-rdf2rml/RDF_by_E
-    xample.pdf>, Video <https://youtu.be/4WoYlaGF6DE>
+    <http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2
+    rml/index.html>, HTML
+    <http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2
+    rml/index-full.html>, PDF
+    <http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2
+    rml/RDF_by_Example.pdf>, Video <https://youtu.be/4WoYlaGF6DE>
 
-    See twitter hashtag #rdfpuml <https://twitter.com/hashtag/rdfpuml> for
-    news and screenshots.
+    See <https://twitter.com/hashtag/rdfpuml> for news, screenshots and
+    announcements.
 
 AUTHOR
     Vladimir Alexiev, Ontotext Corp
 
-    Last update: 6-Mar-2018
+    Last update: 2018-11-14
 

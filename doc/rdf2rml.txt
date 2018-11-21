@@ -222,11 +222,12 @@ SEE ALSO
     RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML
     Generation. Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16),
     Bonn, Germany, November 2016. Presentation
-    <http://vladimiralexiev.github.io/pres/20161128-rdfpuml-rdf2rml/>, HTML
-    <http://vladimiralexiev.github.io/pres/20161128-rdfpuml-rdf2rml/index-fu
-    ll.html>, PDF
-    <http://vladimiralexiev.github.io/pres/20161128-rdfpuml-rdf2rml/RDF_by_E
-    xample.pdf>, Video <https://youtu.be/4WoYlaGF6DE>
+    <http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2
+    rml/index.html>, HTML
+    <http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2
+    rml/index-full.html>, PDF
+    <http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2
+    rml/RDF_by_Example.pdf>, Video <https://youtu.be/4WoYlaGF6DE>
 
     The Stardog Mapping Syntax
     <https://www.stardog.com/docs/#_stardog_mapping_syntax> uses a similar
