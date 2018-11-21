@@ -1,0 +1,74 @@
+@prefix hydra: <http://projecthydra.org/ns/works#> .
+@prefix ore:   <http://www.openarchives.org/ore/terms/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix pcdm:  <http://pcdm.org/models#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix iana:  <http://www.iana.org/assignments/relation/> .
+@prefix scholar:  <http://scholar.uc.edu/ontology/> .
+@prefix work:  <http://scholar.uc.edu/work/> .
+@prefix proxy:  <http://scholar.uc.edu/proxy/> .
+@prefix media: <http://scholar.uc.edu/media/> .
+
+<http://scholar.uc.edu/media/mptw_f1/master/pdf>
+        a       pcdm:File .
+
+<http://scholar.uc.edu/media/mptw_f2/rep/jpg>
+        a       pcdm:File .
+
+<http://scholar.uc.edu/media/mptw_f3/rep/tiff>
+        a       pcdm:File .
+
+<http://scholar.uc.edu/media/mptw_f4/rep/xml>
+        a       pcdm:File .
+
+<http://scholar.uc.edu/media/mptw_f5/rep/jpg>
+        a       pcdm:File .
+
+<http://scholar.uc.edu/media/mptw_f6/rep/jp2>
+        a       pcdm:File .
+
+<http://scholar.uc.edu/media/mptw_f7/rep/xml>
+        a       pcdm:File .
+
+<http://scholar.uc.edu/proxy/mptw_p1>
+        a             ore:Proxy ;
+        iana:next     <http://scholar.uc.edu/proxy/mptw_p2> ;
+        ore:proxyFor  <http://scholar.uc.edu/work/mptw_p1> ;
+        ore:proxyIn   <http://scholar.uc.edu/work/mptw> .
+
+<http://scholar.uc.edu/proxy/mptw_p2>
+        a              ore:Proxy ;
+        iana:previous  <http://scholar.uc.edu/proxy/mptw_p1> ;
+        ore:proxyFor   <http://scholar.uc.edu/work/mptw_p2> ;
+        ore:proxyIn    <http://scholar.uc.edu/work/mptw> .
+
+<http://scholar.uc.edu/work/mptw>
+        a                    pcdm:Object ;
+        pcdm:hasFile         <http://scholar.uc.edu/media/mptw_f1/master/pdf> ;
+        pcdm:hasMember       <http://scholar.uc.edu/work/mptw_p2> , <http://scholar.uc.edu/work/mptw_p1> ;
+        iana:first           <http://scholar.uc.edu/proxy/mptw_p1> ;
+        iana:last            <http://scholar.uc.edu/proxy/mptw_p2> ;
+        scholar:WorkCreator  "Barack Obama" ;
+        scholar:WorkTitle    "US Governement Pamphlet" .
+
+<http://scholar.uc.edu/work/mptw_p1>
+        a                    pcdm:Object ;
+        pcdm:hasFile         <http://scholar.uc.edu/media/mptw_f4/rep/xml> , <http://scholar.uc.edu/media/mptw_f3/rep/tiff> , <http://scholar.uc.edu/media/mptw_f2/rep/jpg> ;
+        scholar:WorkCreator  "Joe Biden" ;
+        scholar:WorkTitle    "Page 1" .
+
+<http://scholar.uc.edu/work/mptw_p2>
+        a                    pcdm:Object ;
+        pcdm:hasFile         <http://scholar.uc.edu/media/mptw_f7/rep/xml> , <http://scholar.uc.edu/media/mptw_f6/rep/jp2> , <http://scholar.uc.edu/media/mptw_f5/rep/jpg> ;
+        scholar:WorkCreator  "Barack Obama" ;
+        scholar:WorkTitle    "Page 2" .
+
+########################################
+iana:first    puml:arrow puml:down.
+iana:last     puml:arrow puml:down.
+iana:previous puml:arrow puml:left.
+iana:next     puml:arrow puml:right.
+ore:proxyIn   puml:arrow puml:up.
+<http://scholar.uc.edu/work/mptw> puml:left <http://scholar.uc.edu/media/mptw_f1/master/pdf>.
+pcdm:Object puml:stereotype "(A,red)".
+pcdm:File puml:stereotype "(B,cyan)".

@@ -1,0 +1,583 @@
+@startuml
+hide empty methods
+hide empty attributes
+hide circle
+skinparam classAttributeIconSize 0
+class ulan_500115988_agent_label_JPGM as "ulan:500115988-agent!label!JPGM"
+ulan_500115988_agent_label_JPGM : a rr:PredicateObjectMap
+class rdfs_label as "rdfs:label"
+ulan_500115988_agent_label_JPGM --> rdfs_label : rr:predicate
+ulan_500115988_agent_label_JPGM : rr:object "JPGM"
+class _object_objectid_id_subj_ as "<object/(objectid)/id!subj>"
+_object_objectid_id_subj_ : a rr:SubjectMap
+class crm_E42_Identifier as "crm:E42_Identifier"
+_object_objectid_id_subj_ --> crm_E42_Identifier : rr:class
+_object_objectid_id_subj_ : rr:template "http://jpgm.getty.edu/object/{objectid}/id"
+class _r1499950948r23_ as " "
+_r1499950948r23_ : rr:sqlQuery "\n<objects> := objects where \n  departmentid in [1,2,3,4,5,6,12]\n  and objectstatus in [1] -- Permanent Collection; not Deaccessioned \n  and publicaccess=1\n  and exists [select * from -- Tombstone cataloging='Completed'\n    userfieldxrefs where id=objectid and contextid=1 and userfieldid=36 and fieldvalue='Completed']\n  -- and curatorapproved=0  \n"
+class _department_departmentid_map_ as "<department/(departmentid)!map>"
+_department_departmentid_map_ : a rr:TriplesMap
+class _department_departmentid_subj_ as "<department/(departmentid)!subj>"
+_department_departmentid_map_ --> _department_departmentid_subj_ : rr:subjectMap
+class _department_departmentid_P107i_is_current_or_former_member_of_500115988_agent_ as "<department/(departmentid)!P107i_is_current_or_former_member_of!500115988_agent>"
+_department_departmentid_map_ --> _department_departmentid_P107i_is_current_or_former_member_of_500115988_agent_ : rr:predicateObjectMap
+class _department_departmentid_P131_is_identified_by_name_ as "<department/(departmentid)!P131_is_identified_by!name>"
+_department_departmentid_map_ --> _department_departmentid_P131_is_identified_by_name_ : rr:predicateObjectMap
+class _r1499950948r1_ as " "
+_department_departmentid_map_ --> _r1499950948r1_ : rr:logicalTable
+class _object_objectid_P1_is_identified_by_altnumid_ as "<object/(objectid)!P1_is_identified_by!(altnumid)>"
+_object_objectid_P1_is_identified_by_altnumid_ : a rr:PredicateObjectMap
+class crm_P1_is_identified_by as "crm:P1_is_identified_by"
+_object_objectid_P1_is_identified_by_altnumid_ --> crm_P1_is_identified_by : rr:predicate
+class _r1499950948r8_ as " "
+_object_objectid_P1_is_identified_by_altnumid_ --> _r1499950948r8_ : rr:objectMap
+class _id_type_urlify_description_prefLabel_description_ as "<id/type/urlify(description)!prefLabel!(description)>"
+_id_type_urlify_description_prefLabel_description_ : a rr:PredicateObjectMap
+class skos_prefLabel as "skos:prefLabel"
+_id_type_urlify_description_prefLabel_description_ --> skos_prefLabel : rr:predicate
+class _r1499950948r6_ as " "
+_id_type_urlify_description_prefLabel_description_ --> _r1499950948r6_ : rr:objectMap
+class _r1499950948r15_ as " "
+_r1499950948r15_ : a rr:ObjectMap
+class rr_IRI as "rr:IRI"
+_r1499950948r15_ --> rr_IRI : rr:termType
+_r1499950948r15_ : rr:template "http://jpgm.getty.edu/object/{objectid}/inscription"
+class _r1499950948r44_ as " "
+_r1499950948r44_ : rr:sqlQuery "select * from \nobjectstatus\n where objectstatusid in [1,3]\n"
+class _object_objectid_P2_type_type_ as "<object/(objectid)!P2_type!type>"
+_object_objectid_P2_type_type_ : a rr:PredicateObjectMap
+class crmx_P2_type as "crmx:P2_type"
+_object_objectid_P2_type_type_ --> crmx_P2_type : rr:predicate
+class _r1499950948r12_ as " "
+_object_objectid_P2_type_type_ --> _r1499950948r12_ : rr:objectMap
+class _object_objectid_id_altnumid_P2_has_type_urlify_description_ as "<object/(objectid)/id/(altnumid)!P2_has_type!urlify(description)>"
+_object_objectid_id_altnumid_P2_has_type_urlify_description_ : a rr:PredicateObjectMap
+class crm_P2_has_type as "crm:P2_has_type"
+_object_objectid_id_altnumid_P2_has_type_urlify_description_ --> crm_P2_has_type : rr:predicate
+class _r1499950948r24_ as " "
+_object_objectid_id_altnumid_P2_has_type_urlify_description_ --> _r1499950948r24_ : rr:objectMap
+class _r1499950948r45_ as " "
+_r1499950948r45_ : rr:sqlQuery "select * from \nobjectstatus\n where objectstatusid in [1,3]\n"
+class _r1499950948r16_ as " "
+_r1499950948r16_ : a rr:ObjectMap
+_r1499950948r16_ --> rr_IRI : rr:termType
+_r1499950948r16_ : rr:template "http://jpgm.getty.edu/object/{objectid}/marking"
+class _id_type_urlify_description_map_ as "<id/type/urlify(description)!map>"
+_id_type_urlify_description_map_ : a rr:TriplesMap
+class _id_type_urlify_description_inScheme_ as "<id/type/urlify(description)!inScheme!>"
+_id_type_urlify_description_map_ --> _id_type_urlify_description_inScheme_ : rr:predicateObjectMap
+_id_type_urlify_description_map_ --> _id_type_urlify_description_prefLabel_description_ : rr:predicateObjectMap
+class _id_type_urlify_description_subj_ as "<id/type/urlify(description)!subj>"
+_id_type_urlify_description_map_ --> _id_type_urlify_description_subj_ : rr:subjectMap
+class _r1499950948r5_ as " "
+_id_type_urlify_description_map_ --> _r1499950948r5_ : rr:logicalTable
+class _object_objectid_culture_objcontextid_P3_has_note_culture_ as "<object/(objectid)/culture/(objcontextid)!P3_has_note!(culture)>"
+_object_objectid_culture_objcontextid_P3_has_note_culture_ : a rr:PredicateObjectMap
+class crm_P3_has_note as "crm:P3_has_note"
+_object_objectid_culture_objcontextid_P3_has_note_culture_ --> crm_P3_has_note : rr:predicate
+class _r1499950948r20_ as " "
+_object_objectid_culture_objcontextid_P3_has_note_culture_ --> _r1499950948r20_ : rr:objectMap
+class _object_status_map_ as "<object/status/!map>"
+_object_status_map_ : a rr:TriplesMap
+class _object_status_subj_ as "<object/status/!subj>"
+_object_status_map_ --> _object_status_subj_ : rr:subjectMap
+class _object_status_label_Object_status_ as "<object/status/!label!Object_status>"
+_object_status_map_ --> _object_status_label_Object_status_ : rr:predicateObjectMap
+_object_status_map_ --> _r1499950948r44_ : rr:logicalTable
+class _department_departmentid_name_P3_has_note_department_ as "<department/(departmentid)/name!P3_has_note!(department)>"
+_department_departmentid_name_P3_has_note_department_ : a rr:PredicateObjectMap
+_department_departmentid_name_P3_has_note_department_ --> crm_P3_has_note : rr:predicate
+class _r1499950948r2_ as " "
+_department_departmentid_name_P3_has_note_department_ --> _r1499950948r2_ : rr:objectMap
+class _r1499950948r22_ as " "
+_r1499950948r22_ : a rr:ObjectMap
+class rr_Literal as "rr:Literal"
+_r1499950948r22_ --> rr_Literal : rr:termType
+_r1499950948r22_ : rr:template "{objectid}"
+class _r1499950948r31_ as " "
+_r1499950948r31_ : a rr:ObjectMap
+_r1499950948r31_ --> rr_Literal : rr:termType
+_r1499950948r31_ : rr:template "{objectnumber}"
+class _object_objectid_id_altnumid_subj_ as "<object/(objectid)/id/(altnumid)!subj>"
+_object_objectid_id_altnumid_subj_ : a rr:SubjectMap
+_object_objectid_id_altnumid_subj_ --> crm_E42_Identifier : rr:class
+_object_objectid_id_altnumid_subj_ : rr:template "http://jpgm.getty.edu/object/{objectid}/id/{altnumid}"
+class _object_objectid_id_P2_has_type_300404012_ as "<object/(objectid)/id!P2_has_type!300404012>"
+_object_objectid_id_P2_has_type_300404012_ : a rr:PredicateObjectMap
+class aat_300404012 as "aat:300404012"
+_object_objectid_id_P2_has_type_300404012_ --> aat_300404012 : rr:object
+_object_objectid_id_P2_has_type_300404012_ --> crm_P2_has_type : rr:predicate
+class _object_status_objectstatusid_inScheme_ as "<object/status/(objectstatusid)!inScheme!>"
+_object_status_objectstatusid_inScheme_ : a rr:PredicateObjectMap
+class skos_inScheme as "skos:inScheme"
+_object_status_objectstatusid_inScheme_ --> skos_inScheme : rr:predicate
+class _object_status_ as "<object/status/>"
+_object_status_objectstatusid_inScheme_ --> _object_status_ : rr:object
+class _object_objectid_culture_objcontextid_subj_ as "<object/(objectid)/culture/(objcontextid)!subj>"
+_object_objectid_culture_objcontextid_subj_ : a rr:SubjectMap
+class crm_E4_Period as "crm:E4_Period"
+_object_objectid_culture_objcontextid_subj_ --> crm_E4_Period : rr:class
+_object_objectid_culture_objcontextid_subj_ : rr:template "http://jpgm.getty.edu/object/{objectid}/culture/{objcontextid}"
+class _object_objectid_id_altnumid_map_ as "<object/(objectid)/id/(altnumid)!map>"
+_object_objectid_id_altnumid_map_ : a rr:TriplesMap
+class _object_objectid_id_altnumid_P3_has_note_altnum_ as "<object/(objectid)/id/(altnumid)!P3_has_note!(altnum)>"
+_object_objectid_id_altnumid_map_ --> _object_objectid_id_altnumid_P3_has_note_altnum_ : rr:predicateObjectMap
+_object_objectid_id_altnumid_map_ --> _object_objectid_id_altnumid_subj_ : rr:subjectMap
+_object_objectid_id_altnumid_map_ --> _object_objectid_id_altnumid_P2_has_type_urlify_description_ : rr:predicateObjectMap
+class _r1499950948r26_ as " "
+_object_objectid_id_altnumid_map_ --> _r1499950948r26_ : rr:logicalTable
+class aat_classification_aatid_prefLabel_classification_ as "aat:(classification.aatid)!prefLabel!(classification)"
+aat_classification_aatid_prefLabel_classification_ : a rr:PredicateObjectMap
+aat_classification_aatid_prefLabel_classification_ --> skos_prefLabel : rr:predicate
+class _r1499950948r48_ as " "
+aat_classification_aatid_prefLabel_classification_ --> _r1499950948r48_ : rr:objectMap
+class _object_objectid_production_map_ as "<object/(objectid)/production!map>"
+_object_objectid_production_map_ : a rr:TriplesMap
+class _object_objectid_production_P10_falls_within_objcontextid_ as "<object/(objectid)/production!P10_falls_within!(objcontextid)>"
+_object_objectid_production_map_ --> _object_objectid_production_P10_falls_within_objcontextid_ : rr:predicateObjectMap
+class _object_objectid_production_P4_has_time_span_date_ as "<object/(objectid)/production!P4_has_time-span!date>"
+_object_objectid_production_map_ --> _object_objectid_production_P4_has_time_span_date_ : rr:predicateObjectMap
+class _object_objectid_production_subj_ as "<object/(objectid)/production!subj>"
+_object_objectid_production_map_ --> _object_objectid_production_subj_ : rr:subjectMap
+class _r1499950948r35_ as " "
+_object_objectid_production_map_ --> _r1499950948r35_ : rr:logicalTable
+class aat_classification_aatid_map as "aat:(classification.aatid)!map"
+aat_classification_aatid_map : a rr:TriplesMap
+aat_classification_aatid_map --> aat_classification_aatid_prefLabel_classification_ : rr:predicateObjectMap
+class aat_classification_aatid_subj as "aat:(classification.aatid)!subj"
+aat_classification_aatid_map --> aat_classification_aatid_subj : rr:subjectMap
+class _r1499950948r47_ as " "
+aat_classification_aatid_map --> _r1499950948r47_ : rr:logicalTable
+class _r1499950948r41_ as " "
+_r1499950948r41_ : rr:sqlQuery "\n<objects> := objects where \n  departmentid in [1,2,3,4,5,6,12]\n  and objectstatus in [1] -- Permanent Collection; not Deaccessioned \n  and publicaccess=1\n  and exists [select * from -- Tombstone cataloging='Completed'\n    userfieldxrefs where id=objectid and contextid=1 and userfieldid=36 and fieldvalue='Completed']\n  -- and curatorapproved=0  \n"
+class _object_objectid_P1_is_identified_by_number_ as "<object/(objectid)!P1_is_identified_by!number>"
+_object_objectid_P1_is_identified_by_number_ : a rr:PredicateObjectMap
+_object_objectid_P1_is_identified_by_number_ --> crm_P1_is_identified_by : rr:predicate
+class _r1499950948r9_ as " "
+_object_objectid_P1_is_identified_by_number_ --> _r1499950948r9_ : rr:objectMap
+_object_status_subj_ : a rr:SubjectMap
+class skos_ConceptScheme as "skos:ConceptScheme"
+_object_status_subj_ --> skos_ConceptScheme : rr:class
+_object_status_subj_ --> _object_status_ : rr:constant
+class _object_objectid_production_date_P82a_begin_of_the_begin_datebegin_ as "<object/(objectid)/production/date!P82a_begin_of_the_begin!(datebegin)>"
+_object_objectid_production_date_P82a_begin_of_the_begin_datebegin_ : a rr:PredicateObjectMap
+class crm_P82a_begin_of_the_begin as "crm:P82a_begin_of_the_begin"
+_object_objectid_production_date_P82a_begin_of_the_begin_datebegin_ --> crm_P82a_begin_of_the_begin : rr:predicate
+class _r1499950948r37_ as " "
+_object_objectid_production_date_P82a_begin_of_the_begin_datebegin_ --> _r1499950948r37_ : rr:objectMap
+_r1499950948r26_ : rr:sqlQuery "select * from \n<objects>, altnums\n where altnums.tableid=108\n  and objects.objectid=altnums.id\n-- TODO MUSLOD-9: \n-- map description to AAT or urlify it?\n-- ignore remarks?\n"
+aat_classification_aatid_subj : a rr:SubjectMap
+aat_classification_aatid_subj : rr:template "http://vocab.getty.edu/aat/{classification.aatid}"
+_r1499950948r24_ : a rr:ObjectMap
+_r1499950948r24_ --> rr_IRI : rr:termType
+_r1499950948r24_ : rr:template "http://jpgm.getty.edu/id/type/urlify{description}"
+_r1499950948r47_ : rr:sqlQuery "select * from \n<objects>, classification\n where object.classificationid=classification.classificationid\n"
+class _department_departmentid_name_map_ as "<department/(departmentid)/name!map>"
+_department_departmentid_name_map_ : a rr:TriplesMap
+class _department_departmentid_name_subj_ as "<department/(departmentid)/name!subj>"
+_department_departmentid_name_map_ --> _department_departmentid_name_subj_ : rr:subjectMap
+_department_departmentid_name_map_ --> _department_departmentid_name_P3_has_note_department_ : rr:predicateObjectMap
+class _r1499950948r3_ as " "
+_department_departmentid_name_map_ --> _r1499950948r3_ : rr:logicalTable
+class _id_type_map_ as "<id/type/!map>"
+_id_type_map_ : a rr:TriplesMap
+class _id_type_label_Identifier_type_ as "<id/type/!label!Identifier_type>"
+_id_type_map_ --> _id_type_label_Identifier_type_ : rr:predicateObjectMap
+class _id_type_subj_ as "<id/type/!subj>"
+_id_type_map_ --> _id_type_subj_ : rr:subjectMap
+class _r1499950948r4_ as " "
+_id_type_map_ --> _r1499950948r4_ : rr:logicalTable
+_r1499950948r2_ : a rr:ObjectMap
+_r1499950948r2_ --> rr_Literal : rr:termType
+_r1499950948r2_ : rr:template "{department}"
+class _object_objectid_production_date_subj_ as "<object/(objectid)/production/date!subj>"
+_object_objectid_production_date_subj_ : a rr:SubjectMap
+class crm_E52_Time_Span as "crm:E52_Time-Span"
+_object_objectid_production_date_subj_ --> crm_E52_Time_Span : rr:class
+_object_objectid_production_date_subj_ : rr:template "http://jpgm.getty.edu/object/{objectid}/production/date"
+_department_departmentid_P131_is_identified_by_name_ : a rr:PredicateObjectMap
+class crm_P131_is_identified_by as "crm:P131_is_identified_by"
+_department_departmentid_P131_is_identified_by_name_ --> crm_P131_is_identified_by : rr:predicate
+class _r1499950948r0_ as " "
+_department_departmentid_P131_is_identified_by_name_ --> _r1499950948r0_ : rr:objectMap
+class _object_objectid_number_map_ as "<object/(objectid)/number!map>"
+_object_objectid_number_map_ : a rr:TriplesMap
+class _object_objectid_number_P2_has_type_300312355_ as "<object/(objectid)/number!P2_has_type!300312355>"
+_object_objectid_number_map_ --> _object_objectid_number_P2_has_type_300312355_ : rr:predicateObjectMap
+class _object_objectid_number_subj_ as "<object/(objectid)/number!subj>"
+_object_objectid_number_map_ --> _object_objectid_number_subj_ : rr:subjectMap
+class _object_objectid_number_P3_has_note_objectnumber_ as "<object/(objectid)/number!P3_has_note!(objectnumber)>"
+_object_objectid_number_map_ --> _object_objectid_number_P3_has_note_objectnumber_ : rr:predicateObjectMap
+class _r1499950948r32_ as " "
+_object_objectid_number_map_ --> _r1499950948r32_ : rr:logicalTable
+_object_objectid_number_subj_ : a rr:SubjectMap
+_object_objectid_number_subj_ --> crm_E42_Identifier : rr:class
+_object_objectid_number_subj_ : rr:template "http://jpgm.getty.edu/object/{objectid}/number"
+_object_objectid_production_P10_falls_within_objcontextid_ : a rr:PredicateObjectMap
+class crm_P10_falls_within as "crm:P10_falls_within"
+_object_objectid_production_P10_falls_within_objcontextid_ --> crm_P10_falls_within : rr:predicate
+class _r1499950948r33_ as " "
+_object_objectid_production_P10_falls_within_objcontextid_ --> _r1499950948r33_ : rr:objectMap
+_r1499950948r33_ : a rr:ObjectMap
+_r1499950948r33_ --> rr_IRI : rr:termType
+_r1499950948r33_ : rr:template "http://jpgm.getty.edu/object/{objectid}/culture/{objcontextid}"
+class _r1499950948r29_ as " "
+_r1499950948r29_ : a rr:ObjectMap
+_r1499950948r29_ --> rr_Literal : rr:termType
+_r1499950948r29_ : rr:template "{markings}"
+class _object_objectid_signature_map_ as "<object/(objectid)/signature!map>"
+_object_objectid_signature_map_ : a rr:TriplesMap
+class _object_objectid_signature_P2_has_type_300028705_ as "<object/(objectid)/signature!P2_has_type!300028705>"
+_object_objectid_signature_map_ --> _object_objectid_signature_P2_has_type_300028705_ : rr:predicateObjectMap
+class _object_objectid_signature_subj_ as "<object/(objectid)/signature!subj>"
+_object_objectid_signature_map_ --> _object_objectid_signature_subj_ : rr:subjectMap
+class _object_objectid_signature_P3_has_note_signed_ as "<object/(objectid)/signature!P3_has_note!(signed)>"
+_object_objectid_signature_map_ --> _object_objectid_signature_P3_has_note_signed_ : rr:predicateObjectMap
+_object_objectid_signature_map_ --> _r1499950948r41_ : rr:logicalTable
+_object_objectid_production_P4_has_time_span_date_ : a rr:PredicateObjectMap
+class crm_P4_has_time_span as "crm:P4_has_time-span"
+_object_objectid_production_P4_has_time_span_date_ --> crm_P4_has_time_span : rr:predicate
+class _r1499950948r34_ as " "
+_object_objectid_production_P4_has_time_span_date_ --> _r1499950948r34_ : rr:objectMap
+class _r1499950948r17_ as " "
+_r1499950948r17_ : a rr:ObjectMap
+_r1499950948r17_ --> rr_IRI : rr:termType
+_r1499950948r17_ : rr:template "http://jpgm.getty.edu/object/{objectid}/signature"
+_r1499950948r1_ : rr:sqlQuery "select * from \ndepartments\n where maintableid=108\n  and departmentid in [1,2,3,4,5,6,12]\n"
+_r1499950948r6_ : a rr:ObjectMap
+_r1499950948r6_ --> rr_Literal : rr:termType
+_r1499950948r6_ : rr:template "{description}"
+class _object_objectid_P2_status_objectstatusid_ as "<object/(objectid)!P2_status!(objectstatusid)>"
+_object_objectid_P2_status_objectstatusid_ : a rr:PredicateObjectMap
+class crmx_P2_status as "crmx:P2_status"
+_object_objectid_P2_status_objectstatusid_ --> crmx_P2_status : rr:predicate
+class _r1499950948r11_ as " "
+_object_objectid_P2_status_objectstatusid_ --> _r1499950948r11_ : rr:objectMap
+_r1499950948r0_ : a rr:ObjectMap
+_r1499950948r0_ --> rr_IRI : rr:termType
+_r1499950948r0_ : rr:template "http://jpgm.getty.edu/department/{departmentid}/name"
+_object_status_label_Object_status_ : a rr:PredicateObjectMap
+_object_status_label_Object_status_ --> rdfs_label : rr:predicate
+_object_status_label_Object_status_ : rr:object "Object status"
+class _object_objectid_P108i_was_produced_by_production_ as "<object/(objectid)!P108i_was_produced_by!production>"
+_object_objectid_P108i_was_produced_by_production_ : a rr:PredicateObjectMap
+class crm_P108i_was_produced_by as "crm:P108i_was_produced_by"
+_object_objectid_P108i_was_produced_by_production_ --> crm_P108i_was_produced_by : rr:predicate
+class _r1499950948r7_ as " "
+_object_objectid_P108i_was_produced_by_production_ --> _r1499950948r7_ : rr:objectMap
+_object_objectid_signature_P2_has_type_300028705_ : a rr:PredicateObjectMap
+_object_objectid_signature_P2_has_type_300028705_ --> crm_P2_has_type : rr:predicate
+class aat_300028705 as "aat:300028705"
+_object_objectid_signature_P2_has_type_300028705_ --> aat_300028705 : rr:object
+class _object_objectid_inscription_P3_has_note_inscribed_ as "<object/(objectid)/inscription!P3_has_note!(inscribed)>"
+_object_objectid_inscription_P3_has_note_inscribed_ : a rr:PredicateObjectMap
+_object_objectid_inscription_P3_has_note_inscribed_ --> crm_P3_has_note : rr:predicate
+class _r1499950948r27_ as " "
+_object_objectid_inscription_P3_has_note_inscribed_ --> _r1499950948r27_ : rr:objectMap
+_id_type_urlify_description_inScheme_ : a rr:PredicateObjectMap
+_id_type_urlify_description_inScheme_ --> skos_inScheme : rr:predicate
+class _id_type_ as "<id/type/>"
+_id_type_urlify_description_inScheme_ --> _id_type_ : rr:object
+_object_objectid_production_subj_ : a rr:SubjectMap
+class crm_E12_Production as "crm:E12_Production"
+_object_objectid_production_subj_ --> crm_E12_Production : rr:class
+_object_objectid_production_subj_ : rr:template "http://jpgm.getty.edu/object/{objectid}/production"
+class _object_objectid_P50_has_current_keeper_departmentid_ as "<object/(objectid)!P50_has_current_keeper!(departmentid)>"
+_object_objectid_P50_has_current_keeper_departmentid_ : a rr:PredicateObjectMap
+class crm_P50_has_current_keeper as "crm:P50_has_current_keeper"
+_object_objectid_P50_has_current_keeper_departmentid_ --> crm_P50_has_current_keeper : rr:predicate
+class _r1499950948r14_ as " "
+_object_objectid_P50_has_current_keeper_departmentid_ --> _r1499950948r14_ : rr:objectMap
+_r1499950948r11_ : a rr:ObjectMap
+_r1499950948r11_ --> rr_IRI : rr:termType
+_r1499950948r11_ : rr:template "http://jpgm.getty.edu/object/status/{objectstatusid}"
+_department_departmentid_P107i_is_current_or_former_member_of_500115988_agent_ : a rr:PredicateObjectMap
+class ulan_500115988_agent as "ulan:500115988-agent"
+_department_departmentid_P107i_is_current_or_former_member_of_500115988_agent_ --> ulan_500115988_agent : rr:object
+class crm_P107i_is_current_or_former_member_of as "crm:P107i_is_current_or_former_member_of"
+_department_departmentid_P107i_is_current_or_former_member_of_500115988_agent_ --> crm_P107i_is_current_or_former_member_of : rr:predicate
+_object_objectid_number_P2_has_type_300312355_ : a rr:PredicateObjectMap
+class aat_300312355 as "aat:300312355"
+_object_objectid_number_P2_has_type_300312355_ --> aat_300312355 : rr:object
+_object_objectid_number_P2_has_type_300312355_ --> crm_P2_has_type : rr:predicate
+class _r1499950948r46_ as " "
+_r1499950948r46_ : a rr:ObjectMap
+_r1499950948r46_ --> rr_Literal : rr:termType
+_r1499950948r46_ : rr:template "{objectstatus}"
+_id_type_urlify_description_subj_ : a rr:SubjectMap
+class skos_Concept as "skos:Concept"
+_id_type_urlify_description_subj_ --> skos_Concept : rr:class
+_id_type_urlify_description_subj_ : rr:template "http://jpgm.getty.edu/id/type/urlify{description}"
+class ulan_500115988_agent_subj as "ulan:500115988-agent!subj"
+ulan_500115988_agent_subj : a rr:SubjectMap
+class crm_E40_Legal_Body as "crm:E40_Legal_Body"
+ulan_500115988_agent_subj --> crm_E40_Legal_Body : rr:class
+ulan_500115988_agent_subj --> ulan_500115988_agent : rr:constant
+_r1499950948r27_ : a rr:ObjectMap
+_r1499950948r27_ --> rr_Literal : rr:termType
+_r1499950948r27_ : rr:template "{inscribed}"
+_r1499950948r48_ : a rr:ObjectMap
+_r1499950948r48_ --> rr_Literal : rr:termType
+_r1499950948r48_ : rr:template "{classification}"
+_r1499950948r14_ : a rr:ObjectMap
+_r1499950948r14_ --> rr_IRI : rr:termType
+_r1499950948r14_ : rr:template "http://jpgm.getty.edu/department/{departmentid}"
+class _object_objectid_marking_subj_ as "<object/(objectid)/marking!subj>"
+_object_objectid_marking_subj_ : a rr:SubjectMap
+class crm_E37_Mark as "crm:E37_Mark"
+_object_objectid_marking_subj_ --> crm_E37_Mark : rr:class
+_object_objectid_marking_subj_ : rr:template "http://jpgm.getty.edu/object/{objectid}/marking"
+class _r1499950948r38_ as " "
+_r1499950948r38_ : a rr:ObjectMap
+_r1499950948r38_ --> rr_Literal : rr:termType
+class xsd_gYear as "xsd:gYear"
+_r1499950948r38_ --> xsd_gYear : rr:datatype
+_r1499950948r38_ : rr:template "{dateend}"
+class _object_objectid_culture_objcontextid_map_ as "<object/(objectid)/culture/(objcontextid)!map>"
+_object_objectid_culture_objcontextid_map_ : a rr:TriplesMap
+_object_objectid_culture_objcontextid_map_ --> _object_objectid_culture_objcontextid_subj_ : rr:subjectMap
+_object_objectid_culture_objcontextid_map_ --> _object_objectid_culture_objcontextid_P3_has_note_culture_ : rr:predicateObjectMap
+class _r1499950948r21_ as " "
+_object_objectid_culture_objcontextid_map_ --> _r1499950948r21_ : rr:logicalTable
+class _r1499950948r10_ as " "
+_r1499950948r10_ : a rr:ObjectMap
+_r1499950948r10_ --> rr_IRI : rr:termType
+_r1499950948r10_ : rr:template "http://vocab.getty.edu/aat/{classification.aatid}"
+class _object_status_objectstatusid_subj_ as "<object/status/(objectstatusid)!subj>"
+_object_status_objectstatusid_subj_ : a rr:SubjectMap
+class crm_E55_Type as "crm:E55_Type"
+_object_status_objectstatusid_subj_ --> crm_E55_Type : rr:class
+_object_status_objectstatusid_subj_ : rr:template "http://jpgm.getty.edu/object/status/{objectstatusid}"
+class _object_objectid_type_map_ as "<object/(objectid)/type!map>"
+_object_objectid_type_map_ : a rr:TriplesMap
+class _object_objectid_type_prefLabel_objectname_ as "<object/(objectid)/type!prefLabel!(objectname)>"
+_object_objectid_type_map_ --> _object_objectid_type_prefLabel_objectname_ : rr:predicateObjectMap
+class _object_objectid_type_subj_ as "<object/(objectid)/type!subj>"
+_object_objectid_type_map_ --> _object_objectid_type_subj_ : rr:subjectMap
+class _r1499950948r42_ as " "
+_object_objectid_type_map_ --> _r1499950948r42_ : rr:logicalTable
+class _r1499950948r49_ as " "
+_r1499950948r49_ : rr:sqlQuery "select * from \n<objects>\n where objectstatus=1 -- Permanent Collection\n"
+_object_objectid_type_prefLabel_objectname_ : a rr:PredicateObjectMap
+_object_objectid_type_prefLabel_objectname_ --> skos_prefLabel : rr:predicate
+class _r1499950948r43_ as " "
+_object_objectid_type_prefLabel_objectname_ --> _r1499950948r43_ : rr:objectMap
+_object_objectid_number_P3_has_note_objectnumber_ : a rr:PredicateObjectMap
+_object_objectid_number_P3_has_note_objectnumber_ --> crm_P3_has_note : rr:predicate
+_object_objectid_number_P3_has_note_objectnumber_ --> _r1499950948r31_ : rr:objectMap
+class _object_objectid_P52_has_current_owner_500115988_agent_ as "<object/(objectid)!P52_has_current_owner!500115988_agent>"
+_object_objectid_P52_has_current_owner_500115988_agent_ : a rr:PredicateObjectMap
+class crm_P52_has_current_owner as "crm:P52_has_current_owner"
+_object_objectid_P52_has_current_owner_500115988_agent_ --> crm_P52_has_current_owner : rr:predicate
+_object_objectid_P52_has_current_owner_500115988_agent_ --> ulan_500115988_agent : rr:object
+_r1499950948r8_ : a rr:ObjectMap
+_r1499950948r8_ --> rr_IRI : rr:termType
+_r1499950948r8_ : rr:template "http://jpgm.getty.edu/object/{objectid}/id/{altnumid}"
+_r1499950948r3_ : rr:sqlQuery "select * from \ndepartments\n where maintableid=108\n  and departmentid in [1,2,3,4,5,6,12]\n"
+class _r1499950948r25_ as " "
+_r1499950948r25_ : a rr:ObjectMap
+_r1499950948r25_ --> rr_Literal : rr:termType
+_r1499950948r25_ : rr:template "{altnum}"
+class _object_status_objectstatusid_prefLabel_objectstatus_ as "<object/status/(objectstatusid)!prefLabel!(objectstatus)>"
+_object_status_objectstatusid_prefLabel_objectstatus_ : a rr:PredicateObjectMap
+_object_status_objectstatusid_prefLabel_objectstatus_ --> skos_prefLabel : rr:predicate
+_object_status_objectstatusid_prefLabel_objectstatus_ --> _r1499950948r46_ : rr:objectMap
+_object_objectid_signature_P3_has_note_signed_ : a rr:PredicateObjectMap
+_object_objectid_signature_P3_has_note_signed_ --> crm_P3_has_note : rr:predicate
+class _r1499950948r40_ as " "
+_object_objectid_signature_P3_has_note_signed_ --> _r1499950948r40_ : rr:objectMap
+class _r1499950948r36_ as " "
+_r1499950948r36_ : a rr:ObjectMap
+_r1499950948r36_ --> rr_Literal : rr:termType
+_r1499950948r36_ : rr:template "{dated}"
+class _r1499950948r19_ as " "
+_r1499950948r19_ : a rr:ObjectMap
+class xsd_decimal as "xsd:decimal"
+_r1499950948r19_ --> xsd_decimal : rr:datatype
+_r1499950948r19_ --> rr_Literal : rr:termType
+_r1499950948r19_ : rr:template "{sortnumber}"
+class _object_objectid_id_P3_has_note_objectid_ as "<object/(objectid)/id!P3_has_note!(objectid)>"
+_object_objectid_id_P3_has_note_objectid_ : a rr:PredicateObjectMap
+_object_objectid_id_P3_has_note_objectid_ --> crm_P3_has_note : rr:predicate
+_object_objectid_id_P3_has_note_objectid_ --> _r1499950948r22_ : rr:objectMap
+_r1499950948r42_ : rr:sqlQuery "\n<objects> := objects where \n  departmentid in [1,2,3,4,5,6,12]\n  and objectstatus in [1] -- Permanent Collection; not Deaccessioned \n  and publicaccess=1\n  and exists [select * from -- Tombstone cataloging='Completed'\n    userfieldxrefs where id=objectid and contextid=1 and userfieldid=36 and fieldvalue='Completed']\n  -- and curatorapproved=0  \n"
+_department_departmentid_name_subj_ : a rr:SubjectMap
+class crm_E82_Actor_Appellation as "crm:E82_Actor_Appellation"
+_department_departmentid_name_subj_ --> crm_E82_Actor_Appellation : rr:class
+_department_departmentid_name_subj_ : rr:template "http://jpgm.getty.edu/department/{departmentid}/name"
+class _object_objectid_production_date_P3_has_note_dated_ as "<object/(objectid)/production/date!P3_has_note!(dated)>"
+_object_objectid_production_date_P3_has_note_dated_ : a rr:PredicateObjectMap
+_object_objectid_production_date_P3_has_note_dated_ --> crm_P3_has_note : rr:predicate
+_object_objectid_production_date_P3_has_note_dated_ --> _r1499950948r36_ : rr:objectMap
+_r1499950948r4_ : rr:sqlQuery "select * from \n<objects>, altnums\n where altnums.tableid=108\n  and objects.objectid=altnums.id\n-- TODO MUSLOD-9: \n-- map description to AAT or urlify it?\n-- ignore remarks?\n"
+class _r1499950948r39_ as " "
+_r1499950948r39_ : rr:sqlQuery "select * from \n<objects>\n where dated is not null or datebegin is not null or dateend is not null\n"
+class _object_objectid_inscription_map_ as "<object/(objectid)/inscription!map>"
+_object_objectid_inscription_map_ : a rr:TriplesMap
+class _object_objectid_inscription_subj_ as "<object/(objectid)/inscription!subj>"
+_object_objectid_inscription_map_ --> _object_objectid_inscription_subj_ : rr:subjectMap
+class _object_objectid_inscription_P2_has_type_300028702_ as "<object/(objectid)/inscription!P2_has_type!300028702>"
+_object_objectid_inscription_map_ --> _object_objectid_inscription_P2_has_type_300028702_ : rr:predicateObjectMap
+_object_objectid_inscription_map_ --> _object_objectid_inscription_P3_has_note_inscribed_ : rr:predicateObjectMap
+class _r1499950948r28_ as " "
+_object_objectid_inscription_map_ --> _r1499950948r28_ : rr:logicalTable
+_r1499950948r7_ : a rr:ObjectMap
+_r1499950948r7_ --> rr_IRI : rr:termType
+_r1499950948r7_ : rr:template "http://jpgm.getty.edu/object/{objectid}/production"
+_object_objectid_signature_subj_ : a rr:SubjectMap
+_object_objectid_signature_subj_ --> crm_E37_Mark : rr:class
+_object_objectid_signature_subj_ : rr:template "http://jpgm.getty.edu/object/{objectid}/signature"
+_r1499950948r9_ : a rr:ObjectMap
+_r1499950948r9_ --> rr_IRI : rr:termType
+_r1499950948r9_ : rr:template "http://jpgm.getty.edu/object/{objectid}/number"
+class _object_objectid_P65_shows_visual_item_signature_ as "<object/(objectid)!P65_shows_visual_item!signature>"
+_object_objectid_P65_shows_visual_item_signature_ : a rr:PredicateObjectMap
+class crm_P65_shows_visual_item as "crm:P65_shows_visual_item"
+_object_objectid_P65_shows_visual_item_signature_ --> crm_P65_shows_visual_item : rr:predicate
+_object_objectid_P65_shows_visual_item_signature_ --> _r1499950948r17_ : rr:objectMap
+class _object_objectid_P65_shows_visual_item_inscription_ as "<object/(objectid)!P65_shows_visual_item!inscription>"
+_object_objectid_P65_shows_visual_item_inscription_ : a rr:PredicateObjectMap
+_object_objectid_P65_shows_visual_item_inscription_ --> crm_P65_shows_visual_item : rr:predicate
+_object_objectid_P65_shows_visual_item_inscription_ --> _r1499950948r15_ : rr:objectMap
+class ulan_500115988_agent_map as "ulan:500115988-agent!map"
+ulan_500115988_agent_map : a rr:TriplesMap
+ulan_500115988_agent_map --> ulan_500115988_agent_label_JPGM : rr:predicateObjectMap
+ulan_500115988_agent_map --> ulan_500115988_agent_subj : rr:subjectMap
+ulan_500115988_agent_map --> _r1499950948r49_ : rr:logicalTable
+class _r1499950948r30_ as " "
+_r1499950948r30_ : rr:sqlQuery "\n<objects> := objects where \n  departmentid in [1,2,3,4,5,6,12]\n  and objectstatus in [1] -- Permanent Collection; not Deaccessioned \n  and publicaccess=1\n  and exists [select * from -- Tombstone cataloging='Completed'\n    userfieldxrefs where id=objectid and contextid=1 and userfieldid=36 and fieldvalue='Completed']\n  -- and curatorapproved=0  \n"
+class _object_objectid_P2_classification_classification_aatid_ as "<object/(objectid)!P2_classification!(classification.aatid)>"
+_object_objectid_P2_classification_classification_aatid_ : a rr:PredicateObjectMap
+class crmx_P2_classification as "crmx:P2_classification"
+_object_objectid_P2_classification_classification_aatid_ --> crmx_P2_classification : rr:predicate
+_object_objectid_P2_classification_classification_aatid_ --> _r1499950948r10_ : rr:objectMap
+_r1499950948r40_ : a rr:ObjectMap
+_r1499950948r40_ --> rr_Literal : rr:termType
+_r1499950948r40_ : rr:template "{signed}"
+_department_departmentid_subj_ : a rr:SubjectMap
+class crm_E74_Group as "crm:E74_Group"
+_department_departmentid_subj_ --> crm_E74_Group : rr:class
+_department_departmentid_subj_ : rr:template "http://jpgm.getty.edu/department/{departmentid}"
+_r1499950948r34_ : a rr:ObjectMap
+_r1499950948r34_ --> rr_IRI : rr:termType
+_r1499950948r34_ : rr:template "http://jpgm.getty.edu/object/{objectid}/production/date"
+_r1499950948r20_ : a rr:ObjectMap
+_r1499950948r20_ --> rr_Literal : rr:termType
+_r1499950948r20_ : rr:template "{culture}"
+_object_objectid_inscription_subj_ : a rr:SubjectMap
+class crm_E34_Inscription as "crm:E34_Inscription"
+_object_objectid_inscription_subj_ --> crm_E34_Inscription : rr:class
+_object_objectid_inscription_subj_ : rr:template "http://jpgm.getty.edu/object/{objectid}/inscription"
+class _object_objectid_sort_order_sortnumber_ as "<object/(objectid)!sort_order!(sortnumber)>"
+_object_objectid_sort_order_sortnumber_ : a rr:PredicateObjectMap
+class crmx_sort_order as "crmx:sort_order"
+_object_objectid_sort_order_sortnumber_ --> crmx_sort_order : rr:predicate
+_object_objectid_sort_order_sortnumber_ --> _r1499950948r19_ : rr:objectMap
+class _object_objectid_production_date_map_ as "<object/(objectid)/production/date!map>"
+_object_objectid_production_date_map_ : a rr:TriplesMap
+_object_objectid_production_date_map_ --> _object_objectid_production_date_P82a_begin_of_the_begin_datebegin_ : rr:predicateObjectMap
+_object_objectid_production_date_map_ --> _object_objectid_production_date_subj_ : rr:subjectMap
+_object_objectid_production_date_map_ --> _object_objectid_production_date_P3_has_note_dated_ : rr:predicateObjectMap
+class _object_objectid_production_date_P82b_end_of_the_end_dateend_ as "<object/(objectid)/production/date!P82b_end_of_the_end!(dateend)>"
+_object_objectid_production_date_map_ --> _object_objectid_production_date_P82b_end_of_the_end_dateend_ : rr:predicateObjectMap
+_object_objectid_production_date_map_ --> _r1499950948r39_ : rr:logicalTable
+class _object_objectid_subj_ as "<object/(objectid)!subj>"
+_object_objectid_subj_ : a rr:SubjectMap
+class crm_E19_Physical_Object as "crm:E19_Physical_Object"
+_object_objectid_subj_ --> crm_E19_Physical_Object : rr:class
+_object_objectid_subj_ : rr:template "http://jpgm.getty.edu/object/{objectid}"
+class _object_objectid_marking_map_ as "<object/(objectid)/marking!map>"
+_object_objectid_marking_map_ : a rr:TriplesMap
+class _object_objectid_marking_P2_has_type_300028744_ as "<object/(objectid)/marking!P2_has_type!300028744>"
+_object_objectid_marking_map_ --> _object_objectid_marking_P2_has_type_300028744_ : rr:predicateObjectMap
+class _object_objectid_marking_P3_has_note_markings_ as "<object/(objectid)/marking!P3_has_note!(markings)>"
+_object_objectid_marking_map_ --> _object_objectid_marking_P3_has_note_markings_ : rr:predicateObjectMap
+_object_objectid_marking_map_ --> _object_objectid_marking_subj_ : rr:subjectMap
+_object_objectid_marking_map_ --> _r1499950948r30_ : rr:logicalTable
+_id_type_label_Identifier_type_ : a rr:PredicateObjectMap
+_id_type_label_Identifier_type_ --> rdfs_label : rr:predicate
+_id_type_label_Identifier_type_ : rr:object "Identifier type"
+class _object_objectid_P48_has_preferred_identifier_id_ as "<object/(objectid)!P48_has_preferred_identifier!id>"
+_object_objectid_P48_has_preferred_identifier_id_ : a rr:PredicateObjectMap
+class crm_P48_has_preferred_identifier as "crm:P48_has_preferred_identifier"
+_object_objectid_P48_has_preferred_identifier_id_ --> crm_P48_has_preferred_identifier : rr:predicate
+class _r1499950948r13_ as " "
+_object_objectid_P48_has_preferred_identifier_id_ --> _r1499950948r13_ : rr:objectMap
+_r1499950948r12_ : a rr:ObjectMap
+_r1499950948r12_ --> rr_IRI : rr:termType
+_r1499950948r12_ : rr:template "http://jpgm.getty.edu/object/{objectid}/type"
+_r1499950948r43_ : a rr:ObjectMap
+_r1499950948r43_ --> rr_Literal : rr:termType
+_r1499950948r43_ : rr:template "{objectname}"
+_object_objectid_marking_P2_has_type_300028744_ : a rr:PredicateObjectMap
+_object_objectid_marking_P2_has_type_300028744_ --> crm_P2_has_type : rr:predicate
+class aat_300028744 as "aat:300028744"
+_object_objectid_marking_P2_has_type_300028744_ --> aat_300028744 : rr:object
+class _r1499950948r18_ as " "
+_r1499950948r18_ : rr:sqlQuery "\n<objects> := objects where \n  departmentid in [1,2,3,4,5,6,12]\n  and objectstatus in [1] -- Permanent Collection; not Deaccessioned \n  and publicaccess=1\n  and exists [select * from -- Tombstone cataloging='Completed'\n    userfieldxrefs where id=objectid and contextid=1 and userfieldid=36 and fieldvalue='Completed']\n  -- and curatorapproved=0  \n"
+_object_objectid_inscription_P2_has_type_300028702_ : a rr:PredicateObjectMap
+class aat_300028702 as "aat:300028702"
+_object_objectid_inscription_P2_has_type_300028702_ --> aat_300028702 : rr:object
+_object_objectid_inscription_P2_has_type_300028702_ --> crm_P2_has_type : rr:predicate
+_r1499950948r35_ : rr:sqlQuery "select * from \n<objects>\n where dated is not null or datebegin is not null or dateend is not null\n"
+_object_objectid_production_date_P82b_end_of_the_end_dateend_ : a rr:PredicateObjectMap
+class crm_P82b_end_of_the_end as "crm:P82b_end_of_the_end"
+_object_objectid_production_date_P82b_end_of_the_end_dateend_ --> crm_P82b_end_of_the_end : rr:predicate
+_object_objectid_production_date_P82b_end_of_the_end_dateend_ --> _r1499950948r38_ : rr:objectMap
+_object_objectid_marking_P3_has_note_markings_ : a rr:PredicateObjectMap
+_object_objectid_marking_P3_has_note_markings_ --> crm_P3_has_note : rr:predicate
+_object_objectid_marking_P3_has_note_markings_ --> _r1499950948r29_ : rr:objectMap
+_id_type_subj_ : a rr:SubjectMap
+_id_type_subj_ --> _id_type_ : rr:constant
+_id_type_subj_ --> skos_ConceptScheme : rr:class
+class _object_objectid_P65_shows_visual_item_marking_ as "<object/(objectid)!P65_shows_visual_item!marking>"
+_object_objectid_P65_shows_visual_item_marking_ : a rr:PredicateObjectMap
+_object_objectid_P65_shows_visual_item_marking_ --> crm_P65_shows_visual_item : rr:predicate
+_object_objectid_P65_shows_visual_item_marking_ --> _r1499950948r16_ : rr:objectMap
+_r1499950948r28_ : rr:sqlQuery "\n<objects> := objects where \n  departmentid in [1,2,3,4,5,6,12]\n  and objectstatus in [1] -- Permanent Collection; not Deaccessioned \n  and publicaccess=1\n  and exists [select * from -- Tombstone cataloging='Completed'\n    userfieldxrefs where id=objectid and contextid=1 and userfieldid=36 and fieldvalue='Completed']\n  -- and curatorapproved=0  \n"
+_r1499950948r21_ : rr:sqlQuery "select * from \n<objects>, objcontext\n where objects.objectid=objcontext.objectid\n  and culture is not null\n"
+_r1499950948r32_ : rr:sqlQuery "\n<objects> := objects where \n  departmentid in [1,2,3,4,5,6,12]\n  and objectstatus in [1] -- Permanent Collection; not Deaccessioned \n  and publicaccess=1\n  and exists [select * from -- Tombstone cataloging='Completed'\n    userfieldxrefs where id=objectid and contextid=1 and userfieldid=36 and fieldvalue='Completed']\n  -- and curatorapproved=0  \n"
+_r1499950948r5_ : rr:sqlQuery "select * from \n<objects>, altnums\n where altnums.tableid=108\n  and objects.objectid=altnums.id\n-- TODO MUSLOD-9: \n-- map description to AAT or urlify it?\n-- ignore remarks?\n"
+_r1499950948r13_ : a rr:ObjectMap
+_r1499950948r13_ --> rr_IRI : rr:termType
+_r1499950948r13_ : rr:template "http://jpgm.getty.edu/object/{objectid}/id"
+class _object_objectid_id_map_ as "<object/(objectid)/id!map>"
+_object_objectid_id_map_ : a rr:TriplesMap
+_object_objectid_id_map_ --> _object_objectid_id_P3_has_note_objectid_ : rr:predicateObjectMap
+_object_objectid_id_map_ --> _object_objectid_id_P2_has_type_300404012_ : rr:predicateObjectMap
+_object_objectid_id_map_ --> _object_objectid_id_subj_ : rr:subjectMap
+_object_objectid_id_map_ --> _r1499950948r23_ : rr:logicalTable
+_object_objectid_id_altnumid_P3_has_note_altnum_ : a rr:PredicateObjectMap
+_object_objectid_id_altnumid_P3_has_note_altnum_ --> crm_P3_has_note : rr:predicate
+_object_objectid_id_altnumid_P3_has_note_altnum_ --> _r1499950948r25_ : rr:objectMap
+class _object_status_objectstatusid_map_ as "<object/status/(objectstatusid)!map>"
+_object_status_objectstatusid_map_ : a rr:TriplesMap
+_object_status_objectstatusid_map_ --> _object_status_objectstatusid_subj_ : rr:subjectMap
+_object_status_objectstatusid_map_ --> _object_status_objectstatusid_inScheme_ : rr:predicateObjectMap
+_object_status_objectstatusid_map_ --> _object_status_objectstatusid_prefLabel_objectstatus_ : rr:predicateObjectMap
+_object_status_objectstatusid_map_ --> _r1499950948r45_ : rr:logicalTable
+class _object_objectid_map_ as "<object/(objectid)!map>"
+_object_objectid_map_ : a rr:TriplesMap
+_object_objectid_map_ --> _object_objectid_P2_type_type_ : rr:predicateObjectMap
+_object_objectid_map_ --> _object_objectid_sort_order_sortnumber_ : rr:predicateObjectMap
+_object_objectid_map_ --> _object_objectid_P65_shows_visual_item_inscription_ : rr:predicateObjectMap
+_object_objectid_map_ --> _object_objectid_P108i_was_produced_by_production_ : rr:predicateObjectMap
+_object_objectid_map_ --> _object_objectid_subj_ : rr:subjectMap
+_object_objectid_map_ --> _object_objectid_P1_is_identified_by_number_ : rr:predicateObjectMap
+_object_objectid_map_ --> _object_objectid_P50_has_current_keeper_departmentid_ : rr:predicateObjectMap
+_object_objectid_map_ --> _object_objectid_P2_status_objectstatusid_ : rr:predicateObjectMap
+_object_objectid_map_ --> _object_objectid_P2_classification_classification_aatid_ : rr:predicateObjectMap
+_object_objectid_map_ --> _object_objectid_P52_has_current_owner_500115988_agent_ : rr:predicateObjectMap
+_object_objectid_map_ --> _object_objectid_P1_is_identified_by_altnumid_ : rr:predicateObjectMap
+_object_objectid_map_ --> _object_objectid_P65_shows_visual_item_signature_ : rr:predicateObjectMap
+_object_objectid_map_ --> _object_objectid_P65_shows_visual_item_marking_ : rr:predicateObjectMap
+_object_objectid_map_ --> _object_objectid_P48_has_preferred_identifier_id_ : rr:predicateObjectMap
+_object_objectid_map_ --> _r1499950948r18_ : rr:logicalTable
+_object_objectid_type_subj_ : a rr:SubjectMap
+_object_objectid_type_subj_ --> skos_Concept : rr:class
+_object_objectid_type_subj_ : rr:template "http://jpgm.getty.edu/object/{objectid}/type"
+_r1499950948r37_ : a rr:ObjectMap
+_r1499950948r37_ --> rr_Literal : rr:termType
+_r1499950948r37_ --> xsd_gYear : rr:datatype
+_r1499950948r37_ : rr:template "{datebegin}"
+@enduml

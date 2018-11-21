@@ -1,0 +1,518 @@
+<http://jpgm.getty.edu/department/(departmentid)!P107i_is_current_or_former_member_of!500115988_agent>
+        a             rr:PredicateObjectMap ;
+        rr:object     ulan:500115988-agent ;
+        rr:predicate  crm:P107i_is_current_or_former_member_of .
+
+<http://jpgm.getty.edu/department/(departmentid)!P131_is_identified_by!name>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "http://jpgm.getty.edu/department/{departmentid}/name" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P131_is_identified_by .
+
+<http://jpgm.getty.edu/department/(departmentid)!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "select * from \ndepartments\n where maintableid=108\n  and departmentid in (1,2,3,4,5,6,12)\n" ] ;
+        rr:predicateObjectMap  <http://jpgm.getty.edu/department/(departmentid)!P131_is_identified_by!name> , <http://jpgm.getty.edu/department/(departmentid)!P107i_is_current_or_former_member_of!500115988_agent> ;
+        rr:subjectMap          <http://jpgm.getty.edu/department/(departmentid)!subj> .
+
+<http://jpgm.getty.edu/department/(departmentid)!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E74_Group ;
+        rr:template  "http://jpgm.getty.edu/department/{departmentid}" .
+
+<http://jpgm.getty.edu/department/(departmentid)/name!P3_has_note!(department)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "{department}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crm:P3_has_note .
+
+<http://jpgm.getty.edu/department/(departmentid)/name!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "select * from \ndepartments\n where maintableid=108\n  and departmentid in (1,2,3,4,5,6,12)\n" ] ;
+        rr:predicateObjectMap  <http://jpgm.getty.edu/department/(departmentid)/name!P3_has_note!(department)> ;
+        rr:subjectMap          <http://jpgm.getty.edu/department/(departmentid)/name!subj> .
+
+<http://jpgm.getty.edu/department/(departmentid)/name!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E82_Actor_Appellation ;
+        rr:template  "http://jpgm.getty.edu/department/{departmentid}/name" .
+
+<http://jpgm.getty.edu/id/type/!label!Identifier_type>
+        a             rr:PredicateObjectMap ;
+        rr:object     "Identifier type" ;
+        rr:predicate  rdfs:label .
+
+<http://jpgm.getty.edu/id/type/!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "select * from \n<objects>, altnums\n where altnums.tableid=108\n  and objects.objectid=altnums.id\n-- TODO MUSLOD-9: \n-- map description to AAT or urlify it?\n-- ignore remarks?\n" ] ;
+        rr:predicateObjectMap  <http://jpgm.getty.edu/id/type/!label!Identifier_type> ;
+        rr:subjectMap          <http://jpgm.getty.edu/id/type/!subj> .
+
+<http://jpgm.getty.edu/id/type/!subj>
+        a            rr:SubjectMap ;
+        rr:class     skos:ConceptScheme ;
+        rr:constant  <http://jpgm.getty.edu/id/type/> .
+
+<http://jpgm.getty.edu/id/type/urlify(description)!inScheme!>
+        a             rr:PredicateObjectMap ;
+        rr:object     <http://jpgm.getty.edu/id/type/> ;
+        rr:predicate  skos:inScheme .
+
+<http://jpgm.getty.edu/id/type/urlify(description)!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "select * from \n<objects>, altnums\n where altnums.tableid=108\n  and objects.objectid=altnums.id\n-- TODO MUSLOD-9: \n-- map description to AAT or urlify it?\n-- ignore remarks?\n" ] ;
+        rr:predicateObjectMap  <http://jpgm.getty.edu/id/type/urlify(description)!inScheme!> , <http://jpgm.getty.edu/id/type/urlify(description)!prefLabel!(description)> ;
+        rr:subjectMap          <http://jpgm.getty.edu/id/type/urlify(description)!subj> .
+
+<http://jpgm.getty.edu/id/type/urlify(description)!prefLabel!(description)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "{description}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  skos:prefLabel .
+
+<http://jpgm.getty.edu/id/type/urlify(description)!subj>
+        a            rr:SubjectMap ;
+        rr:class     skos:Concept ;
+        rr:template  "http://jpgm.getty.edu/id/type/urlify{description}" .
+
+<http://jpgm.getty.edu/object/(objectid)!P108i_was_produced_by!production>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "http://jpgm.getty.edu/object/{objectid}/production" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P108i_was_produced_by .
+
+<http://jpgm.getty.edu/object/(objectid)!P1_is_identified_by!(altnumid)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "http://jpgm.getty.edu/object/{objectid}/id/{altnumid}" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P1_is_identified_by .
+
+<http://jpgm.getty.edu/object/(objectid)!P1_is_identified_by!number>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "http://jpgm.getty.edu/object/{objectid}/number" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P1_is_identified_by .
+
+<http://jpgm.getty.edu/object/(objectid)!P2_classification!(classification.aatid)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "http://vocab.getty.edu/aat/{classification.aatid}" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crmx:P2_classification .
+
+<http://jpgm.getty.edu/object/(objectid)!P2_status!(objectstatusid)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "http://jpgm.getty.edu/object/status/{objectstatusid}" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crmx:P2_status .
+
+<http://jpgm.getty.edu/object/(objectid)!P2_type!type>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "http://jpgm.getty.edu/object/{objectid}/type" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crmx:P2_type .
+
+<http://jpgm.getty.edu/object/(objectid)!P48_has_preferred_identifier!id>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "http://jpgm.getty.edu/object/{objectid}/id" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P48_has_preferred_identifier .
+
+<http://jpgm.getty.edu/object/(objectid)!P50_has_current_keeper!(departmentid)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "http://jpgm.getty.edu/department/{departmentid}" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P50_has_current_keeper .
+
+<http://jpgm.getty.edu/object/(objectid)!P52_has_current_owner!500115988_agent>
+        a             rr:PredicateObjectMap ;
+        rr:object     ulan:500115988-agent ;
+        rr:predicate  crm:P52_has_current_owner .
+
+<http://jpgm.getty.edu/object/(objectid)!P65_shows_visual_item!inscription>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "http://jpgm.getty.edu/object/{objectid}/inscription" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P65_shows_visual_item .
+
+<http://jpgm.getty.edu/object/(objectid)!P65_shows_visual_item!marking>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "http://jpgm.getty.edu/object/{objectid}/marking" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P65_shows_visual_item .
+
+<http://jpgm.getty.edu/object/(objectid)!P65_shows_visual_item!signature>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "http://jpgm.getty.edu/object/{objectid}/signature" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P65_shows_visual_item .
+
+<http://jpgm.getty.edu/object/(objectid)!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "\n<objects> := objects where \n  departmentid in (1,2,3,4,5,6,12)\n  and objectstatus in (1) -- Permanent Collection; not Deaccessioned \n  and publicaccess=1\n  and exists (select * from -- Tombstone cataloging='Completed'\n    userfieldxrefs where id=objectid and contextid=1 and userfieldid=36 and fieldvalue='Completed')\n  -- and curatorapproved=0  \n" ] ;
+        rr:predicateObjectMap  <http://jpgm.getty.edu/object/(objectid)!P1_is_identified_by!number> , <http://jpgm.getty.edu/object/(objectid)!P2_status!(objectstatusid)> , <http://jpgm.getty.edu/object/(objectid)!P50_has_current_keeper!(departmentid)> , <http://jpgm.getty.edu/object/(objectid)!P65_shows_visual_item!inscription> , <http://jpgm.getty.edu/object/(objectid)!P2_type!type> , <http://jpgm.getty.edu/object/(objectid)!P1_is_identified_by!(altnumid)> , <http://jpgm.getty.edu/object/(objectid)!sort_order!(sortnumber)> , <http://jpgm.getty.edu/object/(objectid)!P2_classification!(classification.aatid)> , <http://jpgm.getty.edu/object/(objectid)!P65_shows_visual_item!signature> , <http://jpgm.getty.edu/object/(objectid)!P108i_was_produced_by!production> , <http://jpgm.getty.edu/object/(objectid)!P65_shows_visual_item!marking> , <http://jpgm.getty.edu/object/(objectid)!P48_has_preferred_identifier!id> , <http://jpgm.getty.edu/object/(objectid)!P52_has_current_owner!500115988_agent> ;
+        rr:subjectMap          <http://jpgm.getty.edu/object/(objectid)!subj> .
+
+<http://jpgm.getty.edu/object/(objectid)!sort_order!(sortnumber)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:datatype  xsd:decimal ;
+                        rr:template  "{sortnumber}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crmx:sort_order .
+
+<http://jpgm.getty.edu/object/(objectid)!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E19_Physical_Object ;
+        rr:template  "http://jpgm.getty.edu/object/{objectid}" .
+
+<http://jpgm.getty.edu/object/(objectid)/culture/(objcontextid)!P3_has_note!(culture)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "{culture}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crm:P3_has_note .
+
+<http://jpgm.getty.edu/object/(objectid)/culture/(objcontextid)!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "select * from \n<objects>, objcontext\n where objects.objectid=objcontext.objectid\n  and culture is not null\n" ] ;
+        rr:predicateObjectMap  <http://jpgm.getty.edu/object/(objectid)/culture/(objcontextid)!P3_has_note!(culture)> ;
+        rr:subjectMap          <http://jpgm.getty.edu/object/(objectid)/culture/(objcontextid)!subj> .
+
+<http://jpgm.getty.edu/object/(objectid)/culture/(objcontextid)!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E4_Period ;
+        rr:template  "http://jpgm.getty.edu/object/{objectid}/culture/{objcontextid}" .
+
+<http://jpgm.getty.edu/object/(objectid)/id!P2_has_type!300404012>
+        a             rr:PredicateObjectMap ;
+        rr:object     aat:300404012 ;
+        rr:predicate  crm:P2_has_type .
+
+<http://jpgm.getty.edu/object/(objectid)/id!P3_has_note!(objectid)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "{objectid}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crm:P3_has_note .
+
+<http://jpgm.getty.edu/object/(objectid)/id!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "\n<objects> := objects where \n  departmentid in (1,2,3,4,5,6,12)\n  and objectstatus in (1) -- Permanent Collection; not Deaccessioned \n  and publicaccess=1\n  and exists (select * from -- Tombstone cataloging='Completed'\n    userfieldxrefs where id=objectid and contextid=1 and userfieldid=36 and fieldvalue='Completed')\n  -- and curatorapproved=0  \n" ] ;
+        rr:predicateObjectMap  <http://jpgm.getty.edu/object/(objectid)/id!P3_has_note!(objectid)> , <http://jpgm.getty.edu/object/(objectid)/id!P2_has_type!300404012> ;
+        rr:subjectMap          <http://jpgm.getty.edu/object/(objectid)/id!subj> .
+
+<http://jpgm.getty.edu/object/(objectid)/id!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E42_Identifier ;
+        rr:template  "http://jpgm.getty.edu/object/{objectid}/id" .
+
+<http://jpgm.getty.edu/object/(objectid)/id/(altnumid)!P2_has_type!urlify(description)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "http://jpgm.getty.edu/id/type/urlify{description}" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P2_has_type .
+
+<http://jpgm.getty.edu/object/(objectid)/id/(altnumid)!P3_has_note!(altnum)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "{altnum}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crm:P3_has_note .
+
+<http://jpgm.getty.edu/object/(objectid)/id/(altnumid)!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "select * from \n<objects>, altnums\n where altnums.tableid=108\n  and objects.objectid=altnums.id\n-- TODO MUSLOD-9: \n-- map description to AAT or urlify it?\n-- ignore remarks?\n" ] ;
+        rr:predicateObjectMap  <http://jpgm.getty.edu/object/(objectid)/id/(altnumid)!P2_has_type!urlify(description)> , <http://jpgm.getty.edu/object/(objectid)/id/(altnumid)!P3_has_note!(altnum)> ;
+        rr:subjectMap          <http://jpgm.getty.edu/object/(objectid)/id/(altnumid)!subj> .
+
+<http://jpgm.getty.edu/object/(objectid)/id/(altnumid)!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E42_Identifier ;
+        rr:template  "http://jpgm.getty.edu/object/{objectid}/id/{altnumid}" .
+
+<http://jpgm.getty.edu/object/(objectid)/inscription!P2_has_type!300028702>
+        a             rr:PredicateObjectMap ;
+        rr:object     aat:300028702 ;
+        rr:predicate  crm:P2_has_type .
+
+<http://jpgm.getty.edu/object/(objectid)/inscription!P3_has_note!(inscribed)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "{inscribed}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crm:P3_has_note .
+
+<http://jpgm.getty.edu/object/(objectid)/inscription!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "\n<objects> := objects where \n  departmentid in (1,2,3,4,5,6,12)\n  and objectstatus in (1) -- Permanent Collection; not Deaccessioned \n  and publicaccess=1\n  and exists (select * from -- Tombstone cataloging='Completed'\n    userfieldxrefs where id=objectid and contextid=1 and userfieldid=36 and fieldvalue='Completed')\n  -- and curatorapproved=0  \n" ] ;
+        rr:predicateObjectMap  <http://jpgm.getty.edu/object/(objectid)/inscription!P2_has_type!300028702> , <http://jpgm.getty.edu/object/(objectid)/inscription!P3_has_note!(inscribed)> ;
+        rr:subjectMap          <http://jpgm.getty.edu/object/(objectid)/inscription!subj> .
+<http://jpgm.getty.edu/object/(objectid)/inscription!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E34_Inscription ;
+        rr:template  "http://jpgm.getty.edu/object/{objectid}/inscription" .
+
+<http://jpgm.getty.edu/object/(objectid)/marking!P2_has_type!300028744>
+        a             rr:PredicateObjectMap ;
+        rr:object     aat:300028744 ;
+        rr:predicate  crm:P2_has_type .
+
+<http://jpgm.getty.edu/object/(objectid)/marking!P3_has_note!(markings)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "{markings}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crm:P3_has_note .
+
+<http://jpgm.getty.edu/object/(objectid)/marking!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "\n<objects> := objects where \n  departmentid in (1,2,3,4,5,6,12)\n  and objectstatus in (1) -- Permanent Collection; not Deaccessioned \n  and publicaccess=1\n  and exists (select * from -- Tombstone cataloging='Completed'\n    userfieldxrefs where id=objectid and contextid=1 and userfieldid=36 and fieldvalue='Completed')\n  -- and curatorapproved=0  \n" ] ;
+        rr:predicateObjectMap  <http://jpgm.getty.edu/object/(objectid)/marking!P3_has_note!(markings)> , <http://jpgm.getty.edu/object/(objectid)/marking!P2_has_type!300028744> ;
+        rr:subjectMap          <http://jpgm.getty.edu/object/(objectid)/marking!subj> .
+
+<http://jpgm.getty.edu/object/(objectid)/marking!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E37_Mark ;
+        rr:template  "http://jpgm.getty.edu/object/{objectid}/marking" .
+
+<http://jpgm.getty.edu/object/(objectid)/number!P2_has_type!300312355>
+        a             rr:PredicateObjectMap ;
+        rr:object     aat:300312355 ;
+        rr:predicate  crm:P2_has_type .
+
+<http://jpgm.getty.edu/object/(objectid)/number!P3_has_note!(objectnumber)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "{objectnumber}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crm:P3_has_note .
+
+<http://jpgm.getty.edu/object/(objectid)/number!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "\n<objects> := objects where \n  departmentid in (1,2,3,4,5,6,12)\n  and objectstatus in (1) -- Permanent Collection; not Deaccessioned \n  and publicaccess=1\n  and exists (select * from -- Tombstone cataloging='Completed'\n    userfieldxrefs where id=objectid and contextid=1 and userfieldid=36 and fieldvalue='Completed')\n  -- and curatorapproved=0  \n" ] ;
+        rr:predicateObjectMap  <http://jpgm.getty.edu/object/(objectid)/number!P3_has_note!(objectnumber)> , <http://jpgm.getty.edu/object/(objectid)/number!P2_has_type!300312355> ;
+        rr:subjectMap          <http://jpgm.getty.edu/object/(objectid)/number!subj> .
+
+<http://jpgm.getty.edu/object/(objectid)/number!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E42_Identifier ;
+        rr:template  "http://jpgm.getty.edu/object/{objectid}/number" .
+
+<http://jpgm.getty.edu/object/(objectid)/production!P10_falls_within!(objcontextid)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "http://jpgm.getty.edu/object/{objectid}/culture/{objcontextid}" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P10_falls_within .
+
+<http://jpgm.getty.edu/object/(objectid)/production!P4_has_time-span!date>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "http://jpgm.getty.edu/object/{objectid}/production/date" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P4_has_time-span .
+
+<http://jpgm.getty.edu/object/(objectid)/production!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "select * from \n<objects>\n where dated is not null or datebegin is not null or dateend is not null\n" ] ;
+        rr:predicateObjectMap  <http://jpgm.getty.edu/object/(objectid)/production!P4_has_time-span!date> , <http://jpgm.getty.edu/object/(objectid)/production!P10_falls_within!(objcontextid)> ;
+        rr:subjectMap          <http://jpgm.getty.edu/object/(objectid)/production!subj> .
+
+<http://jpgm.getty.edu/object/(objectid)/production!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E12_Production ;
+        rr:template  "http://jpgm.getty.edu/object/{objectid}/production" .
+
+<http://jpgm.getty.edu/object/(objectid)/production/date!P3_has_note!(dated)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "{dated}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crm:P3_has_note .
+
+<http://jpgm.getty.edu/object/(objectid)/production/date!P82a_begin_of_the_begin!(datebegin)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:datatype  xsd:gYear ;
+                        rr:template  "{datebegin}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crm:P82a_begin_of_the_begin .
+
+<http://jpgm.getty.edu/object/(objectid)/production/date!P82b_end_of_the_end!(dateend)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:datatype  xsd:gYear ;
+                        rr:template  "{dateend}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crm:P82b_end_of_the_end .
+
+<http://jpgm.getty.edu/object/(objectid)/production/date!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "select * from \n<objects>\n where dated is not null or datebegin is not null or dateend is not null\n" ] ;
+        rr:predicateObjectMap  <http://jpgm.getty.edu/object/(objectid)/production/date!P82b_end_of_the_end!(dateend)> , <http://jpgm.getty.edu/object/(objectid)/production/date!P3_has_note!(dated)> , <http://jpgm.getty.edu/object/(objectid)/production/date!P82a_begin_of_the_begin!(datebegin)> ;
+        rr:subjectMap          <http://jpgm.getty.edu/object/(objectid)/production/date!subj> .
+
+<http://jpgm.getty.edu/object/(objectid)/production/date!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E52_Time-Span ;
+        rr:template  "http://jpgm.getty.edu/object/{objectid}/production/date" .
+
+<http://jpgm.getty.edu/object/(objectid)/signature!P2_has_type!300028705>
+        a             rr:PredicateObjectMap ;
+        rr:object     aat:300028705 ;
+        rr:predicate  crm:P2_has_type .
+
+<http://jpgm.getty.edu/object/(objectid)/signature!P3_has_note!(signed)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "{signed}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crm:P3_has_note .
+
+<http://jpgm.getty.edu/object/(objectid)/signature!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "\n<objects> := objects where \n  departmentid in (1,2,3,4,5,6,12)\n  and objectstatus in (1) -- Permanent Collection; not Deaccessioned \n  and publicaccess=1\n  and exists (select * from -- Tombstone cataloging='Completed'\n    userfieldxrefs where id=objectid and contextid=1 and userfieldid=36 and fieldvalue='Completed')\n  -- and curatorapproved=0  \n" ] ;
+        rr:predicateObjectMap  <http://jpgm.getty.edu/object/(objectid)/signature!P3_has_note!(signed)> , <http://jpgm.getty.edu/object/(objectid)/signature!P2_has_type!300028705> ;
+        rr:subjectMap          <http://jpgm.getty.edu/object/(objectid)/signature!subj> .
+
+<http://jpgm.getty.edu/object/(objectid)/signature!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E37_Mark ;
+        rr:template  "http://jpgm.getty.edu/object/{objectid}/signature" .
+
+<http://jpgm.getty.edu/object/(objectid)/type!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "\n<objects> := objects where \n  departmentid in (1,2,3,4,5,6,12)\n  and objectstatus in (1) -- Permanent Collection; not Deaccessioned \n  and publicaccess=1\n  and exists (select * from -- Tombstone cataloging='Completed'\n    userfieldxrefs where id=objectid and contextid=1 and userfieldid=36 and fieldvalue='Completed')\n  -- and curatorapproved=0  \n" ] ;
+        rr:predicateObjectMap  <http://jpgm.getty.edu/object/(objectid)/type!prefLabel!(objectname)> ;
+        rr:subjectMap          <http://jpgm.getty.edu/object/(objectid)/type!subj> .
+
+<http://jpgm.getty.edu/object/(objectid)/type!prefLabel!(objectname)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "{objectname}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  skos:prefLabel .
+
+<http://jpgm.getty.edu/object/(objectid)/type!subj>
+        a            rr:SubjectMap ;
+        rr:class     skos:Concept ;
+        rr:template  "http://jpgm.getty.edu/object/{objectid}/type" .
+
+<http://jpgm.getty.edu/object/status/!label!Object_status>
+        a             rr:PredicateObjectMap ;
+        rr:object     "Object status" ;
+        rr:predicate  rdfs:label .
+
+<http://jpgm.getty.edu/object/status/!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "select * from \nobjectstatus\n where objectstatusid in (1,3)\n" ] ;
+        rr:predicateObjectMap  <http://jpgm.getty.edu/object/status/!label!Object_status> ;
+        rr:subjectMap          <http://jpgm.getty.edu/object/status/!subj> .
+
+<http://jpgm.getty.edu/object/status/!subj>
+        a            rr:SubjectMap ;
+        rr:class     skos:ConceptScheme ;
+        rr:constant  <http://jpgm.getty.edu/object/status/> .
+
+<http://jpgm.getty.edu/object/status/(objectstatusid)!inScheme!>
+        a             rr:PredicateObjectMap ;
+        rr:object     <http://jpgm.getty.edu/object/status/> ;
+        rr:predicate  skos:inScheme .
+
+<http://jpgm.getty.edu/object/status/(objectstatusid)!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "select * from \nobjectstatus\n where objectstatusid in (1,3)\n" ] ;
+        rr:predicateObjectMap  <http://jpgm.getty.edu/object/status/(objectstatusid)!inScheme!> , <http://jpgm.getty.edu/object/status/(objectstatusid)!prefLabel!(objectstatus)> ;
+        rr:subjectMap          <http://jpgm.getty.edu/object/status/(objectstatusid)!subj> .
+
+<http://jpgm.getty.edu/object/status/(objectstatusid)!prefLabel!(objectstatus)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "{objectstatus}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  skos:prefLabel .
+
+<http://jpgm.getty.edu/object/status/(objectstatusid)!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E55_Type ;
+        rr:template  "http://jpgm.getty.edu/object/status/{objectstatusid}" .
+
+<http://vocab.getty.edu/aat/(classification.aatid)!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "select * from \n<objects>, classification\n where object.classificationid=classification.classificationid\n" ] ;
+        rr:predicateObjectMap  <http://vocab.getty.edu/aat/(classification.aatid)!prefLabel!(classification)> ;
+        rr:subjectMap          <http://vocab.getty.edu/aat/(classification.aatid)!subj> .
+
+<http://vocab.getty.edu/aat/(classification.aatid)!prefLabel!(classification)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "{classification}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  skos:prefLabel .
+
+<http://vocab.getty.edu/aat/(classification.aatid)!subj>
+        a            rr:SubjectMap ;
+        rr:template  "http://vocab.getty.edu/aat/{classification.aatid}" .
+
+<http://vocab.getty.edu/ulan/500115988-agent!label!JPGM>
+        a             rr:PredicateObjectMap ;
+        rr:object     "JPGM" ;
+        rr:predicate  rdfs:label .
+
+<http://vocab.getty.edu/ulan/500115988-agent!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "select * from \n<objects>\n where objectstatus=1 -- Permanent Collection\n" ] ;
+        rr:predicateObjectMap  <http://vocab.getty.edu/ulan/500115988-agent!label!JPGM> ;
+        rr:subjectMap          <http://vocab.getty.edu/ulan/500115988-agent!subj> .
+
+<http://vocab.getty.edu/ulan/500115988-agent!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E40_Legal_Body ;
+        rr:constant  ulan:500115988-agent .
+

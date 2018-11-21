@@ -1,0 +1,73 @@
+@startuml
+hide empty methods
+hide empty attributes
+hide circle
+skinparam classAttributeIconSize 0
+class work_mptw as "work:mptw"
+class work_mptw <<(A,red)>>
+show work_mptw circle
+class work_mptw_p1 as "work:mptw_p1"
+class work_mptw_p1 <<(A,red)>>
+show work_mptw_p1 circle
+class work_mptw_p2 as "work:mptw_p2"
+class work_mptw_p2 <<(A,red)>>
+show work_mptw_p2 circle
+class media_mptw_f1_master_pdf as "media:mptw_f1/master/pdf"
+class media_mptw_f1_master_pdf <<(B,cyan)>>
+show media_mptw_f1_master_pdf circle
+class media_mptw_f2_rep_jpg as "media:mptw_f2/rep/jpg"
+class media_mptw_f2_rep_jpg <<(B,cyan)>>
+show media_mptw_f2_rep_jpg circle
+class media_mptw_f3_rep_tiff as "media:mptw_f3/rep/tiff"
+class media_mptw_f3_rep_tiff <<(B,cyan)>>
+show media_mptw_f3_rep_tiff circle
+class media_mptw_f4_rep_xml as "media:mptw_f4/rep/xml"
+class media_mptw_f4_rep_xml <<(B,cyan)>>
+show media_mptw_f4_rep_xml circle
+class media_mptw_f5_rep_jpg as "media:mptw_f5/rep/jpg"
+class media_mptw_f5_rep_jpg <<(B,cyan)>>
+show media_mptw_f5_rep_jpg circle
+class media_mptw_f6_rep_jp2 as "media:mptw_f6/rep/jp2"
+class media_mptw_f6_rep_jp2 <<(B,cyan)>>
+show media_mptw_f6_rep_jp2 circle
+class media_mptw_f7_rep_xml as "media:mptw_f7/rep/xml"
+class media_mptw_f7_rep_xml <<(B,cyan)>>
+show media_mptw_f7_rep_xml circle
+work_mptw_p1 : a pcdm:Object
+work_mptw_p1 --> media_mptw_f3_rep_tiff : pcdm:hasFile
+work_mptw_p1 --> media_mptw_f4_rep_xml : pcdm:hasFile
+work_mptw_p1 --> media_mptw_f2_rep_jpg : pcdm:hasFile
+work_mptw_p1 : scholar:WorkCreator "Joe Biden"
+work_mptw_p1 : scholar:WorkTitle "Page 1"
+work_mptw : a pcdm:Object
+work_mptw --> work_mptw_p2 : pcdm:hasMember
+work_mptw -left-> media_mptw_f1_master_pdf : pcdm:hasFile
+class proxy_mptw_p2 as "proxy:mptw_p2"
+work_mptw -down-> proxy_mptw_p2 : iana:last
+work_mptw --> work_mptw_p1 : pcdm:hasMember
+class proxy_mptw_p1 as "proxy:mptw_p1"
+work_mptw -down-> proxy_mptw_p1 : iana:first
+work_mptw : scholar:WorkCreator "Barack Obama"
+work_mptw : scholar:WorkTitle "US Governement Pamphlet"
+work_mptw_p2 : a pcdm:Object
+work_mptw_p2 --> media_mptw_f6_rep_jp2 : pcdm:hasFile
+work_mptw_p2 --> media_mptw_f7_rep_xml : pcdm:hasFile
+work_mptw_p2 --> media_mptw_f5_rep_jpg : pcdm:hasFile
+work_mptw_p2 : scholar:WorkCreator "Barack Obama"
+work_mptw_p2 : scholar:WorkTitle "Page 2"
+media_mptw_f6_rep_jp2 : a pcdm:File
+media_mptw_f4_rep_xml : a pcdm:File
+proxy_mptw_p2 : a ore:Proxy
+proxy_mptw_p2 --> work_mptw_p2 : ore:proxyFor
+proxy_mptw_p2 -up-> work_mptw : ore:proxyIn
+proxy_mptw_p2 -left-> proxy_mptw_p1 : iana:previous
+media_mptw_f2_rep_jpg : a pcdm:File
+proxy_mptw_p1 : a ore:Proxy
+proxy_mptw_p1 --> work_mptw_p1 : ore:proxyFor
+proxy_mptw_p1 -up-> work_mptw : ore:proxyIn
+proxy_mptw_p1 -right-> proxy_mptw_p2 : iana:next
+media_mptw_f5_rep_jpg : a pcdm:File
+media_mptw_f3_rep_tiff : a pcdm:File
+media_mptw_f1_master_pdf : a pcdm:File
+media_mptw_f7_rep_xml : a pcdm:File
+@enduml

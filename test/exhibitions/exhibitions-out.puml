@@ -1,0 +1,107 @@
+@startuml
+hide empty methods
+hide empty attributes
+hide circle
+skinparam classAttributeIconSize 0
+class _exhibitionVenue_202_object_1001_ as "<exhibitionVenue/202/object/1001>"
+class _exhibitionVenue_202_object_1001_ <<(A,yellow)>>
+show _exhibitionVenue_202_object_1001_ circle
+class _exhibition_123_ as "<exhibition/123>"
+class _exhibition_123_ <<(A,yellow)>>
+show _exhibition_123_ circle
+class _exhibitionVenue_203_object_1001_ as "<exhibitionVenue/203/object/1001>"
+class _exhibitionVenue_203_object_1001_ <<(A,yellow)>>
+show _exhibitionVenue_203_object_1001_ circle
+class _exhibitionVenue_203_ as "<exhibitionVenue/203>"
+class _exhibitionVenue_203_ <<(A,yellow)>>
+show _exhibitionVenue_203_ circle
+class _exhibitionVenue_202_object_1002_ as "<exhibitionVenue/202/object/1002>"
+class _exhibitionVenue_202_object_1002_ <<(A,yellow)>>
+show _exhibitionVenue_202_object_1002_ circle
+class _exhibitionVenue_202_ as "<exhibitionVenue/202>"
+class _exhibitionVenue_202_ <<(A,yellow)>>
+show _exhibitionVenue_202_ circle
+class _exhibitionVenue_203_date_ as "<exhibitionVenue/203/date>"
+_exhibitionVenue_203_date_ : a crm:E52_Time-Span
+_exhibitionVenue_203_date_ : crm:P82a_begin_of_the_begin "2016-10-16"^^xsd:date
+_exhibitionVenue_203_date_ : crm:P82b_end_of_the_end "2016-10-30"^^xsd:date
+class _agent_address_103_ as "<agent/address/103>"
+_agent_address_103_ : a crm:E53_Place
+_agent_address_103_ : rdfs:label "LACMA County"
+class _exhibitionVenue_202_object_1001_catalognumber_ as "<exhibitionVenue/202/object/1001/catalognumber>"
+_exhibitionVenue_202_object_1001_catalognumber_ : a crm:E42_Identifier
+_exhibitionVenue_202_object_1001_catalognumber_ : crm:P2_has_type aat:300404620 # catalog number
+_exhibitionVenue_202_object_1001_catalognumber_ : crm:P3_has_note "cat 1001"
+class _exhibition_123_title_ as "<exhibition/123/title>"
+_exhibition_123_title_ : a crm:E41_Appellation
+_exhibition_123_title_ : crm:P3_has_note "Getty through the ages"
+class _exhibitionVenue_203_object_1001_catalognumber_ as "<exhibitionVenue/203/object/1001/catalognumber>"
+_exhibitionVenue_203_object_1001_catalognumber_ : a crm:E42_Identifier
+_exhibitionVenue_203_object_1001_catalognumber_ : crm:P2_has_type aat:300404620 # catalog number
+_exhibitionVenue_203_object_1001_catalognumber_ : crm:P3_has_note "cat 1001"
+class _exhibitionVenue_202_object_1001_date_ as "<exhibitionVenue/202/object/1001/date>"
+_exhibitionVenue_202_object_1001_date_ : a crm:E52_Time-Span
+_exhibitionVenue_202_object_1001_date_ : crm:P82a_begin_of_the_begin "2016-10-01"^^xsd:date
+_exhibitionVenue_202_object_1001_date_ : crm:P82b_end_of_the_end "2016-10-15"^^xsd:date
+_exhibitionVenue_202_ : a crm:E7_Activity
+class _exhibitionVenue_202_date_ as "<exhibitionVenue/202/date>"
+_exhibitionVenue_202_ --> _exhibitionVenue_202_date_ : crm:P4_has_time-span
+_exhibitionVenue_202_ -up-> _exhibition_123_ : crm:P9i_forms_part_of
+class _agent_address_102_ as "<agent/address/102>"
+_exhibitionVenue_202_ --> _agent_address_102_ : crm:P7_took_place_at
+_exhibitionVenue_202_ : crm:P14_carried_out_by <agent/2>
+_exhibitionVenue_202_ : crm:P2_has_type <event/exhibition-at-venue>
+_exhibitionVenue_202_ : crmx:sort_order "1"
+class _exhibitionVenue_202_object_1002_date_ as "<exhibitionVenue/202/object/1002/date>"
+_exhibitionVenue_202_object_1002_date_ : a crm:E52_Time-Span
+_exhibitionVenue_202_object_1002_date_ : crm:P82a_begin_of_the_begin "2016-10-01"^^xsd:date
+_exhibitionVenue_202_object_1002_date_ : crm:P82b_end_of_the_end "2016-10-15"^^xsd:date
+_exhibition_123_ : a crm:E7_Activity
+class _exhibition_123_date_ as "<exhibition/123/date>"
+_exhibition_123_ --> _exhibition_123_date_ : crm:P4_has_time-span
+_exhibition_123_ --> _exhibition_123_title_ : crm:P1_is_identified_by
+_exhibition_123_ : crm:P14_carried_out_by <agent/1>
+_exhibition_123_ : crm:P2_has_type aat:300054766 # exhibition [event]
+_exhibition_123_date_ : a crm:E52_Time-Span
+_exhibition_123_date_ : crm:P3_has_note "October 2016"
+_exhibition_123_date_ : crm:P82a_begin_of_the_begin "2016-10-01"^^xsd:date
+_exhibition_123_date_ : crm:P82b_end_of_the_end "2016-10-30"^^xsd:date
+class _exhibitionVenue_202_object_1002_catalognumber_ as "<exhibitionVenue/202/object/1002/catalognumber>"
+_exhibitionVenue_202_object_1002_catalognumber_ : a crm:E42_Identifier
+_exhibitionVenue_202_object_1002_catalognumber_ : crm:P2_has_type aat:300404620 # catalog number
+_exhibitionVenue_202_object_1002_catalognumber_ : crm:P3_has_note "cat 1002"
+_exhibitionVenue_202_object_1002_ : a crm:E7_Activity
+_exhibitionVenue_202_object_1002_ --> _exhibitionVenue_202_object_1002_catalognumber_ : crm:P1_is_identified_by
+_exhibitionVenue_202_object_1002_ -up-> _exhibitionVenue_202_ : crm:P9i_forms_part_of
+_exhibitionVenue_202_object_1002_ --> _exhibitionVenue_202_object_1002_date_ : crm:P4_has_time-span
+_exhibitionVenue_202_object_1002_ : crm:P12_occurred_in_the_presence_of <object/1002>
+_exhibitionVenue_202_object_1002_ : crm:P2_has_type <event/object-at-exhibition>
+_exhibitionVenue_202_date_ : a crm:E52_Time-Span
+_exhibitionVenue_202_date_ : crm:P82a_begin_of_the_begin "2016-10-01"^^xsd:date
+_exhibitionVenue_202_date_ : crm:P82b_end_of_the_end "2016-10-15"^^xsd:date
+_exhibitionVenue_202_object_1001_ : a crm:E7_Activity
+_exhibitionVenue_202_object_1001_ --> _exhibitionVenue_202_object_1001_catalognumber_ : crm:P1_is_identified_by
+_exhibitionVenue_202_object_1001_ --> _exhibitionVenue_202_object_1001_date_ : crm:P4_has_time-span
+_exhibitionVenue_202_object_1001_ -up-> _exhibitionVenue_202_ : crm:P9i_forms_part_of
+_exhibitionVenue_202_object_1001_ : crm:P12_occurred_in_the_presence_of <object/1001>
+_exhibitionVenue_202_object_1001_ : crm:P2_has_type <event/object-at-exhibition>
+_exhibitionVenue_203_ : a crm:E7_Activity
+_exhibitionVenue_203_ -up-> _exhibition_123_ : crm:P9i_forms_part_of
+_exhibitionVenue_203_ --> _exhibitionVenue_203_date_ : crm:P4_has_time-span
+_exhibitionVenue_203_ --> _agent_address_103_ : crm:P7_took_place_at
+_exhibitionVenue_203_ : crm:P14_carried_out_by <agent/3>
+_exhibitionVenue_203_ : crm:P2_has_type <event/exhibition-at-venue>
+_exhibitionVenue_203_ : crmx:sort_order "2"
+_exhibitionVenue_203_object_1001_ : a crm:E7_Activity
+class _exhibitionVenue_203_object_1001_date_ as "<exhibitionVenue/203/object/1001/date>"
+_exhibitionVenue_203_object_1001_ --> _exhibitionVenue_203_object_1001_date_ : crm:P4_has_time-span
+_exhibitionVenue_203_object_1001_ -up-> _exhibitionVenue_203_ : crm:P9i_forms_part_of
+_exhibitionVenue_203_object_1001_ --> _exhibitionVenue_203_object_1001_catalognumber_ : crm:P1_is_identified_by
+_exhibitionVenue_203_object_1001_ : crm:P12_occurred_in_the_presence_of <object/1001>
+_exhibitionVenue_203_object_1001_ : crm:P2_has_type <event/object-at-exhibition>
+_exhibitionVenue_203_object_1001_date_ : a crm:E52_Time-Span
+_exhibitionVenue_203_object_1001_date_ : crm:P82a_begin_of_the_begin "2016-10-16"^^xsd:date
+_exhibitionVenue_203_object_1001_date_ : crm:P82b_end_of_the_end "2016-10-30"^^xsd:date
+_agent_address_102_ : a crm:E53_Place
+_agent_address_102_ : rdfs:label "MoMA Street"
+@enduml

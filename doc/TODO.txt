@@ -1,0 +1,12 @@
+﻿Nikola's feedback for the rdf puml and rdf docs
+
+It is very dense! 
+It took me a while just to get what the relationship between rdf2rml and rdfpuml is (which I'm not sure I got right, btw)
+The fact that you speak at the same time of a logical format and graphical representations relly confused me. Maybe you should dissociate the two aspects. 
+I think that you should walk your reader through the example step by step specifying what the inputs, outputs are for each step and why the step is necessary.  
+
+--
+
+The presentation is sexy! 
+I think i will also use this format in the future. I think, however that the diagrams are too dense to be presented live one after the other. You should make sure thet you explain verbally why you are showing this on the screen and use some kind of pointer to guide your audience where to look to see whatever you are showing them. otherwise you will overload m fast.
+As a standalone support it is fine as we can spend more time on each slide and scroll back and forward as much as we want. 

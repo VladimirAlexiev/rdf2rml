@@ -1,0 +1,9 @@
+<x1> puml:down     <y1>.
+<x2> puml:up-2     <y2>.
+<x3> puml:down-3   <y3>.
+<x4> puml:up-4     <y4>.
+<x5> puml:down-5   <y5>.
+<x6> puml:up-6     <y6>.
+<x7> puml:down-7   <y7>.
+<x2> puml:right-9  <y3>.
+<x4> puml:right-7  <y2>.

@@ -1,0 +1,152 @@
+<object/(objectid)>
+  puml:label """
+<objects> := objects where 
+  departmentid in (1,2,3,4,5,6,12)
+  and objectstatus in (1) -- Permanent Collection; not Deaccessioned 
+  and publicaccess=1
+  and exists (select * from -- Tombstone cataloging='Completed'
+    userfieldxrefs where id=objectid and contextid=1 and userfieldid=36 and fieldvalue='Completed')
+  -- and curatorapproved=0  
+""";
+  a crm:E19_Physical_Object;
+  crm:P48_has_preferred_identifier <object/(objectid)/id>;
+  crm:P1_is_identified_by <object/(objectid)/number>;
+  crmx:sort_order "(sortnumber)"^^xsd:decimal;
+  crm:P50_has_current_keeper <department/(departmentid)>;
+  crm:P52_has_current_owner ulan:500115988-agent;
+  crmx:P2_status <object/status/(objectstatusid)>;
+  crmx:P2_classification <http://vocab.getty.edu/aat/(classification.aatid)>;
+  crmx:P2_type <object/(objectid)/type>;
+  crm:P108i_was_produced_by <object/(objectid)/production>;
+  crm:P65_shows_visual_item
+    <object/(objectid)/signature>,
+    <object/(objectid)/inscription>,
+    <object/(objectid)/marking>.
+
+<object/(objectid)/id> a crm:E42_Identifier;
+  crm:P2_has_type aat:300404012; # "unique identifier"
+  crm:P3_has_note "(objectid)".
+
+<object/(objectid)/number> a crm:E42_Identifier;
+  crm:P2_has_type aat:300312355; # "accession number"
+  crm:P3_has_note "(objectnumber)".
+
+<object/(objectid)> crm:P1_is_identified_by <object/(objectid)/id/(altnumid)>.
+
+<object/(objectid)/id/(altnumid)>
+  puml:label """
+<objects>, altnums
+ where altnums.tableid=108
+  and objects.objectid=altnums.id
+-- TODO MUSLOD-9: 
+-- map description to AAT or urlify it?
+-- ignore remarks?
+""";
+  a crm:E42_Identifier;
+  crm:P2_has_type <id/type/urlify(description)>;
+  crm:P3_has_note "(altnum)".
+
+<id/type/urlify(description)> a skos:Concept;
+  skos:prefLabel "(description)";
+  skos:inScheme <id/type/>.
+
+<id/type/> a skos:ConceptScheme;
+  rdfs:label "Identifier type".
+
+<department/(departmentid)>
+  puml:label """
+departments
+ where maintableid=108
+  and departmentid in (1,2,3,4,5,6,12)
+""";
+  a crm:E74_Group;
+  crm:P107i_is_current_or_former_member_of ulan:500115988-agent;
+  crm:P131_is_identified_by <department/(departmentid)/name>.
+  
+<department/(departmentid)/name> a crm:E82_Actor_Appellation;
+  crm:P3_has_note "(department)".
+
+<object/status/(objectstatusid)>
+  puml:label """
+objectstatus
+ where objectstatusid in (1,3)
+""";
+  a crm:E55_Type;
+  skos:prefLabel "(objectstatus)";
+  skos:inScheme <object/status/>.
+
+<object/status/> a skos:ConceptScheme;
+  rdfs:label "Object status".
+
+<http://vocab.getty.edu/aat/(classification.aatid)>
+  puml:label """
+<objects>, classification
+ where object.classificationid=classification.classificationid
+""";
+  skos:prefLabel "(classification)".
+
+<object/(objectid)/type> a skos:Concept;
+  skos:prefLabel "(objectname)".
+
+<object/(objectid)/production>
+  puml:label """
+<objects>
+ where dated is not null or datebegin is not null or dateend is not null
+""";
+  a crm:E12_Production;
+  crm:P4_has_time-span <object/(objectid)/production/date>.
+
+<object/(objectid)/production/date> a crm:E52_Time-Span;
+  crm:P3_has_note "(dated)";
+  crm:P82a_begin_of_the_begin "(datebegin)"^^xsd:gYear;
+  crm:P82b_end_of_the_end "(dateend)"^^xsd:gYear.
+
+<object/(objectid)/production> crm:P10_falls_within <object/(objectid)/culture/(objcontextid)>.
+
+<object/(objectid)/culture/(objcontextid)>
+  puml:label """
+<objects>, objcontext
+ where objects.objectid=objcontext.objectid
+  and culture is not null
+""";
+  a crm:E4_Period;
+  crm:P3_has_note "(culture)".
+
+<object/(objectid)/signature> a crm:E37_Mark;
+  crm:P2_has_type aat:300028705;
+  crm:P3_has_note "(signed)".
+  
+<object/(objectid)/inscription> a crm:E34_Inscription;
+  crm:P2_has_type aat:300028702;
+  crm:P3_has_note "(inscribed)".
+
+<object/(objectid)/marking> a crm:E37_Mark;
+  crm:P2_has_type aat:300028744;
+  crm:P3_has_note "(markings)".
+
+ulan:500115988-agent a crm:E40_Legal_Body; rdfs:label "JPGM";
+  puml:label """
+<objects>
+ where objectstatus=1 -- Permanent Collection
+""".
+
+aat:300312355 skos:prefLabel "accession number".
+aat:300404012 skos:prefLabel "unique identifier".
+aat:300028705 skos:prefLabel "signature".
+aat:300028702 skos:prefLabel "inscription".
+aat:300028744 skos:prefLabel "mark".
+
+####################
+aat:300312355 a puml:Inline.
+aat:300404012 a puml:Inline.
+aat:300028705 a puml:Inline.
+aat:300028702 a puml:Inline.
+aat:300028744 a puml:Inline.
+
+<object/(objectid)> puml:up    <http://vocab.getty.edu/aat/(classification.aatid)>.
+<object/(objectid)> puml:right <object/(objectid)/id>.
+<object/(objectid)> puml:left  <object/(objectid)/number>.
+<object/(objectid)> puml:up    <object/(objectid)/type>.
+<object/(objectid)> puml:up    <object/(objectid)/signature>.
+<object/(objectid)> puml:up    <object/(objectid)/inscription>.
+<object/(objectid)> puml:up    <object/(objectid)/marking>.

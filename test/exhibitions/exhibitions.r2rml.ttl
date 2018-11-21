@@ -1,0 +1,314 @@
+<agent/address/(conaddressid)!label!(address)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "{address}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  rdfs:label .
+
+<agent/address/(conaddressid)!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "select * from \nexhvenuesxrefs left join conaddress \n on exhvenuesxrefs.constituentid=conaddress.constituentid  \n where exhvenuesxrefs.approved=1\n" ] ;
+        rr:predicateObjectMap  <agent/address/(conaddressid)!label!(address)> ;
+        rr:subjectMap          <agent/address/(conaddressid)!subj> .
+
+<agent/address/(conaddressid)!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E53_Place ;
+        rr:template  "agent/address/{conaddressid}" .
+
+<exhibition/(exhibitionid)!P14_carried_out_by!(constituentid)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "agent/{constituentid}" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P14_carried_out_by .
+
+<exhibition/(exhibitionid)!P1_is_identified_by!title>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "exhibition/{exhibitionid}/title" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P1_is_identified_by .
+
+<exhibition/(exhibitionid)!P2_has_type!300054766>
+        a             rr:PredicateObjectMap ;
+        rr:object     aat:300054766 ;
+        rr:predicate  crm:P2_has_type .
+<exhibition/(exhibitionid)!P4_has_time-span!date>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "exhibition/{exhibitionid}/date" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P4_has_time-span .
+
+<exhibition/(exhibitionid)!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "select * from \nexhibitions left join conxrefs \n on id=exhibitionid\n where tableid=47\n  and roleid=286  \n  and exhdepartment in (53,54)\n" ] ;
+        rr:predicateObjectMap  <exhibition/(exhibitionid)!P1_is_identified_by!title> , <exhibition/(exhibitionid)!P4_has_time-span!date> , <exhibition/(exhibitionid)!P14_carried_out_by!(constituentid)> , <exhibition/(exhibitionid)!P2_has_type!300054766> ;
+        rr:subjectMap          <exhibition/(exhibitionid)!subj> .
+
+<exhibition/(exhibitionid)!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E7_Activity ;
+        rr:template  "exhibition/{exhibitionid}" .
+
+<exhibition/(exhibitionid)/date!P3_has_note!(displaydate)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "{displaydate}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crm:P3_has_note .
+
+<exhibition/(exhibitionid)/date!P82a_begin_of_the_begin!(beginisodate)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:datatype  xsd:date ;
+                        rr:template  "{beginisodate}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crm:P82a_begin_of_the_begin .
+
+<exhibition/(exhibitionid)/date!P82b_end_of_the_end!(endisodate)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:datatype  xsd:date ;
+                        rr:template  "{endisodate}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crm:P82b_end_of_the_end .
+
+<exhibition/(exhibitionid)/date!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "select * from \nexhibitions left join conxrefs \n on id=exhibitionid\n where tableid=47\n  and roleid=286  \n  and exhdepartment in (53,54)\n" ] ;
+        rr:predicateObjectMap  <exhibition/(exhibitionid)/date!P82b_end_of_the_end!(endisodate)> , <exhibition/(exhibitionid)/date!P3_has_note!(displaydate)> , <exhibition/(exhibitionid)/date!P82a_begin_of_the_begin!(beginisodate)> ;
+        rr:subjectMap          <exhibition/(exhibitionid)/date!subj> .
+
+<exhibition/(exhibitionid)/date!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E52_Time-Span ;
+        rr:template  "exhibition/{exhibitionid}/date" .
+
+<exhibition/(exhibitionid)/title!P3_has_note!(exhtitle)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "{exhtitle}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crm:P3_has_note .
+
+<exhibition/(exhibitionid)/title!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "select * from \nexhibitions left join conxrefs \n on id=exhibitionid\n where tableid=47\n  and roleid=286  \n  and exhdepartment in (53,54)\n" ] ;
+        rr:predicateObjectMap  <exhibition/(exhibitionid)/title!P3_has_note!(exhtitle)> ;
+        rr:subjectMap          <exhibition/(exhibitionid)/title!subj> .
+
+<exhibition/(exhibitionid)/title!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E41_Appellation ;
+        rr:template  "exhibition/{exhibitionid}/title" .
+
+<exhibitionVenue/(exhvenuexrefid)!P14_carried_out_by!(constituentid)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "agent/{constituentid}" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P14_carried_out_by .
+
+<exhibitionVenue/(exhvenuexrefid)!P2_has_type!exhibition_at_venue>
+        a             rr:PredicateObjectMap ;
+        rr:object     <event/exhibition-at-venue> ;
+        rr:predicate  crm:P2_has_type .
+
+<exhibitionVenue/(exhvenuexrefid)!P4_has_time-span!date>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "exhibitionVenue/{exhvenuexrefid}/date" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P4_has_time-span .
+
+<exhibitionVenue/(exhvenuexrefid)!P7_took_place_at!(conaddressid)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "agent/address/{conaddressid}" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P7_took_place_at .
+
+<exhibitionVenue/(exhvenuexrefid)!P9i_forms_part_of!(exhibitionid)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "exhibition/{exhibitionid}" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P9i_forms_part_of .
+
+<exhibitionVenue/(exhvenuexrefid)!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "select * from \nexhvenuesxrefs left join conaddress \n on exhvenuesxrefs.constituentid=conaddress.constituentid  \n where exhvenuesxrefs.approved=1\n" ] ;
+        rr:predicateObjectMap  <exhibitionVenue/(exhvenuexrefid)!P4_has_time-span!date> , <exhibitionVenue/(exhvenuexrefid)!P7_took_place_at!(conaddressid)> , <exhibitionVenue/(exhvenuexrefid)!P2_has_type!exhibition_at_venue> , <exhibitionVenue/(exhvenuexrefid)!P14_carried_out_by!(constituentid)> , <exhibitionVenue/(exhvenuexrefid)!P9i_forms_part_of!(exhibitionid)> , <exhibitionVenue/(exhvenuexrefid)!sort_order!(displayorder)> ;
+        rr:subjectMap          <exhibitionVenue/(exhvenuexrefid)!subj> .
+
+<exhibitionVenue/(exhvenuexrefid)!sort_order!(displayorder)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "{displayorder}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crmx:sort_order .
+
+<exhibitionVenue/(exhvenuexrefid)!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E7_Activity ;
+        rr:template  "exhibitionVenue/{exhvenuexrefid}" .
+
+<exhibitionVenue/(exhvenuexrefid)/date!P82a_begin_of_the_begin!(beginisodate)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:datatype  xsd:date ;
+                        rr:template  "{beginisodate}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crm:P82a_begin_of_the_begin .
+
+<exhibitionVenue/(exhvenuexrefid)/date!P82b_end_of_the_end!(endisodate)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:datatype  xsd:date ;
+                        rr:template  "{endisodate}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crm:P82b_end_of_the_end .
+
+<exhibitionVenue/(exhvenuexrefid)/date!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "select * from \nexhvenuesxrefs left join conaddress \n on exhvenuesxrefs.constituentid=conaddress.constituentid  \n where exhvenuesxrefs.approved=1\n" ] ;
+        rr:predicateObjectMap  <exhibitionVenue/(exhvenuexrefid)/date!P82a_begin_of_the_begin!(beginisodate)> , <exhibitionVenue/(exhvenuexrefid)/date!P82b_end_of_the_end!(endisodate)> ;
+        rr:subjectMap          <exhibitionVenue/(exhvenuexrefid)/date!subj> .
+
+<exhibitionVenue/(exhvenuexrefid)/date!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E52_Time-Span ;
+        rr:template  "exhibitionVenue/{exhvenuexrefid}/date" .
+
+<exhibitionVenue/(exhvenuexrefid)/object/(objectid)!P12_occurred_in_the_presence_of!(objectid)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "object/{objectid}" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P12_occurred_in_the_presence_of .
+
+<exhibitionVenue/(exhvenuexrefid)/object/(objectid)!P1_is_identified_by!catalognumber>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "exhibitionVenue/{exhvenuexrefid}/object/{objectid}/catalognumber" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P1_is_identified_by .
+
+<exhibitionVenue/(exhvenuexrefid)/object/(objectid)!P2_has_type!object_at_exhibition>
+        a             rr:PredicateObjectMap ;
+        rr:object     <event/object-at-exhibition> ;
+        rr:predicate  crm:P2_has_type .
+
+<exhibitionVenue/(exhvenuexrefid)/object/(objectid)!P4_has_time-span!date>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "exhibitionVenue/{exhvenuexrefid}/object/{objectid}/date" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P4_has_time-span .
+
+<exhibitionVenue/(exhvenuexrefid)/object/(objectid)!P9i_forms_part_of!(exhvenuexrefid)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "exhibitionVenue/{exhvenuexrefid}" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P9i_forms_part_of .
+
+<exhibitionVenue/(exhvenuexrefid)/object/(objectid)!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "select * from \nexhvenuesxrefs, exhvenobjxrefs\n where exhvenuesxrefs.exhvenuexrefid=exhvenobjxrefs.exhvenuexrefid\n  and exhvenuesxrefs.approved=1 and exhvenobjxrefs.displayed=1\n" ] ;
+        rr:predicateObjectMap  <exhibitionVenue/(exhvenuexrefid)/object/(objectid)!P9i_forms_part_of!(exhvenuexrefid)> , <exhibitionVenue/(exhvenuexrefid)/object/(objectid)!P12_occurred_in_the_presence_of!(objectid)> , <exhibitionVenue/(exhvenuexrefid)/object/(objectid)!P1_is_identified_by!catalognumber> , <exhibitionVenue/(exhvenuexrefid)/object/(objectid)!P4_has_time-span!date> , <exhibitionVenue/(exhvenuexrefid)/object/(objectid)!P2_has_type!object_at_exhibition> ;
+        rr:subjectMap          <exhibitionVenue/(exhvenuexrefid)/object/(objectid)!subj> .
+
+<exhibitionVenue/(exhvenuexrefid)/object/(objectid)!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E7_Activity ;
+        rr:template  "exhibitionVenue/{exhvenuexrefid}/object/{objectid}" .
+
+<exhibitionVenue/(exhvenuexrefid)/object/(objectid)/catalognumber!P2_has_type!300404620>
+        a             rr:PredicateObjectMap ;
+        rr:object     aat:300404620 ;
+        rr:predicate  crm:P2_has_type .
+
+<exhibitionVenue/(exhvenuexrefid)/object/(objectid)/catalognumber!P3_has_note!(catalognumber)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "{catalognumber}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crm:P3_has_note .
+
+<exhibitionVenue/(exhvenuexrefid)/object/(objectid)/catalognumber!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "select * from \nexhvenuesxrefs, exhvenobjxrefs\n where exhvenuesxrefs.exhvenuexrefid=exhvenobjxrefs.exhvenuexrefid\n  and exhvenuesxrefs.approved=1 and exhvenobjxrefs.displayed=1\n" ] ;
+        rr:predicateObjectMap  <exhibitionVenue/(exhvenuexrefid)/object/(objectid)/catalognumber!P2_has_type!300404620> , <exhibitionVenue/(exhvenuexrefid)/object/(objectid)/catalognumber!P3_has_note!(catalognumber)> ;
+        rr:subjectMap          <exhibitionVenue/(exhvenuexrefid)/object/(objectid)/catalognumber!subj> .
+
+<exhibitionVenue/(exhvenuexrefid)/object/(objectid)/catalognumber!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E42_Identifier ;
+        rr:template  "exhibitionVenue/{exhvenuexrefid}/object/{objectid}/catalognumber" .
+
+<exhibitionVenue/(exhvenuexrefid)/object/(objectid)/date!P82a_begin_of_the_begin!(begindispldateiso)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:datatype  xsd:date ;
+                        rr:template  "{begindispldateiso}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crm:P82a_begin_of_the_begin .
+
+<exhibitionVenue/(exhvenuexrefid)/object/(objectid)/date!P82b_end_of_the_end!(enddispldateiso)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:datatype  xsd:date ;
+                        rr:template  "{enddispldateiso}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crm:P82b_end_of_the_end .
+
+<exhibitionVenue/(exhvenuexrefid)/object/(objectid)/date!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "select * from \nexhvenuesxrefs, exhvenobjxrefs\n where exhvenuesxrefs.exhvenuexrefid=exhvenobjxrefs.exhvenuexrefid\n  and exhvenuesxrefs.approved=1 and exhvenobjxrefs.displayed=1\n" ] ;
+        rr:predicateObjectMap  <exhibitionVenue/(exhvenuexrefid)/object/(objectid)/date!P82b_end_of_the_end!(enddispldateiso)> , <exhibitionVenue/(exhvenuexrefid)/object/(objectid)/date!P82a_begin_of_the_begin!(begindispldateiso)> ;
+        rr:subjectMap          <exhibitionVenue/(exhvenuexrefid)/object/(objectid)/date!subj> .
+
+<exhibitionVenue/(exhvenuexrefid)/object/(objectid)/date!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E52_Time-Span ;
+        rr:template  "exhibitionVenue/{exhvenuexrefid}/object/{objectid}/date" .
+
+rr:class  a     puml:InlineProperty .
+
+rr:constant  a  puml:InlineProperty .
+
+rr:datatype  a  puml:InlineProperty .
+
+rr:object  a    puml:InlineProperty .
+
+rr:predicate  a  puml:InlineProperty .
+
+rr:subject  a   puml:InlineProperty .
+
+rr:termType  a  puml:InlineProperty .
+

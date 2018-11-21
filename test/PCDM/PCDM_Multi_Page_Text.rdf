@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Attempt to describe a multi-page text at https://github.com/projecthydra-labs/hydra-works/issues/9 assuming that there mulitple items in multiple international organization strategies.  Assuming that each object may only have 1 parent. -->
+
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:scholar="http://scholar.uc.edu#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:ore="http://www.openarchives.org/ore/terms/"
+    xmlns:hydra="http://projecthydra.org/ns/works#" xmlns:iana="http://www.iana.org/assignments/relation/"
+    xmlns:pcdm="http://pcdm.org/models#">
+    
+    <!-- scholar: doesn't really exist as it's being used here - it's some type of descriptive metadata that contains work titles and start and end times; may be MODS but may be some other type of metadata -->
+
+    <!-- Not sure rdf:Description is needed here if hydra: is managing same level of description and relationship. -->
+    
+    <!--
+    <rdf:Description about="http://scholar.uc.edu/concern/generic_works/scholar:mptw">
+        <ore:describes rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw"/>
+        <ore:describes rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_p1"/>
+        <ore:describes rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_p2"/>
+        <ore:describes rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_f1"/>
+    </rdf:Description>
+    
+    <rdf:Description about="http://scholar.uc.edu/concern/generic_works/scholar:mptw_p1">
+        <ore:isDescribedBy rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw"/>
+        <ore:describes rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_f2"/>
+        <ore:describes rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_f3"/>
+        <ore:describes rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_f4"/>
+    </rdf:Description>
+
+   <rdf:Description about="http://scholar.uc.edu/concern/generic_works/scholar:mptw_f2">
+        <ore:isDescribedBy rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_p1"/>
+    </rdf:Description>
+
+   <rdf:Description about="http://scholar.uc.edu/concern/generic_works/scholar:mptw_f3">
+        <ore:isDescribedBy rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_p1"/>
+    </rdf:Description>
+
+   <rdf:Description about="http://scholar.uc.edu/concern/generic_works/scholar:mptw_f4">
+        <ore:isDescribedBy rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_p1"/>
+    </rdf:Description>
+
+    <rdf:Description about="http://scholar.uc.edu/concern/generic_works/scholar:mptw_p2">
+        <ore:isDescribedBy rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw"/>
+        <ore:describes rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_f5"/>
+        <ore:describes rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_f6"/>
+        <ore:describes rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_f7"/>
+    </rdf:Description>
+
+   <rdf:Description about="http://scholar.uc.edu/concern/generic_works/scholar:mptw_f5">
+        <ore:isDescribedBy rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_p2"/>
+    </rdf:Description>
+
+   <rdf:Description about="http://scholar.uc.edu/concern/generic_works/scholar:mptw_f6">
+        <ore:isDescribedBy rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_p2"/>
+    </rdf:Description>
+
+   <rdf:Description about="http://scholar.uc.edu/concern/generic_works/scholar:mptw_f7">
+        <ore:isDescribedBy rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_p2"/>
+    </rdf:Description>
+
+    <rdf:Description about="http://scholar.uc.edu/concern/generic_works/scholar:mptw_f1">
+        <ore:isDescribedBy rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw"/>
+    </rdf:Description>
+
+    
+    <rdf:Description
+        about="http://oreproxy.org/r?what=http://scholar.uc.edu/concern/generic_works/scholar:mptw&amp;where=http://scholar.uc.edu/concern/generic_works/scholar:mptw">
+        <ore:proxyFor rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw"/>
+        <ore:proxyIn rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw"/>
+    </rdf:Description>
+
+    <rdf:Description
+        about="http://oreproxy.org/r?what=http://scholar.uc.edu/concern/generic_works/scholar:mptw_p1&amp;where=http://scholar.uc.edu/concern/generic_works/scholar:mptw">
+        <ore:proxyFor rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_p1"/>
+        <ore:proxyIn rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw"/>
+    </rdf:Description>
+
+    <rdf:Description
+        about="http://oreproxy.org/r?what=http://scholar.uc.edu/concern/generic_works/scholar:mptw_p2&amp;where=http://scholar.uc.edu/concern/generic_works/scholar:mptw">
+        <ore:proxyFor rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_p2"/>
+        <ore:proxyIn rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw"/>
+    </rdf:Description>
+ -->
+
+
+    <pcdm:Object rdf:about="http://scholar.uc.edu/concern/generic_works/scholar:mptw">
+        <scholar:WorkTitle>US Governement Pamphlet</scholar:WorkTitle>
+        <scholar:WorkCreator>Barack Obama</scholar:WorkCreator>
+
+        <pcdm:hasFile>
+            <pcdm:File
+                rdf:about="http://media/scholar:mptw_f1/master/pdf"/>
+        </pcdm:hasFile>
+
+        <pcdm:hasMember>
+            <pcdm:Object rdf:about="http://scholar.uc.edu/concern/generic_works/scholar:mptw_p1">
+                <scholar:WorkTitle>Page 1</scholar:WorkTitle>
+                <scholar:WorkCreator>Joe Biden</scholar:WorkCreator>
+                        <pcdm:hasFile>
+                                <pcdm:File
+                                    rdf:about="http://media/scholar:mptw_f2/representation/jpg"/>
+                        </pcdm:hasFile>
+                        <pcdm:hasFile>
+                                <pcdm:File
+                                    rdf:about="http://media/scholar:mptw_f3/representation/tiff"/>
+                        </pcdm:hasFile>
+                        <pcdm:hasFile>
+                                <pcdm:File
+                                    rdf:about="http://media/scholar:mptw_f4/representation/xml"/>
+                        </pcdm:hasFile>
+            </pcdm:Object>
+        </pcdm:hasMember>
+
+        <pcdm:hasMember>
+            <pcdm:Object rdf:about="http://scholar.uc.edu/concern/generic_works/scholar:mptw_p2">
+                <scholar:WorkTitle>Page 2</scholar:WorkTitle>
+                <scholar:WorkCreator>Barack Obama</scholar:WorkCreator>
+                        <pcdm:hasFile>
+                                <pcdm:File
+                                    rdf:about="http://media/scholar:mptw_f5/representation/jpg"/>
+                        </pcdm:hasFile>
+                        <pcdm:hasFile>
+                                <pcdm:File
+                                    rdf:about="http://media/scholar:mptw_f6/representation/jp2"/>
+                        </pcdm:hasFile>
+                        <pcdm:hasFile>
+                                <pcdm:File
+                                    rdf:about="http://media/scholar:mptw_f7/representation/xml"/>
+                        </pcdm:hasFile>
+            </pcdm:Object>
+        </pcdm:hasMember>
+    </pcdm:Object>    
+
+                    
+    <ore:Proxy
+        rdf:about="http://oreproxy.org/r?what=http://scholar.uc.edu/concern/generic_works/scholar:mptw&amp;where=http://scholar.uc.edu/concern/generic_works/scholar:mptw">
+        <ore:proxyFor rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw"/>
+         <iana:first rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_p1"/>
+        <iana:last rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_p2"/>
+    </ore:Proxy>
+
+    <ore:Proxy
+        rdf:about="http://oreproxy.org/r?what=http://scholar.uc.edu/concern/generic_works/scholar:mptw_p1&amp;where=http://scholar.uc.edu/concern/generic_works/scholar:mptw">
+        <ore:proxyFor rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_p1"/>
+        <ore:proxyIn rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw"/>
+        <iana:next rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_p2"/>
+    </ore:Proxy>
+    
+    <ore:Proxy
+        rdf:about="http://oreproxy.org/r?what=http://scholar.uc.edu/concern/generic_works/scholar:mptw_p2&amp;where=http://scholar.uc.edu/concern/generic_works/scholar:mptw">
+        <ore:proxyFor rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_p2"/>
+        <ore:proxyIn rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw"/>
+        <iana:previous rdf:resource="http://scholar.uc.edu/concern/generic_works/scholar:mptw_p1"/>
+    </ore:Proxy>
+    
+</rdf:RDF>

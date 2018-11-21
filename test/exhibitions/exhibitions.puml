@@ -1,0 +1,59 @@
+@startuml
+hide empty methods
+hide empty attributes
+hide circle
+skinparam classAttributeIconSize 0
+class _exhibition_exhibitionid_ as "<exhibition/(exhibitionid)>"
+class _exhibition_exhibitionid_ <<(A,yellow)>>
+show _exhibition_exhibitionid_ circle
+class _exhibitionVenue_exhvenuexrefid_ as "<exhibitionVenue/(exhvenuexrefid)>"
+class _exhibitionVenue_exhvenuexrefid_ <<(A,yellow)>>
+show _exhibitionVenue_exhvenuexrefid_ circle
+class _exhibitionVenue_exhvenuexrefid_object_objectid_ as "<exhibitionVenue/(exhvenuexrefid)/object/(objectid)>"
+class _exhibitionVenue_exhvenuexrefid_object_objectid_ <<(A,yellow)>>
+show _exhibitionVenue_exhvenuexrefid_object_objectid_ circle
+class _exhibition_exhibitionid_date_ as "<exhibition/(exhibitionid)/date>"
+_exhibition_exhibitionid_date_ : a crm:E52_Time-Span
+_exhibition_exhibitionid_date_ : crm:P3_has_note "[displaydate]"
+_exhibition_exhibitionid_date_ : crm:P82a_begin_of_the_begin "[beginisodate]"^^xsd:date
+_exhibition_exhibitionid_date_ : crm:P82b_end_of_the_end "[endisodate]"^^xsd:date
+_exhibitionVenue_exhvenuexrefid_object_objectid_ : a crm:E7_Activity
+class _exhibitionVenue_exhvenuexrefid_object_objectid_date_ as "<exhibitionVenue/(exhvenuexrefid)/object/(objectid)/date>"
+_exhibitionVenue_exhvenuexrefid_object_objectid_ --> _exhibitionVenue_exhvenuexrefid_object_objectid_date_ : crm:P4_has_time-span
+class _exhibitionVenue_exhvenuexrefid_object_objectid_catalognumber_ as "<exhibitionVenue/(exhvenuexrefid)/object/(objectid)/catalognumber>"
+_exhibitionVenue_exhvenuexrefid_object_objectid_ --> _exhibitionVenue_exhvenuexrefid_object_objectid_catalognumber_ : crm:P1_is_identified_by
+_exhibitionVenue_exhvenuexrefid_object_objectid_ -up-> _exhibitionVenue_exhvenuexrefid_ : crm:P9i_forms_part_of
+_exhibitionVenue_exhvenuexrefid_object_objectid_ :  "\nexhvenuesxrefs, exhvenobjxrefs\n where exhvenuesxrefs.exhvenuexrefid=exhvenobjxrefs.exhvenuexrefid\n  and exhvenuesxrefs.approved=1 and exhvenobjxrefs.displayed=1\n"
+_exhibitionVenue_exhvenuexrefid_object_objectid_ : crm:P12_occurred_in_the_presence_of <object/[objectid]>
+_exhibitionVenue_exhvenuexrefid_object_objectid_ : crm:P2_has_type <event/object-at-exhibition>
+class _exhibition_exhibitionid_title_ as "<exhibition/(exhibitionid)/title>"
+_exhibition_exhibitionid_title_ : a crm:E41_Appellation
+_exhibition_exhibitionid_title_ : crm:P3_has_note "[exhtitle]"
+class _exhibitionVenue_exhvenuexrefid_date_ as "<exhibitionVenue/(exhvenuexrefid)/date>"
+_exhibitionVenue_exhvenuexrefid_date_ : a crm:E52_Time-Span
+_exhibitionVenue_exhvenuexrefid_date_ : crm:P82a_begin_of_the_begin "[beginisodate]"^^xsd:date
+_exhibitionVenue_exhvenuexrefid_date_ : crm:P82b_end_of_the_end "[endisodate]"^^xsd:date
+_exhibitionVenue_exhvenuexrefid_object_objectid_date_ : a crm:E52_Time-Span
+_exhibitionVenue_exhvenuexrefid_object_objectid_date_ : crm:P82a_begin_of_the_begin "[begindispldateiso]"^^xsd:date
+_exhibitionVenue_exhvenuexrefid_object_objectid_date_ : crm:P82b_end_of_the_end "[enddispldateiso]"^^xsd:date
+_exhibitionVenue_exhvenuexrefid_object_objectid_catalognumber_ : a crm:E42_Identifier
+_exhibitionVenue_exhvenuexrefid_object_objectid_catalognumber_ : crm:P2_has_type aat:300404620 # catalog number
+_exhibitionVenue_exhvenuexrefid_object_objectid_catalognumber_ : crm:P3_has_note "[catalognumber]"
+_exhibition_exhibitionid_ : a crm:E7_Activity
+_exhibition_exhibitionid_ --> _exhibition_exhibitionid_title_ : crm:P1_is_identified_by
+_exhibition_exhibitionid_ --> _exhibition_exhibitionid_date_ : crm:P4_has_time-span
+_exhibition_exhibitionid_ :  "\nexhibitions left join conxrefs \n on id=exhibitionid\n where tableid=47\n  and roleid=286  \n  and exhdepartment in [53,54]\n"
+_exhibition_exhibitionid_ : crm:P14_carried_out_by <agent/[constituentid]> # [constituent]
+_exhibition_exhibitionid_ : crm:P2_has_type aat:300054766 # exhibition [event]
+_exhibitionVenue_exhvenuexrefid_ : a crm:E7_Activity
+class _agent_address_conaddressid_ as "<agent/address/(conaddressid)>"
+_exhibitionVenue_exhvenuexrefid_ --> _agent_address_conaddressid_ : crm:P7_took_place_at
+_exhibitionVenue_exhvenuexrefid_ -up-> _exhibition_exhibitionid_ : crm:P9i_forms_part_of
+_exhibitionVenue_exhvenuexrefid_ --> _exhibitionVenue_exhvenuexrefid_date_ : crm:P4_has_time-span
+_exhibitionVenue_exhvenuexrefid_ :  "\nexhvenuesxrefs left join conaddress \n on exhvenuesxrefs.constituentid=conaddress.constituentid  \n where exhvenuesxrefs.approved=1\n"
+_exhibitionVenue_exhvenuexrefid_ : crm:P14_carried_out_by <agent/[constituentid]> # [constituent]
+_exhibitionVenue_exhvenuexrefid_ : crm:P2_has_type <event/exhibition-at-venue>
+_exhibitionVenue_exhvenuexrefid_ : crmx:sort_order "[displayorder]"
+_agent_address_conaddressid_ : a crm:E53_Place
+_agent_address_conaddressid_ : rdfs:label "[address]"
+@enduml

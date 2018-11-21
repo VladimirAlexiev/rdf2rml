@@ -1,0 +1,94 @@
+@startuml
+hide empty methods
+hide empty attributes
+hide circle
+skinparam classAttributeIconSize 0
+class _object_objectid_marking_ as "<object/(objectid)/marking>"
+_object_objectid_marking_ : a crm:E37_Mark
+_object_objectid_marking_ : crm:P2_has_type aat:300028744 # mark
+_object_objectid_marking_ : crm:P3_has_note "[markings]"
+class _object_objectid_signature_ as "<object/(objectid)/signature>"
+_object_objectid_signature_ : a crm:E37_Mark
+_object_objectid_signature_ : crm:P2_has_type aat:300028705 # signature
+_object_objectid_signature_ : crm:P3_has_note "[signed]"
+class aat_classification_aatid_ as "aat:(classification.aatid)"
+aat_classification_aatid_ :  "\n<objects>, classification\n where object.classificationid=classification.classificationid\n"
+aat_classification_aatid_ : skos:prefLabel "[classification]"
+class _object_objectid_id_ as "<object/(objectid)/id>"
+_object_objectid_id_ : a crm:E42_Identifier
+_object_objectid_id_ : crm:P2_has_type aat:300404012 # unique identifier
+_object_objectid_id_ : crm:P3_has_note "[objectid]"
+class _object_objectid_production_date_ as "<object/(objectid)/production/date>"
+_object_objectid_production_date_ : a crm:E52_Time-Span
+_object_objectid_production_date_ : crm:P3_has_note "[dated]"
+_object_objectid_production_date_ : crm:P82a_begin_of_the_begin "[datebegin]"^^xsd:gYear
+_object_objectid_production_date_ : crm:P82b_end_of_the_end "[dateend]"^^xsd:gYear
+class _object_objectid_ as "<object/(objectid)>"
+_object_objectid_ : a crm:E19_Physical_Object
+_object_objectid_ -right-> _object_objectid_id_ : crm:P48_has_preferred_identifier
+class _object_objectid_id_altnumid_ as "<object/(objectid)/id/(altnumid)>"
+_object_objectid_ --> _object_objectid_id_altnumid_ : crm:P1_is_identified_by
+class _object_objectid_type_ as "<object/(objectid)/type>"
+_object_objectid_ -up-> _object_objectid_type_ : crmx:P2_type
+class _object_objectid_inscription_ as "<object/(objectid)/inscription>"
+_object_objectid_ -up-> _object_objectid_inscription_ : crm:P65_shows_visual_item
+class _object_objectid_number_ as "<object/(objectid)/number>"
+_object_objectid_ -left-> _object_objectid_number_ : crm:P1_is_identified_by
+class _object_status_objectstatusid_ as "<object/status/(objectstatusid)>"
+_object_objectid_ --> _object_status_objectstatusid_ : crmx:P2_status
+class _object_objectid_production_ as "<object/(objectid)/production>"
+_object_objectid_ --> _object_objectid_production_ : crm:P108i_was_produced_by
+_object_objectid_ -up-> _object_objectid_marking_ : crm:P65_shows_visual_item
+class ulan_500115988_agent as "ulan:500115988-agent"
+_object_objectid_ --> ulan_500115988_agent : crm:P52_has_current_owner
+_object_objectid_ -up-> aat_classification_aatid_ : crmx:P2_classification
+_object_objectid_ -up-> _object_objectid_signature_ : crm:P65_shows_visual_item
+class _department_departmentid_ as "<department/(departmentid)>"
+_object_objectid_ --> _department_departmentid_ : crm:P50_has_current_keeper
+_object_objectid_ :  "\n<objects> := objects where \n  departmentid in [1,2,3,4,5,6,12]\n  and objectstatus in [1] -- Permanent Collection; not Deaccessioned \n  and publicaccess=1\n  and exists [select * from -- Tombstone cataloging='Completed'\n    userfieldxrefs where id=objectid and contextid=1 and userfieldid=36 and fieldvalue='Completed']\n  -- and curatorapproved=0  \n"
+_object_objectid_ : crmx:sort_order "[sortnumber]"^^xsd:decimal
+_object_objectid_number_ : a crm:E42_Identifier
+_object_objectid_number_ : crm:P2_has_type aat:300312355 # accession number
+_object_objectid_number_ : crm:P3_has_note "[objectnumber]"
+_object_objectid_production_ : a crm:E12_Production
+class _object_objectid_culture_objcontextid_ as "<object/(objectid)/culture/(objcontextid)>"
+_object_objectid_production_ --> _object_objectid_culture_objcontextid_ : crm:P10_falls_within
+_object_objectid_production_ --> _object_objectid_production_date_ : crm:P4_has_time-span
+_object_objectid_production_ :  "\n<objects>\n where dated is not null or datebegin is not null or dateend is not null\n"
+_object_status_objectstatusid_ : a crm:E55_Type
+class _object_status_ as "<object/status/>"
+_object_status_objectstatusid_ --> _object_status_ : skos:inScheme
+_object_status_objectstatusid_ :  "\nobjectstatus\n where objectstatusid in [1,3]\n"
+_object_status_objectstatusid_ : skos:prefLabel "[objectstatus]"
+ulan_500115988_agent : a crm:E40_Legal_Body
+ulan_500115988_agent :  "\n<objects>\n where objectstatus=1 -- Permanent Collection\n"
+ulan_500115988_agent : rdfs:label "JPGM"
+class _department_departmentid_name_ as "<department/(departmentid)/name>"
+_department_departmentid_name_ : a crm:E82_Actor_Appellation
+_department_departmentid_name_ : crm:P3_has_note "[department]"
+class _id_type_urlify_description_ as "<id/type/urlify(description)>"
+_id_type_urlify_description_ : a skos:Concept
+class _id_type_ as "<id/type/>"
+_id_type_urlify_description_ --> _id_type_ : skos:inScheme
+_id_type_urlify_description_ : skos:prefLabel "[description]"
+_department_departmentid_ : a crm:E74_Group
+_department_departmentid_ --> _department_departmentid_name_ : crm:P131_is_identified_by
+_department_departmentid_ --> ulan_500115988_agent : crm:P107i_is_current_or_former_member_of
+_department_departmentid_ :  "\ndepartments\n where maintableid=108\n  and departmentid in [1,2,3,4,5,6,12]\n"
+_object_objectid_id_altnumid_ : a crm:E42_Identifier
+_object_objectid_id_altnumid_ --> _id_type_urlify_description_ : crm:P2_has_type
+_object_objectid_id_altnumid_ :  "\n<objects>, altnums\n where altnums.tableid=108\n  and objects.objectid=altnums.id\n-- TODO MUSLOD-9: \n-- map description to AAT or urlify it?\n-- ignore remarks?\n"
+_object_objectid_id_altnumid_ : crm:P3_has_note "[altnum]"
+_object_objectid_culture_objcontextid_ : a crm:E4_Period
+_object_objectid_culture_objcontextid_ :  "\n<objects>, objcontext\n where objects.objectid=objcontext.objectid\n  and culture is not null\n"
+_object_objectid_culture_objcontextid_ : crm:P3_has_note "[culture]"
+_id_type_ : a skos:ConceptScheme
+_id_type_ : rdfs:label "Identifier type"
+_object_objectid_type_ : a skos:Concept
+_object_objectid_type_ : skos:prefLabel "[objectname]"
+_object_objectid_inscription_ : a crm:E34_Inscription
+_object_objectid_inscription_ : crm:P2_has_type aat:300028702 # inscription
+_object_objectid_inscription_ : crm:P3_has_note "[inscribed]"
+_object_status_ : a skos:ConceptScheme
+_object_status_ : rdfs:label "Object status"
+@enduml

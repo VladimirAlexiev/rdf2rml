@@ -1,0 +1,89 @@
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1001> <http://www.cidoc-crm.org/cidoc-crm/P9i_forms_part_of> <http://jpgm.getty.edu/exhibitionVenue/202> .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1001> <http://www.cidoc-crm.org/cidoc-crm/P4_has_time-span> <http://jpgm.getty.edu/exhibitionVenue/202/object/1001/date> .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1001> <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://jpgm.getty.edu/event/object-at-exhibition> .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1001> <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> <http://jpgm.getty.edu/exhibitionVenue/202/object/1001/catalognumber> .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1001> <http://www.cidoc-crm.org/cidoc-crm/P12_occurred_in_the_presence_of> <http://jpgm.getty.edu/object/1001> .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1001> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.cidoc-crm.org/cidoc-crm/E7_Activity> .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1002/date> <http://www.cidoc-crm.org/cidoc-crm/P82b_end_of_the_end> "2016-10-15"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1002/date> <http://www.cidoc-crm.org/cidoc-crm/P82a_begin_of_the_begin> "2016-10-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1002/date> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.cidoc-crm.org/cidoc-crm/E52_Time-Span> .
+<http://jpgm.getty.edu/exhibition/123> <http://www.cidoc-crm.org/cidoc-crm/P4_has_time-span> <http://jpgm.getty.edu/exhibition/123/date> .
+<http://jpgm.getty.edu/exhibition/123> <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://vocab.getty.edu/aat/300054766> .
+<http://jpgm.getty.edu/exhibition/123> <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> <http://jpgm.getty.edu/exhibition/123/title> .
+<http://jpgm.getty.edu/exhibition/123> <http://www.cidoc-crm.org/cidoc-crm/P14_carried_out_by> <http://jpgm.getty.edu/agent/1> .
+<http://jpgm.getty.edu/exhibition/123> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.cidoc-crm.org/cidoc-crm/E7_Activity> .
+<http://jpgm.getty.edu/exhibition/123/date> <http://www.cidoc-crm.org/cidoc-crm/P82b_end_of_the_end> "2016-10-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://jpgm.getty.edu/exhibition/123/date> <http://www.cidoc-crm.org/cidoc-crm/P82a_begin_of_the_begin> "2016-10-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://jpgm.getty.edu/exhibition/123/date> <http://www.cidoc-crm.org/cidoc-crm/P3_has_note> "October 2016" .
+<http://jpgm.getty.edu/exhibition/123/date> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.cidoc-crm.org/cidoc-crm/E52_Time-Span> .
+<http://jpgm.getty.edu/exhibitionVenue/203/object/1001> <http://www.cidoc-crm.org/cidoc-crm/P9i_forms_part_of> <http://jpgm.getty.edu/exhibitionVenue/203> .
+<http://jpgm.getty.edu/exhibitionVenue/203/object/1001> <http://www.cidoc-crm.org/cidoc-crm/P4_has_time-span> <http://jpgm.getty.edu/exhibitionVenue/203/object/1001/date> .
+<http://jpgm.getty.edu/exhibitionVenue/203/object/1001> <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://jpgm.getty.edu/event/object-at-exhibition> .
+<http://jpgm.getty.edu/exhibitionVenue/203/object/1001> <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> <http://jpgm.getty.edu/exhibitionVenue/203/object/1001/catalognumber> .
+<http://jpgm.getty.edu/exhibitionVenue/203/object/1001> <http://www.cidoc-crm.org/cidoc-crm/P12_occurred_in_the_presence_of> <http://jpgm.getty.edu/object/1001> .
+<http://jpgm.getty.edu/exhibitionVenue/203/object/1001> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.cidoc-crm.org/cidoc-crm/E7_Activity> .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1002/catalognumber> <http://www.cidoc-crm.org/cidoc-crm/P3_has_note> "cat 1002" .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1002/catalognumber> <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://vocab.getty.edu/aat/300404620> .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1002/catalognumber> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.cidoc-crm.org/cidoc-crm/E42_Identifier> .
+<http://jpgm.getty.edu/exhibition/123/title> <http://www.cidoc-crm.org/cidoc-crm/P3_has_note> "Getty through the ages" .
+<http://jpgm.getty.edu/exhibition/123/title> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> .
+<http://jpgm.getty.edu/exhibitionVenue/202/date> <http://www.cidoc-crm.org/cidoc-crm/P82b_end_of_the_end> "2016-10-15"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://jpgm.getty.edu/exhibitionVenue/202/date> <http://www.cidoc-crm.org/cidoc-crm/P82a_begin_of_the_begin> "2016-10-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://jpgm.getty.edu/exhibitionVenue/202/date> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.cidoc-crm.org/cidoc-crm/E52_Time-Span> .
+<http://jpgm.getty.edu/agent/address/103> <http://www.w3.org/2000/01/rdf-schema#label> "LACMA County" .
+<http://jpgm.getty.edu/agent/address/103> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.cidoc-crm.org/cidoc-crm/E53_Place> .
+<http://jpgm.getty.edu/agent/address/102> <http://www.w3.org/2000/01/rdf-schema#label> "MoMA Street" .
+<http://jpgm.getty.edu/agent/address/102> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.cidoc-crm.org/cidoc-crm/E53_Place> .
+<http://jpgm.getty.edu/exhibitionVenue/203/object/1001/catalognumber> <http://www.cidoc-crm.org/cidoc-crm/P3_has_note> "cat 1001" .
+<http://jpgm.getty.edu/exhibitionVenue/203/object/1001/catalognumber> <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://vocab.getty.edu/aat/300404620> .
+<http://jpgm.getty.edu/exhibitionVenue/203/object/1001/catalognumber> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.cidoc-crm.org/cidoc-crm/E42_Identifier> .
+<http://jpgm.getty.edu/exhibitionVenue/203> <http://www.cidoc-crm.org/cidoc-crm/P9i_forms_part_of> <http://jpgm.getty.edu/exhibition/123> .
+<http://jpgm.getty.edu/exhibitionVenue/203> <http://www.cidoc-crm.org/cidoc-crm/P7_took_place_at> <http://jpgm.getty.edu/agent/address/103> .
+<http://jpgm.getty.edu/exhibitionVenue/203> <http://www.cidoc-crm.org/cidoc-crm/P4_has_time-span> <http://jpgm.getty.edu/exhibitionVenue/203/date> .
+<http://jpgm.getty.edu/exhibitionVenue/203> <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://jpgm.getty.edu/event/exhibition-at-venue> .
+<http://jpgm.getty.edu/exhibitionVenue/203> <http://www.cidoc-crm.org/cidoc-crm/P14_carried_out_by> <http://jpgm.getty.edu/agent/3> .
+<http://jpgm.getty.edu/exhibitionVenue/203> <http://purl.org/NET/cidoc-crm/ext#sort_order> "2" .
+<http://jpgm.getty.edu/exhibitionVenue/203> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.cidoc-crm.org/cidoc-crm/E7_Activity> .
+<http://jpgm.getty.edu/exhibitionVenue/203/object/1001/date> <http://www.cidoc-crm.org/cidoc-crm/P82b_end_of_the_end> "2016-10-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://jpgm.getty.edu/exhibitionVenue/203/object/1001/date> <http://www.cidoc-crm.org/cidoc-crm/P82a_begin_of_the_begin> "2016-10-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://jpgm.getty.edu/exhibitionVenue/203/object/1001/date> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.cidoc-crm.org/cidoc-crm/E52_Time-Span> .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1002> <http://www.cidoc-crm.org/cidoc-crm/P9i_forms_part_of> <http://jpgm.getty.edu/exhibitionVenue/202> .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1002> <http://www.cidoc-crm.org/cidoc-crm/P4_has_time-span> <http://jpgm.getty.edu/exhibitionVenue/202/object/1002/date> .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1002> <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://jpgm.getty.edu/event/object-at-exhibition> .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1002> <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> <http://jpgm.getty.edu/exhibitionVenue/202/object/1002/catalognumber> .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1002> <http://www.cidoc-crm.org/cidoc-crm/P12_occurred_in_the_presence_of> <http://jpgm.getty.edu/object/1002> .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1002> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.cidoc-crm.org/cidoc-crm/E7_Activity> .
+<http://jpgm.getty.edu/exhibitionVenue/202> <http://www.cidoc-crm.org/cidoc-crm/P9i_forms_part_of> <http://jpgm.getty.edu/exhibition/123> .
+<http://jpgm.getty.edu/exhibitionVenue/202> <http://www.cidoc-crm.org/cidoc-crm/P7_took_place_at> <http://jpgm.getty.edu/agent/address/102> .
+<http://jpgm.getty.edu/exhibitionVenue/202> <http://www.cidoc-crm.org/cidoc-crm/P4_has_time-span> <http://jpgm.getty.edu/exhibitionVenue/202/date> .
+<http://jpgm.getty.edu/exhibitionVenue/202> <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://jpgm.getty.edu/event/exhibition-at-venue> .
+<http://jpgm.getty.edu/exhibitionVenue/202> <http://www.cidoc-crm.org/cidoc-crm/P14_carried_out_by> <http://jpgm.getty.edu/agent/2> .
+<http://jpgm.getty.edu/exhibitionVenue/202> <http://purl.org/NET/cidoc-crm/ext#sort_order> "1" .
+<http://jpgm.getty.edu/exhibitionVenue/202> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.cidoc-crm.org/cidoc-crm/E7_Activity> .
+<http://jpgm.getty.edu/exhibitionVenue/203/date> <http://www.cidoc-crm.org/cidoc-crm/P82b_end_of_the_end> "2016-10-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://jpgm.getty.edu/exhibitionVenue/203/date> <http://www.cidoc-crm.org/cidoc-crm/P82a_begin_of_the_begin> "2016-10-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://jpgm.getty.edu/exhibitionVenue/203/date> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.cidoc-crm.org/cidoc-crm/E52_Time-Span> .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1001/catalognumber> <http://www.cidoc-crm.org/cidoc-crm/P3_has_note> "cat 1001" .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1001/catalognumber> <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <http://vocab.getty.edu/aat/300404620> .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1001/catalognumber> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.cidoc-crm.org/cidoc-crm/E42_Identifier> .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1001/date> <http://www.cidoc-crm.org/cidoc-crm/P82b_end_of_the_end> "2016-10-15"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1001/date> <http://www.cidoc-crm.org/cidoc-crm/P82a_begin_of_the_begin> "2016-10-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://jpgm.getty.edu/exhibitionVenue/202/object/1001/date> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.cidoc-crm.org/cidoc-crm/E52_Time-Span> .
+
+
+rr:subject   a puml:InlineProperty.
+rr:predicate a puml:InlineProperty.
+rr:object    a puml:InlineProperty.
+rr:class     a puml:InlineProperty.
+rr:constant  a puml:InlineProperty.
+rr:class     a puml:InlineProperty.
+rr:termType  a puml:InlineProperty.
+rr:datatype  a puml:InlineProperty.
+aat:300054766 a puml:Inline; skos:prefLabel "exhibition (event)".
+aat:300404620 a puml:Inline; skos:prefLabel "catalog number".
+crm:P9i_forms_part_of puml:arrow puml:up.
+crm:P14_carried_out_by a puml:InlineProperty.
+crm:P12_occurred_in_the_presence_of a puml:InlineProperty.
+<event/exhibition-at-venue> a puml:Inline.
+<event/object-at-exhibition> a puml:Inline.
+crm:E7_Activity puml:stereotype "(A,yellow)".

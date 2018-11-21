@@ -1,0 +1,285 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a>
+    <ul>
+      <li><a href="#RDF-Model">RDF Model</a></li>
+      <li><a href="#Example">Example</a>
+        <ul>
+          <li><a href="#Generated-R2RML">Generated R2RML</a></li>
+          <li><a href="#Relational-Data">Relational Data</a></li>
+          <li><a href="#Output-RDF">Output RDF</a></li>
+        </ul>
+      </li>
+      <li><a href="#Prerequisites">Prerequisites</a></li>
+      <li><a href="#Internal-Workings">Internal Workings</a></li>
+      <li><a href="#Limitations">Limitations</a></li>
+    </ul>
+  </li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#AUTHOR">AUTHOR</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>rdf2rml - Convert RDF examples to R2RML scripts</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code>  rdf2rml.sh model.ttl &gt; model.r2rml.ttl</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p><b>rdf2rml</b> converts an RDF example with embedded tables (or SQL queries) column names into an R2RML script. <a href="https://www.w3.org/TR/r2rml/">R2RML</a> is the W3C standard for RDBMS-&gt;RDF conversion. It is quite verbose and requires semantic experience to write.</p>
+
+<p><b>rdf2rml</b> generates R2RML transformations from examples, which saves about 15x in complexity and ensures compliance of the actual conversion to the model.</p>
+
+<p>Typically the example is an <b>rdfpuml</b> model that uses embedded column names rather than actual attribute values.</p>
+
+<h2 id="RDF-Model">RDF Model</h2>
+
+<p>The RDF model is a normal Turtle file with two additions.</p>
+
+<p>1. <code>puml:label</code> is used to provide the SQL source for each node It can be one of the following:</p>
+
+<dl>
+
+<dt id="A-table-name">A table name</dt>
+<dd>
+
+<p>Emitted as <code>rr:tableName</code></p>
+
+</dd>
+<dt id="A-SQL-query">A SQL query</dt>
+<dd>
+
+<p><code>select * from</code> is optional and is prepended if missing. Emitted as <code>rr:sqlQuery</code>.</p>
+
+</dd>
+<dt id="ONCE">ONCE</dt>
+<dd>
+
+<p>The word <code>ONCE</code> is replaced with <code>select 1 from dual</code>, which causes a single copy of the node to be generated (no iteration from its &quot;parent&quot; node). Use this for fixed data like <code>skos:ConceptScheme</code> info</p>
+
+</dd>
+<dt id="Omitted">Omitted</dt>
+<dd>
+
+<p>If <code>puml:label</code> is omitted, the node &quot;inherits&quot; the same query as its &quot;parent&quot; node. This works only if the node has a single incoming relation. Inlined nodes and nodes with no properties don&#39;t use this inheritance mechanism.</p>
+
+</dd>
+</dl>
+
+<p>2. Parenthesized <b>column names</b> are used in literals and URLs to indicate where to substitute SQL data. Parentheses are converted to curly brackets in the R2RML putput to conform with the requirements of <code>rr:template</code>.</p>
+
+<p>That&#39;s all we need to be able to generate R2RML!</p>
+
+<h2 id="Example">Example</h2>
+
+<p>Consider the following example:</p>
+
+<pre><code>  &lt;exhibition/(exhibitionid)&gt;
+    puml:label &quot;&quot;&quot;
+      exhibitions left join conxrefs 
+       on id=exhibitionid
+       where tableid=47
+        and roleid=286  
+        and exhdepartment in (53,54)
+      &quot;&quot;&quot;;
+    a crm:E7_Activity;
+    crm:P2_has_type aat:300054766; # exhibition
+    crm:P14_carried_out_by &lt;agent/(constituentid)&gt;;
+    crm:P1_is_identified_by &lt;exhibition/(exhibitionid)/title&gt;;
+    crm:P4_has_time-span &lt;exhibition/(exhibitionid)/date&gt;.
+
+  &lt;exhibition/(exhibitionid)/title&gt; a crm:E41_Appellation;
+    crm:P3_has_note &quot;(exhtitle)&quot;.
+
+  &lt;exhibition/(exhibitionid)/date&gt; a crm:E52_Time-Span;
+    crm:P3_has_note &quot;(displaydate)&quot;;
+    crm:P82a_begin_of_the_begin &quot;(beginisodate)&quot;^^xsd:date;
+    crm:P82b_end_of_the_end &quot;(endisodate)&quot;^^xsd:date.</code></pre>
+
+<p>This creates 3 connected nodes. All of them use the same query, inherited from the top node. The column <code>(exhibitionid)</code> is used in the URLs of all these nodes, to ensure that correlated (linked) nodes are created for each row in the resultset.</p>
+
+<p>Constant values like <code>a crm:E7_Activity</code> and <code>crm:P2_has_type aat:300054766</code> are emitted as is. Variables like <code>(displaydate)</code> are substituted. As a hybrid example, <code>(endisodate)</code> uses a variable value but constant datatype <code>xsd:date</code>.</p>
+
+<p>Now let&#39;s see the full example <i>test/exhibitions/exhibitions.ttl</i>:</p>
+
+
+<img src="../test/exhibitions/exhibitions-colored.png">
+
+<h3 id="Generated-R2RML">Generated R2RML</h3>
+
+<p>The generated R2RML script is <i>test/exhibitions/exhibitions.r2rml.ttl</i>. The single node circled in red on the diagram above (and its 3 outgoing connections) generates the following R2RML nodes: a saving of about 15x complexity!</p>
+
+
+<img src="../test/exhibitions/exhibitions.r2rml-colored.png">
+
+<h3 id="Relational-Data">Relational Data</h3>
+
+<p>Now let&#39;s assume that we have the following relational data about Exhibitions (<i>test/exhibitions/exhibitions.sql</i>):</p>
+
+<pre><code>  conaddress
+  | conaddressid | constituentid | address        |
+  |          101 |             1 | &#39;Getty Drive&#39;  |
+  |          102 |             2 | &#39;MoMA Street&#39;  |
+  |          103 |             3 | &#39;LACMA County&#39; |
+
+  conxrefs
+  | tableid | roleid |  id | constituentid |
+  |      47 |    286 | 123 |             1 |
+
+  constituents
+  | constituentid | constituent    |
+  |             1 | &#39;Getty Museum&#39; |
+  |             2 | &#39;MoMA&#39;         |
+  |             3 | &#39;LACMA&#39;        |
+
+  exhibitions
+  | exhibitionid | exhdepartment | exhtitle                 | displaydate    | beginisodate | endisodate   |
+  |          123 |            53 | &#39;Getty through the ages&#39; | &#39;October 2016&#39; | &#39;2016-10-01&#39; | &#39;2016-10-30&#39; |
+
+  exhvenuesxrefs
+  | exhvenxref | exhid | conid | conaddrid | approved | dispord | displaydate      | beginisodate | endisodate   |
+  |        202 |   123 |     2 |       102 |        1 |       1 | &#39;Early Oct 2016&#39; | &#39;2016-10-01&#39; | &#39;2016-10-15&#39; |
+  |        203 |   123 |     3 |       103 |        1 |       2 | &#39;Late Oct 2016&#39;  | &#39;2016-10-16&#39; | &#39;2016-10-30&#39; |
+
+  exhvenobjxrefs
+  | exhvenuexrefid | objectid | catalognumber | begindispldateiso | enddispldateiso | displayed |
+  |            202 |     1001 | &#39;cat 1001&#39;    | &#39;2016-10-01&#39;      | &#39;2016-10-15&#39;    |         1 |
+  |            203 |     1001 | &#39;cat 1001&#39;    | &#39;2016-10-16&#39;      | &#39;2016-10-30&#39;    |         1 |
+  |            202 |     1002 | &#39;cat 1002&#39;    | &#39;2016-10-01&#39;      | &#39;2016-10-15&#39;    |         1 |</code></pre>
+
+<h3 id="Output-RDF">Output RDF</h3>
+
+<p>If we apply the generated R2RML script on the relational data, we get this output: <i>test/exhibitions/exhibitions-out.ttl</i>.</p>
+
+<p>As you can see, it has the same structure as the example <i>test/exhibitions/exhibitions.ttl</i> but more nodes:</p>
+
+
+<img src="../test/exhibitions/exhibitions-out-colored.png">
+
+<h2 id="Prerequisites">Prerequisites</h2>
+
+<p><a href="https://jena.apache.org/download/">Apache Jena</a>: riot, update. Tested with version 3.1.0 of 2016-05-10.</p>
+
+<p>Perl. Tested with version 5.22</p>
+
+<p>cat, grep, rm</p>
+
+<h2 id="Internal-Workings">Internal Workings</h2>
+
+<p>This tool consists of two scripts.</p>
+
+<p><i>rdf2rml.ru</i> is a SPARQL UPDATE script that transforms the model to R2RML.</p>
+
+<p>It uses <code>rr:graph</code> for all output, so it can be separated from the input.</p>
+
+<p>It makes deterministic R2RML URLs by taking the source URLs and using this convention:</p>
+
+<pre><code>  &lt;{s}!map&gt;     for rr:TriplesMap
+  &lt;{s}!subj&gt;    for rr:SubjectMap
+  &lt;{s}!{p}!{o}&gt; for rr:PredicateObjectMap</code></pre>
+
+<p>Here <code>{s}</code> is the full subject URL, but <code>{p} {o}</code> are stripped to their local names.</p>
+
+<p>The SPARQL UPDATE has the following steps:</p>
+
+<dl>
+
+<dt id="Propagates-inherited-queries-from-parent-to-child-nodes-repeated-several-times-to-ensure-propagation-from-child-to-grandchild">1. Propagates inherited queries from parent to child nodes (repeated several times to ensure propagation from child to grandchild).</dt>
+<dd>
+
+</dd>
+<dt id="Emits-rr:logicalTable-for-each-subject-node-using-rr:tableName-or-rr:sqlQuery">2. Emits <code>rr:logicalTable</code> for each subject node, using <code>rr:tableName</code> or <code>rr:sqlQuery</code>.</dt>
+<dd>
+
+</dd>
+<dt id="Emits-constant-subjects-those-that-have-no-parentheses-in-the-URL-using-rr:constant">3. Emits constant subjects (those that have no parentheses in the URL) using <code>rr:constant</code></dt>
+<dd>
+
+</dd>
+<dt id="Creates-variable-subjects-those-that-have-a-parenthesis-in-the-URL-replacing-parentheses-with-curly-brackets-and-using-rr:template">4. Creates variable subjects (those that have a parenthesis in the URL) replacing parentheses with curly brackets, and using <code>rr:template</code>.</dt>
+<dd>
+
+</dd>
+<dt id="Creates-constant-rr:class-for-each-subject-that-has-one">5. Creates constant <code>rr:class</code> for each subject that has one.</dt>
+<dd>
+
+</dd>
+<dt id="Creates-rr:predicateObjectMap-for-each-pair-subject-object">6. Creates <code>rr:predicateObjectMap</code> for each pair subject-object</dt>
+<dd>
+
+</dd>
+<dt id="Emits-constant-objects-those-that-have-no-parentheses-in-URL-or-literal-using-rr:object">7. Emits constant objects (those that have no parentheses in URL or literal) using <code>rr:object</code></dt>
+<dd>
+
+</dd>
+<dt id="Creates-variable-objects-those-that-have-a-parenthesis-in-the-URL-or-literal-replacing-parentheses-with-curly-brackets-and-using-rr:objectMap-and-rr:template">8. Creates variable objects (those that have a parenthesis in the URL or literal) replacing parentheses with curly brackets, and using <code>rr:objectMap</code> and <code>rr:template</code>.</dt>
+<dd>
+
+</dd>
+<dt id="Ensures-that-appropriate-rr:termType-rr:datatype-rr:language-are-emitted-for-each-object">9. Ensures that appropriate <code>rr:termType, rr:datatype, rr:language</code> are emitted for each object.</dt>
+<dd>
+
+</dd>
+<dt id="Removes-source-data-by-using-clear-default-to-preserve-only-the-output-graph-rr:graph">10. Removes source data by using <code>clear default</code>, to preserve only the output graph <code>rr:graph</code></dt>
+<dd>
+
+</dd>
+</dl>
+
+<p><i>rdf2rml.sh</i> is a simple shell script that takes file <i>prefixes.ttl</i> in the current folder, prepends it to the model file, converts it to SPARQL form, and prepends it to the SPARQL script. Then it runs the SPARQL script, converts the output to turtle, removes prefixes, and sorts the output by subject.</p>
+
+<p>See <i>test/*/Makefile</i> for examples how to set up make.</p>
+
+<h2 id="Limitations">Limitations</h2>
+
+<p><i>rdf2rml.sh</i> hard-codes the TMP directory and the location of Apache Jena</p>
+
+<p>It also unconditionally looks for a file <i>prefixes.ttl</i> in the current folder that it prepends to the model file and the SPARQL script.</p>
+
+<p>Use parentheses to designate column names in literals and URLs, instead of curly brackets as the R2RML standard (<code>rr:template</code>) uses. This makes the URLs valid, so the RDF can be validated and diagrammed.</p>
+
+<p>Parentheses in literals are shown as brackets on generated diagrams, due to a limitation of rdfpuml.</p>
+
+<p>Resource classes, literal datatypes and languages are limited to constant values: you cannot specify they should come from a SQL column.</p>
+
+<p>You may get a Jena RIOT warning for literals with numeric or date/time datatype, because a parenthesized string is not a valid lexical form for such literals. But the conversion will work fine despite of the warning.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><b>rdfpuml</b>: a tool that generates PlantUML diagrams from RDF examples.</p>
+
+<p>If you use <b>rdfpuml</b> or <b>rdf2rml</b>, please cite them as follows. See this presentation for numerous examples.</p>
+
+<p><b>RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation</b>. Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16), Bonn, Germany, November 2016. <a href="http://vladimiralexiev.github.io/pres/20161128-rdfpuml-rdf2rml/">Presentation</a>, <a href="http://vladimiralexiev.github.io/pres/20161128-rdfpuml-rdf2rml/index-full.html">HTML</a>, <a href="http://vladimiralexiev.github.io/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf">PDF</a>, <a href="https://youtu.be/4WoYlaGF6DE">Video</a></p>
+
+<p>The <a href="https://www.stardog.com/docs/#_stardog_mapping_syntax">Stardog Mapping Syntax</a> uses a similar idea, but doesn&#39;t use valid RDF to represent the model. The benefit of using actual RDF is that it can be validated and diagrammed with <b>rdfpuml</b>.</p>
+
+<h1 id="AUTHOR">AUTHOR</h1>
+
+<p>Vladimir Alexiev, Ontotext Corp</p>
+
+<p>Last update: 6-Mar-2018</p>
+
+
+</body>
+
+</html>
+
+

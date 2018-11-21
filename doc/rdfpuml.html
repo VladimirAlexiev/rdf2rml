@@ -1,0 +1,408 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a>
+    <ul>
+      <li><a href="#Motivation">Motivation</a></li>
+      <li><a href="#Features">Features</a></li>
+      <li><a href="#Prefixes">Prefixes</a></li>
+      <li><a href="#Parallel-Arrows">Parallel Arrows</a></li>
+      <li><a href="#Reification">Reification</a></li>
+      <li><a href="#Inlines">Inlines</a></li>
+      <li><a href="#Labels">Labels</a></li>
+      <li><a href="#Arrow-Customization">Arrow Customization</a>
+        <ul>
+          <li><a href="#Arrow-Per-Edge">Arrow Per Edge</a></li>
+          <li><a href="#Arrow-Per-Property">Arrow Per Property</a></li>
+        </ul>
+      </li>
+      <li><a href="#Stereotypes-and-Colored-Circles">Stereotypes and Colored Circles</a></li>
+      <li><a href="#Blank-Nodes">Blank Nodes</a></li>
+      <li><a href="#Limitations">Limitations</a></li>
+      <li><a href="#Prerequisites">Prerequisites</a></li>
+      <li><a href="#Installation">Installation</a></li>
+    </ul>
+  </li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
+  <li><a href="#AUTHOR">AUTHOR</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>rdfpuml - Convert RDF to PlantUML diagrams</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code>  perl rdfpuml.pl file.ttl                         # makes file.puml
+  java -jar plantuml.jar -charset UTF-8 file.puml  # makes file.png</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>Converts an RDF Turtle file to a readable diagram using <a href="http://plantuml.com">plantuml</a>.</p>
+
+<h2 id="Motivation">Motivation</h2>
+
+<p>The best way to understand RDF data schemas (ontologies, application profiles, RDF shapes) is with a diagram. Many RDF visualization tools exist, but they have shortcomings, eg</p>
+
+<ul>
+
+<li><p>Focus on large graphs, where the details are not easily visible</p>
+
+</li>
+<li><p>Visualization results are not satisfactory</p>
+
+</li>
+<li><p>Manual tweaking of the diagrams is required</p>
+
+</li>
+</ul>
+
+<p><b>rdfpuml</b> makes <b>true</b> UML diagrams directly from Turtle examples, with a small amount of tweaking that can be done with <code>puml:</code> formatting triples (this follows the approach from <a href="https://www.w3.org/2001/02pd/">Circles and arrows diagrams using stylesheet rules</a>, Dan Connolly, W3C 2005).</p>
+
+<p>Benefits:</p>
+
+<ul>
+
+<li><p>Guarantees consistency between what you say (triple statements) and what you show (diagram)</p>
+
+</li>
+<li><p>Lets you focus on domain modeling rather than diagram layouting/tweaking</p>
+
+</li>
+<li><p>Enables efficient source control</p>
+
+</li>
+<li><p>Saves you lots of effort</p>
+
+</li>
+</ul>
+
+<h2 id="Features">Features</h2>
+
+<p>Diagram readability is a prime concern. <b>rdfpuml</b> implements the following features for maximum readability.</p>
+
+<ul>
+
+<li><p>Shorten URLs aggressively. Some prefixed names you see in the diagram are not valid Turtle</p>
+
+</li>
+<li><p>Show <b>inline</b> as much as possible: literal values, types, and nodes declared as <code>puml:Inline</code></p>
+
+</li>
+<li><p>Sort properties by name (rdf:type comes first)</p>
+
+</li>
+<li><p>Show literal datatypes, use Turtle shortcuts (eg 1 instead of &quot;1&quot;^^xsd:integer)</p>
+
+</li>
+<li><p>Collect property values together; collect &quot;parallel&quot; relations together</p>
+
+</li>
+<li><p>Show reified properties as UML Associations</p>
+
+</li>
+<li><p>Allow node decorations such as stereotypes, colored circles (and in the future: background color and icons)</p>
+
+</li>
+<li><p>Allow arrow decorations such as head, dashed, colored</p>
+
+</li>
+<li><p>Allow control of arrow directions</p>
+
+</li>
+<li><p>Allow hidden arrows to tweak the layout</p>
+
+</li>
+</ul>
+
+<h2 id="Prefixes">Prefixes</h2>
+
+<p><b>rdfpuml</b> prepends <i>prefixes.ttl</i> if it finds such a fule, so when you make a set of examples, you can keep all your prefixes in one file.</p>
+
+<p>It also predefines the following prefixes:</p>
+
+<pre><code>   puml   =&gt; &#39;http://plantuml.com/ontology#&#39;
+   rdf    =&gt; &#39;http://www.w3.org/1999/02/22-rdf-syntax-ns#&#39;
+   rdfs   =&gt; &#39;http://www.w3.org/2000/01/rdf-schema#&#39;
+   skos   =&gt; &#39;http://www.w3.org/2004/02/skos/core#&#39;
+   crm    =&gt; &#39;http://www.cidoc-crm.org/cidoc-crm/&#39;
+   crmx   =&gt; &#39;http://purl.org/NET/cidoc-crm/ext#&#39;
+   frbroo =&gt; &#39;http://example.com/frbroo/&#39;
+   crmdig =&gt; &#39;http://www.ics.forth.gr/isl/CRMdig/&#39;
+   crmsci =&gt; &#39;http://www.ics.forth.gr/isl/crmsci/&#39;
+   leak   =&gt; &#39;http://data.ontotext.com/resource/leak/&#39;</code></pre>
+
+<p><code>puml</code> is used for PlantUML formatting triples, see below. <code>rdfs</code> and <code>skos</code> are used to display node labels. The rest are used for reification (see below).</p>
+
+<h2 id="Parallel-Arrows">Parallel Arrows</h2>
+
+<p>Multiple property instances between nodes are collected in one arrow and shown as several labels. Inverse arrows work fine.</p>
+
+
+<img src="img/CONA-arel-replaced-MultipleArrowLabels.png">
+
+<h2 id="Reification">Reification</h2>
+
+<p>In RDF, <b>Reification</b> is an approach where a statement <b>s p o</b> is represented as a class instance with 3 &quot;addressing&quot; properties and then additional properties are added to elaborate the statement (eg probability, effective date range, who assigned the statement, etc).</p>
+
+<p>This approach has been used in RDF for many years using the <a href="http://www.w3.org/TR/rdf-primer/#reification">RDF Reification vocabulary</a>. It was developed for CIDOC CRM in the paper <a href="http://vladimiralexiev.github.io/pubs/Alexiev2012-CRM-Properties.pdf">Types and Annotations for CIDOC CRM Properties</a> and is used for British Museum data (<code>bmo:EX_Association, bmo:PX_property</code>), see <a href="https://confluence.ontotext.com/display/ResearchSpace/BM+Association+Mapping+v2#BMAssociationMappingv2-TranslatedCodeInReifiedAssociation">Reified Association</a>.</p>
+
+<p><b>rdfpuml</b> recognizes a number of reification &quot;situations&quot; and renders them as a <a href="http://plantuml.com/classes.html#Association_classes">UML Association</a>, for example</p>
+
+
+<img src="img/CONA-arel-Reification.png">
+
+<p>RDF Reification looks like this:</p>
+
+<pre><code>  [] a rdf:Statement; rdf:subject s; rdf:predicate p; rdf:object o; &lt;statement metadata&gt;
+  </code></pre>
+
+<p><code>rdf:Statement</code> is the reification class, <code>rdf:subject, rdf:predicate, rdf:object</code> are the addressing properties, and it can be applied over any shortcut property <b>p</b>.</p>
+
+<p>The <a href="http://smiy.sourceforge.net/prv/spec/propertyreification.html">Property Reification Vocabulary</a> (PRV) can be used to describe other reification situations, using terms like in the table below. <b>rdfpuml</b> recognizes the following situations, and in the future you should be able to provide your own PRV descriptions.</p>
+
+<pre><code>  REIFICATION CLASS             SUBJECT PROP                   SHORTCUT PROP                    OBJECT PROP                 SHORTCUT
+  _____________________________ ______________________________ ________________________________ ___________________________ __________________________________________
+  rdf:Statement                 rdf:subject                    rdf:predicate                    rdf:object                  &lt;any&gt;
+  crm:E13_Attribute_Assignment  crm:P140_assigned_attribute_to crmx:property                    crm:P141_assigned           &lt;any CRM prop&gt;
+  crm:E14_Condition_Assessment  crm:P34_concerned              crmx:property                    crm:P35_has_identified      crm:P44_has_condition
+  crm:E15_Identifier_Assignment crm:P140_assigned_attribute_to crmx:property                    crm:P37_assigned            crm:P1_is_identified_by, crm:P102_has_title
+  crm:E15_Identifier_Assignment crm:P140_assigned_attribute_to crmx:property                    crm:P38_deassigned          crm:P1_is_identified_by, crm:P102_has_title
+  crm:E16_Measurement           crm:P39_measured               crmx:property                    crm:P40_observed_dimension  crm:P43_has_dimension
+  crm:E17_Type_Assignment       crm:P41_classified             crmx:property                    crm:P42_assigned            crm:P2_has_type or subprop
+  frbroo:F52_Name_Use_Activity  frbroo:R63_named               crmx:property                    frbroo:R64_used_name        crm:P1_is_identified_by, crm:P102_has_title
+  crmsci:S4_Observation         crmsci:O8_observed             crmsci:O9_observed_property_type crmsci:O16_observed_value
+  leak:Edge                     leak:hasSource                 &lt;none&gt;                           leak:hasTarget</code></pre>
+
+<p>For CIDOC CRM we need a new extension <code>crmx:property</code> to point to the property being reified (the shortcut), similar to how <code>rdf:predicate</code> is used. Even for a specific CRM reification class like E17_Type_Assignment, the shortcut property is not fixed to <code>crm:P2_has_type</code>: we may need to reify a sub-property thereof, e.g. <code>crm:P72_has_language</code>.</p>
+
+<p>Visuals: the shortcut is shown as a normal relation. The reification node is attached to the relation usign a dashed line. It is automatically positioned below or to the right of the relation, depending on the relation&#39;s direction. The 3 &quot;addressing&quot; properties are shown inside the reification class, and there are little characters in front of them to point to the subject (&quot;&larr;&quot; or &quot;&uarr;&quot;), property (&quot;..&quot; or &quot;:&quot;) and object (&quot;&rarr;&quot; or &quot;&darr;&quot;).</p>
+
+<p>Limitation: you can show as reified a maximum of 2 relations between the same nodes, and even that is ugly.</p>
+
+
+<img src="img/CONA-titles-NoReify.png">
+
+<p>If you don&#39;t want to show a relation as reified (either because it&#39;s the third one between the same nodes or for other reasons, use the <code>puml:NoReify</code> class to tell <b>rdfpuml</b> not to reify it, e.g.</p>
+
+<pre><code>  cona_term:1000000718-contrib-10000016 a puml:NoReify.</code></pre>
+
+
+<img src="img/CONA-types-reification.png">
+
+<h2 id="Inlines">Inlines</h2>
+
+<p>In order to save space, <b>rdfpuml</b> inlines various resources in the subject node, rather than as a separate node. All literals and types are inlined automatically. In addition, you can inline other nodes by using the following.</p>
+
+<dl>
+
+<dt id="puml:Inline"><code>puml:Inline</code></dt>
+<dd>
+
+<p>Shows a single node inline. This is used quite often for lookup values, e.g.</p>
+
+<pre><code>  &lt;cona/event/competition&gt; a puml:Inline.
+  cona_contrib:10000000 a puml:Inline; rdfs:label &quot;Getty Vocabulary Program&quot;.</code></pre>
+
+</dd>
+<dt id="puml:InlineProperty"><code>puml:InlineProperty</code></dt>
+<dd>
+
+<p>Declares a property to be inlined, i.e. all its objects are shown inlined, e.g.</p>
+
+<pre><code>  fn:annotationSetFrame a puml:InlineProperty.
+  fn:annotationSetLU    a puml:InlineProperty.</code></pre>
+
+<p>E.g. this is used in this complex diagram showing FrameNet nodes.</p>
+
+
+<img src="img/MS-Frame-complex.png">
+
+</dd>
+</dl>
+
+<h2 id="Labels">Labels</h2>
+
+<p>Nodes can have labels: <code>puml:label, rdfs:label, skos:prefLabel</code>.</p>
+
+<ul>
+
+<li><p>If a node is inlined, its label is added as a comment. If several nodes are inlined at the same property, all their comments are also gathered together.</p>
+
+</li>
+<li><p>If a node is shown normally, its label is shown amongst the other node attributes. As an exception, <code>puml:label</code> is used to give a label (or comment) without any attribute.</p>
+
+</li>
+</ul>
+
+<h2 id="Arrow-Customization">Arrow Customization</h2>
+
+<p><b>rdfpuml</b> allows you to customize arrows by using properties like <code>puml:DIR-HEAD-LINE-COLOR-LEN</code>. You can combine the different parts freely (each is optional) and even write them in different order.</p>
+
+<dl>
+
+<dt id="DIR">DIR</dt>
+<dd>
+
+<p>Arrow direction: <code>left, right, up</code> or <code>down</code> (default)</p>
+
+</dd>
+<dt id="HEAD">HEAD</dt>
+<dd>
+
+<p>Arrowhead (end): <code>none</code> (use for symmetric properties), <code>tri</code> (hollow triangle), <code>star</code> (filled dot), <code>o</code> (empty dot). Unfortunately you cannot customize the arrowtail (beginning), it&#39;s always empty.</p>
+
+</dd>
+<dt id="LINE">LINE</dt>
+<dd>
+
+<p>Line style: <code>dotted, dashed, bold, hidden</code>.</p>
+
+<p><code>dotted, dashed</code> are exclusive of each other; <code>bold</code> can be used alone or with them. <code>hidden</code> can be used to adjust the layout by constraining node positions, and is exclusive of the other line attributes.</p>
+
+</dd>
+<dt id="COLOR">COLOR</dt>
+<dd>
+
+<p>Line color: name (e.g. <code>red</code>) or hex-code (e.g. <code>FF0000</code>) To see the full list of color names supported by PlantUML, use this command and search for <code>;color</code></p>
+
+<pre><code>  java -jar plantuml.jar -language</code></pre>
+
+<p>For example, 4 of the arrows on this diagram are colored (1 green, 3 red):</p>
+
+
+<img src="img/colorArrow-ciq-cropped.png">
+
+</dd>
+<dt id="LEN">LEN</dt>
+<dd>
+
+<p>Length: a number of 1 or 2 digits. This applies only to vertical arrows (<code>up,down</code>). You can use this to adjust the layout and in some cases avoid the need for parasitic <code>hidden</code> arrows.</p>
+
+<p>See <a href="http://www.plantuml.com/plantuml/uml/JOvB3iCW30NtFeKlm2B_NPMhq80A4YGH6DMvVLCtZM0tCvOUSoQTgCG0pXkBDkvqe2PA_bd8vjf6IsupbrfyMiBPbw1pHcw06rHcUw_gWST9BQgogo-qmDsLX3lW_XS5U-3Xpc86u54E_c84dgeJSPDC9FzofEft3zH9VZ7RrPGOFW00">this example</a> and its remake in rdfpuml below.</p>
+
+
+<img src="img/arrowLen.png">
+
+</dd>
+</dl>
+
+<h3 id="Arrow-Per-Edge">Arrow Per Edge</h3>
+
+<p>To customize the arrow of one relation connecting two nodes, use:</p>
+
+<pre><code>  &lt;node1&gt; puml:DIR-HEAD-LINE-COLOR &lt;node2&gt;</code></pre>
+
+<h3 id="Arrow-Per-Property">Arrow Per Property</h3>
+
+<p>To customize the arrow for all relations with the same property, use:</p>
+
+<pre><code>  &lt;prop&gt; puml:arrow puml:DIR-HEAD-LINE-COLOR.</code></pre>
+
+<p>E.g. on the diagram <a href="#Inlines">&quot;Inlines&quot;</a>, the following declaration was used to point all <code>nif:oliaLink</code> arrows upward:</p>
+
+<pre><code>  nif:oliaLink puml:arrow puml:up.</code></pre>
+
+<h2 id="Stereotypes-and-Colored-Circles">Stereotypes and Colored Circles</h2>
+
+<p><a href="https://en.wikipedia.org/wiki/Stereotype_(UML)">Stereotype</a> is UML lingo for &quot;role&quot;. In PlantUML these include a &laquo;guillemetted italic label&raquo; and colored circle.</p>
+
+<pre><code>  puml:stereotype &quot;(LETTER,COLOR)LABEL&quot;</code></pre>
+
+<p>where <code>LETTER</code> is a single uppercase letter, <code>COLOR</code> is a color name or hex-code (see &lt;/COLOR&gt;), <code>LABEL</code> is a label, and all the parts are optional.</p>
+
+<p>You can set stereotype on an individual node or a whole class, e.g. (referring to the previous diagram):</p>
+
+<pre><code>  &lt;#char=32,34_annoSet&gt; puml:stereotype &quot;(F)Frame&quot;
+  fn:AnnotationSet      puml:stereotype &quot;(F)Frame&quot;</code></pre>
+
+<p>Here is an example that also sets stereotype labels:</p>
+
+<pre><code>  gvp:GuideTerm      puml:stereotype &quot;(G,green) Concept&quot;.
+  gvp:Concept        puml:stereotype &quot;(C,lightblue) ThesaurusArray, OrderedCollection&quot;.
+  iso:ThesaurusArray puml:stereotype &quot;(A,red) ThesaurusArray, OrderedCollection&quot;.</code></pre>
+
+
+<img src="img/GVP-ordered-collection-Stereotype.png">
+
+<p>Here is a bigger example that also shows how arrow directions are handled. It&#39;s a diagram for the <a href="https://github.com/duraspace/pcdm/wiki">Duraspace Portland Common Data Model</a> for digital library metadata (Fedora, Islandora, etc): a remake of one of the <a href="https://wiki.duraspace.org/display/FF/PCDM%2BMappings%2B-%2BReference%2BDiagrams%2Bfor%2BComment">Reference Diagrams</a>. (A proposal to make <a href="https://github.com/duraspace/pcdm/wiki/Diagrams-with-rdfpuml">PCDM diagrams with rdfpuml</a> is tracked as <a href="https://github.com/duraspace/pcdm/issues/46">duraspace/pcdm#46</a>)</p>
+
+
+<img src="img/PCDM_Multi_Page_Text-circles.png">
+
+<h2 id="Blank-Nodes">Blank Nodes</h2>
+
+<p>Although the use of blank nodes is not recommended in semantic modeling, they are supported by <b>rdfpuml</b>. No special triples are needed for this.</p>
+
+<p>E.g. below is a diagram of <a href="https://www.w3.org/TR/annotation-model/#h-complete-example">EXAMPLE 41: Complete Example</a> from the <a href="https://www.w3.org/TR/annotation-model/">Web Annotation Data Model</a>.</p>
+
+<p>As you can see, 10 nodes on the right side are blank nodes (have no URL). The tiny one in the middle has no attributes whatsoever, only the <a href="#rdf:first-rdf:next">&quot;rdf:first, rdf:next&quot;</a> outgoing links. It should have had a type <a href="rdf:List">rdf:List</a>, this is an omission in the example.</p>
+
+
+<img src="img/OA-eg41.png">
+
+<h2 id="Limitations">Limitations</h2>
+
+<p>Round brackets in labels eg &quot;(1975)&quot; are converted to square brackets, eg &quot;[1975]&quot;. PlantUML interprets round brackets as a function (method) and renders them below a line, so I had to implement this hack.</p>
+
+<h2 id="Prerequisites">Prerequisites</h2>
+
+<p><a href="http://www.graphviz.org/">GraphViz</a></p>
+
+<p><a href="http://plantuml.com/download">PlantUML</a>, see in particular <a href="http://plantuml.com/class-diagram">plantuml class diagrams</a>.</p>
+
+<p>Perl. Tested with version 5.22 on Windows (cygwin and Strawberry).</p>
+
+<p>Perl modules: <i>RDF::Trine</i>, <i>RDF::Query</i>, <i>Encode</i>, <i>FindBin</i>, <i>Carp::Always</i>, <i>Slurp</i>.</p>
+
+<p><i>RDF::Prefixes::Curie</i>. This is my own module located in <i>../lib</i>, and <b>rdfpuml</b> needs <i>FindBin</i> to locate it.</p>
+
+<h2 id="Installation">Installation</h2>
+
+<p>Until <b>rdfpuml</b> is published as a proper perl package, use the following procedure:</p>
+
+<p>Install the prerequisites.</p>
+
+<p>Add <i>rdfpuml/bin</i> to your path.</p>
+
+<p>Use <i>rdfpuml/bin/rdfpuml.bat</i> to run it:</p>
+
+<pre><code>  perl -S rdfpuml.pl %1</code></pre>
+
+<p>See <i>test/*/Makefile</i> for examples how to set up make.</p>
+
+<h1 id="SEE-ALSO">SEE ALSO</h1>
+
+<p><b>rdfrml</b>: a tool to generate R2RML transformations from RDF examples.</p>
+
+<p>If you use <b>rdfpuml</b> or <b>rdf2rml</b>, please cite them as follows. See this presentation for numerous examples.</p>
+
+<p><b>RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation</b>. Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16), Bonn, Germany, November 2016. <a href="http://vladimiralexiev.github.io/pres/20161128-rdfpuml-rdf2rml/">Presentation</a>, <a href="http://vladimiralexiev.github.io/pres/20161128-rdfpuml-rdf2rml/index-full.html">HTML</a>, <a href="http://vladimiralexiev.github.io/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf">PDF</a>, <a href="https://youtu.be/4WoYlaGF6DE">Video</a></p>
+
+<p>See twitter hashtag <a href="https://twitter.com/hashtag/rdfpuml">#rdfpuml</a> for news and screenshots.</p>
+
+<h1 id="AUTHOR">AUTHOR</h1>
+
+<p>Vladimir Alexiev, Ontotext Corp</p>
+
+<p>Last update: 6-Mar-2018</p>
+
+
+</body>
+
+</html>
+
+

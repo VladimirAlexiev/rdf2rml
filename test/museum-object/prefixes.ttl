@@ -1,0 +1,96 @@
+@base <http://jpgm.getty.edu/>.
+@prefix ex: <http://vocab.getty.edu/cona/example/>.
+@prefix crm:    <http://www.cidoc-crm.org/cidoc-crm/>.
+@prefix crminf: <http://www.ics.forth.gr/isl/CRMinf/>.
+@prefix crmdig: <http://www.ics.forth.gr/isl/CRMdig/>.
+@prefix crmsci: <http://www.ics.forth.gr/isl/crmsci/> .
+@prefix crmx:   <http://purl.org/NET/cidoc-crm/ext#>.
+@prefix doap:   <http://usefulinc.com/ns/doap#> .
+@prefix exif:   <http://www.w3.org/2003/12/exif/ns#> .
+@prefix frbroo: <http://example.com/frbroo/>. # no official prefix yet
+@prefix iiif:   <http://iiif.io/api/image/2#> .
+@prefix puml:   <http://plantuml.com/ontology#>.
+@prefix svcs:   <http://rdfs.org/sioc/services#> .
+@prefix unit:   <http://qudt.org/vocab/unit#>.
+
+# http://vocab.getty.edu/doc/#GVP_URLs_and_Prefixes
+@prefix aat:              <http://vocab.getty.edu/aat/>.
+@prefix aat_contrib:      <http://vocab.getty.edu/aat/contrib/>.
+@prefix aat_rel:          <http://vocab.getty.edu/aat/rel/>.
+@prefix aat_rev:          <http://vocab.getty.edu/aat/rev/>.
+@prefix aat_scopeNote:    <http://vocab.getty.edu/aat/scopeNote/>.
+@prefix aat_source:       <http://vocab.getty.edu/aat/source/>.
+@prefix aat_source_rev:   <http://vocab.getty.edu/aat/source/rev/>.
+@prefix aat_term:         <http://vocab.getty.edu/aat/term/>.
+@prefix tgn:              <http://vocab.getty.edu/tgn/>.
+@prefix tgn_contrib:      <http://vocab.getty.edu/tgn/contrib/>.
+@prefix tgn_rel:          <http://vocab.getty.edu/tgn/rel/>.
+@prefix tgn_rev:          <http://vocab.getty.edu/tgn/rev/>.
+@prefix tgn_scopeNote:    <http://vocab.getty.edu/tgn/scopeNote/>.
+@prefix tgn_source:       <http://vocab.getty.edu/tgn/source/>.
+@prefix tgn_source_rev:   <http://vocab.getty.edu/tgn/source/rev/>.
+@prefix tgn_term:         <http://vocab.getty.edu/tgn/term/>.
+@prefix ulan:             <http://vocab.getty.edu/ulan/>.
+@prefix ulan_bio:         <http://vocab.getty.edu/ulan/bio/>.
+@prefix ulan_contrib:     <http://vocab.getty.edu/ulan/contrib/>.
+@prefix ulan_event:       <http://vocab.getty.edu/ulan/event/>.
+@prefix ulan_rel:         <http://vocab.getty.edu/ulan/rel/>.
+@prefix ulan_rev:         <http://vocab.getty.edu/ulan/rev/>.
+@prefix ulan_scopeNote:   <http://vocab.getty.edu/ulan/scopeNote/>.
+@prefix ulan_source:      <http://vocab.getty.edu/ulan/source/>.
+@prefix ulan_source_rev:  <http://vocab.getty.edu/ulan/source/rev/>.
+@prefix ulan_term:        <http://vocab.getty.edu/ulan/term/>.
+@prefix cona:             <http://vocab.getty.edu/cona/>.
+@prefix cona_contrib:     <http://vocab.getty.edu/cona/contrib/>.
+@prefix cona_rel:         <http://vocab.getty.edu/cona/rel/>.
+@prefix cona_rev:         <http://vocab.getty.edu/cona/rev/>.
+@prefix cona_scopeNote:   <http://vocab.getty.edu/cona/scopeNote/>.
+@prefix cona_source:      <http://vocab.getty.edu/cona/source/>.
+@prefix cona_source_rev:  <http://vocab.getty.edu/cona/source/rev/>.
+@prefix cona_term:        <http://vocab.getty.edu/cona/term/>.
+@prefix ia:               <http://vocab.getty.edu/ia/>.
+@prefix ia_rel:           <http://vocab.getty.edu/ia/rel/>.
+@prefix ia_term:          <http://vocab.getty.edu/ia/term/>.
+@prefix gvp:              <http://vocab.getty.edu/ontology#>.
+@prefix gvp_lang:         <http://vocab.getty.edu/language/>.
+
+# http://vocab.getty.edu/doc/#External_Prefixes
+@prefix bibo:          <http://purl.org/ontology/bibo/>.
+@prefix bio:           <http://purl.org/vocab/bio/0.1/>.
+@prefix dc:            <http://purl.org/dc/elements/1.1/>.
+@prefix dct:           <http://purl.org/dc/terms/>.
+@prefix foaf:          <http://xmlns.com/foaf/0.1/>.
+@prefix iso:           <http://purl.org/iso25964/skos-thes#> .
+@prefix luc:           <http://www.ontotext.com/owlim/lucene#>.
+@prefix ontogeo:       <http://www.ontotext.com/owlim/geo#>.
+@prefix owl:           <http://www.w3.org/2002/07/owl#>.
+@prefix prov:          <http://www.w3.org/ns/prov#>.
+@prefix ptop:          <http://www.ontotext.com/proton/protontop#>.
+@prefix rdf:           <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs:          <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix rr:            <http://www.w3.org/ns/r2rml#>.
+@prefix rrx:           <http://purl.org/r2rml-ext/>.
+@prefix sesame:        <http://www.openrdf.org/schema/sesame#>.
+@prefix schema:        <http://schema.org/>.
+@prefix skos:          <http://www.w3.org/2004/02/skos/core#>.
+@prefix xl:            <http://www.w3.org/2008/05/skos-xl#>.
+@prefix wgs:           <http://www.w3.org/2003/01/geo/wgs84_pos#>.
+@prefix xsd:           <http://www.w3.org/2001/XMLSchema#>.
+
+# http://vocab.getty.edu/doc/#Descriptive_Prefixes
+# (used only in http://vocab.getty.edu/.well-known/void = http://vocab.getty.edu/void.ttl)
+@prefix adms:   <http://www.w3.org/ns/adms#> .                       # Asset Description Metadata Schema
+@prefix cc:     <http://creativecommons.org/ns#> .                   # Creative Commons Rights Expression Language
+@prefix dcat:   <http://www.w3.org/ns/dcat#> .                       # Data Catalog Vocabulary
+@prefix dctype: <http://purl.org/dc/dcmitype/> .                     # DCMI Type Vocabulary
+@prefix fmt:    <http://www.w3.org/ns/formats/> .                    # RDF formats used in datasets
+@prefix sd:     <http://www.w3.org/ns/sparql-service-description#> . # SPARQL Service Description
+@prefix vaem:   <http://www.linkedmodel.org/schema/vaem#> .          # Vocabulary for Attaching Essential Metadata
+@prefix vann:   <http://purl.org/vocab/vann/> .                      # Vocabulary for annotating vocabulary descriptions
+@prefix vcard:  <http://www.w3.org/2006/vcard/ns#> .                 # vCard (contact info)
+@prefix vdpp:   <http://data.lirmm.fr/ontologies/vdpp#> .            # Vocabulary for Dataset Publication Projects
+@prefix voaf:   <http://purl.org/vocommons/voaf#> .                  # Vocabulary of a Friend
+@prefix voag:   <http://voag.linkedmodel.org/voag#> .                # Vocabulary Of Attribution and Governance
+@prefix void:   <http://rdfs.org/ns/void#> .                         # Vocabulary of Interlinked Datasets
+@prefix wdrs:   <http://www.w3.org/2007/05/powder-s#> .              # Protocol for Web Description Resources
+@prefix wv:     <http://vocab.org/waiver/terms/> .                   # A vocabulary for waivers of rights

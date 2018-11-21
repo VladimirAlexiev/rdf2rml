@@ -1,0 +1,80 @@
+## LEVEL 1: EXHIBITION
+<exhibition/(exhibitionid)>
+  puml:label """
+exhibitions left join conxrefs 
+ on id=exhibitionid
+ where tableid=47
+  and roleid=286  
+  and exhdepartment in (53,54)
+""";
+  a crm:E7_Activity;
+  crm:P2_has_type aat:300054766; # exhibition
+  crm:P14_carried_out_by <agent/(constituentid)>;
+  crm:P1_is_identified_by <exhibition/(exhibitionid)/title>;
+  crm:P4_has_time-span <exhibition/(exhibitionid)/date>.
+
+<exhibition/(exhibitionid)/title> a crm:E41_Appellation;
+  crm:P3_has_note "(exhtitle)".
+
+<exhibition/(exhibitionid)/date> a crm:E52_Time-Span;
+  crm:P3_has_note "(displaydate)";
+  crm:P82a_begin_of_the_begin "(beginisodate)"^^xsd:date; # ignore beginyear: less precise
+  crm:P82b_end_of_the_end "(endisodate)"^^xsd:date. # ignore endyear: less precise
+
+## LEVEL 2: EXHIBITION AT VENUE
+# An exhibition may visit a venue more than once: MUSLOD-1
+<exhibitionVenue/(exhvenuexrefid)>
+  puml:label """
+exhvenuesxrefs left join conaddress 
+ on exhvenuesxrefs.constituentid=conaddress.constituentid  
+ where exhvenuesxrefs.approved=1
+""";
+  a crm:E7_Activity;
+  crm:P2_has_type <event/exhibition-at-venue>;
+  crm:P9i_forms_part_of <exhibition/(exhibitionid)>;
+  crm:P14_carried_out_by <agent/(constituentid)>;
+  crm:P7_took_place_at <agent/address/(conaddressid)>;
+  crm:P4_has_time-span <exhibitionVenue/(exhvenuexrefid)/date>;
+  crmx:sort_order "(displayorder)".
+
+<exhibitionVenue/(exhvenuexrefid)/date> a crm:E52_Time-Span;
+  crm:P82a_begin_of_the_begin "(beginisodate)"^^xsd:date;
+  crm:P82b_end_of_the_end "(endisodate)"^^xsd:date.
+
+<agent/(constituentid)> a crm:E39_Actor;
+  rdfs:label "(constituent)".
+
+<agent/address/(conaddressid)> a crm:E53_Place;
+  rdfs:label "(address)".
+
+## LEVEL 3: OBJECT AT EXHIBITION AT VENUE
+<exhibitionVenue/(exhvenuexrefid)/object/(objectid)>
+  puml:label """
+exhvenuesxrefs, exhvenobjxrefs
+ where exhvenuesxrefs.exhvenuexrefid=exhvenobjxrefs.exhvenuexrefid
+  and exhvenuesxrefs.approved=1 and exhvenobjxrefs.displayed=1
+""";
+  a crm:E7_Activity;
+  crm:P2_has_type <event/object-at-exhibition>;
+  crm:P9i_forms_part_of <exhibitionVenue/(exhvenuexrefid)>;
+  crm:P12_occurred_in_the_presence_of <object/(objectid)>;
+  crm:P4_has_time-span <exhibitionVenue/(exhvenuexrefid)/object/(objectid)/date>;
+  crm:P1_is_identified_by <exhibitionVenue/(exhvenuexrefid)/object/(objectid)/catalognumber>.
+
+<exhibitionVenue/(exhvenuexrefid)/object/(objectid)/date> a crm:E52_Time-Span;
+  crm:P82a_begin_of_the_begin "(begindispldateiso)"^^xsd:date;
+  crm:P82b_end_of_the_end "(enddispldateiso)"^^xsd:date.
+
+<exhibitionVenue/(exhvenuexrefid)/object/(objectid)/catalognumber> a crm:E42_Identifier;
+  crm:P2_has_type aat:300404620; # catalog number: ITSLOD-466
+  crm:P3_has_note "(catalognumber)".
+
+####################
+aat:300054766 a puml:Inline; skos:prefLabel "exhibition (event)".
+aat:300404620 a puml:Inline; skos:prefLabel "catalog number".
+crm:P9i_forms_part_of puml:arrow puml:up.
+<agent/(constituentid)> a puml:Inline.
+<event/exhibition-at-venue> a puml:Inline.
+<event/object-at-exhibition> a puml:Inline.
+<object/(objectid)> a puml:Inline.
+crm:E7_Activity puml:stereotype "(A,yellow)".

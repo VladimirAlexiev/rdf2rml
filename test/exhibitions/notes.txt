@@ -1,0 +1,9 @@
+Even if I add these hidden links, the layout is not good because the subsidiary maps come at the same level as the nodes of the main map, so the whole diagram is only 4 levels deep but very wide
+
+<http://jpgm.getty.edu/exhibition/(exhibitionid)>                          puml:hidden <http://jpgm.getty.edu/exhibitionVenue/(exhvenuexrefid)>.
+<http://jpgm.getty.edu/exhibition/(exhibitionid)>                          puml:hidden <http://jpgm.getty.edu/exhibition/(exhibitionid)/title>.
+<http://jpgm.getty.edu/exhibition/(exhibitionid)>                          puml:hidden <http://jpgm.getty.edu/exhibition/(exhibitionid)/date>.
+<http://jpgm.getty.edu/exhibitionVenue/(exhvenuexrefid)>                   puml:hidden <http://jpgm.getty.edu/exhibitionVenue/(exhvenuexrefid)/object/(objectid)>.
+<http://jpgm.getty.edu/exhibitionVenue/(exhvenuexrefid)>                   puml:hidden <http://jpgm.getty.edu/exhibitionVenue/(exhvenuexrefid)/date>.
+<http://jpgm.getty.edu/exhibitionVenue/(exhvenuexrefid)/object/(objectid)> puml:hidden <http://jpgm.getty.edu/exhibitionVenue/(exhvenuexrefid)/object/(objectid)/catalognumber>.
+<http://jpgm.getty.edu/exhibitionVenue/(exhvenuexrefid)/object/(objectid)> puml:hidden <http://jpgm.getty.edu/exhibitionVenue/(exhvenuexrefid)/object/(objectid)/date>.

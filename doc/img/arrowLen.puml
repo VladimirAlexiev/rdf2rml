@@ -1,0 +1,29 @@
+@startuml
+hide empty methods
+hide empty attributes
+hide circle
+skinparam classAttributeIconSize 0
+class _x6_ as "<x6>"
+class _y6_ as "<y6>"
+_x6_ -up------> _y6_
+class _x1_ as "<x1>"
+class _y1_ as "<y1>"
+_x1_ -down-> _y1_
+class _x2_ as "<x2>"
+class _y2_ as "<y2>"
+_x2_ -up--> _y2_
+class _y3_ as "<y3>"
+_x2_ -right---------> _y3_
+class _x5_ as "<x5>"
+class _y5_ as "<y5>"
+_x5_ -down-----> _y5_
+class _x4_ as "<x4>"
+class _y4_ as "<y4>"
+_x4_ -up----> _y4_
+_x4_ -right-------> _y2_
+class _x3_ as "<x3>"
+_x3_ -down---> _y3_
+class _x7_ as "<x7>"
+class _y7_ as "<y7>"
+_x7_ -down-------> _y7_
+@enduml
