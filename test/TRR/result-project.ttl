@@ -1,0 +1,51 @@
+<http://dx.doi.org/10.1016/j.ffhfhgfhf> a trr:Result;
+  puml:label              "One result may credit several projects";
+  trr:doi                 "10.1016/j.ffhfhgfhf" .
+
+<relation/doi/10.1016/j.ffhfhgfhf/project/123456> a trr:ResultContribution;
+  puml:label              "Same project may be credited through different sources";
+  trr:result              <http://dx.doi.org/10.1016/j.ffhfhgfhf>;
+  trr:project             <project/123456>;
+  trr:source              <source/OpenAIRE>, <source/Fraunhofer-pubs>.
+
+<relation/doi/10.1016/j.ffhfhgfhf/project/123457> a trr:ResultContribution;
+  trr:result              <http://dx.doi.org/10.1016/j.ffhfhgfhf>;
+  trr:project             <project/123457>;
+  trr:source              <source/CrossRef-byTitle>.
+
+<relation/doi/10.1016/j.ffhfhgfhf/project/123457> a trr:ResultContribution;
+  trr:result              <http://dx.doi.org/10.1016/j.ffhfhgfhf>;
+  trr:project             <project/123458>;
+  trr:source              <source/CrossRef-byAward>.
+
+<source/OpenAIRE>         a trr:Source;
+  trr:src                 "OpenAIRE";
+  trr:webLink             <https://jira.ontotext.com/browse/TRR-155#1>;
+  trr:date                "2018-11-26"^^xsd:date.
+
+<source/CrossRef-byTitle> a trr:Source;
+  trr:src                 "CrossRef", "OpenAIRE";
+  trr:fileName            "pubs-oa-crossref-nodoi.csv";
+  trr:webLink             <https://jira.ontotext.com/browse/TRR-155#2>;
+  trr:date                "2018-11-26"^^xsd:date.
+
+<source/CrossRef-byAward> a trr:Source;
+  trr:src                 "CrossRef";
+  trr:fileName            "crossref_FP7_SP1_publications.csv";
+  trr:webLink             <https://jira.ontotext.com/browse/TRR-155#3>;
+  trr:date                "2018-11-26"^^xsd:date.
+
+<source/Fraunhofer-pubs>   a trr:Source;
+  trr:src                 "Fraunhofer";
+  trr:fileName            "TODO";
+  trr:webLink             <https://jira.ontotext.com/browse/TRR-155#4>;
+  trr:date                "2018-11-26"^^xsd:date.
+
+#################### rdfpuml
+
+<project/123456> a trr:Project.
+<project/123457> a trr:Project.
+<project/123458> a trr:Project.
+trr:webLink a puml:InlineProperty.
+trr:result  puml:arrow puml:up.
+trr:project puml:arrow puml:up.

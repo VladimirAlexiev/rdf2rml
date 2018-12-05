@@ -1,0 +1,27 @@
+﻿@startuml
+hide empty members
+hide circle
+hide stereotype
+
+skinparam class {
+  BackgroundColor<<person>>      Wheat
+  BackgroundColor<<dimension>>   PaleGreen
+  BackgroundColor<<activity>>    YellowGreen
+  BackgroundColor<<appellation>> Tomato
+  BackgroundColor<<right>>       Lightgray
+  BackgroundColor<<document>>    Pink
+  BackgroundColor<<place>>       Magenta
+  BackgroundColor<<artwork>>     LightRed
+  BackgroundColor<<museum>>      LightBlue
+}
+
+class person      as "<&person> Person"                           <<person>>
+class dimension   as "<&resize-width> Dimension"                  <<dimension>>
+class activity    as "<U+1F552> Activity"                         <<activity>>
+class appellation as "<U+260F> Appellation"                       <<appellation>>
+class right       as "<U+00A9> Right"                             <<right>>
+class document    as "<&book> Document"                           <<document>>
+class place       as "<&map-marker> Place  (or <U+1F30D>)"            <<place>>
+class artwork     as "<U+1F3A8> Man-Made Object"                  <<artwork>>
+class museum      as "<U+1F3E2> Legal Entity (Museum/Repository)" <<museum>>
+@enduml

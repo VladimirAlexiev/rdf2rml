@@ -1,0 +1,34 @@
+@startuml
+hide empty methods
+hide empty attributes
+hide circle
+skinparam classAttributeIconSize 0
+class _npg_object_23_dimension_ as "<npg/object/23/dimension>"
+_npg_object_23_dimension_ : a crm:E54_Dimension
+_npg_object_23_dimension_ : crm:P3_has_note "Image: 44.1 x 36.2cm [17 3/8 x 14 1/4"]\n Sheet: 50.2 x 37.7cm [19 3/4 x 14 13/16"]\n Mat: 71.1 x 55.9cm [28 x 22"]"
+class _npg_object_23_measurement_168874_ as "<npg/object/23/measurement/168874>"
+_npg_object_23_measurement_168874_ : a crm:E16_Measurement
+_npg_object_23_measurement_168874_ : crmx:P2_extent aat:300236006
+_npg_object_23_measurement_168874_ : crmx:sort_order 3
+class _npg_object_23_dimension_349188_ as "<npg/object/23/dimension/349188>"
+_npg_object_23_dimension_349188_ : a crm:E54_Dimension
+class aat_300055647 as "aat:300055647"
+_npg_object_23_dimension_349188_ -down-> aat_300055647 : crm:P2_has_type
+_npg_object_23_dimension_349188_ : crm:P90_has_value 55.88011176
+_npg_object_23_dimension_349188_ : crm:P91_has_unit aat:300379098
+_npg_object_23_dimension_349188_ : crmx:sort_order 2
+class _npg_object_23_ as "<npg/object/23>"
+class _npg_object_23_measurement_105668_ as "<npg/object/23/measurement/105668>"
+_npg_object_23_ -up-> _npg_object_23_measurement_105668_ : crm:P39i_was_measured_by
+_npg_object_23_ -up-> _npg_object_23_measurement_168874_ : crm:P39i_was_measured_by
+_npg_object_23_ -down-> _npg_object_23_dimension_ : crm:P43_has_dimension
+class _npg_object_23_measurement_105667_ as "<npg/object/23/measurement/105667>"
+_npg_object_23_ -up-> _npg_object_23_measurement_105667_ : crm:P39i_was_measured_by
+class _npg_object_23_dimension_349187_ as "<npg/object/23/dimension/349187>"
+_npg_object_23_dimension_349187_ : a crm:E54_Dimension
+class aat_300055644 as "aat:300055644"
+_npg_object_23_dimension_349187_ -down-> aat_300055644 : crm:P2_has_type
+_npg_object_23_dimension_349187_ : crm:P90_has_value 71.12014224
+_npg_object_23_dimension_349187_ : crm:P91_has_unit aat:300379098
+_npg_object_23_dimension_349187_ : crmx:sort_order 1
+@enduml

@@ -1,0 +1,42 @@
+<npg/object/(ObjectID)> crm:P70i_is_documented_in <npg/object/(ObjectID)/reference/(RefObjXrefID)>.
+<npg/object/(ObjectID)/reference/(RefObjXrefID)> a crm:E31_Document;
+  crm:P106i_forms_part_of <npg/reference/(ReferenceID)>;
+  crm:P3_has_note "(Remarks)";
+  crm:P1_is_identified_by <npg/object/(ObjectID)/reference/(RefObjXrefID)/page>.
+
+<npg/object/(ObjectID)/reference/(RefObjXrefID)/page> a crm:E42_Identifier;
+  puml:label "similar for CatalogueNumber and FigureNumber";
+  crm:P2_has_type <thesaurus/identifier/pageNumber>;
+  crm:P3_has_note "(PageNumber)".
+
+<npg/reference/(ReferenceID)> a crm:E31_Document, frbroo:F24_Publication_Expression;
+  puml:label "TODO emit ReferenceID as crm:E42_Identifier?";
+  crm:P2_has_type <thesaurus/reference/(Format)>;
+  crm:P102_has_title <npg/reference/(ReferenceID)/title>, <npg/reference/(ReferenceID)/subtitle>;
+  frbroo:R24i_was_created_through <npg/reference/(ReferenceID)/publication>.
+
+<npg/reference/(ReferenceID)/title> a crm:E35_Title;
+  crm:P2_has_type aat:300195168.
+
+<npg/reference/(ReferenceID)/subtitle> a crm:E35_Title;
+  crm:P2_has_type aat:NEW.
+
+<npg/reference/(ReferenceID)/publication> a frbroo:F30_Publication_Event;
+  crm:P7_took_place_at <npg/reference/(ReferenceID)/publication/place>;
+  crm:P4_has_time-span <npg/reference/(ReferenceID)/publication/date>.
+
+<npg/reference/(ReferenceID)/publication/place> a crm:E53_Place;
+  crm:P87_is_identified_by <npg/reference/(ReferenceID)/publication/place/name>.
+  
+<npg/reference/(ReferenceID)/publication/place/name> a crm:E44_Place_Appellation;
+  crm:P3_has_note "(PlacePublished)".
+  
+<npg/reference/(ReferenceID)/publication/date> a crm:E52_Time-Span;
+  crm:P82_at_some_time_within "(YearPublished)"^^xsd:gYear.
+
+#######
+aat:300195168 a puml:Inline; rdfs:label "title (document)".
+aat:NEW       a puml:Inline; rdfs:label "subtitle".
+crm:P106i_forms_part_of puml:arrow puml:left.
+<thesaurus/identifier/pageNumber> a puml:Inline.
+<thesaurus/reference/(Format)> a puml:Inline; rdfs:label "Book, Periodical, Exh.Catalog".

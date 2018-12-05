@@ -1,0 +1,31 @@
+@base             <http://trr.ontotext.com/resource/>.
+@prefix trr:      <http://trr.ontotext.com/resource/ontology/>.
+@prefix proj:     <http://trr.ontotext.com/resource/project/>.
+@prefix org:      <http://trr.ontotext.com/resource/organization/>.
+@prefix person:   <http://trr.ontotext.com/resource/person/>.
+@prefix award:    <http://trr.ontotext.com/resource/award/>.
+@prefix rel:      <http://trr.ontotext.com/resource/relation/>.
+@prefix source:   <http://trr.ontotext.com/resource/source/>.
+@prefix agency:   <http://trr.ontotext.com/resource/agency/>.
+@prefix call:     <http://trr.ontotext.com/resource/call/>.
+@prefix program:  <http://trr.ontotext.com/resource/program/>.
+@prefix funding:  <http://trr.ontotext.com/resource/funding/>.
+
+@prefix apf:      <http://jena.apache.org/ARQ/property#>. # apf:strSplit
+@prefix puml:     <http://plantuml.com/ontology#>.
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#>.
+
+trr:Person                    puml:stereotype "(P,lightgreen)".
+trr:Organization              puml:stereotype "(O,lightgreen)".
+trr:Project                   puml:stereotype "(J,lightgreen)".
+trr:ProjectParticipation      puml:stereotype "(R,red)".
+trr:ResultContribution        puml:stereotype "(R,red)".
+trr:AwardWinner               puml:stereotype "(E,red)".
+trr:DisseminationActivity     puml:stereotype "(E,red)".
+trr:Result                    puml:stereotype "(R,cyan)".
+trr:Award                     puml:stereotype "(A,cyan)".
+trr:Identifier                puml:stereotype "(I,lightgray)".
+trr:Source                    puml:stereotype "(S,lightgray)".
+trr:Program                   puml:stereotype "(X,lightgray)".
+trr:ProgramCall               puml:stereotype "(X,lightgray)".
+trr:FundingScheme             puml:stereotype "(X,lightgray)".

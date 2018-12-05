@@ -1,0 +1,5 @@
+<object/(ObjectID)> crm:P24i_changed_ownership_through <object/(ObjectID)/provenance>.
+<object/(ObjectID)/provenance> a crm:E8_Acquisition; crm:P3_has_note "(Provenance)".
+
+<object/(ObjectID)> crm:P30i_custody_transferred_through <object/(ObjectID)/provenance>.
+<object/(ObjectID)/provenance> a crm:E10_Transfer_of_Custody; crm:P3_has_note "(Provenance)".

@@ -1,0 +1,109 @@
+# awardWinner
+
+<awardWinner/Q1466449-ceb30883-4b32-ed87-2b4b-5d937313bde8> a trr:AwardWinner;
+  trr:award          <award/Q1131142>;
+  trr:person         <person/Wikidata/Q1466449>;
+  trr:organization   <organization/Wikidata/Q632004>;
+  trr:country        "Netherlands";
+  trr:date           "2008"^^xsd:gYear;
+  trr:field          "physics";
+  trr:comment        "For disovering ...";
+  trr:source         <source/awardWinner/Q1466449-ceb30883-4b32-ed87-2b4b-5d937313bde8>.
+
+<source/awardWinner/Q1466449-ceb30883-4b32-ed87-2b4b-5d937313bde8> a trr:Source;
+  trr:src            "Wikidata";
+  trr:webLink        <https://www.wikidata.org/wiki/Q1466449#Q1466449$ceb30883-4b32-ed87-2b4b-5d937313bde8>;
+  trr:semanticLink   <http://www.wikidata.org/entity/statement/Q1466449-ceb30883-4b32-ed87-2b4b-5d937313bde8>.
+
+# person
+
+<person/Wikidata/Q1466449> a trr:Person;
+  trr:name           "Theo Rasing";
+  trr:description    "Dutch physicist";
+  trr:occupation     "physicist", "university teacher"; # P106 occupation
+  trr:country        "Kingdom of the Netherlands"; # P27 country of citizenship
+  # TODO:          # P108 employer
+  # TODO:          # P436 member of
+  # TODO:          # P69 educated at
+  # TODO:          # P512 academic degree / P69 educated at
+  trr:identifier     <identifier/Wikidata/Q1466449>,
+                     <identifier/ResearcherID/D-5207-2012>, # P1053
+                     <identifier/ORCID/0000-0002-6656-5528>; # P496
+  trr:source         <source/Wikidata/Q1466449>;
+  trr:status         "raw".
+
+<source/Wikidata/Q1466449> a trr:Source;
+  trr:src            "Wikidata";
+  trr:webLink        <https://www.wikidata.org/wiki/Q1466449>;
+  trr:semanticLink   <http://www.wikidata.org/entity/Q1466449>.
+
+<identifier/Wikidata/Q1466449> a trr:Identifier;
+  trr:type           "Wikidata";
+  trr:id             "Q1466449";
+  trr:webLink        <https://www.wikidata.org/wiki/Q1466449>;
+  trr:semanticLink   <http://www.wikidata.org/entity/Q1466449>.
+
+<identifier/ResearcherID/D-5207-2012> a trr:Identifier;
+  trr:type           "ResearcherID";
+  trr:id             "D-5207-2012";
+  trr:webLink        <https://www.researcherid.com/rid/D-5207-2012>;
+  trr:source         <source/Wikidata/Q1466449>.
+  
+<identifier/ORCID/0000-0002-6656-5528> a trr:Identifier;
+  trr:type           "ORCID";
+  trr:id             "0000-0002-6656-5528";
+  trr:webLink        <https://orcid.org/0000-0002-6656-5528>;
+  trr:source         <source/Wikidata/Q1466449>.
+
+# organization
+
+<organization/Wikidata/Q632004> a trr:Organization;
+  trr:name           "Radboud University Nijmegen";
+  trr:altName        "Radboud Universiteit Nijmegen"@nl, "Katholieke Universiteit Nijmegen"@nl; # P1448 official name
+  trr:description    "Dutch university in Nijmegen";
+  trr:country        "Netherlands";
+  trr:location       "Nijmegen"; # P131 located in the administrative territorial entity
+  trr:startDate      "1923"^^xsd:year;
+  trr:webLink        <http://www.ru.nl/>; # P856 official website
+  trr:identifier     <identifier/Wikidata/Q632004>,
+                     <identifier/GRID/grid.5590.9>; # P2427
+  trr:source         <source/Wikidata/Q632004>;
+  trr:status         "raw".
+
+<source/Wikidata/Q632004> a trr:Source;
+  trr:src            "Wikidata";
+  trr:webLink        <https://www.wikidata.org/wiki/Q632004>;
+  trr:semanticLink   <http://www.wikidata.org/entity/Q632004>.
+
+<identifier/Wikidata/Q632004> a trr:Identifier;
+  trr:type           "Wikidata";
+  trr:id             "Q632004";
+  trr:webLink        <https://www.wikidata.org/wiki/Q632004>;
+  trr:semanticLink   <http://www.wikidata.org/entity/Q632004>.
+
+<identifier/GRID/grid.5590.9> a trr:Identifier;
+  trr:type           "GRID";
+  trr:id             "grid.5590.9";
+  trr:webLink        <https://www.grid.ac/institutes/grid.5590.9>;
+  trr:source         <source/Wikidata/Q632004>.
+
+# award: repeated from award.ttl
+
+<award/Q1131142> a trr:Award;
+  trr:id             "Q1131142";
+  trr:name           "Spinoza Prize";
+  trr:dateStart      "1995"^^xsd:gYear;
+  trr:source         <source/Wikidata/Q1131142>.
+
+<source/Wikidata/Q1131142> a trr:Source;
+  trr:type           "Wikidata";
+  trr:webLink        <https://www.wikidata.org/wiki/Q1131142>;
+  trr:semanticLink   <http://www.wikidata.org/entity/Q1131142>.  
+
+##########
+
+<awardWinner/Q1466449-ceb30883-4b32-ed87-2b4b-5d937313bde8> puml:right <source/awardWinner/Q1466449-ceb30883-4b32-ed87-2b4b-5d937313bde8>.
+<awardWinner/Q1466449-ceb30883-4b32-ed87-2b4b-5d937313bde8> puml:left <award/Q1131142>.
+
+trr:webLink      a puml:InlineProperty.
+trr:semanticLink a puml:InlineProperty.

@@ -1,0 +1,72 @@
+@startuml
+hide empty methods
+hide empty attributes
+hide circle
+skinparam classAttributeIconSize 0
+class _exhibition_ as "<exhibition>"
+class _exhibition_ <<(E,yellow)>>
+show _exhibition_ circle
+class _transfer_ as "<transfer>"
+class _transfer_ <<(E,yellow)>>
+show _transfer_ circle
+class _object_ as "<object>"
+class _object_ <<(P,green)>>
+show _object_ circle
+class _catalog_creation_ as "<catalog/creation>"
+class _catalog_creation_ <<(E,yellow)>>
+show _catalog_creation_ circle
+class _catalog_ as "<catalog>"
+class _catalog_ <<(C,red)>>
+show _catalog_ circle
+class _catalog_entry_ as "<catalog-entry>"
+class _catalog_entry_ <<(C,red)>>
+show _catalog_entry_ circle
+class _catalog_number_assignment_ as "<catalog-number/assignment>"
+class _catalog_number_assignment_ <<(E,yellow)>>
+show _catalog_number_assignment_ circle
+class _catalog_number_ as "<catalog-number>"
+class _catalog_number_ <<(C,red)>>
+show _catalog_number_ circle
+class _exhibition_label_assignment_ as "<exhibition-label/assignment>"
+class _exhibition_label_assignment_ <<(E,yellow)>>
+show _exhibition_label_assignment_ circle
+class _exhibition_label_ as "<exhibition-label>"
+class _exhibition_label_ <<(C,red)>>
+show _exhibition_label_ circle
+_exhibition_label_assignment_ : a crm:E15_Identifier_Assignment, crm:E65_Creation
+_exhibition_label_assignment_ -down-> _object_ : crm:P140_assigned_attribute_to
+_exhibition_label_assignment_ -down-> _exhibition_label_ : crm:P37_assigned\ncrm:P94_has_created
+_exhibition_ : a crm:E7_Activity
+_exhibition_ -down-> _object_ : crm:P16_used_specific_object
+_exhibition_ -down-> _catalog_creation_ : crm:P20i_was_purpose_of\ncrm:P9_consists_of
+_exhibition_ -down-> _catalog_ : crm:P94_has_created
+_exhibition_ -down-> _transfer_ : crm:P9_consists_of\ncrm:P20i_was_purpose_of
+_exhibition_ -down-> _catalog_number_assignment_ : crm:P20i_was_purpose_of\ncrm:P9_consists_of
+_exhibition_ -down-> _exhibition_label_assignment_ : crm:P9_consists_of\ncrm:P20i_was_purpose_of
+_exhibition_ : crm:P2_has_type aat:300054766 # exhibition [event]
+_catalog_ : a crm:E31_Document
+_catalog_ -down-> _catalog_number_ : crm:P106_is_composed_of
+_catalog_ -down-> _catalog_entry_ : crm:P106_is_composed_of
+_catalog_ : crm:P2_has_type aat:300026096 # exhibition catalog
+_catalog_number_assignment_ : a crm:E65_Creation, crm:E15_Identifier_Assignment
+_catalog_number_assignment_ -left[hidden]-> _exhibition_label_assignment_
+_catalog_number_assignment_ -down-> _object_ : crm:P140_assigned_attribute_to
+_catalog_number_assignment_ -down-> _catalog_number_ : crm:P94_has_created\ncrm:P37_assigned
+_transfer_ : a crm:E10_Transfer_of_Custody
+_transfer_ -down-> _object_ : crm:P30_transferred_custody_of
+_catalog_number_ : a crm:E42_Identifier
+_catalog_number_ : crm:P2_has_type aat:300404620 # catalog number
+_catalog_number_ : rdf:value "object catalog number"
+_object_ : a crm:E22_Man-Made_Object
+_object_ -down-> _exhibition_label_ : crm:P102_has_title
+_object_ -down-> _catalog_number_ : crm:P1_is_identified_by
+_catalog_entry_ : a crm:E31_Document
+_catalog_entry_ -down-> _catalog_number_ : crm:P1_is_identified_by
+_catalog_entry_ -down-> _object_ : crm:P70_documents
+_exhibition_label_ : a crm:E35_Title
+_exhibition_label_ : crm:P2_has_type <thes/title/exhibition_label>
+_exhibition_label_ : rdf:value "exhibition label"
+_catalog_creation_ : a crm:E65_Creation
+_catalog_creation_ -down-> _catalog_ : crm:P94_has_created
+_catalog_creation_ -down-> _catalog_number_assignment_ : crm:P9_consists_of\ncrm:P20i_was_purpose_of
+@enduml

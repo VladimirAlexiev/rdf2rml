@@ -1,6 +1,7 @@
 @base <http://jpgm.getty.edu/>.
 @prefix ex: <http://vocab.getty.edu/cona/example/>.
 @prefix crm:    <http://www.cidoc-crm.org/cidoc-crm/>.
+@prefix crmx:   <http://americanartcollaborative.org/crm-ext/>.
 @prefix crminf: <http://www.ics.forth.gr/isl/CRMinf/>.
 @prefix crmdig: <http://www.ics.forth.gr/isl/CRMdig/>.
 @prefix crmsci: <http://www.ics.forth.gr/isl/crmsci/> .
@@ -94,3 +95,25 @@
 @prefix void:   <http://rdfs.org/ns/void#> .                         # Vocabulary of Interlinked Datasets
 @prefix wdrs:   <http://www.w3.org/2007/05/powder-s#> .              # Protocol for Web Description Resources
 @prefix wv:     <http://vocab.org/waiver/terms/> .                   # A vocabulary for waivers of rights
+
+aat:SOMETHING            a puml:Inline.
+crm:E22_Man-Made_Object  a puml:Inline.
+crm:E35_Title            a puml:Inline.
+crm:E42_Identifier       a puml:Inline.
+crm:P102_has_title       a puml:Inline.
+crm:P1_is_identified_by  a puml:Inline.
+crm:P2_has_type          a puml:Inline.
+crmx:display_order       a puml:Inline.
+rdf:value                a puml:Inline.
+rdfs:label               a puml:Inline.
+rr:IRI                   a puml:Inline.
+rr:Literal               a puml:Inline.
+skos:Concept             a puml:Inline.
+skos:exactMatch          a puml:Inline.
+crm:P2_has_type          a puml:InlineProperty.
+crm:P91_has_unit         a puml:InlineProperty.
+crmx:P2_extent           a puml:InlineProperty.
+rr:class                 a puml:InlineProperty.
+rr:constant              a puml:InlineProperty.
+rr:predicate             a puml:InlineProperty.
+rr:datatype              a puml:InlineProperty.

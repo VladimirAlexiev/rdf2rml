@@ -1,0 +1,13 @@
+* Table of Contents                                 :TOC:noexport:
+ - [[#foo][foo]]
+
+* foo
+
+| ObjectID | DimensionID | DimItemElemXrefID | Element | DimensionType | ElementRank | DimRank |   Dimension |
+|----------+-------------+-------------------+---------+---------------+-------------+---------+-------------|
+|       23 |      349187 |            168874 | Mat     | Height        |           3 |       1 | 71.12014224 |
+|       23 |      349188 |            168874 | Mat     | Width         |           3 |       2 | 55.88011176 |
+|       23 |      213081 |            105668 | Image   | Width         |           1 |       2 |        36.2 |
+|       23 |      213082 |            105668 | Image   | Height        |           1 |       1 |        44.1 |
+|       23 |      213079 |            105667 | Sheet   | Width         |           2 |       2 |        37.7 |
+|       23 |      213080 |            105667 | Sheet   | Height        |           2 |       1 |        50.2 |

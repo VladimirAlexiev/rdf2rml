@@ -1,0 +1,35 @@
+@startuml
+hide empty methods
+hide empty attributes
+hide circle
+skinparam classAttributeIconSize 0
+class _object_123_acquisition_1_place_name_ as "<object/123/acquisition/1/place/name>"
+_object_123_acquisition_1_place_name_ : a crm:E48_Place_Name
+_object_123_acquisition_1_place_name_ : crm:P3_has_note "Paris"
+class _constituent_789_ as "<constituent/789>"
+_constituent_789_ : rdfs:label "old owner"
+class _constituent_012_ as "<constituent/012>"
+_constituent_012_ : rdfs:label "auction house"
+class _object_123_acquisition_1_place_ as "<object/123/acquisition/1/place>"
+_object_123_acquisition_1_place_ : a crm:E53_Place
+_object_123_acquisition_1_place_ -down-> _object_123_acquisition_1_place_name_ : crm:P87_is_identified_by
+_object_123_acquisition_1_place_ : rdfs:label "Paris"
+class _constituent_456_ as "<constituent/456>"
+_constituent_456_ : rdfs:label "new owner"
+class _object_123_acquisition_1_date_ as "<object/123/acquisition/1/date>"
+_object_123_acquisition_1_date_ : a crm:E52_Time-Span
+_object_123_acquisition_1_date_ : crm:P82a_begin_of_the_begin "1968-04-30"^^xsd:date
+_object_123_acquisition_1_date_ : crm:P82b_end_of_the_end "1968-05-01"^^xsd:date
+class _object_123_ as "<object/123>"
+_object_123_ : a crm:E24_Physical_Man-Made_Thing
+_object_123_ -up-> _constituent_789_ : crm:P51_has_former_or_current_owner
+_object_123_ -up-> _constituent_456_ : crm:P51_has_former_or_current_owner
+class _object_123_acquisition_1_ as "<object/123/acquisition/1>"
+_object_123_ -down-> _object_123_acquisition_1_ : crm:P24i_changed_ownership_through
+_object_123_acquisition_1_ : a crm:E8_Acquisition
+_object_123_acquisition_1_ -down-> _object_123_acquisition_1_date_ : crm:P4_has_time-span
+_object_123_acquisition_1_ -up-> _constituent_789_ : crm:P23_transferred_title_from
+_object_123_acquisition_1_ -up-> _constituent_456_ : crm:P22_transferred_title_to
+_object_123_acquisition_1_ -down-> _object_123_acquisition_1_place_ : crm:P7_took_place_at
+_object_123_acquisition_1_ -right-> _constituent_012_ : crm:P14_carried_out_by
+@enduml

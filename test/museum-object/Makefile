@@ -1,4 +1,4 @@
-IGNORE = prefixes.ttl
+IGNORE = prefixes.ttl title.r2rml.ttl
 TTL    = $(filter-out $(IGNORE), $(wildcard *.ttl))
 PUML   = $(patsubst %.ttl, %.puml, $(TTL))
 PNG    = $(patsubst %.ttl, %.png, $(TTL))

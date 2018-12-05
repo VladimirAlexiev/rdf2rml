@@ -1,0 +1,77 @@
+<exhibition>
+  a crm:E7_Activity; puml:stereotype "(E,yellow)";
+  crm:P2_has_type aat:300054766; # exhibition
+  crm:P16_used_specific_object <object>;
+  crm:P9_consists_of <transfer>;
+  crm:P20i_was_purpose_of <transfer>;
+  crm:P94_has_created <catalog>;
+  crm:P9_consists_of <catalog/creation>;
+  crm:P20i_was_purpose_of <catalog/creation>;
+  crm:P9_consists_of <catalog-number/assignment>;
+  crm:P20i_was_purpose_of <catalog-number/assignment>;
+  crm:P9_consists_of <exhibition-label/assignment>;
+  crm:P20i_was_purpose_of <exhibition-label/assignment>.
+
+<transfer>
+  a crm:E10_Transfer_of_Custody; puml:stereotype "(E,yellow)";
+  crm:P30_transferred_custody_of <object>;
+  #crm:P20_had_specific_purpose <exhibition>
+  .
+
+<object>
+  a crm:E22_Man-Made_Object; puml:stereotype "(P,green)";
+  crm:P1_is_identified_by <catalog-number>;
+  crm:P102_has_title <exhibition-label>.
+
+<catalog/creation>
+  a crm:E65_Creation; puml:stereotype "(E,yellow)";
+  crm:P94_has_created <catalog>;
+  crm:P9_consists_of <catalog-number/assignment>;
+  crm:P20i_was_purpose_of <catalog-number/assignment>.
+  
+<catalog>
+  a crm:E31_Document; puml:stereotype "(C,red)";
+  crm:P2_has_type aat:300026096; # exhibition catalog
+  crm:P106_is_composed_of <catalog-entry>;
+  crm:P106_is_composed_of <catalog-number>.
+
+<catalog-entry>
+  a crm:E31_Document; puml:stereotype "(C,red)";
+  crm:P1_is_identified_by <catalog-number>;
+  crm:P70_documents <object>.
+
+<catalog-number/assignment>
+  a crm:E15_Identifier_Assignment, crm:E65_Creation; puml:stereotype "(E,yellow)";
+  crm:P37_assigned <catalog-number>;
+  crm:P94_has_created <catalog-number>;
+  crm:P140_assigned_attribute_to <object>.
+
+<catalog-number>
+  a crm:E42_Identifier; puml:stereotype "(C,red)";
+  crm:P2_has_type aat:300404620;
+  rdf:value "object catalog number".
+
+<exhibition-label/assignment>
+  a crm:E15_Identifier_Assignment, crm:E65_Creation; puml:stereotype "(E,yellow)";
+  crm:P37_assigned <exhibition-label>;
+  crm:P94_has_created <exhibition-label>;
+  crm:P140_assigned_attribute_to <object>.
+
+<exhibition-label>
+  a crm:E35_Title; puml:stereotype "(C,red)";
+  crm:P2_has_type <thes/title/exhibition_label>;
+  rdf:value "exhibition label".
+
+####################
+aat:300054766 a puml:Inline; skos:prefLabel "exhibition (event)".
+aat:300404620 a puml:Inline; skos:prefLabel "catalog number".
+aat:300026096 a puml:Inline; skos:prefLabel "exhibition catalog".
+<thes/title/exhibition_label> a puml:Inline.
+
+<catalog-number/assignment> a puml:NoReify.
+<exhibition-label/assignment> a puml:NoReify.
+<catalog-number/assignment> puml:hidden-left <exhibition-label/assignment>.
+
+crm:P20_had_specific_purpose puml:arrow puml:up.
+crm:P9i_forms_part_of        puml:arrow puml:up.
+#crm:P70_documents            puml:arrow puml:up.

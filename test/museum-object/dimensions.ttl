@@ -1,0 +1,40 @@
+# | ObjectID | DimensionID | DimItemElemXrefID | Element | DimensionType | ElementRank | DimRank |   Dimension |
+# |----------+-------------+-------------------+---------+---------------+-------------+---------+-------------|
+# |       23 |      349187 |            168874 | Mat     | Height        |           3 |       1 | 71.12014224 |
+# |       23 |      349188 |            168874 | Mat     | Width         |           3 |       2 | 55.88011176 |
+# |       23 |      213081 |            105668 | Image   | Width         |           1 |       2 |        36.2 |
+# |       23 |      213082 |            105668 | Image   | Height        |           1 |       1 |        44.1 |
+# |       23 |      213079 |            105667 | Sheet   | Width         |           2 |       2 |        37.7 |
+# |       23 |      213080 |            105667 | Sheet   | Height        |           2 |       1 |        50.2 |
+
+<npg/object/23>
+  crm:P43_has_dimension <npg/object/23/dimension>;
+  crm:P39i_was_measured_by
+    <npg/object/23/measurement/168874>, <npg/object/23/measurement/105668>, <npg/object/23/measurement/105667>.
+
+<npg/object/23/dimension> a crm:E54_Dimension;
+  crm:P3_has_note
+    """Image: 44.1 x 36.2cm (17 3/8 x 14 1/4")\n Sheet: 50.2 x 37.7cm (19 3/4 x 14 13/16")\n Mat: 71.1 x 55.9cm (28 x 22")""".
+
+<npg/object/23/measurement/168874> a crm:E16_Measurement; 
+  crmx:P2_extent aat:300236006; # mat (framing and mounting equipment)
+  crmx:sort_order 3; # ElemRank
+  crm:P40_observed_dimension <npg/object/23/dimension/349187>, <npg/object/23/dimension/349188>.
+
+<npg/object/23/dimension/349187> a crm:E54_Dimension;
+  crm:P2_has_type aat:300055644; # height
+  crm:P91_has_unit aat:300379098; # centimeters
+  crm:P90_has_value 71.12014224;
+  crmx:sort_order 1. # DimRank
+
+<npg/object/23/dimension/349188> a crm:E54_Dimension;
+  crm:P2_has_type aat:300055647; # width
+  crm:P91_has_unit aat:300379098; # centimeters
+  crm:P90_has_value 55.88011176;
+  crmx:sort_order 2. # DimRank
+
+# <npg/object/23/measurement/105668> a crm:E16_Measurement; ...
+# <npg/object/23/measurement/105667> a crm:E16_Measurement; ...
+
+####################
+crm:P39i_was_measured_by puml:arrow puml:up.

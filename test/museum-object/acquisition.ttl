@@ -1,0 +1,32 @@
+<object/123> a crm:E24_Physical_Man-Made_Thing;
+  crm:P24i_changed_ownership_through <object/123/acquisition/1>.
+
+<object/123/acquisition/1> a crm:E8_Acquisition;
+  crm:P22_transferred_title_to <constituent/456>; # new owner
+  crm:P23_transferred_title_from <constituent/789>; # old owner
+  crm:P14_carried_out_by <constituent/012>; # auction house
+  crm:P7_took_place_at <object/123/acquisition/1/place>;
+  crm:P4_has_time-span <object/123/acquisition/1/date>.
+
+<object/123/acquisition/1/place> a crm:E53_Place;
+  rdfs:label "Paris";
+  crm:P87_is_identified_by <object/123/acquisition/1/place/name>.
+
+<object/123/acquisition/1/place/name> a crm:E48_Place_Name;
+  crm:P3_has_note "Paris".
+
+<object/123/acquisition/1/date> a crm:E52_Time-Span;
+  crm:P82a_begin_of_the_begin "1968-04-30"^^xsd:date;
+  crm:P82b_end_of_the_end "1968-05-01"^^xsd:date.
+  
+<object/123> crm:P51_has_former_or_current_owner <constituent/456>, <constituent/789>.
+
+<constituent/456> rdfs:label "new owner".
+<constituent/789> rdfs:label "old owner".
+<constituent/012> rdfs:label "auction house".
+
+####################
+crm:P14_carried_out_by              puml:arrow puml:right.
+crm:P51_has_former_or_current_owner puml:arrow puml:up.
+crm:P22_transferred_title_to        puml:arrow puml:up.
+crm:P23_transferred_title_from      puml:arrow puml:up.

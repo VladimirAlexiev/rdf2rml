@@ -1,0 +1,145 @@
+<http://jpgm.getty.edu/object/(ObjectID)!P102_has_title!(TitleIDclean)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "http://jpgm.getty.edu/object/{ObjectIDclean}/title/{TitleIDclean}" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P102_has_title .
+
+<http://jpgm.getty.edu/object/(ObjectID)!label!(TitlePrimary)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "{TitlePrimary}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  rdfs:label .
+
+<http://jpgm.getty.edu/object/(ObjectID)!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "\r\nselect *, \r\n  replace(',','',ObjectID) as ObjectIDclean\r\n  replace(',','',TitleID) as TitleIDclean\r\n  (case TitleType of 'Primary Title' then Title else null end) as TitlePrimary\r\nfrom titles.csv\r\n" ] ;
+        rr:predicateObjectMap  <http://jpgm.getty.edu/object/(ObjectID)!label!(TitlePrimary)> , <http://jpgm.getty.edu/object/(ObjectID)!P102_has_title!(TitleIDclean)> ;
+        rr:subjectMap          <http://jpgm.getty.edu/object/(ObjectID)!subj> .
+
+<http://jpgm.getty.edu/object/(ObjectID)!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E22_Man-Made_Object ;
+        rr:template  "http://jpgm.getty.edu/object/{ObjectID}" .
+
+<http://jpgm.getty.edu/object/(ObjectIDclean)/title/(TitleIDclean)!P1_is_identified_by!id>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "http://jpgm.getty.edu/object/{ObjectIDclean}/title/{TitleIDclean}/id" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P1_is_identified_by .
+
+<http://jpgm.getty.edu/object/(ObjectIDclean)/title/(TitleIDclean)!P2_has_type!(TitleTypeIDclean)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "http://jpgm.getty.edu/thesaurus/title/{TitleTypeIDclean}" ;
+                        rr:termType  rr:IRI
+                      ] ;
+        rr:predicate  crm:P2_has_type .
+
+<http://jpgm.getty.edu/object/(ObjectIDclean)/title/(TitleIDclean)!display_order!(DisplayOrder)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:datatype  xsd:integer ;
+                        rr:template  "{DisplayOrder}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  crmx:display_order .
+
+<http://jpgm.getty.edu/object/(ObjectIDclean)/title/(TitleIDclean)!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "\r\nselect *, \r\n  replace(',','',ObjectID) as ObjectIDclean\r\n  replace(',','',TitleID) as TitleIDclean\r\n  (case TitleType of 'Primary Title' then Title else null end) as TitlePrimary\r\nfrom titles.csv\r\n" ] ;
+        rr:predicateObjectMap  <http://jpgm.getty.edu/object/(ObjectIDclean)/title/(TitleIDclean)!display_order!(DisplayOrder)> , <http://jpgm.getty.edu/object/(ObjectIDclean)/title/(TitleIDclean)!P2_has_type!(TitleTypeIDclean)> , <http://jpgm.getty.edu/object/(ObjectIDclean)/title/(TitleIDclean)!value!(Title)> , <http://jpgm.getty.edu/object/(ObjectIDclean)/title/(TitleIDclean)!P1_is_identified_by!id> ;
+        rr:subjectMap          <http://jpgm.getty.edu/object/(ObjectIDclean)/title/(TitleIDclean)!subj> .
+
+<http://jpgm.getty.edu/object/(ObjectIDclean)/title/(TitleIDclean)!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E35_Title ;
+        rr:template  "http://jpgm.getty.edu/object/{ObjectIDclean}/title/{TitleIDclean}" .
+
+<http://jpgm.getty.edu/object/(ObjectIDclean)/title/(TitleIDclean)!value!(Title)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "{Title}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  rdf:value .
+
+<http://jpgm.getty.edu/object/(ObjectIDclean)/title/(TitleIDclean)/id!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "\r\nselect *, \r\n  replace(',','',ObjectID) as ObjectIDclean\r\n  replace(',','',TitleID) as TitleIDclean\r\n  (case TitleType of 'Primary Title' then Title else null end) as TitlePrimary\r\nfrom titles.csv\r\n" ] ;
+        rr:predicateObjectMap  <http://jpgm.getty.edu/object/(ObjectIDclean)/title/(TitleIDclean)/id!value!(TitleIDclean)> ;
+        rr:subjectMap          <http://jpgm.getty.edu/object/(ObjectIDclean)/title/(TitleIDclean)/id!subj> .
+
+<http://jpgm.getty.edu/object/(ObjectIDclean)/title/(TitleIDclean)/id!subj>
+        a            rr:SubjectMap ;
+        rr:class     crm:E42_Identifier ;
+        rr:template  "http://jpgm.getty.edu/object/{ObjectIDclean}/title/{TitleIDclean}/id" .
+
+<http://jpgm.getty.edu/object/(ObjectIDclean)/title/(TitleIDclean)/id!value!(TitleIDclean)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "{TitleIDclean}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  rdf:value .
+
+<http://jpgm.getty.edu/thesaurus/title/(TitleTypeIDclean)!exactMatch!SOMETHING>
+        a             rr:PredicateObjectMap ;
+        rr:object     aat:SOMETHING ;
+        rr:predicate  skos:exactMatch .
+<http://jpgm.getty.edu/thesaurus/title/(TitleTypeIDclean)!label!(TitleType)>
+        a             rr:PredicateObjectMap ;
+        rr:objectMap  [ a            rr:ObjectMap ;
+                        rr:template  "{TitleType}" ;
+                        rr:termType  rr:Literal
+                      ] ;
+        rr:predicate  rdfs:label .
+
+<http://jpgm.getty.edu/thesaurus/title/(TitleTypeIDclean)!map>
+        a                      rr:TriplesMap ;
+        rr:logicalTable        [ rr:sqlQuery  "\r\nselect *, \r\n  replace(',','',ObjectID) as ObjectIDclean\r\n  replace(',','',TitleID) as TitleIDclean\r\n  (case TitleType of 'Primary Title' then Title else null end) as TitlePrimary\r\nfrom titles.csv\r\n" ] ;
+        rr:predicateObjectMap  <http://jpgm.getty.edu/thesaurus/title/(TitleTypeIDclean)!label!(TitleType)> , <http://jpgm.getty.edu/thesaurus/title/(TitleTypeIDclean)!exactMatch!SOMETHING> ;
+        rr:subjectMap          <http://jpgm.getty.edu/thesaurus/title/(TitleTypeIDclean)!subj> .
+
+<http://jpgm.getty.edu/thesaurus/title/(TitleTypeIDclean)!subj>
+        a            rr:SubjectMap ;
+        rr:class     skos:Concept ;
+        rr:template  "http://jpgm.getty.edu/thesaurus/title/{TitleTypeIDclean}" .
+
+aat:SOMETHING  a  puml:Inline .
+
+crm:E22_Man-Made_Object
+        a       puml:Inline .
+
+crm:E35_Title  a  puml:Inline .
+
+crm:E42_Identifier  a  puml:Inline .
+
+crm:P102_has_title  a  puml:Inline .
+
+crm:P1_is_identified_by
+        a       puml:Inline .
+
+crm:P2_has_type  a  puml:Inline .
+
+crmx:display_order  a  puml:Inline .
+
+rdf:value  a    puml:Inline .
+
+rdfs:label  a   puml:Inline .
+
+rr:IRI  a       puml:Inline .
+
+rr:Literal  a   puml:Inline .
+
+skos:Concept  a  puml:Inline .
+
+skos:exactMatch  a  puml:Inline .
+
+xsd:integer  a  puml:Inline .
+

@@ -1,0 +1,11 @@
+@startuml
+hide empty methods
+hide empty attributes
+hide circle
+skinparam classAttributeIconSize 0
+class _object_ObjectID_provenance_ as "<object/(ObjectID)/provenance>"
+_object_ObjectID_provenance_ : a crm:E10_Transfer_of_Custody, crm:E8_Acquisition
+_object_ObjectID_provenance_ : crm:P3_has_note "[Provenance]"
+class _object_ObjectID_ as "<object/(ObjectID)>"
+_object_ObjectID_ -down-> _object_ObjectID_provenance_ : crm:P24i_changed_ownership_through\ncrm:P30i_custody_transferred_through
+@enduml

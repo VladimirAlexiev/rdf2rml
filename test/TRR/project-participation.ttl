@@ -1,0 +1,66 @@
+<organization/(Participant_PIC)> a trr:Organization;
+  puml:label "Or blank node if there's no Participant_PIC";
+  trr:id "(Participant_PIC)", "(Participant_PIC_In_Use) # bug TRR-116";
+  trr:name "oneOf(Participant_Legal_Name)";
+  trr:altName "(Participant_Legal_Name)";
+  trr:address "(Participant_Street_Name)";
+  trr:postalCode "(Participant_Postal_Code)";
+  trr:city "(Participant_City)";
+  trr:country "(Participant_Country)";
+  trr:webLink "splitAndClean(Participant_Internet_Homepage)";
+  trr:webDomain "computeFrom(Participant_Internet_Homepage)";
+  trr:email "fewFrom(Participant_Internet_Homepage)";
+  trr:emailDomain "computeFrom(fewFrom(Participant_Internet_Homepage))";
+  trr:isSME "(Participant_SME_Y_N)"^^xsd:boolean;
+  trr:type <organization/type/(Organisation_Type)>;
+  trr:status "raw # if no Participant_PIC";
+  trr:source <source/participants>.
+
+<person/Contact/(ROWNUM)> a trr:Person;
+  trr:personTitle "(Contact_Title)";
+  trr:nameFirst "(Contact_First_Name)";
+  trr:nameLast "(Contact_Last_Name)";
+  trr:name "concat(Contact_First_Name,Contact_Last_Name)";
+  trr:personFunction "(Contact_Function)";
+  trr:email "splitAndClean(Contact_Email)";
+  trr:emailDomain "computeFrom(Contact_Email)";
+  trr:phone "(Contact_Phone)";
+  trr:source <source/participants>;
+  trr:status "raw".
+
+<person/PI1/(ROWNUM)> a trr:Person;
+  trr:personTitle "(PI_Title)";
+  trr:nameFirst "(PI_First_Name)";
+  trr:nameLast "(PI_Last_Name)";
+  trr:name "concat(PI_First_Name,PI_Last_Name)";
+  trr:personFunction "(PI_Function)";
+  trr:email "splitAndClean(PI_Email)";
+  trr:emailDomain "computeFrom(PI_Email)";
+  trr:phone "(PI_Phone)";
+  trr:source <source/participants>;
+  trr:status "raw".
+
+<relation/Contact/(ROWNUM)> a trr:ProjectParticipation;
+  trr:project <project/(Project_ID)>;
+  trr:organization <organization/(Participant_PIC)>;
+  trr:organizationRole "(Participant_Role)";
+  trr:person <person/Contact/(ROWNUM)>;
+  trr:personRole "Contact";
+  trr:source <source/participants>.
+
+<relation/PI1/(ROWNUM)> a trr:ProjectParticipation;
+  trr:project <project/(Project_ID)>;
+  trr:organization <organization/(Participant_PIC)>;
+  trr:person <person/PI1/(ROWNUM)>;
+  trr:personRole "PrincipalInvestigator";
+  trr:source <source/participants>.
+
+<source/participants> a trr:Source;
+  trr:src "EC";
+  trr:fileName "TRR_metadata_7893-participants.csv".
+
+##########
+
+trr:type a puml:InlineProperty.
+trr:project puml:arrow puml:up.
+<project/(Project_ID)> a trr:Project.

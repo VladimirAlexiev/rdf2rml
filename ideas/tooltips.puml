@@ -1,0 +1,45 @@
+@startuml
+hide empty members
+hide circles
+hide stereotype
+
+skinparam {
+  HyperlinkColor black
+  HyperlinkUnderline false
+}
+skinparam class {
+  BackgroundColor<<artwork>>     LightBlue
+  BackgroundColor<<appellation>> Tomato
+}
+
+title Tooltip examples: Generic, JSONLD, RDF
+
+class node1 [[{Tooltip of node1}]] {
+  [[field{Tooltip of field}]]
+}
+class node2 [[{Tooltip of node2}]] 
+node1 --> node2 : [[edge{Tooltip of edge}]]
+
+
+class MMO1 as "<object/1>" <<artwork>> {
+ [[<U+1F3A8> type ManMadeObject{a crm:E22_Man-Made_Object}]]
+ [[classified_as aat:300033618{crm:P2_has_type "painting [visual work]"}]]
+}
+class Title1 as "<object/1/title>" <<appellation>> {
+  [[<U+260F> type Appellation{a crm:E41_Appellation}]]
+  [[value "Peasant and Sheep"{rdf:value}]]
+}
+MMO1 --> Title1 : [[identified_by{crm:P1_is_identified_by}]]
+
+
+class MMO2 as "<object/1>" <<artwork>> {
+ [[<U+1F3A8> a crm:E22_Man-Made_Object{type ManMadeObject}]]
+ [[crm:P2_has_type aat:300033618{classified_as "painting [visual work]"}]]
+}
+class Title2 as "<object/1/title>" <<appellation>> {
+  [[<U+260F> a crm:E41_Appellation{Appellation}]]
+  [[rdf:value "Peasant and Sheep"{value}]]
+}
+MMO2 --> Title2 : [[crm:P1_is_identified_by{identified_by}]]
+
+@enduml

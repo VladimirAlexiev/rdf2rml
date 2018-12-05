@@ -1,0 +1,16 @@
+<map id="tooltips_map" name="tooltips_map">
+<area shape="rect" id="id1" href="field" title="Tooltip of field" alt="" coords="12,65,32,79"/>
+<area shape="rect" id="id2" href="edge" title="Tooltip of edge" alt="" coords="27,121,55,137"/>
+<area shape="rect" id="id3" href="" title="Tooltip of node2" alt="" coords="6,187,47,212"/>
+<area shape="rect" id="id4" href="identified_by" title="crm:P1_is_identified_by" alt="" coords="158,121,230,137"/>
+<area shape="rect" id="id5" href="<U+260F> type Appellation" title="a crm:E41_Appellation" alt="" coords="92,197,183,211"/>
+<area shape="rect" id="id6" href="<U+1F3A8> type ManMadeObject" title="a crm:E22_Man-Made_Object" alt="" coords="88,58,203,72"/>
+<area shape="rect" id="id7" href="<U+260F> a crm:E41_Appellation" title="Appellation" alt="" coords="279,197,400,211"/>
+<area shape="rect" id="id8" href="value "Peasant and Sheep"" title="rdf:value" alt="" coords="92,211,223,225"/>
+<area shape="rect" id="id9" href="classified_as aat:300033618" title="crm:P2_has_type &#34;painting [visual work]&#34;" alt="" coords="88,72,227,86"/>
+<area shape="rect" id="id10" href="" title="Tooltip of node1" alt="" coords="6,37,47,84"/>
+<area shape="rect" id="id11" href="rdf:value "Peasant and Sheep"" title="value" alt="" coords="279,211,427,225"/>
+<area shape="rect" id="id12" href="<U+1F3A8> a crm:E22_Man-Made_Object" title="type ManMadeObject" alt="" coords="274,58,429,72"/>
+<area shape="rect" id="id13" href="crm:P2_has_type aat:300033618" title="classified_as &#34;painting [visual work]&#34;" alt="" coords="274,72,433,86"/>
+<area shape="rect" id="id14" href="crm:P1_is_identified_by" title="identified_by" alt="" coords="354,121,492,137"/>
+</map>

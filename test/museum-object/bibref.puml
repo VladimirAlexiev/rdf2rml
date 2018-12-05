@@ -1,0 +1,44 @@
+@startuml
+hide empty methods
+hide empty attributes
+hide circle
+skinparam classAttributeIconSize 0
+class _npg_reference_ReferenceID_publication_date_ as "<npg/reference/(ReferenceID)/publication/date>"
+_npg_reference_ReferenceID_publication_date_ : a crm:E52_Time-Span
+_npg_reference_ReferenceID_publication_date_ : crm:P82_at_some_time_within "[YearPublished]"^^xsd:gYear
+class _npg_reference_ReferenceID_publication_place_name_ as "<npg/reference/(ReferenceID)/publication/place/name>"
+_npg_reference_ReferenceID_publication_place_name_ : a crm:E44_Place_Appellation
+_npg_reference_ReferenceID_publication_place_name_ : crm:P3_has_note "[PlacePublished]"
+class _npg_reference_ReferenceID_subtitle_ as "<npg/reference/(ReferenceID)/subtitle>"
+_npg_reference_ReferenceID_subtitle_ : a crm:E35_Title
+_npg_reference_ReferenceID_subtitle_ : crm:P2_has_type aat:NEW # subtitle
+class _npg_reference_ReferenceID_publication_place_ as "<npg/reference/(ReferenceID)/publication/place>"
+_npg_reference_ReferenceID_publication_place_ : a crm:E53_Place
+_npg_reference_ReferenceID_publication_place_ -down-> _npg_reference_ReferenceID_publication_place_name_ : crm:P87_is_identified_by
+class _npg_reference_ReferenceID_publication_ as "<npg/reference/(ReferenceID)/publication>"
+_npg_reference_ReferenceID_publication_ : a frbroo:F30_Publication_Event
+_npg_reference_ReferenceID_publication_ -down-> _npg_reference_ReferenceID_publication_place_ : crm:P7_took_place_at
+_npg_reference_ReferenceID_publication_ -down-> _npg_reference_ReferenceID_publication_date_ : crm:P4_has_time-span
+class _npg_reference_ReferenceID_title_ as "<npg/reference/(ReferenceID)/title>"
+_npg_reference_ReferenceID_title_ : a crm:E35_Title
+_npg_reference_ReferenceID_title_ : crm:P2_has_type aat:300195168 # title [document]
+class _npg_reference_ReferenceID_ as "<npg/reference/(ReferenceID)>"
+_npg_reference_ReferenceID_ : a frbroo:F24_Publication_Expression, crm:E31_Document
+_npg_reference_ReferenceID_ -down-> _npg_reference_ReferenceID_subtitle_ : crm:P102_has_title
+_npg_reference_ReferenceID_ -down-> _npg_reference_ReferenceID_title_ : crm:P102_has_title
+_npg_reference_ReferenceID_ -down-> _npg_reference_ReferenceID_publication_ : frbroo:R24i_was_created_through
+_npg_reference_ReferenceID_ :  "TODO emit ReferenceID as crm:E42_Identifier?"
+_npg_reference_ReferenceID_ : crm:P2_has_type <thesaurus/reference/[Format]> # Book, Periodical, Exh.Catalog
+class _npg_object_ObjectID_reference_RefObjXrefID_ as "<npg/object/(ObjectID)/reference/(RefObjXrefID)>"
+_npg_object_ObjectID_reference_RefObjXrefID_ : a crm:E31_Document
+_npg_object_ObjectID_reference_RefObjXrefID_ -left-> _npg_reference_ReferenceID_ : crm:P106i_forms_part_of
+class _npg_object_ObjectID_reference_RefObjXrefID_page_ as "<npg/object/(ObjectID)/reference/(RefObjXrefID)/page>"
+_npg_object_ObjectID_reference_RefObjXrefID_ -down-> _npg_object_ObjectID_reference_RefObjXrefID_page_ : crm:P1_is_identified_by
+_npg_object_ObjectID_reference_RefObjXrefID_ : crm:P3_has_note "[Remarks]"
+class _npg_object_ObjectID_ as "<npg/object/(ObjectID)>"
+_npg_object_ObjectID_ -down-> _npg_object_ObjectID_reference_RefObjXrefID_ : crm:P70i_is_documented_in
+_npg_object_ObjectID_reference_RefObjXrefID_page_ : a crm:E42_Identifier
+_npg_object_ObjectID_reference_RefObjXrefID_page_ :  "similar for CatalogueNumber and FigureNumber"
+_npg_object_ObjectID_reference_RefObjXrefID_page_ : crm:P2_has_type <thesaurus/identifier/pageNumber>
+_npg_object_ObjectID_reference_RefObjXrefID_page_ : crm:P3_has_note "[PageNumber]"
+@enduml

@@ -1,0 +1,35 @@
+@startuml
+hide empty methods
+hide empty attributes
+hide circle
+skinparam classAttributeIconSize 0
+class _npg_object_1_ as "<npg/object/1>"
+class _npg_object_1_production_ as "<npg/object/1-production>"
+_npg_object_1_ -down-> _npg_object_1_production_ : crm:P108i_was_produced_by
+class _npg_object_2_mold_production_ as "<npg/object/2-mold-production>"
+_npg_object_2_mold_production_ : a crm:E12_Production
+class _npg_constituent_3_ as "<npg/constituent/3>"
+_npg_object_2_mold_production_ -down-> _npg_constituent_3_ : crm:P14_carried_out_by
+class _npg_object_2_mold_ as "<npg/object/2-mold>"
+_npg_object_2_mold_ : a crm:E22_Man-Made_Object
+_npg_object_2_mold_ -down-> _npg_object_2_mold_production_ : crm:P108i_was_produced_by
+_npg_object_2_mold_ : crm:P2_has_type aat:300024814 # mold [shaping equipment]
+class _npg_object_2_production_ as "<npg/object/2-production>"
+_npg_object_2_production_ : a crm:E12_Production
+_npg_object_2_production_ -down-> _npg_object_2_mold_ : crm:P16_used_specific_object
+class _npg_constituent_1_ as "<npg/constituent/1>"
+_npg_object_2_production_ -down-> _npg_constituent_1_ : crm:P14_carried_out_by
+_npg_object_1_production_ : a crm:E12_Production
+class _npg_constituent_2_ as "<npg/constituent/2>"
+_npg_object_1_production_ -down-> _npg_constituent_2_ : crm:P15_was_influenced_by
+_npg_object_1_production_ -down-> _npg_constituent_1_ : crm:P14_carried_out_by
+class _npg_object_1_contribution_2_ as "<npg/object/1/contribution/2>"
+_npg_object_1_contribution_2_ : a crm:E13_Attribute_Assignment
+_npg_object_1_contribution_2_ : crm:P2_has_type\n  <thesaurus/contribution/copyAfter>,\n  <thesaurus/contribution/sculptor>
+class _npg_object_2_ as "<npg/object/2>"
+_npg_object_2_ -down-> _npg_object_2_production_ : crm:P108i_was_produced_by
+(_npg_object_1_production_, _npg_constituent_2_) . _npg_object_1_contribution_2_
+_npg_object_1_contribution_2_ : ↑ crm:P140_assigned_attribute_to <npg/object/1-production>
+_npg_object_1_contribution_2_ : .. crmx:property crm:P15_was_influenced_by
+_npg_object_1_contribution_2_ : ↓ crm:P141_assigned <npg/constituent/2>
+@enduml
