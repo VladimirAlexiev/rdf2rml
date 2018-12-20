@@ -1,5 +1,5 @@
 #+OPTIONS: ':nil *:t -:t ::t <:t H:5 \n:nil ^:{} arch:headline author:t broken-links:nil
-#+OPTIONS: c:nil creator:nil d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:nil
+#+OPTIONS: c:nil creator:nil d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:t
 #+OPTIONS: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t timestamp:nil title:t toc:5
 #+OPTIONS: todo:t |:t
 #+TITLE: RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation
@@ -71,11 +71,15 @@ Post bugs and enhancement requests to this repo!
 
 ** Near-term
 - Modularize and package better.
-  - Jonas Smedegaard (dr at jones fullstop dk) has volunteered, so this may happen soon
+  - Jonas Smedegaard (@jonassmedegaard, dr at jones fullstop dk) has volunteered, so this may happen soon.
+    Development is at https://salsa.debian.org/debian/rdf2rml/branches
 - Release on CPAN
 - Add Unicode tests (ttl with non-ASCII chars: Cyrillic, French, etc)
-- Batch a number of ~ttl~ files to one ~puml~ file
-  - Rationale: plantuml is slow to start up, so putting several diagrams in one file will make things faster:
+- Eliminate the dependency of rdfpuml on [[./lib/RDF/Prefixes/Curie.pm]] once [[https://github.com/kasei/perlrdf/issues/131][perlrdf#131]] is fixed
+
+*** Batch Processing
+#1: Batch a number of ~ttl~ files to one ~puml~ file.
+Rationale: plantuml is slow to start up, so putting several diagrams in one file will make things faster:
     #+BEGIN_SRC puml
     @startuml file1.png
       # made from file1.ttl
@@ -85,10 +89,9 @@ Post bugs and enhancement requests to this repo!
     @enduml
     #+END_SRC
   - However, this interferes with ~make~ processing that regenerates only ~png~ for changed ~ttl~ files.
-    So we need a smarter ~Makefile~ that batches up only the changed ~ttl~ for processing.
+    So we need a smarter outer script or ~Makefile~ that batches up only the changed ~ttl~ for processing.
   - ~rdfpuml~ should take multiple input files, and write a single output
   - It would also be useful to take a whole folder of ~ttl~ tiles as input
-- Eliminate the dependency of rdfpuml on [[./lib/RDF/Prefixes/Curie.pm]] once [[https://github.com/kasei/perlrdf/issues/131][perlrdf#131]] is fixed
 
 ** Mid-Term
 - Upgrade to use [[https://github.com/kasei/attean][Attean]] instead of [[https://github.com/kasei/perlrdf][Trine (Perl RDF)]]
