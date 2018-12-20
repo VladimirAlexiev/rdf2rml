@@ -72,7 +72,20 @@ Post bugs and enhancement requests to this repo!
 ** Near-term
 - Modularize and package better.
   - Jonas Smedegaard (@jonassmedegaard, dr at jones fullstop dk) has volunteered, so this may happen soon.
-    Development is at https://salsa.debian.org/debian/rdf2rml/branches
+    Development is at https://salsa.debian.org/debian/rdf2rml/branches.
+  - To adopt changes, do something like this. Tp merge *all* commits in the salsa/develop branch:
+  
+#+BEGIN_SRC sh
+  cd rdf2rml    # i.e. your local clone of your Github project
+  git remote add salsa https://salsa.debian.org/debian/rdf2rml.git
+  git fetch salsa
+  git merge salsa/develop
+#+END_SRC
+
+  - To adopt only single commits from my develop branch, instead do something this instead (replacing final command above; "git remote" is needed only initially):
+
+:  git cherry-pick $commit1 $commit2 $commit3
+    
 - Release on CPAN
 - Add Unicode tests (ttl with non-ASCII chars: Cyrillic, French, etc)
 - Eliminate the dependency of rdfpuml on [[./lib/RDF/Prefixes/Curie.pm]] once [[https://github.com/kasei/perlrdf/issues/131][perlrdf#131]] is fixed
