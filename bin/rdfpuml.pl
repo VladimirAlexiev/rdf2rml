@@ -113,8 +113,7 @@ my $map = RDF::Prefixes::Curie->new ($prefixes_all);
 my $dirname = dirname(__FILE__);
 my $plantuml_cfg_fn = "plantuml.cfg";
 my $sep = File::Spec->catfile('', '');
-my $plantuml_cfg_path = $dirname . $sep  . $plantuml_cfg_fn;
-
+my $plantuml_cfg_path = $dirname . $sep . $plantuml_cfg_fn;
 open my $plantuml_cfg_fh, '<', $plantuml_cfg_path or die "Can't open $plantuml_cfg_path $!";
 my $plantuml_cfg  = do { local $/; <$plantuml_cfg_fh> };
 
