@@ -25,6 +25,7 @@ use FindBin;
 use lib "$FindBin::Bin/../lib"; # Curie is my own module, not yet on CPAN
 use RDF::Prefixes::Curie;
 #use Smart::Comments;
+use File::Basename;
 
 my %PREFIXES =
   (
@@ -109,13 +110,19 @@ my $parser = RDF::Trine::Parser->new('turtle');
 $parser->parse_into_model (undef, $turtle, $model);
 my $map = RDF::Prefixes::Curie->new ($prefixes_all);
 
+my $dirname = dirname(__FILE__);
+my $plantuml_cfg_fn = "plantuml.cfg";
+my $sep = File::Spec->catfile('', '');
+my $plantuml_cfg_path = $dirname . $sep  . $plantuml_cfg_fn;
+
+open my $plantuml_cfg_fh, '<', $plantuml_cfg_path or die "Can't open $plantuml_cfg_path $!";
+my $plantuml_cfg  = do { local $/; <$plantuml_cfg_fh> };
+
 myprint (<<'EOF');
 @startuml
-hide empty methods
-hide empty attributes
-hide circle
-skinparam classAttributeIconSize 0
 EOF
+
+myprint ("$plantuml_cfg\n");
 
 stereotypes();
 replace_inlines();
