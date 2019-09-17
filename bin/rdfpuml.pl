@@ -103,7 +103,7 @@ my $outfile = '';
 my $prefixfile = '';
 my $plantumlcfgfile = '';
 my $help = 0;
-GetOptions('infile' => \$infile, 'outfile=s'=> \$outfile, 'prefixfile'=> \$prefixfile, 'plantumlcfgfile=s'=> \$plantumlcfgfile, 'help|?'=> \$help) or pod2usage(2);
+GetOptions('infile' => \$infile, 'outfile=s'=> \$outfile, 'prefixfile=s'=> \$prefixfile, 'plantumlcfgfile=s'=> \$plantumlcfgfile, 'help|?'=> \$help) or pod2usage(2);
 pod2usage(1) if $help;
 
 =head1 NAME 
@@ -158,16 +158,15 @@ myprint ("Processing file [$ARGV[0]] \n");
 
 my $sep = File::Spec->catfile('', '');
 $outfile = path( $outfile || $infile->parent . $sep . $infile->basename('.ttl') . '.puml' );
-myprint ("PUML output file [$outfile] \n");
 
-$prefixfile = $prefixfile || $infile->sibling('prefixes.ttl');
+$prefixfile = path( $prefixfile || $infile->sibling('prefixes.ttl') );
 
 my $prefixes = $prefixfile->exists ? $prefixfile->slurp_utf8 : "";
 my $data = $infile->slurp_utf8;
 my $turtle = "$PREFIXES_TURTLE\n$prefixes\n$data";
 my $prefixes_all = "$PREFIXES_TURTLE\n$prefixes";
 unless ($plantumlcfgfile) {
-  $plantumlcfgfile = dirname(__FILE__) . $sep . "plantuml.cfg";
+  $plantumlcfgfile = dirname(__FILE__) . $sep . ".." . $sep . "plantuml" . $sep . "plantuml.cfg";
 }
 my $plantumlcfgfile_path = path( $plantumlcfgfile );
 my $plantuml_cfg = $plantumlcfgfile_path->exists ? $plantumlcfgfile_path->slurp_utf8 : ""; 

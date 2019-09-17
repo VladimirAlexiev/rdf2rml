@@ -1,0 +1,3 @@
+#! /bin/sh -e
+
+perl -S /puml-doc/rdf2rml/bin/rdfpuml.pl "$@"
