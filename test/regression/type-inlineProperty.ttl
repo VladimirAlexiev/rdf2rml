@@ -1,0 +1,3 @@
+nom:21942 a skos:Concept .
+nom:history_123 ppt_history:resourceType skos:Concept.
+ppt_history:resourceType a puml:InlineProperty.

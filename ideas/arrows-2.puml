@@ -1,0 +1,19 @@
+@startuml arrows
+skinparam monochrome true
+skinparam cardBackgroundColor white
+card "<&arrow-right>" as 20
+card ".." as 21
+20 .. 21
+card "--" as 22
+20 -- 22
+card "==" as 23
+20 == 23
+card "-(0-" as 24
+20 -(0- 24
+card "--(0" as 15
+20 --(0 15
+card "--+" as 16
+20 --+ 16
+card "--^" as 17
+20 --^ 17
+@enduml

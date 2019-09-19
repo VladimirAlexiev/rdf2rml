@@ -1,0 +1,10 @@
+@startuml
+hide empty methods
+hide empty attributes
+hide circle
+skinparam classAttributeIconSize 0
+class nom_history_123 as "nom:history_123"
+nom_history_123 : ppt_history:resourceType skos:Concept
+class nom_21942 as "nom:21942"
+nom_21942 : a skos:Concept
+@enduml

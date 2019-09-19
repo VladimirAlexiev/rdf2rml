@@ -3,7 +3,7 @@
 #+OPTIONS: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t timestamp:nil title:t toc:5
 #+OPTIONS: todo:t |:t
 #+TITLE: RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation
-#+DATE: <2018-12-06>
+#+DATE: <2019-09-18>
 #+AUTHOR: Vladimir Alexiev
 #+EMAIL: vladimir.alexiev@ontotext.com
 #+LANGUAGE: en
@@ -63,55 +63,139 @@ Install the following prerequisites:
   - [[https://jena.apache.org/download/][Apache Jena]]: ~riot~, ~update~. Tested with version 3.1.0 of 2016-05-10.
   - cat, grep, rm
 
-* TODO 
+* Change Log [3/3]
+
+** DONE 2018-11-14 Avoid puml:stereotype class node        :VladimirAlexiev:
+I often define ~puml:stereotype~ for some classes in prefixes.ttl.
+If the class is not used in some particular turtle, it should avoid emitting a disconnected puml class.
+- `stereotypes`: Avoid emitting
+- `has_statements_different_from`: Check that a node has statements other than puml:stereotype
+
+** DONE 2018-06-29 Bug: class and puml:InlineProperty      :VladimirAlexiev:
+When a type is also used with puml:InlineProperty, it caused this error:
+: Can't locate object method "uri_value" via package "RDF::Trine::Node::Literal" at rdfpuml.pl line 261.
+:    main::puml_qname(RDF::Trine::Node::Literal=ARRAY(0x4fd0920)) called at rdfpuml.pl line 279
+:    main::puml_node2(RDF::Trine::Node::Literal=ARRAY(0x4fd0920)) called at rdfpuml.pl line 128
+An inline is converted to a literal, but rdf:type is always assumed to be a URL.
+
+Test: [[./test/regression/type-inlineProperty.ttl]]
+
+** DONE 2018-04-05 Arrow Attributes                        :VladimirAlexiev:
+Add arrow attributes (dotted, dashed, bold) and length
+
+Test: [[./test/regression/arrowLen.ttl]]
+
+
+* To Do Tasks [2/11]
 Help needed for the following tasks.
 Post bugs and enhancement requests to this repo!
 
-** Done
+** Near-term [2/11]
+*** TODO Modularize and package better
+- Jonas Smedegaard (dr at jones fullstop dk) has volunteered, so this may happen soon
+*** TODO Release on CPAN
+*** DONE Easier installation
+There's a pull request https://github.com/VladimirAlexiev/rdf2rml/pull/7 that dockerizes the installation.
+As of 18-Sep-2019 it's undergoing code review.
+*** Unicode [0/2]
+**** TODO Get rid of ~myprint()~
+This was made because of some Unicode troubles
+**** TODO Add Unicode tests
+ttl with non-ASCII chars: Cyrillic, French, etc
+*** Prefixes [0/3]
+**** TODO Eliminate Curie.pm
+[[./lib/RDF/Prefixes/Curie.pm]] remembers ~@base~ and uses that for URL shortening.
+Once [[https://github.com/kasei/perlrdf/issues/131][perlrdf#131]] is fixed, eliminate this dependency (local module)
+**** TODO Remember prefixes from input file
+~rdfpuml~ shortens URLs using prefixes only from ~prefixes.ttl~, but should also use prefixes defined in the individual input file.
+**** DONE Allow specifying the prefixes file
+See https://github.com/VladimirAlexiev/rdf2rml/pull/7
+**** TODO Support more RDF Formats
+Now it only supports Turtle, because it concatenates ~prefixes.ttl~ to the main file.
+If it can collect all prefixes from RDF files, such concatenation won't be needed
 
-** Near-term
-- Modularize and package better.
-  - Jonas Smedegaard (dr at jones fullstop dk) has volunteered, so this may happen soon
-- Release on CPAN
-- Add Unicode tests (ttl with non-ASCII chars: Cyrillic, French, etc)
-- Batch a number of ~ttl~ files to one ~puml~ file
-  - Rationale: plantuml is slow to start up, so putting several diagrams in one file will make things faster:
-    #+BEGIN_SRC puml
-    @startuml file1.png
-      # made from file1.ttl
-    @enduml
-    @startuml file2.png
-      # made from file2.ttl
-    @enduml
-    #+END_SRC
-  - However, this interferes with ~make~ processing that regenerates only ~png~ for changed ~ttl~ files.
-    So we need a smarter ~Makefile~ that batches up only the changed ~ttl~ for processing.
-  - ~rdfpuml~ should take multiple input files, and write a single output
-  - It would also be useful to take a whole folder of ~ttl~ tiles as input
-- Eliminate the dependency of rdfpuml on [[./lib/RDF/Prefixes/Curie.pm]] once [[https://github.com/kasei/perlrdf/issues/131][perlrdf#131]] is fixed
+*** TODO Batching of ~ttl~ Files
+Plantuml is slow to start up, so we'd like to process a bunch of ~puml~ files at once.
+The best way is to have a smarter script or ~Makefile~ that uses the following http://plantuml.com/command-line features:
+- Keep the intermediate ~puml~ files (the current ~Makefile~ doesn't preserve them)
+- Run ~plantuml~ on a whole folder (with ~-r[ecurse]~ it can even recurse through subfolders)
+- Use ~-checkmetadata~ to skip ~png~ files that don't need to be regenerated.
+  (The whole ~puml~ text is stored in the ~png~, 
+  so ~plantuml~ can quickly check that there are no changes)
+- The ~Makefile~ should start ~plantuml~ only once, if some of the ~puml~ files is newer than its respective ~png~ file
 
-** Mid-Term
-- Upgrade to use [[https://github.com/kasei/attean][Attean]] instead of [[https://github.com/kasei/perlrdf][Trine (Perl RDF)]]
-- Integrate in Emacs ~org-mode~: write Turtle, see diagram (easy to do)
-- Enahnce rdfpuml to allow node colors, icons and tooltips (see [[./ideas]])
-- Ability to describe custom reification situations using the Property Reification Vocabulary (PRV)
+**** "Manual" Batching
+Before I discovered the ~-checkmetadata~ option, 
+I had the idea that ~rdfpuml~ could put several diagrams in one ~puml~ file:
+#+BEGIN_SRC puml
+@startuml file1.png
+  # made from file1.ttl
+@enduml
+@startuml file2.png
+  # made from file2.ttl
+@enduml
+#+END_SRC
+However, this interferes with ~make~ processing that regenerates only ~png~ for changed ~ttl~ files,
+and makes things less modular overall.
 
-** Long-Term
-- Extend rdf2rml to describe & generate RDF Shapes
-- Another tool to visualize RDF Shapes (SHACL and ShEx)
-- R2RML works great for RDBMS, but how about other sources?
-  Extend rdf2rml to generate:
+** Mid-Term [0/5]
+*** TODO Upgrade to use Attean
+[[https://github.com/kasei/perlrdf][Trine (Perl RDF)]] is end of life. [[https://github.com/kasei/attean][Attean]] is the new generation
+*** TODO Integrate in Emacs ~org-mode~
+Write Turtle, see diagram (easy to do)
+*** TODO Allow node colors, icons, tooltips
+See [[./ideas]]
+*** TODO Allow more arrows
+See `arrows arrows-2` from https://github.com/anoff/blog/tree/master/static/assets/plantuml/diagrams:
+
+[[./ideas/arrows.png]] [[./ideas/arrows-2.png]]
+*** TODO Extra Layout Options
+Local layout options are described in [[http://wiki.plantuml.net/site/class-diagram#help_on_layout][Help on Layout]]:
+- "hidden" makes a constraint between two nodes, but does not draw the link (~rdfpuml~ already implements this)
+- [[https://forum.plantuml.net/3188/add-norank-option-on-links][norank]] ignores a link for layout purposes (same as graphviz ~constraint=false~)
+- "together" groups classes as if they were in the same package (i.e. puts them in a graphviz cluster)
+
+Global options include (eg see [[http://www.plantuml.com/plantuml/uml/bP8nQmCn38Lt_mfnoq7XGZgrGoYXMJeqIpfqTkwKdeXi7xRI4kYFBvSORCSGg8OGdlJfFPbR1z5UJePLsuuq8FJaUqPr-OzcaZCOD7lq8PUqYAVzIJ2eS2GxQQyDC5cKyuJWl8mkQuHH3-w7x1SSD0TKRMfjoMvOX_19WupmjCnxrWqOS8BdGlNQ7gEg55b1Vz0zmlOIyfs2e4LVDNQECHFVDFC7-c_giHfLgct18siXPmEqhL8R9hG2LNNTIodaUyj4QMRrs-N8TNTbqJmsLuleq2mNYuS6ydDKvXQfsY66kacJzdM5NnoUVnAVtzj16MVdd56pK3350IMmSLQyOyOXldQTB8AhsIsl2arl0RVtH_G-MK2HlC_DvwPsdXN-mQMw-NxYzBruXT6hauYiqGudmty0][this diagram]]):
+#+begin_plantuml
+skinparam Linetype ortho
+skinparam NodeSep 80
+skinparam RankSep 80
+skinparam Padding 5
+skinparam MinClassWidth 40
+skinparam SameClassWidth true
+#+end_plantuml
+
+And there are a lot more undocumented features: https://forum.plantuml.net/7095
+
+*** TODO Custom Reification
+Ability to describe custom reification situations using the Property Reification Vocabulary (PRV)
+
+*** TODO Use MindMap/WBS for Hierarchies
+Plantuml now has [[http://plantuml.com/mindmap-diagram][MindMap]] and [[http://plantuml.com/wbs-diagram][WBS (or OBS)]] diagrams that use a simple bulleted syntax to draw hierarchies.
+
+It would be nice to use this to draw hierarchies of individuals, in particular taxonomies.
+
+Here are examples of the two styles:
+
+http://www.plantuml.com/plantuml/png/SoWkIImgoStCIybDBE3IKd1szUVIqbBmLGi6Ka0wiIWxjIGpBntC2qxCIIq6IJk7W5Mv-0Q0nTsB4WioN9p0x82Sn9Aq_A9SBeVKl1IekG00
+
+http://www.plantuml.com/plantuml/png/SoWkIImgAKygvj9IS7RrvzBIKl1L2mPIG3gnA3kr93Cl7SmBJin9BGP9EuU0LRdu1e35tOiI2p9SdC3iW9p4ahJyebmkXzIy5A2P0000
+
+** Long-Term [0/3]
+*** TODO Extend rdf2rml to describe & generate RDF Shapes
+*** TODO Visualize RDF Shapes (SHACL and ShEx)
+*** TODO Generate transformations for other than relational sources
+R2RML works great for RDBMS, but how about other sources?
+Extend rdf2rml to generate:
   - [[http://rml.io][RML:]] extends R2RML to handle RDB, XML, JSON, CSV
   - [[http://github.com/semantalytics/xsparql][XSPARQL:]] extends XQuery with SPARQL construct and JSON input
   - [[https://tarql.github.io/][tarql]]: handles TSV/CSV with SPARQL construct
 
-* Citation
+* Citations
 If you use this software, please cite it
-
-RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation.
-Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16), Bonn, Germany, November 2016.
-[[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index.html][Presentation]], [[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index-full.html][HTML]], [[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf][PDF]], [[https://youtu.be/4WoYlaGF6DE][Video]].
-
+- RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation.
+  Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16), Bonn, Germany, November 2016.
+  [[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index.html][Presentation]], [[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index-full.html][HTML]], [[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf][PDF]], [[https://youtu.be/4WoYlaGF6DE][Video]].
 
 #+BEGIN_SRC bibtex
 @InProceedings{Alexiev-rdfpuml-rdf2rml,
@@ -131,6 +215,10 @@ Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16), Bonn, Germany, November
 }
 #+END_SRC
 
-* Related Work
+The following papers mention the software:
+- Zhuhadar, L., & Ciampa, M. (2017). Leveraging learning innovations in cognitive computing with massive data sets: Using the offshore Panama papers leak to discover patterns. Computers in Human Behavior. doi:10.1016/j.chb.2017.12.013
+- Debruyne, C., Lewis, D. and O’Sullivan, D., (October 2018). Generating Executable Mappings from RDF Data Cube Data Structure Definitions. In OTM Confederated International Conferences "On the Move to Meaningful Internet Systems" (pp. 333-350). Springer. doi:10.1007/978-3-030-02671-4_21
+
+** Related Work
 
 - https://github.com/mrihtar/rdfgraph by Matjaz Rihtar (a colleague in euBusinessGraph) is inspired by rdfpuml, written in Python 2.7, and uses Redland's librdf library
