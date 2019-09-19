@@ -1,0 +1,60 @@
+## Academia Europaea Instance data
+
+<organization/Wikidata/Q337234> a trr:Organization ;
+	trr:name        "Academia Europaea"@en ;
+	trr:description "pan-European academy of sciences"@en ;
+	trr:country     "Europe"@en ;
+	trr:identifier  <http://trr.ontotext.com/resource/identifier/Wikidata/Q337234> ;
+	trr:source      <http://trr.ontotext.com/resource/source/Wikidata/Q337234> ;
+	trr:type        "society" .
+
+
+<source/Wikidata/Q337234> a trr:Source ;
+	trr:src           "Wikidata" ;
+	trr:webLink       <https://www.wikidata.org/wiki/Q337234> ;
+	trr:semanticLink  wd:Q337234 .
+
+<identifier/Wikidata/Q337234> a trr:Identifier ;
+	trr:type          "Wikidata" ;
+	trr:id            "Q337234" ;
+	trr:webLink       <https://www.wikidata.org/wiki/Q337234> ;
+	trr:semanticLink  wd:Q337234 .
+
+## Person Instance Data
+
+<person/Wikidata/Q44286> a trr:Person;
+  trr:country     "Germany";
+  trr:description "german nuclear physicist";
+  trr:field       "physics";
+  trr:identifier  <identifier/Wikidata/Q44286>;
+  trr:name        "Rudolf Mössbauer";
+  trr:occupation  "physicist", "university teacher";
+  trr:source      <source/Wikidata/Q44286>;
+  trr:status      "raw" .
+
+<identifier/Wikidata/Q44286> a trr:Identifier;
+  trr:id            "Q44286";
+  trr:semanticLink  <http://www.wikidata.org/entity/Q44286>;
+  trr:type          "Wikidata";
+  trr:webLink       <https://www.wikidata.org/wiki/Q44286> .
+
+<source/Wikidata/Q44286> a trr:Source;
+  trr:semanticLink    <http://www.wikidata.org/entity/Q44286>;
+  trr:src             "Wikidata";
+  trr:webLink         <https://www.wikidata.org/wiki/Q44286> .
+
+
+## Membership Info
+
+<societyMember/Q44286-FA1E2239-73A1-4107-A30F-7E8A571EBA5F> a trr:SocietyMember ;
+  trr:organization    <organization/Wikidata/Q337234> ;
+  trr:person          <person/Wikidata/Q44286> ;
+  trr:dateStart       "1988"^^xsd:year;
+  trr:field           "PHYSICS & ENGINEERING SCIENCES" ;
+  trr:source          <source/societyMember/Q44286-FA1E2239-73A1-4107-A30F-7E8A571EBA5F> .
+
+<source/societyMember/Q44286-FA1E2239-73A1-4107-A30F-7E8A571EBA5F> a trr:Source ;
+  trr:src            "Wikidata";
+  trr:webLink        <https://www.wikidata.org/wiki/Q44286#Q44286$FA1E2239-73A1-4107-A30F-7E8A571EBA5F>;
+  trr:semanticLink   <http://www.wikidata.org/entity/statement/Q44286-FA1E2239-73A1-4107-A30F-7E8A571EBA5F>.
+
