@@ -48,7 +48,7 @@ Use this for fixed data like C<skos:ConceptScheme> info
 =item Omitted
 
 If C<puml:label> is omitted, the node "inherits" the same query as its "parent" node.
-This works only if the node has a single incoming relation.
+This works only if the node has a single incoming or outgoing relation.
 Inlined nodes and nodes with no properties don't use this inheritance mechanism.
 
 =back

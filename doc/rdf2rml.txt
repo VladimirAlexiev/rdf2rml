@@ -39,8 +39,8 @@ DESCRIPTION
     Omitted
         If "puml:label" is omitted, the node "inherits" the same query as
         its "parent" node. This works only if the node has a single incoming
-        relation. Inlined nodes and nodes with no properties don't use this
-        inheritance mechanism.
+        or outgoing relation. Inlined nodes and nodes with no properties
+        don't use this inheritance mechanism.
 
     2. Parenthesized column names are used in literals and URLs to indicate
     where to substitute SQL data. Parentheses are converted to curly

@@ -3,7 +3,7 @@
 #+OPTIONS: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t timestamp:nil title:t toc:5
 #+OPTIONS: todo:t |:t
 #+TITLE: RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation
-#+DATE: <2019-09-19>
+#+DATE: <2020-06-09>
 #+AUTHOR: Vladimir Alexiev
 #+EMAIL: vladimir.alexiev@ontotext.com
 #+LANGUAGE: en
@@ -46,7 +46,9 @@ See http://twitter.com/hashtag/rdfpuml for news, diagrams and announcements.
 * Documentation
 - http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdfpuml.html
 - http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdf2rml.html
-Source: [[./doc/rdfpuml.pod]], [[./doc/rdf2rml.pod]]
+- http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdf2tarql.html
+
+Source: [[./doc/rdfpuml.pod]], [[./doc/rdf2rml.pod]], [[./doc/rdf2tarql.pod]]
 
 * Installation
 Checkout this repo and add ~rdf2rml/bin~ to your path. 
@@ -83,7 +85,18 @@ To adopt changes, do something like this.
   git cherry-pick $commit1 $commit2 $commit3
   #+end_src
 
-* Change Log [3/3]
+* Change Log [4/4]
+
+** DONE 2020-06-01 rdf2tarql.pl                            :VladimirAlexiev:
+Add rdf2tarql.pl script to generate TARQL script (CSV-RDF conversion) from model.
+
+** DONE 2020-06-01 rdf2rml.sh, rdf2rml.ru                  :VladimirAlexiev:
+- Improve script to abort if the first pipeline step ("update") fails
+- Improve script to work on Cygwin (invokes the Jena tools as ~riot.bat~ and ~update.bat~)
+- Filter out harmless warnings from Jena update's error log, eg ~"(some_date)"^^xsd:date~
+- If a node has single outgoing link and no SQL query/table (~puml:label~), 
+  propagate that property backward across the link into the node
+  (previously that was done only for incoming links)
 
 ** DONE 2018-11-14 Avoid puml:stereotype class node        :VladimirAlexiev:
 I often define ~puml:stereotype~ for some classes in prefixes.ttl.
@@ -176,13 +189,18 @@ and makes things less modular overall.
 *** TODO Integrate in Emacs ~org-mode~
 Write Turtle, see diagram (easy to do)
 
-*** TODO Allow node colors, icons, tooltips
+*** TODO Node colors, icons, tooltips
 See [[./ideas]]
 
-*** TODO Allow more arrows
-See ~arrows arrows-2~ from https://github.com/anoff/blog/tree/master/static/assets/plantuml/diagrams:
+*** TODO More arrow types and styles
+- See ~arrows arrows-2~ from https://github.com/anoff/blog/tree/master/static/assets/plantuml/diagrams:
 
 [[./ideas/arrows.png]] [[./ideas/arrows-2.png]]
+
+- Arrow styles and colors (bold, dashed etc): https://mrhaki.blogspot.com/2016/12/plantuml-pleasantness-get-plantuml.html
+
+- ~plantuml -pattern~ regexes:
+: dotted|dashed|plain|bold|hidden|norank|single|thickness
 
 *** TODO Extra Layout Options
 Local layout options are described in [[http://wiki.plantuml.net/site/class-diagram#help_on_layout][Help on Layout]]:

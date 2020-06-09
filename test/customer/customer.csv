@@ -1,0 +1,3 @@
+customer_id,first_name,last_name,gender,religion,house_number,street,postal_code,city,country,date_of_birth,enrollment_date,university,education_degree
+C1234,John,Smith,male,Catholic,123,Capitol Str,1A2 3B4,London,UK,1950-01-02,1970-03-04,North State University,MBA
+C3456,Иван,Петров,male,Orthodox,432,ул.Черни връх,1000,Sofia,BG,1952-05-06,1972-12-01,Sofia University,computer science

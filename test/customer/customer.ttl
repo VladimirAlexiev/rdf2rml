@@ -1,0 +1,27 @@
+<person/(customer_id)> a :NaturalPerson;
+  :id "(customer_id)";
+  :firstName "(first_name)";
+  :lastName "(last_name)";
+  :gender "(gender)";
+  :religion "(religion)";
+  :hasAddress <person/(customer_id)/address>;
+  :hasEvent  <person/(customer_id)/birth>;
+  :hasEvent  <person/(customer_id)/education>.
+
+<person/(customer_id)/address> a :Address;
+  :houseNumber "(house_number)";
+  :street "(street)";
+  :postalCode "(postal_code)";
+  :city <country/(country)/city/urlify(city)>;
+  :country <country/(country)>.
+
+<country/(country)/city/urlify(city)> a :City; :country <country/(country)>; :name "(city)".
+
+<country/(country)> a :Country; :code "(country)".
+
+<person/(customer_id)/birth> a :BirthEvent; :hasDate "(date_of_birth)"^^xsd:date.
+
+<person/(customer_id)/education> a :EducationEvent;
+  :hasDate "(enrollment_date)"^^xsd:date;
+  :university <university/urlify(university)>;
+  :degree <degree/urlify(education_degree)>.
