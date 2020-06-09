@@ -1,3 +1,5 @@
+prefix rr: <http://www.w3.org/ns/r2rml#>
+
 # SPARQL UPDATE script to convert RDF with embedded SQL & source fields to R2RML
 
 ### If a node ?y has no SQL, is not Inlined, has some props, and a single incoming edge, then add its parent's SQL as default
@@ -37,6 +39,17 @@ where {
   filter not exists {?x1 ?p1 ?y filter(?x1!=?x)}
 };
 
+### If a node ?y has no SQL, is not Inlined, has a single outgoing edge, then add its parent'counterparty's SQL as default
+insert {
+  ?y puml:label ?sql
+}
+where {
+  ?y ?p ?x. ?x puml:label ?sql
+  filter not exists {?p a puml:InlineProperty}
+  filter not exists {?y a puml:Inline}
+  filter not exists {?y puml:label ?sql2}
+  filter not exists {?y ?p1 ?x1 filter(?x1!=?x)}
+};
 
 ### create rr:logicalTable
 insert { graph rr:graph {
