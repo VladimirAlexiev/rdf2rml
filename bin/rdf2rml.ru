@@ -39,7 +39,7 @@ where {
   filter not exists {?x1 ?p1 ?y filter(?x1!=?x)}
 };
 
-### If a node ?y has no SQL, is not Inlined, has a single outgoing edge, then add its parent'counterparty's SQL as default
+### If a node ?y has no SQL, is not Inlined, has a single outgoing edge, then add the SQL of its counterparty ?x as default.
 insert {
   ?y puml:label ?sql
 }
@@ -53,16 +53,16 @@ where {
 
 ### create rr:logicalTable
 insert { graph rr:graph {
-  ?map a rr:TriplesMap;
-    rr:logicalTable [
-      rr:tableName ?table; # either
-      rr:sqlQuery ?sql1    # or
-    ]
+  ?map a rr:TriplesMap; rr:logicalTable ?ltable.
+  ?ltable
+    rr:tableName ?table; # either
+    rr:sqlQuery ?sql1    # or
 }}
 where {
   ?s puml:label ?sql
-  bind(uri(concat(str(?s),"!map")) as ?map)
-  values ?undef {undef}
+  bind(str(?s) as ?s2)
+  bind(uri(concat(?s2,"!map")) as ?map)
+  bind(uri(concat(?s2,"!ltable")) as ?ltable)
   # assign ?sql to ?table only if "[[catalog.]schema.]table"
   bind(if(regex(?sql,'^"?[\\w.]+"?$') && ?sql!="ONCE",?sql,?undef) as ?table)
   # prepend "select * from" to ?sql1 if missing in ?sql
@@ -80,21 +80,23 @@ insert { graph rr:graph {
 where {
   ?s puml:label ?sql
   filter(!regex(str(?s),"\\("))
-  bind(uri(concat(str(?s),"!map")) as ?map)
-  bind(uri(concat(str(?s),"!subj")) as ?subj)
+  bind(str(?s) as ?s2)
+  bind(uri(concat(?s2,"!map")) as ?map)
+  bind(uri(concat(?s2,"!subj")) as ?subj)
 };
 
 ### create variable subject
 insert { graph rr:graph {
   ?map rr:subjectMap ?subj.
-  ?subj a rr:SubjectMap; rr:template ?s1
+  ?subj a rr:SubjectMap; rr:template ?s3
 }}
 where {
   ?s puml:label ?sql
   filter(regex(str(?s),"\\("))
-  bind(uri(concat(str(?s),"!map")) as ?map)
-  bind(uri(concat(str(?s),"!subj")) as ?subj)
-  bind(replace(replace(str(?s),"\\(","{"),"\\)","}") as ?s1)
+  bind(str(?s) as ?s2)
+  bind(uri(concat(?s2,"!map")) as ?map)
+  bind(uri(concat(?s2,"!subj")) as ?subj)
+  bind(replace(replace(str(?s),"\\(","{"),"\\)","}") as ?s3)
 };
 
 ### create rr:class
@@ -117,11 +119,12 @@ where {
   filter exists {?s puml:label ?sql}
   filter(?p != rdf:type)
   filter(!strstarts(str(?p),str(puml:)))
-  bind(uri(concat(str(?s),"!map")) as ?map)
+  bind(str(?s) as ?s2)
+  bind(uri(concat(?s2,"!map")) as ?map)
   bind(replace(str(?p),".*[#/]","") as ?p1) # cut out namespace
   bind(replace(str(?o),".*[#/]","") as ?o1) # cut out namespace
   bind(replace(?o1,"[^a-zA-Z0-9()!.]+","_") as ?o2) # replace non-URL symbols in literal
-  bind(uri(concat(str(?s),"!",?p1,"!",?o2)) as ?pmap)
+  bind(uri(concat(?s2,"!",?p1,"!",?o2)) as ?pmap)
 };
 
 ### create constant rr:object
