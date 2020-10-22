@@ -1,0 +1,6 @@
+<x> puml:none-right  <y1>. <x> :none-right  <y1>. 
+<x> puml:dashed      <y2>. <x> :dashed      <y2>. 
+<x> puml:dotted-bold <y3>. <x> :dotted-bold <y3>. 
+<x> puml:up-black    <y4>. <x> :up-black    <y4>. 
+<x> puml:tri-up      <y5>. <x> :tri-up      <y5>. 
+<x> puml:left-blue   <y6>. <x> :left-blue   <y6>. 

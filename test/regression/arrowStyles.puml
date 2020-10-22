@@ -1,0 +1,19 @@
+@startuml
+hide empty methods
+hide empty attributes
+hide circle
+skinparam classAttributeIconSize 0
+class _x_ as "<x>"
+class _y5_ as "<y5>"
+_x_ -up-|> _y5_ : :tri-up
+class _y3_ as "<y3>"
+_x_ -down[dotted,bold]-> _y3_ : :dotted-bold
+class _y4_ as "<y4>"
+_x_ -up[#black]-> _y4_ : :up-black
+class _y2_ as "<y2>"
+_x_ -down[dashed]-> _y2_ : :dashed
+class _y1_ as "<y1>"
+_x_ -right- _y1_ : :none-right
+class _y6_ as "<y6>"
+_x_ -left[#blue]-> _y6_ : :left-blue
+@enduml

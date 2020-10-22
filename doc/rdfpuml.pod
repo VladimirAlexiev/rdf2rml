@@ -284,7 +284,10 @@ Arrow direction: C<left, right, up> or C<down> (default)
 =item HEAD
 
 Arrowhead (end): C<none> (use for symmetric properties), C<tri> (hollow triangle), C<star> (filled dot), C<o> (empty dot).
-Unfortunately you cannot customize the arrowtail (beginning), it's always empty.
+
+WARNING: C<o> L<has a bug|https://forum.plantuml.net/12278/o-sets-wrong-arrow-direction>: it sets the arrow direction to the opposite of what was specified.
+
+TODO: allow customizing the arrowtail (beginning), eg see L<this example|JOl13SCW34NlcO85sA27JDA81BT1me0SMssb3bzigYYt_v_UcmyEn89vsbC41zZuun1m1JgkA31JMeNXJxT4MuRfxMvUcdUb4eQyI5FoDTJzyUzwBH0yZGmF7ewkpggdzDmxguiD2sDzbJFLCs9T5WysGuc2>.
 
 =item LINE
 
@@ -292,6 +295,23 @@ Line style: C<dotted, dashed, bold, hidden>.
 
 C<dotted, dashed> are exclusive of each other; C<bold> can be used alone or with them.
 C<hidden> can be used to adjust the layout by constraining node positions, and is exclusive of the other line attributes.
+
+This example shows using the parameters C<DIR-HEAD-LINE-COLOR>.
+We emit the same relations in the C<puml:> namespace (to customize the arrow)
+and in the empty namespace (to show an arrow label).
+
+     <x> puml:none-right  <y1>. <x> :none-right  <y1>. 
+     <x> puml:dashed      <y2>. <x> :dashed      <y2>. 
+     <x> puml:dotted-bold <y3>. <x> :dotted-bold <y3>. 
+     <x> puml:up-black    <y4>. <x> :up-black    <y4>. 
+     <x> puml:tri-up      <y5>. <x> :tri-up      <y5>. 
+     <x> puml:left-blue   <y6>. <x> :left-blue   <y6>. 
+
+=for html
+<img src="img/arrowStyle.png">
+
+=for text
+See F<img/arrowStyle.png>
 
 =item COLOR
 
@@ -316,6 +336,15 @@ You can use this to adjust the layout and in some cases avoid the need for paras
 See L<this example|http://www.plantuml.com/plantuml/uml/JOvB3iCW30NtFeKlm2B_NPMhq80A4YGH6DMvVLCtZM0tCvOUSoQTgCG0pXkBDkvqe2PA_bd8vjf6IsupbrfyMiBPbw1pHcw06rHcUw_gWST9BQgogo-qmDsLX3lW_XS5U-3Xpc86u54E_c84dgeJSPDC9FzofEft3zH9VZ7RrPGOFW00>
 and its remake in rdfpuml below.
 
+     <x1> puml:down     <y1>.
+     <x2> puml:up-2     <y2>.
+     <x3> puml:down-3   <y3>.
+     <x4> puml:up-4     <y4>.
+     <x5> puml:down-5   <y5>.
+     <x6> puml:up-6     <y6>.
+     <x7> puml:down-7   <y7>.
+     <x2> puml:right-9  <y3>.
+     <x4> puml:right-7  <y2>.
 
 =for html
 <img src="img/arrowLen.png">
@@ -329,7 +358,10 @@ See F<img/arrowLen.png>
 
 To customize the arrow of one relation connecting two nodes, use:
 
+  <node1> <prop> <node2>
   <node1> puml:DIR-HEAD-LINE-COLOR <node2>
+
+The arrow will show the label C<prop> but the style specified with C<puml:DIR-HEAD-LINE-COLOR>
 
 =head3 Arrow Per Property
 

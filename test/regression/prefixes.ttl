@@ -1,3 +1,6 @@
+@base                <http://example.org/resource/>.
+@prefix :            <http://example.org/ontology/>.
+@prefix puml:        <http://plantuml.com/ontology#> .
 @prefix ppt_history: <http://schema.semantic-web.at/ppt/history#> .
 @prefix nom:         <https://chin-rcip.poolparty.biz/Nomenclature-Projects/> .
 @prefix skos:        <http://www.w3.org/2004/02/skos/core#>.
