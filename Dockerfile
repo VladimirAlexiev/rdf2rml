@@ -1,4 +1,4 @@
-FROM ubuntu:18.10
+FROM ubuntu:20.10
 
 LABEL MAINTANER Jem Rayfield "jem.rayfield@ontotext.com"
 
@@ -42,10 +42,10 @@ RUN apt-get install -y openjdk-8-jdk
 
 # MAVEN
 RUN cd ${DST_DIR} && \
-    wget http://apache.mirror.anlx.net/maven/maven-3/3.6.1/binaries/apache-maven-3.6.1-bin.tar.gz && \
-    tar xvfz apache-maven-3.6.1-bin.tar.gz 
+    wget https://www.mirrorservice.org/sites/ftp.apache.org/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz && \
+    tar xvfz apache-maven-3.6.3-bin.tar.gz 
 
-ENV M2_HOME="${DST_DIR}/apache-maven-3.6.1"
+ENV M2_HOME="${DST_DIR}/apache-maven-3.6.3"
 ENV PATH=$PATH:$M2_HOME/bin
 
 # Plant UML
