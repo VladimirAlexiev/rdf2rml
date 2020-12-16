@@ -41,6 +41,9 @@ COPY lib/ ${DST_DIR}/rdf2rml/lib
 RUN apt update && \
     apt-get install -y openjdk-8-jdk 
 
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
+RUN export JAVA_HOME
+
 # MAVEN
 RUN cd ${DST_DIR} && \
     wget https://www.mirrorservice.org/sites/ftp.apache.org/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz && \
@@ -51,10 +54,11 @@ ENV PATH=$PATH:$M2_HOME/bin
 
 # Plant UML
 RUN cd ${DST_DIR} && \ 
-    git clone https://github.com/plantuml/plantuml.git && \
-    cd plantuml && \
-    mvn -Djar.finalName=plantuml package 
-   
+    wget https://sourceforge.net/projects/plantuml/files/plantuml.jar 
+#    git clone https://github.com/plantuml/plantuml.git && \
+#    cd plantuml && \
+#    mvn -Djar.finalName=plantuml package 
+
 COPY plantuml/plantuml.sh ${DST_DIR}/
 ENV PATH=$PATH:${DST_DIR}/plantuml
 
