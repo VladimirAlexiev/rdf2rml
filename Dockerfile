@@ -38,7 +38,8 @@ COPY rdfpuml-docker/rdfpuml ${DST_DIR}/
 COPY bin/ ${DST_DIR}/rdf2rml/bin
 COPY lib/ ${DST_DIR}/rdf2rml/lib
 # JAVA
-RUN apt-get install -y openjdk-8-jdk 
+RUN apt update && \
+    apt-get install -y openjdk-11-jdk 
 
 # MAVEN
 RUN cd ${DST_DIR} && \
