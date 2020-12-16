@@ -39,7 +39,7 @@ COPY bin/ ${DST_DIR}/rdf2rml/bin
 COPY lib/ ${DST_DIR}/rdf2rml/lib
 # JAVA
 RUN apt update && \
-    apt-get install -y openjdk-11-jdk 
+    apt-get install -y openjdk-8-jdk 
 
 # MAVEN
 RUN cd ${DST_DIR} && \
