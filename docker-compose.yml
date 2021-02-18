@@ -1,0 +1,10 @@
+version: '3'
+services:
+  rdf-puml-generator:
+      build: .
+      container_name: rdf-puml-generator
+      image: rdf-puml-generator
+      volumes:
+          - ./ttl:/puml-doc/ttl/
+          - ./out:/puml-doc/out/
+          - ./plantuml/plantuml.cfg:/puml-doc/plantuml-cfg/plantuml.cfg

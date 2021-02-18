@@ -16,6 +16,11 @@
 
 use strict;
 use Encode;
+use warnings;
+use autodie;
+use Getopt::Long;
+use Pod::Usage;
+use Path::Tiny;
 use Carp::Always; # http://search.cpan.org/~ferreira/Carp-Always-0.13/lib/Carp/Always.pm
   # stronger than $Carp::Verbose = 1;
 use RDF::Trine;
@@ -25,6 +30,7 @@ use FindBin;
 use lib "$FindBin::Bin/../lib"; # Curie is my own module, not yet on CPAN
 use RDF::Prefixes::Curie;
 #use Smart::Comments;
+use File::Basename;
 
 my %PREFIXES =
   (
@@ -92,36 +98,96 @@ filter not exists {?re a puml:NoReify}}
 SPARQL
 ## $RE_SPARQL;
 
-my $fname = shift or die "perl rdfpuml <file>: read <file>.ttl, write <file>.puml\n";
-$fname =~ s{\.ttl$}{};
+my $infile = '';
+my $outfile = '';
+my $prefixfile = '';
+my $plantumlcfgfile = '';
+my $help = 0;
+GetOptions('infile' => \$infile, 'outfile=s'=> \$outfile, 'prefixfile=s'=> \$prefixfile, 'plantumlcfgfile=s'=> \$plantumlcfgfile, 'help|?'=> \$help) or pod2usage(2);
+pod2usage(1) if $help;
 
-my $prefixes = -e "prefixes.ttl" ? slurp("prefixes.ttl") : "";
-my $file = slurp("$fname.ttl");
-my $turtle = decode_utf8 "$PREFIXES_TURTLE\n$prefixes\n$file";
-my $prefixes_all = decode_utf8 "$PREFIXES_TURTLE\n$prefixes";
-open (STDOUT, ">:encoding(UTF-8)", "$fname.puml") or die "can't create $fname.puml: $!\n";
+=head1 NAME 
+
+RdfPuml: Converts Turtle files .ttl into plantuml .puml
+
+=head1 SYNOPSIS
+
+rdfpuml [file] [options]
+
+Options:
+  -help 
+  -infile 
+  -outfile 
+  -prefixfile
+  -plantumlcfgfile 
+
+=over 8 
+
+=item B<help>
+
+Brief help message
+
+=item B<infile>
+
+Turtle file to process
+
+=item B<outfile>
+
+Output to this puml file.
+
+=item B<prefixfile>
+
+RDF prefixies to use for URI shortening 
+
+=item B<plantumlcfgfile>
+
+plantuml config to add style and layout, etc
+
+=back
+
+=head1 DESCRIPTION
+
+B<This program> will read the input file and translate it into puml
+
+=cut
+
+pod2usage("$0: Missing input filename.\n") unless (@ARGV);
+
+$infile = path( $ARGV[0] );
+myprint ("Processing file [$ARGV[0]] \n");
+
+my $sep = File::Spec->catfile('', '');
+$outfile = path( $outfile || $infile->parent . $sep . $infile->basename('.ttl') . '.puml' );
+
+$prefixfile = path( $prefixfile || $infile->sibling('prefixes.ttl') );
+
+my $prefixes = $prefixfile->exists ? $prefixfile->slurp_utf8 : "";
+my $data = $infile->slurp_utf8;
+my $turtle = "$PREFIXES_TURTLE\n$prefixes\n$data";
+my $prefixes_all = "$PREFIXES_TURTLE\n$prefixes";
+unless ($plantumlcfgfile) {
+  $plantumlcfgfile = dirname(__FILE__) . $sep . ".." . $sep . "plantuml" . $sep . "plantuml.cfg";
+}
+my $plantumlcfgfile_path = path( $plantumlcfgfile );
+my $plantuml_cfg = $plantumlcfgfile_path->exists ? $plantumlcfgfile_path->slurp_utf8 : ""; 
+
+open (STDOUT, ">:encoding(UTF-8)", $outfile);
 binmode STDERR, ":encoding(UTF-8)";
-#print STDERR $turtle; die;
 
 my $store = RDF::Trine::Store::Memory->new();
-my $model = RDF::Trine::Model->new($store) or die "can't create model: $!\n";
+my $model = RDF::Trine::Model->new($store);
 my $parser = RDF::Trine::Parser->new('turtle');
 $parser->parse_into_model (undef, $turtle, $model);
 my $map = RDF::Prefixes::Curie->new ($prefixes_all);
 
-myprint (<<'EOF');
-@startuml
-hide empty methods
-hide empty attributes
-hide circle
-skinparam classAttributeIconSize 0
-EOF
+myprint ("\@startuml\n");
+myprint ("$plantuml_cfg\n");
 
 stereotypes();
 replace_inlines();
 collect_predicate_arrows();
 
-for my $s ($model->subjects(undef,undef)) {
+for my $s ( sort { RDF::Trine::Node::compare( $a, $b ) } $model->subjects(undef,undef) ) {
   my $s1 = puml_node($s);
   my $noReify = print_types ($s, $s1); # types come first
   print_relations ($s, $s1, $noReify);
@@ -133,7 +199,7 @@ myprint ("\@enduml\n");
 
 sub print_types {
   my ($s, $s1) = @_;
-  my @types = map puml_node2($_), $model->objects ($s, U("rdf:type"));
+  my @types = sort map puml_node2($_), $model->objects ($s, U("rdf:type"));
   my $noReify = grep m{puml:NoReify}, @types;
   my $types = join ", ", grep !m{puml:NoReify}, @types;
   myprint (qq{$s1 : a $types\n}) if $types;
@@ -142,7 +208,8 @@ sub print_types {
 
 sub print_relations {
   my ($s, $s1, $noReify) = @_;
-  for my $o ($model->objects ($s, undef, undef, type=>'resource'),
+  for my $o (sort { RDF::Trine::Node::compare( $a, $b ) }
+             $model->objects ($s, undef, undef, type=>'resource'),
              $model->objects ($s, undef, undef, type=>'blank')) {
     # collect all relations between the two nodes.
     # TODO: also collect inverse relations? Then be careful for reifications!

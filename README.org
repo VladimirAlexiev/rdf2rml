@@ -106,20 +106,29 @@ See http://twitter.com/hashtag/rdfpuml for news, diagrams and announcements.
 Source: [[./doc/rdfpuml.pod]], [[./doc/rdf2rml.pod]], [[./doc/rdf2tarql.pod]]
 
 * Installation
-Checkout this repo and add ~rdf2rml/bin~ to your path. 
-Install the following prerequisites:
-- both tools: Perl. Tested with version 5.22 on Windows (cygwin and Strawberry).
-- rdfpuml:
-  - [[http://www.graphviz.org/][GraphViz]]
-  - [[http://plantuml.com/download][PlantUML]]. 
-    You need a recent version for new features like arrow length and color. I'm currently running 1.2018.10beta7. 
-    See in particular [[http://plantuml.com/class-diagram][plantuml class diagrams]].
-  - Perl modules: use ~cpan~ or ~cpanm~ to install them:
-    ~RDF::Trine RDF::Query Encode FindBin Carp::Always Slurp~
-  - ~RDF::Prefixes::Curie~. This is my own module located in [[./lib]], and *rdfpuml* needs ~FindBin~ to locate it.
-- rdf2rml:
-  - [[https://jena.apache.org/download/][Apache Jena]]: ~riot~, ~update~. Tested with version 3.1.0 of 2016-05-10.
-  - cat, grep, rm
+Clone this repo 
+
+- Install Docker and Docker Compose
+
+* [Install docker](https://docs.docker.com/install/)
+* [Install docker compose](https://docs.docker.com/compose/install/)
+
+- Build
+```
+docker-compose build
+```
+
+- Place your .ttl file for processing in directory `./ttl` 
+- Add any prefixes to ./ttl/prefixes.ttl
+- Update and configure plantuml.cfg in directory `./plantuml
+
+- Processing
+```
+docker-compose up
+```
+
+- .puml and .png will be place in ./out
+
 
 
 * Debian Repo

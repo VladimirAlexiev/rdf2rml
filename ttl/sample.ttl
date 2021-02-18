@@ -1,0 +1,194 @@
+<https://swapi.co/resource/human/1> a voc:Human ;
+    rdfs:label "Luke Skywalker" ;
+    bo:type "Human" ;
+    voc:birthYear "19BBY" ;
+    voc:eyeColor "blue" ;
+    voc:film <https://swapi.co/resource/film/1>,
+        <https://swapi.co/resource/film/2>,
+        <https://swapi.co/resource/film/3>,
+        <https://swapi.co/resource/film/6>,
+        <https://swapi.co/resource/film/7> ;
+    voc:gender "male" ;
+    voc:hairColor "blond" ;
+    voc:height "172.0"^^xsd:float ;
+    voc:homeworld <https://swapi.co/resource/planet/1> ;
+    voc:mass 77.0 ;
+    voc:skinColor "fair" ;
+    voc:species voc:Human ;
+    voc:starship <https://swapi.co/resource/starship/12>,
+        <https://swapi.co/resource/starship/22> ;
+    voc:vehicle <https://swapi.co/resource/vehicle/14>,
+        <https://swapi.co/resource/vehicle/30> .
+
+voc:Species a rdfs:Class ;
+    rdfs:subClassOf rdfs:Class .
+
+voc:Mammal a rdfs:Class .
+
+voc:Sentient a rdfs:Class .
+
+voc:Human a voc:Species ;
+    rdfs:label "Human" ;
+    bo:type "Species" ;
+    rdfs:subClassOf voc:Mammal,
+        voc:Sentient ;
+    voc:averageHeight "180.0"^^xsd:float ;
+    voc:averageLifespan "120" ;
+    voc:character <https://swapi.co/resource/human/1> ;
+    voc:eyeColor "amber",
+        "blue",
+        "brown",
+        "green",
+        "grey",
+        "hazel" ;
+ #   voc:film <https://swapi.co/resource/film/1>,
+ #       <https://swapi.co/resource/film/2>,
+ #       <https://swapi.co/resource/film/3>,
+ #       <https://swapi.co/resource/film/6>,
+ #       <https://swapi.co/resource/film/7> ;
+    voc:hairColor "black",
+        "blonde",
+        "brown",
+        "red" ;
+    voc:language "Galactic Basic" ;
+ #   voc:planet <https://swapi.co/resource/planet/9> ;
+    voc:skinColor "asian",
+        "black",
+        "caucasian",
+        "hispanic" .
+
+<https://swapi.co/resource/film/1> a voc:Film ;
+    rdfs:label "A New Hope" ;
+    bo:type "Film" ;
+    voc:character <https://swapi.co/resource/human/1> ;
+    voc:director "George Lucas" ;
+    voc:episodeId 4 ;
+#    voc:planet <https://swapi.co/resource/planet/1> ;
+    voc:releaseDate "1977-05-25"^^xsd:date .
+#    voc:starship <https://swapi.co/resource/starship/12> .        
+
+<https://swapi.co/resource/film/2> a voc:Film ;
+    rdfs:label "The Empire Strikes Back" ;
+    bo:type "Film" ;
+    voc:character <https://swapi.co/resource/human/1> ;
+    voc:director "Irvin Kershner" ;
+    voc:episodeId 5 ;
+    voc:releaseDate "1980-05-17"^^xsd:date .
+ #   voc:starship <https://swapi.co/resource/starship/12>,
+ #              <https://swapi.co/resource/starship/22> ;
+ #   voc:vehicle <https://swapi.co/resource/vehicle/14> .    
+
+<https://swapi.co/resource/film/3> a voc:Film ;
+    rdfs:label "Return of the Jedi" ;
+    bo:type "Film" ;
+    voc:character <https://swapi.co/resource/human/1> ;
+    voc:director "Richard Marquand" ;
+    voc:episodeId 6 ;
+   # voc:planet <https://swapi.co/resource/planet/1> ;
+    voc:releaseDate "1983-05-25"^^xsd:date .
+#    voc:starship <https://swapi.co/resource/starship/12>,
+#        <https://swapi.co/resource/starship/22> ;
+ #   voc:vehicle <https://swapi.co/resource/vehicle/30> .  
+
+<https://swapi.co/resource/film/6> a voc:Film ;
+    rdfs:label "Revenge of the Sith" ;
+    bo:type "Film" ;
+    voc:character <https://swapi.co/resource/human/1> ;
+    voc:director "George Lucas" ;
+    voc:episodeId 3 ;
+ #   voc:planet <https://swapi.co/resource/planet/1> ;
+    voc:releaseDate "2005-05-19"^^xsd:date . 
+
+<https://swapi.co/resource/film/7> a voc:Film ;
+    rdfs:label "The Force Awakens" ;
+    bo:type "Film" ;
+    voc:character <https://swapi.co/resource/human/1> ;
+    voc:director "J. J. Abrams" ;
+    voc:episodeId 7 ;
+    voc:releaseDate "2015-12-11"^^xsd:date .  
+
+<https://swapi.co/resource/planet/1> a voc:Planet ;
+    rdfs:label "Tatooine" ;
+    bo:type "Planet" ;
+    voc:climate "arid" ;
+    voc:diameter 10465 ;
+ #   voc:film <https://swapi.co/resource/film/1>,
+ #       <https://swapi.co/resource/film/3>,
+ #       <https://swapi.co/resource/film/6> ;
+    voc:gravity "1 standard" ;
+    voc:orbitalPeriod 304 ;
+    voc:population 200000 ;
+    voc:resident <https://swapi.co/resource/human/1> ;
+    voc:rotationPeriod 23 ;
+    voc:surfaceWater 1 ;
+    voc:terrain "desert" .    
+
+<https://swapi.co/resource/starship/12> a voc:Starship ;
+    rdfs:label "X-wing" ;
+    bo:type "Starship" ;
+    voc:cargoCapacity 110 ;
+    voc:consumables "1 week" ;
+    voc:costInCredits 149999 ;
+    voc:crew 1 ;
+ #   voc:film <https://swapi.co/resource/film/1>,
+ #       <https://swapi.co/resource/film/2>,
+ #       <https://swapi.co/resource/film/3> ;
+    voc:hyperdriveRating "1.0"^^xsd:float ;
+    voc:length "12.5"^^xsd:float ;
+    voc:manufacturer "Incom Corporation" ;
+    voc:maxAtmospheringSpeed 1050 ;
+    voc:mglt 100 ;
+    voc:model "T-65 X-wing" ;
+    voc:passengers 0 ;
+    voc:pilot <https://swapi.co/resource/human/1> ;
+    voc:starshipClass "Starfighter" . 
+
+<https://swapi.co/resource/starship/22> a voc:Starship ;
+    rdfs:label "Imperial shuttle" ;
+    bo:type "Starship" ;
+    voc:cargoCapacity 80000 ;
+    voc:consumables "2 months" ;
+    voc:costInCredits 240000 ;
+    voc:crew 6 ;
+ #   voc:film <https://swapi.co/resource/film/2>,
+ #       <https://swapi.co/resource/film/3> ;
+    voc:hyperdriveRating "1.0"^^xsd:float ;
+    voc:length "20.0"^^xsd:float ;
+    voc:manufacturer "Sienar Fleet Systems" ;
+    voc:maxAtmospheringSpeed 850 ;
+    voc:mglt 50 ;
+    voc:model "Lambda-class T-4a shuttle" ;
+    voc:passengers 20 ;
+    voc:pilot <https://swapi.co/resource/human/1> ;
+    voc:starshipClass "Armed government transport" .     
+
+<https://swapi.co/resource/vehicle/14> a voc:Vehicle ;
+    rdfs:label "Snowspeeder" ;
+    bo:type "Vehicle" ;
+    voc:cargoCapacity 10 ;
+    voc:consumables "none" ;
+    voc:crew 2 ;
+  #  voc:film <https://swapi.co/resource/film/2> ;
+    voc:length "4.5"^^xsd:float ;
+    voc:manufacturer "Incom corporation" ;
+    voc:maxAtmospheringSpeed 650 ;
+    voc:model "t-47 airspeeder" ;
+    voc:passengers 0 ;
+    voc:pilot <https://swapi.co/resource/human/1> ;
+    voc:vehicleClass "airspeeder" .  
+
+<https://swapi.co/resource/vehicle/30> a voc:Vehicle ;
+    rdfs:label "Imperial Speeder Bike" ;
+    bo:type "Vehicle" ;
+    voc:cargoCapacity 4 ;
+    voc:consumables "1 day" ;
+    voc:costInCredits 8000 ;
+    voc:crew 1 ;
+  #  voc:film <https://swapi.co/resource/film/3> ;
+    voc:length "3.0"^^xsd:float ;
+    voc:manufacturer "Aratech Repulsor Company" ;
+    voc:maxAtmospheringSpeed 360 ;
+    voc:model "74-Z speeder bike" ;
+    voc:passengers 1 ;
+    voc:pilot <https://swapi.co/resource/human/1> ;
+    voc:vehicleClass "speeder" .        
