@@ -6,7 +6,7 @@ rdfpuml - Convert RDF to PlantUML diagrams
 
 =head1 SYNOPSIS
 
-  perl rdfpuml.pl file.ttl                         # makes file.puml
+  perl -C -S rdfpuml.pl file.ttl                   # makes file.puml
   java -jar plantuml.jar -charset UTF-8 file.puml  # makes file.png
 
 
@@ -287,7 +287,7 @@ Arrowhead (end): C<none> (use for symmetric properties), C<tri> (hollow triangle
 
 WARNING: C<o> L<has a bug|https://forum.plantuml.net/12278/o-sets-wrong-arrow-direction>: it sets the arrow direction to the opposite of what was specified.
 
-TODO: allow customizing the arrowtail (beginning), eg see L<this example|JOl13SCW34NlcO85sA27JDA81BT1me0SMssb3bzigYYt_v_UcmyEn89vsbC41zZuun1m1JgkA31JMeNXJxT4MuRfxMvUcdUb4eQyI5FoDTJzyUzwBH0yZGmF7ewkpggdzDmxguiD2sDzbJFLCs9T5WysGuc2>.
+TODO: allow customizing the arrowtail (beginning).
 
 =item LINE
 
@@ -423,14 +423,25 @@ E.g. below is a diagram of L<EXAMPLE 41: Complete Example|https://www.w3.org/TR/
 from the L<Web Annotation Data Model|https://www.w3.org/TR/annotation-model/>.
 
 As you can see, 10 nodes on the right side are blank nodes (have no URL).
-The tiny one in the middle has no attributes whatsoever, only the L<rdf:first, rdf:next> outgoing links.
-It should have had a type L<rdf:List>, this is an omission in the example.
+The tiny one in the middle has no attributes whatsoever, only the C<rdf:first, rdf:next> outgoing links.
+It should have had a type C<rdf:List>, this is an omission in the example.
 
 =for html
 <img src="img/OA-eg41.png">
 
 =for text
 See F<img/OA-eg41.png>
+
+=head2 Unicode
+
+The input Turtle can include Unicode chars (accented chars, Cyrillic, etc).
+Please invoke the script with option C<-C> for proper processing of Unicode, eg:
+
+  perl -C -S rdfpuml.pl file.ttl
+
+(The option C<-S> causes Perl to search for the script in C<PATH>.)
+
+That's how the included F<bin/rdfpuml.bat> invokes the script.
 
 =head2 Limitations
 

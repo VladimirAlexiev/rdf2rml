@@ -31,6 +31,7 @@
       </li>
       <li><a href="#Stereotypes-and-Colored-Circles">Stereotypes and Colored Circles</a></li>
       <li><a href="#Blank-Nodes">Blank Nodes</a></li>
+      <li><a href="#Unicode">Unicode</a></li>
       <li><a href="#Limitations">Limitations</a></li>
       <li><a href="#Prerequisites">Prerequisites</a></li>
       <li><a href="#Installation">Installation</a></li>
@@ -46,7 +47,7 @@
 
 <h1 id="SYNOPSIS">SYNOPSIS</h1>
 
-<pre><code>  perl rdfpuml.pl file.ttl                         # makes file.puml
+<pre><code>  perl -C -S rdfpuml.pl file.ttl                   # makes file.puml
   java -jar plantuml.jar -charset UTF-8 file.puml  # makes file.png</code></pre>
 
 <h1 id="DESCRIPTION">DESCRIPTION</h1>
@@ -263,7 +264,11 @@
 <dt id="HEAD">HEAD</dt>
 <dd>
 
-<p>Arrowhead (end): <code>none</code> (use for symmetric properties), <code>tri</code> (hollow triangle), <code>star</code> (filled dot), <code>o</code> (empty dot). Unfortunately you cannot customize the arrowtail (beginning), it&#39;s always empty.</p>
+<p>Arrowhead (end): <code>none</code> (use for symmetric properties), <code>tri</code> (hollow triangle), <code>star</code> (filled dot), <code>o</code> (empty dot).</p>
+
+<p>WARNING: <code>o</code> <a href="https://forum.plantuml.net/12278/o-sets-wrong-arrow-direction">has a bug</a>: it sets the arrow direction to the opposite of what was specified.</p>
+
+<p>TODO: allow customizing the arrowtail (beginning).</p>
 
 </dd>
 <dt id="LINE">LINE</dt>
@@ -272,6 +277,18 @@
 <p>Line style: <code>dotted, dashed, bold, hidden</code>.</p>
 
 <p><code>dotted, dashed</code> are exclusive of each other; <code>bold</code> can be used alone or with them. <code>hidden</code> can be used to adjust the layout by constraining node positions, and is exclusive of the other line attributes.</p>
+
+<p>This example shows using the parameters <code>DIR-HEAD-LINE-COLOR</code>. We emit the same relations in the <code>puml:</code> namespace (to customize the arrow) and in the empty namespace (to show an arrow label).</p>
+
+<pre><code>     &lt;x&gt; puml:none-right  &lt;y1&gt;. &lt;x&gt; :none-right  &lt;y1&gt;. 
+     &lt;x&gt; puml:dashed      &lt;y2&gt;. &lt;x&gt; :dashed      &lt;y2&gt;. 
+     &lt;x&gt; puml:dotted-bold &lt;y3&gt;. &lt;x&gt; :dotted-bold &lt;y3&gt;. 
+     &lt;x&gt; puml:up-black    &lt;y4&gt;. &lt;x&gt; :up-black    &lt;y4&gt;. 
+     &lt;x&gt; puml:tri-up      &lt;y5&gt;. &lt;x&gt; :tri-up      &lt;y5&gt;. 
+     &lt;x&gt; puml:left-blue   &lt;y6&gt;. &lt;x&gt; :left-blue   &lt;y6&gt;. </code></pre>
+
+
+<img src="img/arrowStyle.png">
 
 </dd>
 <dt id="COLOR">COLOR</dt>
@@ -294,6 +311,16 @@
 
 <p>See <a href="http://www.plantuml.com/plantuml/uml/JOvB3iCW30NtFeKlm2B_NPMhq80A4YGH6DMvVLCtZM0tCvOUSoQTgCG0pXkBDkvqe2PA_bd8vjf6IsupbrfyMiBPbw1pHcw06rHcUw_gWST9BQgogo-qmDsLX3lW_XS5U-3Xpc86u54E_c84dgeJSPDC9FzofEft3zH9VZ7RrPGOFW00">this example</a> and its remake in rdfpuml below.</p>
 
+<pre><code>     &lt;x1&gt; puml:down     &lt;y1&gt;.
+     &lt;x2&gt; puml:up-2     &lt;y2&gt;.
+     &lt;x3&gt; puml:down-3   &lt;y3&gt;.
+     &lt;x4&gt; puml:up-4     &lt;y4&gt;.
+     &lt;x5&gt; puml:down-5   &lt;y5&gt;.
+     &lt;x6&gt; puml:up-6     &lt;y6&gt;.
+     &lt;x7&gt; puml:down-7   &lt;y7&gt;.
+     &lt;x2&gt; puml:right-9  &lt;y3&gt;.
+     &lt;x4&gt; puml:right-7  &lt;y2&gt;.</code></pre>
+
 
 <img src="img/arrowLen.png">
 
@@ -304,7 +331,10 @@
 
 <p>To customize the arrow of one relation connecting two nodes, use:</p>
 
-<pre><code>  &lt;node1&gt; puml:DIR-HEAD-LINE-COLOR &lt;node2&gt;</code></pre>
+<pre><code>  &lt;node1&gt; &lt;prop&gt; &lt;node2&gt;
+  &lt;node1&gt; puml:DIR-HEAD-LINE-COLOR &lt;node2&gt;</code></pre>
+
+<p>The arrow will show the label <code>prop</code> but the style specified with <code>puml:DIR-HEAD-LINE-COLOR</code></p>
 
 <h3 id="Arrow-Per-Property">Arrow Per Property</h3>
 
@@ -349,10 +379,20 @@
 
 <p>E.g. below is a diagram of <a href="https://www.w3.org/TR/annotation-model/#h-complete-example">EXAMPLE 41: Complete Example</a> from the <a href="https://www.w3.org/TR/annotation-model/">Web Annotation Data Model</a>.</p>
 
-<p>As you can see, 10 nodes on the right side are blank nodes (have no URL). The tiny one in the middle has no attributes whatsoever, only the <a href="#rdf:first-rdf:next">&quot;rdf:first, rdf:next&quot;</a> outgoing links. It should have had a type <a href="rdf:List">rdf:List</a>, this is an omission in the example.</p>
+<p>As you can see, 10 nodes on the right side are blank nodes (have no URL). The tiny one in the middle has no attributes whatsoever, only the <code>rdf:first, rdf:next</code> outgoing links. It should have had a type <code>rdf:List</code>, this is an omission in the example.</p>
 
 
 <img src="img/OA-eg41.png">
+
+<h2 id="Unicode">Unicode</h2>
+
+<p>The input Turtle can include Unicode chars (accented chars, Cyrillic, etc). Please invoke the script with option <code>-C</code> for proper processing of Unicode, eg:</p>
+
+<pre><code>  perl -C -S rdfpuml.pl file.ttl</code></pre>
+
+<p>(The option <code>-S</code> causes Perl to search for the script in <code>PATH</code>.)</p>
+
+<p>That&#39;s how the included <i>bin/rdfpuml.bat</i> invokes the script.</p>
 
 <h2 id="Limitations">Limitations</h2>
 

@@ -1,2 +1,2 @@
 @echo off
-perl -S rdfpuml.pl %1
+perl -S -C rdfpuml.pl %1

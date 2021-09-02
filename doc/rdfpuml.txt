@@ -2,7 +2,7 @@ NAME
     rdfpuml - Convert RDF to PlantUML diagrams
 
 SYNOPSIS
-      perl rdfpuml.pl file.ttl                         # makes file.puml
+      perl -C -S rdfpuml.pl file.ttl                   # makes file.puml
       java -jar plantuml.jar -charset UTF-8 file.puml  # makes file.png
 
 DESCRIPTION
@@ -211,8 +211,12 @@ See F<img/MS-Frame-complex.png>
     HEAD
         Arrowhead (end): "none" (use for symmetric properties), "tri"
         (hollow triangle), "star" (filled dot), "o" (empty dot).
-        Unfortunately you cannot customize the arrowtail (beginning), it's
-        always empty.
+
+        WARNING: "o" has a bug
+        <https://forum.plantuml.net/12278/o-sets-wrong-arrow-direction>: it
+        sets the arrow direction to the opposite of what was specified.
+
+        TODO: allow customizing the arrowtail (beginning).
 
     LINE
         Line style: "dotted, dashed, bold, hidden".
@@ -222,6 +226,18 @@ See F<img/MS-Frame-complex.png>
         constraining node positions, and is exclusive of the other line
         attributes.
 
+        This example shows using the parameters "DIR-HEAD-LINE-COLOR". We
+        emit the same relations in the "puml:" namespace (to customize the
+        arrow) and in the empty namespace (to show an arrow label).
+
+             <x> puml:none-right  <y1>. <x> :none-right  <y1>. 
+             <x> puml:dashed      <y2>. <x> :dashed      <y2>. 
+             <x> puml:dotted-bold <y3>. <x> :dotted-bold <y3>. 
+             <x> puml:up-black    <y4>. <x> :up-black    <y4>. 
+             <x> puml:tri-up      <y5>. <x> :tri-up      <y5>. 
+             <x> puml:left-blue   <y6>. <x> :left-blue   <y6>.
+
+See F<img/arrowStyle.png>
     COLOR
         Line color: name (e.g. "red") or hex-code (e.g. "FF0000") To see the
         full list of color names supported by PlantUML, use this command and
@@ -243,11 +259,25 @@ See F<img/colorArrow-ciq-cropped.png>
         HcUw_gWST9BQgogo-qmDsLX3lW_XS5U-3Xpc86u54E_c84dgeJSPDC9FzofEft3zH9VZ
         7RrPGOFW00> and its remake in rdfpuml below.
 
+             <x1> puml:down     <y1>.
+             <x2> puml:up-2     <y2>.
+             <x3> puml:down-3   <y3>.
+             <x4> puml:up-4     <y4>.
+             <x5> puml:down-5   <y5>.
+             <x6> puml:up-6     <y6>.
+             <x7> puml:down-7   <y7>.
+             <x2> puml:right-9  <y3>.
+             <x4> puml:right-7  <y2>.
+
 See F<img/arrowLen.png>
    Arrow Per Edge
     To customize the arrow of one relation connecting two nodes, use:
 
+      <node1> <prop> <node2>
       <node1> puml:DIR-HEAD-LINE-COLOR <node2>
+
+    The arrow will show the label "prop" but the style specified with
+    "puml:DIR-HEAD-LINE-COLOR"
 
    Arrow Per Property
     To customize the arrow for all relations with the same property, use:
@@ -305,9 +335,20 @@ See F<img/PCDM_Multi_Page_Text-circles.png>
     As you can see, 10 nodes on the right side are blank nodes (have no
     URL). The tiny one in the middle has no attributes whatsoever, only the
     "rdf:first, rdf:next" outgoing links. It should have had a type
-    <rdf:List>, this is an omission in the example.
+    "rdf:List", this is an omission in the example.
 
 See F<img/OA-eg41.png>
+  Unicode
+    The input Turtle can include Unicode chars (accented chars, Cyrillic,
+    etc). Please invoke the script with option "-C" for proper processing of
+    Unicode, eg:
+
+      perl -C -S rdfpuml.pl file.ttl
+
+    (The option "-S" causes Perl to search for the script in "PATH".)
+
+    That's how the included bin/rdfpuml.bat invokes the script.
+
   Limitations
     Round brackets in labels eg "(1975)" are converted to square brackets,
     eg "[1975]". PlantUML interprets round brackets as a function (method)

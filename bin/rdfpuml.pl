@@ -15,7 +15,7 @@
 #     if 0;
 
 use strict;
-use Encode;
+# use Encode; # decode_utf8
 use Carp::Always; # http://search.cpan.org/~ferreira/Carp-Always-0.13/lib/Carp/Always.pm
   # stronger than $Carp::Verbose = 1;
 use RDF::Trine;
@@ -97,10 +97,10 @@ $fname =~ s{\.ttl$}{};
 
 my $prefixes = -e "prefixes.ttl" ? slurp("prefixes.ttl") : "";
 my $file = slurp("$fname.ttl");
-my $turtle = decode_utf8 "$PREFIXES_TURTLE\n$prefixes\n$file";
-my $prefixes_all = decode_utf8 "$PREFIXES_TURTLE\n$prefixes";
-open (STDOUT, ">:encoding(UTF-8)", "$fname.puml") or die "can't create $fname.puml: $!\n";
-binmode STDERR, ":encoding(UTF-8)";
+my $turtle = "$PREFIXES_TURTLE\n$prefixes\n$file"; # omitted decode_utf8 as I now expect Perl to be called with -C
+my $prefixes_all = "$PREFIXES_TURTLE\n$prefixes";  # omitted decode_utf8 as I now expect Perl to be called with -C
+open (STDOUT, "> $fname.puml") or die "can't create $fname.puml: $!\n"; # omitted  ">:encoding(UTF-8)" as I now expect Perl to be called with -C
+#binmode STDERR, ":encoding(UTF-8)"; # omitted ">:encoding(UTF-8)" as I now expect Perl to be called with -C
 #print STDERR $turtle; die;
 
 my $store = RDF::Trine::Store::Memory->new();
@@ -182,7 +182,7 @@ sub print_attributes {
 }
 
 sub myprint {
-  print shift # encode_utf8(shift)
+  print shift # omit encode_utf8()
 }
 
 sub U {

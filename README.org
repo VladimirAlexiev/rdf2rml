@@ -3,7 +3,7 @@
 #+OPTIONS: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t timestamp:nil title:t toc:5
 #+OPTIONS: todo:t |:t
 #+TITLE: RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation
-#+DATE: <2020-10-23>
+#+DATE: <2021-09-02>
 #+AUTHOR: Vladimir Alexiev
 #+EMAIL: vladimir.alexiev@ontotext.com
 #+LANGUAGE: en
@@ -28,13 +28,14 @@
 - [[#installation][Installation]]
 - [[#debian-repo][Debian Repo]]
 - [[#change-log-78][Change Log {7/8}]]
-  - [[#2020-06-01-rdf2tarqlpl][2020-06-01 rdf2tarql.pl]]
-  - [[#2020-06-01-rdf2rmlsh-rdf2rmlru][2020-06-01 rdf2rml.sh, rdf2rml.ru]]
   - [[#2018-11-14-avoid-pumlstereotype-class-node][2018-11-14 Avoid puml:stereotype class node]]
   - [[#2018-06-29-bug-class-and-pumlinlineproperty][2018-06-29 Bug: class and puml:InlineProperty]]
   - [[#2018-04-05-arrow-attributes][2018-04-05 Arrow Attributes]]
   - [[#2020-05-30-rdf2rml-inverse-edge][2020-05-30 rdf2rml: inverse edge]]
+  - [[#2020-06-01-rdf2tarqlpl][2020-06-01 rdf2tarql.pl]]
+  - [[#2020-06-01-rdf2rmlsh-rdf2rmlru][2020-06-01 rdf2rml.sh, rdf2rml.ru]]
   - [[#2020-09-17-rdf2rml-logicaltable][2020-09-17 rdf2rml: logicalTable]]
+  - [[#2021-09-02-unicode-processing][2021-09-02 Unicode Processing]]
   - [[#2020-09-17-rdf2rml-disentangle-inverse-edge][2020-09-17 rdf2rml: disentangle inverse edge]]
 - [[#to-do-tasks-221][To Do Tasks {2/21}]]
   - [[#near-term-211][Near-term {2/11}]]
@@ -142,17 +143,6 @@ To adopt changes, do something like this.
 
 * Change Log [7/8]
 
-** DONE 2020-06-01 rdf2tarql.pl                            :VladimirAlexiev:
-Add rdf2tarql.pl script to generate TARQL script (CSV-RDF conversion) from model.
-
-** DONE 2020-06-01 rdf2rml.sh, rdf2rml.ru                  :VladimirAlexiev:
-- Improve script to abort if the first pipeline step ("update") fails
-- Improve script to work on Cygwin (invokes the Jena tools as ~riot.bat~ and ~update.bat~)
-- Filter out harmless warnings from Jena update's error log, eg ~"(some_date)"^^xsd:date~
-- If a node has single outgoing link and no SQL query/table (~puml:label~), 
-  propagate that property backward across the link into the node
-  (previously that was done only for incoming links)
-
 ** DONE 2018-11-14 Avoid puml:stereotype class node        :VladimirAlexiev:
 I often define ~puml:stereotype~ for some classes in prefixes.ttl.
 If the class is not used in some particular turtle, it should avoid emitting a disconnected puml class.
@@ -180,9 +170,24 @@ it is awkward to specify that table in the node ~Y~.
 So I added this SPARQL UPDATE clause:
 - If a node ?y has no SQL, is not Inlined, has a single outgoing edge, then add the SQL of its counterparty ?x as default
 
+** DONE 2020-06-01 rdf2tarql.pl                            :VladimirAlexiev:
+Add rdf2tarql.pl script to generate TARQL script (CSV-RDF conversion) from model.
+
+** DONE 2020-06-01 rdf2rml.sh, rdf2rml.ru                  :VladimirAlexiev:
+- Improve script to abort if the first pipeline step ("update") fails
+- Improve script to work on Cygwin (invokes the Jena tools as ~riot.bat~ and ~update.bat~)
+- Filter out harmless warnings from Jena update's error log, eg ~"(some_date)"^^xsd:date~
+- If a node has single outgoing link and no SQL query/table (~puml:label~), 
+  propagate that property backward across the link into the node
+  (previously that was done only for incoming links)
+
 ** DONE 2020-09-17 rdf2rml: logicalTable                   :VladimirAlexiev:
 Use URL for logicalTable instead of blank node, so that R2RML generated from different models for different tables can be merged more easily.
 Warning: this assumes that all instances of one subjectMap use the same query.
+
+** DONE 2021-09-02 Unicode Processing                      :VladimirAlexiev:
+Use Perl option ~-C~ when invoking for proper Unicode processing.
+See doc section ~rdfpuml.html#Unicode~
 
 ** TODO 2020-09-17 rdf2rml: disentangle inverse edge       :VladimirAlexiev:
 In the case  ~Y-P-X~ described above:
@@ -320,6 +325,8 @@ X "0:1" -left-> "1:m" Y : prop/\ninvProp
 Is depicted as follows: 
 
 [[./ideas/cardinality-and-inverse.png]]
+
+We have two options how to express this in triples:
 
 **** Cardinality With RDF*
 #+BEGIN_SRC turtle
