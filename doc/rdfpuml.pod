@@ -308,7 +308,7 @@ and in the empty namespace (to show an arrow label).
      <x> puml:left-blue   <y6>. <x> :left-blue   <y6>. 
 
 =for html
-<img src="img/arrowStyle.png">
+<img src="img/arrowStyles.png">
 
 =for text
 See F<img/arrowStyles.png>
