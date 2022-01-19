@@ -311,7 +311,7 @@ and in the empty namespace (to show an arrow label).
 <img src="img/arrowStyle.png">
 
 =for text
-See F<img/arrowStyle.png>
+See F<img/arrowStyles.png>
 
 =item COLOR
 

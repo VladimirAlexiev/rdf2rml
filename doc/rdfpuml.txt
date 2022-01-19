@@ -237,7 +237,7 @@ See F<img/MS-Frame-complex.png>
              <x> puml:tri-up      <y5>. <x> :tri-up      <y5>. 
              <x> puml:left-blue   <y6>. <x> :left-blue   <y6>.
 
-See F<img/arrowStyle.png>
+See F<img/arrowStyles.png>
     COLOR
         Line color: name (e.g. "red") or hex-code (e.g. "FF0000") To see the
         full list of color names supported by PlantUML, use this command and
