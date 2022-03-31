@@ -101,13 +101,39 @@
 
 <p>In addition to plain CSV field names you can also use macros (&quot;function calls&quot;) that are unrolled by the script into a series of binds using suffixed variable names. For example, we used the following macros:</p>
 
-<dl>
+<ul>
 
-<dt id="urlify1-x-:-make-a-name-usable-in-URL.-Replace-punctuations-with-one-underscore-remove-leading-trailing-punctuation.-Support-all-Unicode-alphanumeric-chars.-Convert-alphabetical-chars-to-lowercase-item-urlify-x-:-same-but-also-generates-a-bind-to-x_URLIFY-item-fixDate-x-:-replace-space-with-T-in-a-timestamp-to-conform-to-xsd:dateTime-format-item-lcase-x-:-lowercase-item-agent_url-x-:-lookup-a-Crunchbase-permalink-to-find-the-respective-agent-organization-or-person-URL-item-split1-x-:-split-on-comma-and-produce-multiple-bindings.-item-splitArray-x-:-strip-brackets-and-commas-from-foo-bar-then-split-on-comma-item-ifNotNull-x-:-filter-out-parasitic-values-other-not-provided-unknown-item-ifNotSame-x-y-:-filter-out-x-values-that-are-equal-to-y.-Used-to-strip-self-referential-parent:-CB-category-mentioning-itself-as-category_group-item-booleanYesNo-x-:-map-Yes-No-to-true-false-respectively"><i>urlify1(x)</i>: make a name usable in URL. Replace punctuations with one underscore; remove leading/trailing punctuation. Support all Unicode alphanumeric chars. Convert alphabetical chars to lowercase =item <i>urlify(x)</i>: same but also generates a bind to x_URLIFY =item <i>fixDate(x)</i>: replace space with &quot;T&quot; in a timestamp to conform to xsd:dateTime format =item <i>lcase(x)</i>: lowercase =item <i>agent_url(x)</i>: lookup a Crunchbase permalink to find the respective agent (organization or person) URL =item <i>split1(x)</i>: split on comma and produce multiple bindings. =item <i>splitArray(x)</i>: strip brackets and commas from [&quot;foo&quot;,&quot;bar&quot;] then split on comma =item <i>ifNotNull(x)</i>: filter out parasitic values (&quot;other&quot;,&quot;not provided&quot;,&quot;unknown&quot;) =item <i>ifNotSame(x,y)</i>: filter out x values that are equal to ?y. Used to strip self-referential parent: CB category mentioning itself as category_group =item <i>booleanYesNo(x)</i>: map &quot;Yes&quot;,&quot;No&quot; to true,false respectively</dt>
-<dd>
+<li><p><i>urlify1(x)</i>: make a name usable in URL. Replace punctuations with one underscore; remove leading/trailing punctuation. Support all Unicode alphanumeric chars. Convert alphabetical chars to lowercase</p>
 
-</dd>
-</dl>
+</li>
+<li><p><i>urlify(x)</i>: same but also generates a bind to x_URLIFY</p>
+
+</li>
+<li><p><i>fixDate(x)</i>: replace space with &quot;T&quot; in a timestamp to conform to xsd:dateTime format</p>
+
+</li>
+<li><p><i>lcase(x)</i>: lowercase</p>
+
+</li>
+<li><p><i>agent_url(x)</i>: lookup a Crunchbase permalink to find the respective agent (organization or person) URL</p>
+
+</li>
+<li><p><i>split1(x)</i>: split on comma and produce multiple bindings.</p>
+
+</li>
+<li><p><i>splitArray(x)</i>: strip brackets and commas from [&quot;foo&quot;,&quot;bar&quot;] then split on comma</p>
+
+</li>
+<li><p><i>ifNotNull(x)</i>: filter out parasitic values (&quot;other&quot;,&quot;not provided&quot;,&quot;unknown&quot;)</p>
+
+</li>
+<li><p><i>ifNotSame(x,y)</i>: filter out x values that are equal to ?y. Used to strip self-referential parent: CB category mentioning itself as category_group</p>
+
+</li>
+<li><p><i>booleanYesNo(x)</i>: map &quot;Yes&quot;,&quot;No&quot; to true,false respectively</p>
+
+</li>
+</ul>
 
 <p>These are implemented as CPP preprocessor macro definitions (eg in file <i>common.h</i>):</p>
 
@@ -126,13 +152,15 @@
 
 <p>Most of the macros implement binds (computations), but you can also use more specialized constructs:</p>
 
-<dl>
+<ul>
 
-<dt id="agent_url-x-:-uses-a-normal-RDF-lookup-outside-of-the-OntoRefine-virtual-endpoint-to-lookup-a-Crunchbase-permalink-item-split1-x-splitArray-x-:-use-the-spif:split-magic-predicate-to-split-x-on-comma-and-produce-multiple-bindings"><i>agent_url(x)</i>: uses a normal RDF lookup (outside of the OntoRefine virtual endpoint) to lookup a Crunchbase permalink =item <i>split1(x), splitArray(x)</i>: use the <i>spif:split</i> &quot;magic predicate&quot; to split x on comma and produce multiple bindings</dt>
-<dd>
+<li><p><i>agent_url(x)</i>: uses a normal RDF lookup (outside of the OntoRefine virtual endpoint) to lookup a Crunchbase permalink</p>
 
-</dd>
-</dl>
+</li>
+<li><p><i>split1(x), splitArray(x)</i>: use the <i>spif:split</i> &quot;magic predicate&quot; to split x on comma and produce multiple bindings</p>
+
+</li>
+</ul>
 
 <h2 id="Generated-Query">Generated Query</h2>
 
@@ -149,21 +177,18 @@
     ?permalink_AGENT_URL cb:cbPermalink ?permalink
   };</code></pre>
 
-<dl>
+<ul>
 
-<dt id="GRAPH-is-the-named-graph-mentioned-in-the-first-line-of-the-model.-This-way-the-query-can-handle-both-initial-data-loading-and-updates.-Please-note-that-for-Crunchbase-it-is-unfeasible-to-regenerate-all-Organization-data-on-every-update.-So-we-have-a-slightly-more-complex-script-not-published-that-uses-a-named-graph-per-table-row-uuid-not-per-table-and-selects-only-recently-updated-rows-for-processing"><i>$GRAPH</i> is the named graph mentioned in the first line of the model. This way the query can handle both initial data loading and updates. Please note that for Crunchbase it is unfeasible to regenerate all Organization data on every update. So we have a slightly more complex script (not published) that uses a named graph per table <b>row</b> (uuid) not per <b>table</b>, and selects only recently updated rows for processing.</dt>
-<dd>
+<li><p><i>$GRAPH</i> is the named graph mentioned in the first line of the model. This way the query can handle both initial data loading and updates. Please note that for Crunchbase it is unfeasible to regenerate all Organization data on every update. So we have a slightly more complex script (not published) that uses a named graph per table <b>row</b> (uuid) not per <b>table</b>, and selects only recently updated rows for processing.</p>
 
-</dd>
-<dt id="PROJECT_ID-is-a-placeholder-that-must-be-replaced-with-the-actual-OntoRefine-project-id-before-running-the-query"><i>PROJECT_ID</i> is a placeholder that must be replaced with the actual OntoRefine project id before running the query.</dt>
-<dd>
+</li>
+<li><p><i>PROJECT_ID</i> is a placeholder that must be replaced with the actual OntoRefine project id before running the query.</p>
 
-</dd>
-<dt id="The-cb:cbPermalink-pattern-is-evaluated-outside-of-the-OntoRefine-virtual-endpoint.-The-script-has-a-special-case-for-macro-names-matching-_url-to-place-their-binds-outside-OntoRefine">The <i>cb:cbPermalink</i> pattern is evaluated outside of the OntoRefine virtual endpoint. The script has a special case for macro names matching <i>*_url</i> to place their binds outside OntoRefine.</dt>
-<dd>
+</li>
+<li><p>The <i>cb:cbPermalink</i> pattern is evaluated outside of the OntoRefine virtual endpoint. The script has a special case for macro names matching <i>*_url</i> to place their binds outside OntoRefine.</p>
 
-</dd>
-</dl>
+</li>
+</ul>
 
 <h3 id="Insert-Patterns">Insert Patterns</h3>
 
@@ -258,21 +283,18 @@
 
 <p>Then come a number of bindings generated by:</p>
 
-<dl>
+<ul>
 
-<dt id="Handling-templated-URLs-eg-cb_agent_uuid_URL">Handling templated URLs (eg <i>?cb_agent_uuid_URL</i>),</dt>
-<dd>
+<li><p>Handling templated URLs (eg <i>?cb_agent_uuid_URL</i>),</p>
 
-</dd>
-<dt id="Unrolling-macro-function-calls-into-binds-and-suffixed-variables-eg-roles_SPLIT1-and-then-roles_SPLIT1_URLIFY">Unrolling macro (function) calls into binds and suffixed variables (eg <i>?roles_SPLIT1</i> and then <i>?roles_SPLIT1_URLIFY</i>)</dt>
-<dd>
+</li>
+<li><p>Unrolling macro (function) calls into binds and suffixed variables (eg <i>?roles_SPLIT1</i> and then <i>?roles_SPLIT1_URLIFY</i>)</p>
 
-</dd>
-<dt id="Implementing-datatype-casting-using-strdt-and-binding-to-an-uppercase-variable-name-eg-CB_URL-RANK">Implementing datatype casting using <i>strdt()</i> and binding to an uppercase variable name (eg <i>?CB_URL, ?RANK</i>)</dt>
-<dd>
+</li>
+<li><p>Implementing datatype casting using <i>strdt()</i> and binding to an uppercase variable name (eg <i>?CB_URL, ?RANK</i>)</p>
 
-</dd>
-</dl>
+</li>
+</ul>
 
 <pre><code>    bind(iri(concat(&quot;cb/agent/&quot;,?uuid)) as ?cb_agent_uuid_URL)
     bind(strdt(?cb_url,xsd:anyURI) as ?CB_URL)
@@ -314,35 +336,48 @@
 
 <p>Prerequisites:</p>
 
-<dl>
+<ul>
 
-<dt id="A-file-eg-prefixes.rq-that-defines-all-common-prefixes-and-is-prepended-to-the-generated-query">A file (eg <i>prefixes.rq</i>) that defines all common prefixes and is prepended to the generated query</dt>
-<dd>
+<li><p>A file (eg <i>prefixes.rq</i>) that defines all common prefixes and is prepended to the generated query</p>
 
-</dd>
-<dt id="A-file-eg-common.h-that-defines-CPP-preprocessor-macros">A file (eg <i>common.h</i>) that defines CPP preprocessor macros</dt>
-<dd>
+</li>
+<li><p>A file (eg <i>common.h</i>) that defines CPP preprocessor macros</p>
 
-</dd>
-<dt id="Use-OntoRefine-to-run-the-generated-transformations-SPARQL-updates">Use <a href="https://graphdb.ontotext.com/documentation/standard/loading-data-using-ontorefine.html">OntoRefine</a> to run the generated transformations (SPARQL updates)</dt>
-<dd>
+</li>
+<li><p>Use <a href="https://graphdb.ontotext.com/documentation/standard/loading-data-using-ontorefine.html">OntoRefine</a> to run the generated transformations (SPARQL updates)</p>
 
-</dd>
-<dt id="Use-ontorefine-cli-to-automate-working-with-OntoRefine">Use <a href="https://graphdb.ontotext.com/documentation/standard/loading-data-using-ontorefine.html#loading-data-using-ontorefine-cli">ontorefine-cli</a> to automate working with OntoRefine</dt>
-<dd>
+</li>
+<li><p>Use <a href="https://graphdb.ontotext.com/documentation/standard/loading-data-using-ontorefine.html#loading-data-using-ontorefine-cli">ontorefine-cli</a> to automate working with OntoRefine</p>
 
-</dd>
-</dl>
+</li>
+</ul>
 
 <p>Process:</p>
 
-<dl>
+<ul>
 
-<dt id="Make-a-rdfpuml-semantic-model-for-a-single-table-using-field-names-as-parenthesized-embeds-item-Run-the-script-followed-by-the-CPP-proprocessor-as-shown-in-Usage-item-Create-an-OntoRefine-project-and-take-its-project-ID-item-Load-a-CSV-table-into-the-OntoRefine-project-item-Replace-the-placeholder-PROJECT_ID-in-the-generated-query-with-the-actual-ID-item-Run-the-query:-it-will-replace-the-defined-graph-in-the-current-repository-item-Delete-the-OntoRefine-project">Make a <b>rdfpuml</b> semantic model for a single table, using field names as parenthesized embeds =item Run the script followed by the CPP proprocessor as shown in &quot;Usage&quot; =item Create an OntoRefine project and take its project ID =item Load a CSV table into the OntoRefine project =item Replace the placeholder <i>PROJECT_ID</i> in the generated query with the actual ID =item Run the query: it will replace the defined graph in the current repository =item Delete the OntoRefine project</dt>
-<dd>
+<li><p>Make a <b>rdfpuml</b> semantic model for a single table, using field names as parenthesized embeds</p>
 
-</dd>
-</dl>
+</li>
+<li><p>Run the script followed by the CPP proprocessor as shown in &quot;Usage&quot;</p>
+
+</li>
+<li><p>Create an OntoRefine project and take its project ID</p>
+
+</li>
+<li><p>Load a CSV table into the OntoRefine project</p>
+
+</li>
+<li><p>Replace the placeholder <i>PROJECT_ID</i> in the generated query with the actual ID</p>
+
+</li>
+<li><p>Run the query: it will replace the defined graph in the current repository</p>
+
+</li>
+<li><p>Delete the OntoRefine project</p>
+
+</li>
+</ul>
 
 <h2 id="Limitations">Limitations</h2>
 
