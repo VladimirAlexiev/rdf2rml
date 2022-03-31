@@ -1,0 +1,359 @@
+=head1 NAME
+
+rdf2ontorefine - Convert RDF examples to OntoRefine SPARQL updates
+
+=head1 SYNOPSIS
+
+  perl rdf2ontorefine.pl model.ttl | cat common.h prefixes.rq - | cpp -P -C -nostdinc - > model.ru
+
+=head1 DESCRIPTION
+
+B<rdf2ontorefine> converts an RDF example with embedded CSV column names into a SPARQL update query for L<OntoRefine|https://graphdb.ontotext.com/documentation/standard/loading-data-using-ontorefine.html>,
+which is an adaptation of OpenRefine for working with RDF data, integrated in GraphDB Workbench.
+It exposes a table as a virtual SPARQL endpoint (special service),
+where each column F<col> of each row is exposed as a variable binding F<?c_col>.
+
+We've used it for large and complex CSV files,
+eg Crunchbase consisting of 17 tables, total 9.5M rows, 318 columns;
+for both initial loading and data updates.
+
+=head2 RDF Model
+
+Typically the example is an B<rdfpuml> model that uses embedded column names
+in URLs and attribute values (which can be datatyped).
+
+Consider the following semantic representation of Crunchbase's F<organizations.csv> table:
+
+  # GRAPH <cb/graph/organizations>
+  <cb/agent/(uuid)> a cb:Organization;
+    cb:cbId '(uuid)';
+    cb:name '(name)';
+    cb:cbPermalink '(permalink)';
+    cb:cbUrl '(cb_url)'^^xsd:anyURI;
+    cb:rank '(rank)'^^xsd:integer;
+    cb:createdAt 'fixDate(created_at)'^^xsd:dateTime;
+    cb:updatedAt 'fixDate(updated_at)'^^xsd:dateTime;
+    cb:legalName '(legal_name)';
+    cb:organizationRole <cb/organizationRole/urlify(split1(roles))>;
+    cb:domain '(domain)';
+    cb:homepageUrl '(homepage_url)'^^xsd:anyURI;
+    cb:countryCode '(country_code)';
+    cb:stateCode '(state_code)';
+    cb:region '(region)';
+    cb:city '(city)';
+    cb:address '(address)';
+    cb:postalCode '(postal_code)';
+    cb:status <cb/organizationStatus/urlify(status)>;
+    cb:shortDescription '(short_description)';
+    cb:industry <cb/industry/urlify(split1(category_list))>;
+    cb:numFundingRounds '(num_funding_rounds)'^^xsd:integer;
+    cb:totalFundingUsd '(total_funding_usd)'^^xsd:decimal;
+    cb:totalFunding '(total_funding)'^^xsd:decimal;
+    cb:totalFundingCurrencyCode '(total_funding_currency_code)';
+    cb:foundedOn 'fixDate(founded_on)'^^xsd:dateTime;
+    cb:lastFundingOn 'fixDate(last_funding_on)'^^xsd:dateTime;
+    cb:closedOn 'fixDate(closed_on)'^^xsd:dateTime;
+    cb:employeeCount <cb/employeeCount/urlify(ifNotNull(employee_count))>;
+    cb:email '(email)';
+    cb:phone '(phone)';
+    cb:facebookUrl '(facebook_url)'^^xsd:anyURI;
+    cb:linkedinUrl '(linkedin_url)'^^xsd:anyURI;
+    cb:twitterUrl '(twitter_url)'^^xsd:anyURI;
+    cb:logoUrl '(logo_url)'^^xsd:anyURI;
+    cb:alias '(alias1)';
+    cb:alias '(alias2)';
+    cb:alias '(alias3)';
+    cb:primaryRole <cb/organizationRole/urlify(primary_role)>;
+    cb:numExits '(num_exits)'^^xsd:integer.
+
+=head3 Used Macros
+
+In addition to plain CSV field names you can also use macros ("function calls")
+that are unrolled by the script into a series of binds using suffixed variable names.
+For example, we used the following macros:
+
+=over
+
+=item F<urlify1(x)>: make a name usable in URL. Replace punctuations with one underscore; remove leading/trailing punctuation. Support all Unicode alphanumeric chars. Convert alphabetical chars to lowercase
+
+=item F<urlify(x)>: same but also generates a bind to x_URLIFY
+
+=item F<fixDate(x)>: replace space with "T" in a timestamp to conform to xsd:dateTime format
+
+=item F<lcase(x)>: lowercase
+
+=item F<agent_url(x)>: lookup a Crunchbase permalink to find the respective agent (organization or person) URL
+
+=item F<split1(x)>: split on comma and produce multiple bindings.
+
+=item F<splitArray(x)>: strip brackets and commas from ["foo","bar"] then split on comma
+
+=item F<ifNotNull(x)>: filter out parasitic values ("other","not provided","unknown")
+
+=item F<ifNotSame(x,y)>: filter out x values that are equal to ?y. Used to strip self-referential parent: CB category mentioning itself as category_group
+
+=item F<booleanYesNo(x)>: map "Yes","No" to true,false respectively
+
+=back
+
+These are implemented as CPP preprocessor macro definitions (eg in file F<common.h>):
+
+    #define urlify1(x)        LCASE(REPLACE(REPLACE(REPLACE(x, "[^\\p{L}0-9]", "_"), "_+", "_"), "^_|_$", ""))
+    #define urlify(x)         bind(urlify1(x) as x##_URLIFY)
+    #define fixDate(x)        bind(REPLACE(x,' ','T') as x##_FIXDATE)
+    #define lcase(x)          bind(LCASE(x) as x##_LCASE)
+    #define agent_url(x)      x##_AGENT_URL cb:cbPermalink x
+    #define split1(x)         x##_SPLIT1 spif:split (x ',').
+    #define splitArray(x)     bind(REPLACE(x,'[\\["\\]]+','') as x##_ARRAY)  x##_SPLITARRAY spif:split (x##_ARRAY ',').
+    #define ifNotNull(x)      bind(if(x in ("other","not provided","unknown"),?UNDEF,x) as x##_IFNOTNULL)
+    #define ifNotSame(x,y)    bind(if(x=y,?UNDEF,x) as x##_IFNOTSAME)
+    #define booleanYesNo(x)   bind(if(x="Yes",true,false) as x##BOOLEANYESNO)
+
+Please note that builtin SPARQL functions are written in uppercase to avoid treating them as macro definitions.
+
+Most of the macros implement binds (computations), but you can also use more specialized constructs:
+
+=over
+
+=item F<agent_url(x)>: uses a normal RDF lookup (outside of the OntoRefine virtual endpoint) to lookup a Crunchbase permalink
+
+=item F<split1(x), splitArray(x)>: use the F<spif:split> "magic predicate" to split x on comma and produce multiple bindings
+
+=back
+
+=head2 Generated Query
+
+The overall structure of the generated SPARQL Update query is like this:
+ 
+  delete where {graph $GRAPH {?s ?p ?o}};
+  insert {graph $GRAPH {
+    <Insert Patterns>
+  }}
+  where {
+    service <rdf-mapper:ontorefine:PROJECT_ID> {
+      <Generated Binds>
+    }
+    ?permalink_AGENT_URL cb:cbPermalink ?permalink
+  };
+
+=over
+
+=item F<$GRAPH> is the named graph mentioned in the first line of the model.
+This way the query can handle both initial data loading and updates.
+Please note that for Crunchbase it is unfeasible to regenerate all Organization data on every update.
+So we have a slightly more complex script (not published) that uses a named graph per table B<row> (uuid) not per B<table>,
+and selects only recently updated rows for processing.
+
+=item F<PROJECT_ID> is a placeholder that must be replaced with the actual OntoRefine project id before running the query.
+
+=item The F<cb:cbPermalink> pattern is evaluated outside of the OntoRefine virtual endpoint.
+The script has a special case for macro names matching F<*_url> to place their binds outside OntoRefine.
+
+=back
+
+=head3 Insert Patterns
+
+The script unrolls macro (function) calls into binds, adding uppercase suffixes to the variable names.
+In addition, it knows how to process templatized URLs (see var names with a F<_URL> suffix)
+and how to process datatype attachmetns (whcih uses variable names converted to uppercase):
+
+  ?cb_agent_uuid_URL a cb:Organization;
+    cb:cbId ?uuid;
+    cb:name ?name;
+    cb:cbPermalink ?permalink;
+    cb:cbUrl ?CB_URL;
+    cb:rank ?RANK;
+    cb:createdAt ?CREATED_AT_FIXDATE;
+    cb:updatedAt ?UPDATED_AT_FIXDATE;
+    cb:legalName ?legal_name;
+    cb:organizationRole ?cb_organizationRole_roles_SPLIT1_URLIFY_URL;
+    cb:domain ?domain;
+    cb:homepageUrl ?HOMEPAGE_URL;
+    cb:countryCode ?country_code;
+    cb:stateCode ?state_code;
+    cb:region ?region;
+    cb:city ?city;
+    cb:address ?address;
+    cb:postalCode ?postal_code;
+    cb:status ?cb_organizationStatus_status_URLIFY_URL;
+    cb:shortDescription ?short_description;
+    cb:industry ?cb_industry_category_list_SPLIT1_URLIFY_URL;
+    cb:numFundingRounds ?NUM_FUNDING_ROUNDS;
+    cb:totalFundingUsd ?TOTAL_FUNDING_USD;
+    cb:totalFunding ?TOTAL_FUNDING;
+    cb:totalFundingCurrencyCode ?total_funding_currency_code;
+    cb:foundedOn ?FOUNDED_ON_FIXDATE;
+    cb:lastFundingOn ?LAST_FUNDING_ON_FIXDATE;
+    cb:closedOn ?CLOSED_ON_FIXDATE;
+    cb:employeeCount ?cb_employeeCount_employee_count_IFNOTNULL_URLIFY_URL;
+    cb:email ?email;
+    cb:phone ?phone;
+    cb:facebookUrl ?FACEBOOK_URL;
+    cb:linkedinUrl ?LINKEDIN_URL;
+    cb:twitterUrl ?TWITTER_URL;
+    cb:logoUrl ?LOGO_URL;
+    cb:alias ?alias1;
+    cb:alias ?alias2;
+    cb:alias ?alias3;
+    cb:primaryRole ?cb_organizationRole_primary_role_URLIFY_URL;
+    cb:numExits ?NUM_EXITS.
+
+=head2 Generated Binds
+
+The script emits a bunch of bindings.
+
+First come silly "aliases" for each variable used in the model because of some peculiarities in OntoRefine
+(issue L<GDB-6600|https://ontotext.atlassian.net/browse/GDB-6600>):
+
+    bind(?c_uuid as ?uuid)
+    bind(?c_name as ?name)
+    bind(?c_permalink as ?permalink)
+    bind(?c_cb_url as ?cb_url)
+    bind(?c_rank as ?rank)
+    bind(?c_created_at as ?created_at)
+    bind(?c_updated_at as ?updated_at)
+    bind(?c_legal_name as ?legal_name)
+    bind(?c_roles as ?roles)
+    bind(?c_domain as ?domain)
+    bind(?c_homepage_url as ?homepage_url)
+    bind(?c_country_code as ?country_code)
+    bind(?c_state_code as ?state_code)
+    bind(?c_region as ?region)
+    bind(?c_city as ?city)
+    bind(?c_address as ?address)
+    bind(?c_postal_code as ?postal_code)
+    bind(?c_status as ?status)
+    bind(?c_short_description as ?short_description)
+    bind(?c_category_list as ?category_list)
+    bind(?c_num_funding_rounds as ?num_funding_rounds)
+    bind(?c_total_funding_usd as ?total_funding_usd)
+    bind(?c_total_funding as ?total_funding)
+    bind(?c_total_funding_currency_code as ?total_funding_currency_code)
+    bind(?c_founded_on as ?founded_on)
+    bind(?c_last_funding_on as ?last_funding_on)
+    bind(?c_closed_on as ?closed_on)
+    bind(?c_employee_count as ?employee_count)
+    bind(?c_email as ?email)
+    bind(?c_phone as ?phone)
+    bind(?c_facebook_url as ?facebook_url)
+    bind(?c_linkedin_url as ?linkedin_url)
+    bind(?c_twitter_url as ?twitter_url)
+    bind(?c_logo_url as ?logo_url)
+    bind(?c_alias1 as ?alias1)
+    bind(?c_alias2 as ?alias2)
+    bind(?c_alias3 as ?alias3)
+    bind(?c_primary_role as ?primary_role)
+    bind(?c_num_exits as ?num_exits)
+
+
+Then come a number of bindings generated by:
+
+=over
+
+=item Handling templated URLs (eg F<?cb_agent_uuid_URL>),
+
+=item Unrolling macro (function) calls into binds and suffixed variables (eg F<?roles_SPLIT1> and then F<?roles_SPLIT1_URLIFY>)
+
+=item Implementing datatype casting using F<strdt()> and binding to an uppercase variable name (eg F<?CB_URL, ?RANK>)
+
+=back
+
+    bind(iri(concat("cb/agent/",?uuid)) as ?cb_agent_uuid_URL)
+    bind(strdt(?cb_url,xsd:anyURI) as ?CB_URL)
+    bind(strdt(?rank,xsd:integer) as ?RANK)
+    bind(REPLACE(?created_at,' ','T') as ?created_at_FIXDATE)
+    bind(strdt(?created_at_FIXDATE,xsd:dateTime) as ?CREATED_AT_FIXDATE)
+    bind(REPLACE(?updated_at,' ','T') as ?updated_at_FIXDATE)
+    bind(strdt(?updated_at_FIXDATE,xsd:dateTime) as ?UPDATED_AT_FIXDATE)
+    ?roles_SPLIT1 spif:split (?roles ',').
+    bind(LCASE(REPLACE(REPLACE(REPLACE(?roles_SPLIT1, "[^\\p{L}0-9]", "_"), "_+", "_"), "^_|_$", "")) as ?roles_SPLIT1_URLIFY)
+    bind(iri(concat("cb/organizationRole/",?roles_SPLIT1_URLIFY)) as ?cb_organizationRole_roles_SPLIT1_URLIFY_URL)
+    bind(strdt(?homepage_url,xsd:anyURI) as ?HOMEPAGE_URL)
+    bind(LCASE(REPLACE(REPLACE(REPLACE(?status, "[^\\p{L}0-9]", "_"), "_+", "_"), "^_|_$", "")) as ?status_URLIFY)
+    bind(iri(concat("cb/organizationStatus/",?status_URLIFY)) as ?cb_organizationStatus_status_URLIFY_URL)
+    ?category_list_SPLIT1 spif:split (?category_list ',').
+    bind(LCASE(REPLACE(REPLACE(REPLACE(?category_list_SPLIT1, "[^\\p{L}0-9]", "_"), "_+", "_"), "^_|_$", "")) as ?category_list_SPLIT1_URLIFY)
+    bind(iri(concat("cb/industry/",?category_list_SPLIT1_URLIFY)) as ?cb_industry_category_list_SPLIT1_URLIFY_URL)
+    bind(strdt(?num_funding_rounds,xsd:integer) as ?NUM_FUNDING_ROUNDS)
+    bind(strdt(?total_funding_usd,xsd:decimal) as ?TOTAL_FUNDING_USD)
+    bind(strdt(?total_funding,xsd:decimal) as ?TOTAL_FUNDING)
+    bind(REPLACE(?founded_on,' ','T') as ?founded_on_FIXDATE)
+    bind(strdt(?founded_on_FIXDATE,xsd:dateTime) as ?FOUNDED_ON_FIXDATE)
+    bind(REPLACE(?last_funding_on,' ','T') as ?last_funding_on_FIXDATE)
+    bind(strdt(?last_funding_on_FIXDATE,xsd:dateTime) as ?LAST_FUNDING_ON_FIXDATE)
+    bind(REPLACE(?closed_on,' ','T') as ?closed_on_FIXDATE)
+    bind(strdt(?closed_on_FIXDATE,xsd:dateTime) as ?CLOSED_ON_FIXDATE)
+    bind(if(?employee_count in ("other","not provided","unknown"),?UNDEF,?employee_count) as ?employee_count_IFNOTNULL)
+    bind(LCASE(REPLACE(REPLACE(REPLACE(?employee_count_IFNOTNULL, "[^\\p{L}0-9]", "_"), "_+", "_"), "^_|_$", "")) as ?employee_count_IFNOTNULL_URLIFY)
+    bind(iri(concat("cb/employeeCount/",?employee_count_IFNOTNULL_URLIFY)) as ?cb_employeeCount_employee_count_IFNOTNULL_URLIFY_URL)
+    bind(strdt(?facebook_url,xsd:anyURI) as ?FACEBOOK_URL)
+    bind(strdt(?linkedin_url,xsd:anyURI) as ?LINKEDIN_URL)
+    bind(strdt(?twitter_url,xsd:anyURI) as ?TWITTER_URL)
+    bind(strdt(?logo_url,xsd:anyURI) as ?LOGO_URL)
+    bind(LCASE(REPLACE(REPLACE(REPLACE(?primary_role, "[^\\p{L}0-9]", "_"), "_+", "_"), "^_|_$", "")) as ?primary_role_URLIFY)
+    bind(iri(concat("cb/organizationRole/",?primary_role_URLIFY)) as ?cb_organizationRole_primary_role_URLIFY_URL)
+    bind(strdt(?num_exits,xsd:integer) as ?NUM_EXITS)
+
+=head2 Prerequisites and Process
+
+Prerequisites:
+
+=over
+
+=item A file (eg F<prefixes.rq>) that defines all common prefixes and is prepended to the generated query
+
+=item A file (eg F<common.h>) that defines CPP preprocessor macros
+
+=item Use L<OntoRefine|https://graphdb.ontotext.com/documentation/standard/loading-data-using-ontorefine.html>
+to run the generated transformations (SPARQL updates)
+
+=item Use L<ontorefine-cli|https://graphdb.ontotext.com/documentation/standard/loading-data-using-ontorefine.html#loading-data-using-ontorefine-cli>
+to automate working with OntoRefine
+
+=back
+
+Process:
+
+=over
+
+=item Make a B<rdfpuml> semantic model for a single table, using field names as parenthesized embeds
+
+=item Run the script followed by the CPP proprocessor as shown in "Usage"
+
+=item Create an OntoRefine project and take its project ID
+
+=item Load a CSV table into the OntoRefine project
+
+=item Replace the placeholder F<PROJECT_ID> in the generated query with the actual ID
+
+=item Run the query: it will replace the defined graph in the current repository
+
+=item Delete the OntoRefine project
+
+=back
+
+=head2 Limitations
+
+Don't use fields completely in uppercase as that may conflict with generated variable names.
+
+Don't use several F<split> in the same table as that may lead to Cartesian Product of all values across the several columns
+(TODO check, I think OntoRefine avoids that).
+
+=head1 SEE ALSO
+
+L<The gist|https://gist.github.com/VladimirAlexiev/d5d67feb002dbcfa6b3d4c3dd59b52da> "Crunchbase Semantic Model and Challenge" that publishes all our Crunchbase models.
+It also shows an overall model diagram made by 
+
+L<The issue|https://github.com/kg-construct/best-practices/issues/7> "Generate Transforms and Shapes from Models" in the KG Construct community group Best Practices github project.
+
+B<rdfpuml>: a tool that generates PlantUML diagrams from RDF examples.
+
+B<rdf2rml>: a tool that generates R2RML transformations from RDF examples.
+
+B<rdf2tarql>: a tool that generates TARQL queries from RDF examples.
+
+=head1 AUTHOR
+
+Vladimir Alexiev, Ontotext Corp
+
+Last update: 3-Mar-2022

@@ -149,6 +149,8 @@ B<rdfpuml>: a tool that generates PlantUML diagrams from RDF examples.
 
 B<rdf2rml>: a tool that generates R2RML transformations from RDF examples.
 
+B<rdf2ontorefine>: a tool that generates OntoRefine SPARQL updates from RDF examples.
+
 =head1 AUTHOR
 
 Vladimir Alexiev, Ontotext Corp

@@ -136,6 +136,9 @@ SEE ALSO
 
     rdf2rml: a tool that generates R2RML transformations from RDF examples.
 
+    rdf2ontorefine: a tool that generates OntoRefine SPARQL updates from RDF
+    examples.
+
 AUTHOR
     Vladimir Alexiev, Ontotext Corp
 
