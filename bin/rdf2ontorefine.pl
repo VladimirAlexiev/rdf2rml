@@ -64,7 +64,7 @@ sub templated_url {
   $var =~ s{^_}{};
   $var =~ s{_$}{};
   $var = "?" . $var;
-  $bound{$var} && $bound{$var} ne "templated_url" and die "$var is used for both templated_url and $bound{$var}\n";
+  $bound{$var} && $bound{$var} ne "templated_URL" and die "$var is used for both templated_URL and $bound{$var}\n";
   $bound{$var} and return $var;
   $bound{$var} = "templated_URL";
   $url =~ s{\(([\w.]+)\)}{",?$1,"}g;
@@ -78,7 +78,7 @@ sub templated_url {
 ## main
 
 $_ = <>;
-our ($GRAPH) = m{# (GRAPH <.*>)} or die "Expected GRAPH got $_";
+our ($GRAPH) = m{# GRAPH (<.*>)} or die "Expected # GRAPH <...> got $_";
 our $output = ""; 
 our %bound;
 
@@ -101,9 +101,9 @@ my $WHERE_POST = scalar @where > 2 ? pop @where : '';
 my $WHERE_PRE  = join'',@where;
 
 print << "EOF";
-delete where {$GRAPH {?s ?p ?o}};
+clear silent graph $GRAPH;
 
-insert {$GRAPH {
+insert {graph $GRAPH {
 $output}}
 where {
   service <rdf-mapper:ontorefine:PROJECT_ID> {
