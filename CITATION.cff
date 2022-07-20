@@ -22,6 +22,8 @@ keywords:
   - r2rml-mapping
   - rdfpuml
   - rdf2rml
+  - rdf2tarql
+  - rdf2ontorefine
 preferred-citation:
   type: conference-paper
   title: "RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation"
@@ -60,3 +62,5 @@ preferred-citation:
     - RDF by Example
     - rdfpuml
     - rdf2rml
+    - rdf2tarql
+    - rdf2ontorefine

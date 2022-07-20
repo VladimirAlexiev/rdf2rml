@@ -14,7 +14,7 @@
 #+HTML_DOCTYPE: xhtml-strict
 #+HTML_CONTAINER: div
 #+DESCRIPTION:
-#+KEYWORDS: RDF, visualization, PlantUML, cultural heritage, NLP, NIF, EHRI, R2RML, generation, model-driven, RDF by Example, rdfpuml, rdf2rml
+#+KEYWORDS: RDF, visualization, PlantUML, R2RML, generation, model-driven, RDF by Example, rdfpuml, rdf2rml, rdf2tarql, rdf2ontorefine
 
 
 * Table of Contents                                 :TOC:noexport:
@@ -95,8 +95,11 @@ Special attention is paid to inlining and visualizing various Reification mechan
 We give examples from Getty CONA, Getty Museum, AAC (mappings of museum data to CIDOC CRM), 
 Multisensor (NIF and FrameNet), EHRI (Holocaust Research into Jewish social networks), Duraspace (Portland Common Data Model for holding metadata in institutional repositories), Video annotation. 
 
-If the example instances include SQL queries and embedded field names, they can describe a mapping precisely. 
-Another tool *rdf2rdb* generates R2RML transformations from such examples, saving about 15x in complexity.
+If the example instances include embedded source field names, they can describe a mapping precisely.
+I've implemented a few more tools to generate transformations:
+- *rdf2rml* generates [[https://www.w3.org/TR/r2rml/][R2RML]] transformations for RDBMS tables or SQL queries. Compared to R2RML, this saves about 15x in complexity and is competitive with the dedicated DSL [[https://rml.io/yarrrml/][YARRML]]
+- *rdf2tarql* generates [[https://tarql.github.io/][TARQL]] transformations from CSV/TSV to RDF that take the form of SPARQL CONSTRUCT
+- *rdf2ontorefine* generates OntoRefine transformations from tabular data to direct GraphDB loading in the form of SPARQL UPDATE queries
 
 See http://twitter.com/hashtag/rdfpuml for news, diagrams and announcements.
 
@@ -104,8 +107,13 @@ See http://twitter.com/hashtag/rdfpuml for news, diagrams and announcements.
 - http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdfpuml.html
 - http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdf2rml.html
 - http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdf2tarql.html
+- http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdf2ontorefine.html
 
-Source: [[./doc/rdfpuml.pod]], [[./doc/rdf2rml.pod]], [[./doc/rdf2tarql.pod]]
+Documentation source:
+- [[./doc/rdfpuml.pod]]
+- [[./doc/rdf2rml.pod]]
+- [[./doc/rdf2tarql.pod]]
+- [[./doc/rdf2ontorefine.pod]]
 
 * Installation
 Checkout this repo and add ~rdf2rml/bin~ to your path. 
@@ -240,7 +248,7 @@ Now it only supports Turtle, because it concatenates ~prefixes.ttl~ to the main 
 If it can collect all prefixes from RDF files, such concatenation won't be needed
 
 *** TODO Batch Processing
-#1: plantuml is slow to start up, so we'd like to process a bunch of ~puml~ files at once.
+Issue [[https://github.com/VladimirAlexiev/rdf2rml/issues/1][#1]]: plantuml is slow to start up, so we'd like to process a bunch of ~puml~ files at once.
 The best way is to have a smarter script or ~Makefile~ that uses the following http://plantuml.com/command-line features:
 - Keep the intermediate ~puml~ files (the current ~Makefile~ doesn't preserve them)
 - Run ~plantuml~ on a whole folder (with ~-r[ecurse]~ it can even recurse through subfolders)
@@ -252,14 +260,14 @@ The best way is to have a smarter script or ~Makefile~ that uses the following h
 **** "Manual" Batching
 Before I discovered the ~-checkmetadata~ option, 
 I had the idea that ~rdfpuml~ could put several diagrams in one ~puml~ file:
-#+BEGIN_SRC puml
+#+BEGIN_EXAMPLE
 @startuml file1.png
   # made from file1.ttl
 @enduml
 @startuml file2.png
   # made from file2.ttl
 @enduml
-#+END_SRC
+#+END_EXAMPLE
 However, this interferes with ~make~ processing that regenerates only ~png~ for changed ~ttl~ files,
 and makes things less modular overall.
 
