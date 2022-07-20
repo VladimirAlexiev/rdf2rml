@@ -37,8 +37,8 @@
   - [[#2020-09-17-rdf2rml-logicaltable][2020-09-17 rdf2rml: logicalTable]]
   - [[#2021-09-02-unicode-processing][2021-09-02 Unicode Processing]]
   - [[#2022-04018-rdf2ontorefinepl][2022-04018 rdf2ontorefine.pl]]
-- [[#to-do-tasks-221][To Do Tasks [2/21]​]]
-  - [[#near-term-211][Near-term [2/11]​]]
+- [[#to-do-tasks][To Do Tasks]]
+  - [[#near-term][Near-term]]
     - [[#modularize-and-package-better][Modularize and Package Better]]
     - [[#regression-tests][Regression Tests]]
     - [[#rdf2rml-disentangle-inverse-edge][rdf2rml: disentangle inverse edge]]
@@ -193,11 +193,11 @@ See doc section ~rdfpuml.html#Unicode~
 ** DONE 2022-04018 rdf2ontorefine.pl                       :VladimirAlexiev:
 Add script to generate OntoRefine SPARQL Update queries from model.
 
-* To Do Tasks [2/21]
+* To Do Tasks
 Help needed for the following tasks.
 Post bugs and enhancement requests to this repo!
 
-** Near-term [2/11]
+** Near-term
 
 *** INPROGRESS Modularize and Package Better
 
