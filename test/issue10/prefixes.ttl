@@ -1,0 +1,6 @@
+@prefix lis:  <http://rds.posccaesar.org/ontology/lis14/rdl/>.
+@prefix om:   <http://www.ontology-of-units-of-measure.org/resource/om-2/>.
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdl:  <https://rds.posccaesar.org/ontology/plm/rdl/>.

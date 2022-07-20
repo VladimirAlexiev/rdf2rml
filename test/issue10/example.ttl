@@ -1,0 +1,9 @@
+rdl:PCA_100003953  a  owl:NamedIndividual , lis:Scale ;
+# The next rdf:type causes the problem https://github.com/VladimirAlexiev/rdf2rml/issues/10
+# Before it's fixed, let's use a wrong prop name "rdfs:type1" to see how the diagram will look like
+        rdfs:type1   [ a                 owl:Restriction ;
+                      owl:allValuesFrom  rdl:PCA_100003891 ;
+                      owl:onProperty     [ owl:inverseOf  lis:datumUOM ]
+                    ] ;
+        rdfs:label  "radian per second squared" ;
+        om:symbol   "rad/s2".

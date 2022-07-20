@@ -1,0 +1,19 @@
+@startuml
+hide empty methods
+hide empty attributes
+hide circle
+skinparam classAttributeIconSize 0
+class _r1658327087r0_ as " "
+_r1658327087r0_ : a owl:Restriction
+class rdl_PCA_100003891 as "rdl:PCA_100003891"
+_r1658327087r0_ -down-> rdl_PCA_100003891 : owl:allValuesFrom
+class _r1658327087r1_ as " "
+_r1658327087r0_ -down-> _r1658327087r1_ : owl:onProperty
+class lis_datumUOM as "lis:datumUOM"
+_r1658327087r1_ -down-> lis_datumUOM : owl:inverseOf
+class rdl_PCA_100003953 as "rdl:PCA_100003953"
+rdl_PCA_100003953 : a owl:NamedIndividual, lis:Scale
+rdl_PCA_100003953 -down-> _r1658327087r0_ : rdfs:type1
+rdl_PCA_100003953 : om:symbol "rad/s2"
+rdl_PCA_100003953 : rdfs:label "radian per second squared"
+@enduml
