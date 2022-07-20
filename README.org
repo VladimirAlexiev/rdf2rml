@@ -27,7 +27,7 @@
 - [[#documentation][Documentation]]
 - [[#installation][Installation]]
 - [[#debian-repo][Debian Repo]]
-- [[#change-log-78][Change Log [7/8]​]]
+- [[#change-log][Change Log]]
   - [[#2018-11-14-avoid-pumlstereotype-class-node][2018-11-14 Avoid puml:stereotype class node]]
   - [[#2018-06-29-bug-class-and-pumlinlineproperty][2018-06-29 Bug: class and puml:InlineProperty]]
   - [[#2018-04-05-arrow-attributes][2018-04-05 Arrow Attributes]]
@@ -37,24 +37,24 @@
   - [[#2020-09-17-rdf2rml-logicaltable][2020-09-17 rdf2rml: logicalTable]]
   - [[#2021-09-02-unicode-processing][2021-09-02 Unicode Processing]]
   - [[#2022-04018-rdf2ontorefinepl][2022-04018 rdf2ontorefine.pl]]
-  - [[#2020-09-17-rdf2rml-disentangle-inverse-edge][2020-09-17 rdf2rml: disentangle inverse edge]]
 - [[#to-do-tasks-221][To Do Tasks [2/21]​]]
   - [[#near-term-211][Near-term [2/11]​]]
     - [[#modularize-and-package-better][Modularize and Package Better]]
     - [[#regression-tests][Regression Tests]]
+    - [[#rdf2rml-disentangle-inverse-edge][rdf2rml: disentangle inverse edge]]
     - [[#release-on-cpan][Release on CPAN]]
     - [[#easier-installation][Easier installation]]
-    - [[#unicode-02][Unicode [0/2]​]]
+    - [[#unicode][Unicode]]
       - [[#get-rid-of-myprint][Get rid of myprint()]]
       - [[#add-unicode-tests][Add Unicode tests]]
-    - [[#prefixes-03][Prefixes [0/3]​]]
+    - [[#prefixes][Prefixes]]
       - [[#eliminate-curiepm][Eliminate Curie.pm]]
       - [[#remember-prefixes-from-input-file][Remember prefixes from input file]]
       - [[#allow-specifying-the-prefixes-file][Allow specifying the prefixes file]]
       - [[#support-more-rdf-formats][Support more RDF Formats]]
     - [[#batch-processing][Batch Processing]]
       - [[#manual-batching]["Manual" Batching]]
-  - [[#mid-term-05][Mid-Term [0/5]​]]
+  - [[#mid-term][Mid-Term]]
     - [[#upgrade-to-use-attean][Upgrade to use Attean]]
     - [[#integrate-in-emacs-org-mode][Integrate in Emacs org-mode]]
     - [[#node-colors-icons-tooltips][Node colors, icons, tooltips]]
@@ -62,7 +62,7 @@
     - [[#extra-layout-options][Extra Layout Options]]
     - [[#custom-reification][Custom Reification]]
     - [[#use-mindmapwbs-for-hierarchies][Use MindMap/WBS for Hierarchies]]
-  - [[#long-term-03][Long-Term [0/3]​]]
+  - [[#long-term][Long-Term]]
     - [[#rdf2soml-to-generate-semantic-object-models][rdf2soml to Generate Semantic Object Models]]
       - [[#cardinality-with-rdf][Cardinality With RDF*]]
       - [[#cardinality-with-blank-node][Cardinality With Blank Node]]
@@ -142,7 +142,7 @@ To adopt changes, do something like this.
   git cherry-pick $commit1 $commit2 $commit3
   #+end_src
 
-* Change Log [7/8]
+* Change Log 
 
 ** DONE 2018-11-14 Avoid puml:stereotype class node        :VladimirAlexiev:
 I often define ~puml:stereotype~ for some classes in prefixes.ttl.
@@ -193,14 +193,6 @@ See doc section ~rdfpuml.html#Unicode~
 ** DONE 2022-04018 rdf2ontorefine.pl                       :VladimirAlexiev:
 Add script to generate OntoRefine SPARQL Update queries from model.
 
-** TODO 2020-09-17 rdf2rml: disentangle inverse edge       :VladimirAlexiev:
-In the case  ~Y-P-X~ described above:
-- Also need to record ~?y puml:property ?p~ so this prop name can be added to ?y's subject map
-- When making ?map, take ~puml:property~ into account
-- But ?map is made many times, and copy-paste is no good...
-- Also, this should be done in some cases but not others...
-- So it's better to record ~?y puml:map ?map~ ...
-
 * To Do Tasks [2/21]
 Help needed for the following tasks.
 Post bugs and enhancement requests to this repo!
@@ -214,20 +206,28 @@ Post bugs and enhancement requests to this repo!
   However, this will interfere with the ability to control the layout, especially of disconnected components (see [[https://forum.plantuml.net/2538][layout_new_line]])
 - Some regression tests are added.
 
+*** TODO rdf2rml: disentangle inverse edge
+In the case  ~Y-P-X~ described above:
+- Also need to record ~?y puml:property ?p~ so this prop name can be added to ?y's subject map
+- When making ?map, take ~puml:property~ into account
+- But ?map is made many times, and copy-paste is no good...
+- Also, this should be done in some cases but not others...
+- So it's better to record ~?y puml:map ?map~ ...
+
 *** TODO Release on CPAN
 
 *** DONE Easier installation
 There's a pull request https://github.com/VladimirAlexiev/rdf2rml/pull/7 that dockerizes the installation.
 As of 18-Sep-2019 it's undergoing code review.
 
-*** Unicode [0/2]
-**** TODO Get rid of ~myprint()~
+*** Unicode
+**** DONE Get rid of ~myprint()~
 This was made because of some Unicode troubles
 **** INPROGRESS Add Unicode tests
 Add ttl with non-ASCII chars: Accented, Cyrillic, French, etc.
 - Accented: ~"Rudolf Mössbauer"~ in [[./test/TRR/societyMember.ttl]]
 
-*** Prefixes [0/3]
+*** Prefixes
 **** TODO Eliminate Curie.pm
 [[./lib/RDF/Prefixes/Curie.pm]] remembers ~@base~ and uses that for URL shortening.
 Once [[https://github.com/kasei/perlrdf/issues/131][perlrdf#131]] is fixed, eliminate this dependency (local module)
@@ -263,7 +263,7 @@ I had the idea that ~rdfpuml~ could put several diagrams in one ~puml~ file:
 However, this interferes with ~make~ processing that regenerates only ~png~ for changed ~ttl~ files,
 and makes things less modular overall.
 
-** Mid-Term [0/5]
+** Mid-Term 
 
 *** TODO Upgrade to use Attean
 [[https://github.com/kasei/perlrdf][Trine (Perl RDF)]] is end of life. [[https://github.com/kasei/attean][Attean]] is the new generation
@@ -311,12 +311,10 @@ Plantuml now has [[http://plantuml.com/mindmap-diagram][MindMap]] and [[http://p
 It would be nice to use this to draw hierarchies of individuals, in particular taxonomies.
 
 Here are examples of the two styles:
+- [[http://www.plantuml.com/plantuml/uml/SoWkIImgoStCIybDBE3IKd1szUVIqbBmLGi6Ka0wiIWxjIGpBntC2qxCIIq6IJk7W5Mv-0Q0nTsB4WioN9p0x82Sn9Aq_A9SBeVKl1IekG00][Mindmap]]
+- [[http://www.plantuml.com/plantuml/uml/SoWkIImgAKygvj9IS7RrvzBIKl1L2mPIG3gnA3kr93Cl7SmBJin9BGP9EuU0LRdu1e35tOiI2p9SdC3iW9p4ahJyebmkXzIy5A2P0000][WBS]]
 
-http://www.plantuml.com/plantuml/png/SoWkIImgoStCIybDBE3IKd1szUVIqbBmLGi6Ka0wiIWxjIGpBntC2qxCIIq6IJk7W5Mv-0Q0nTsB4WioN9p0x82Sn9Aq_A9SBeVKl1IekG00
-
-http://www.plantuml.com/plantuml/png/SoWkIImgAKygvj9IS7RrvzBIKl1L2mPIG3gnA3kr93Cl7SmBJin9BGP9EuU0LRdu1e35tOiI2p9SdC3iW9p4ahJyebmkXzIy5A2P0000
-
-** Long-Term [0/3]
+** Long-Term 
 *** TODO rdf2soml to Generate Semantic Object Models
 A new tool ~rdf2soml~ to generate Ontotext Platform SOML from RDF examples.
 
@@ -360,7 +358,6 @@ We have two options how to express this in triples:
   puml:inverseAlias [puml:min 0; puml:max 1; puml:name "invProp"] # virtual inverse
 ].
 #+END_SRC
-
 *** TODO rdf2shape to Describe & Generate RDF Shapes
 *** TODO Visualize RDF Shapes (SHACL and ShEx)
 *** TODO Generate transformations for other than relational sources
@@ -369,15 +366,16 @@ Extend rdf2rml to generate:
 - [[http://rml.io][RML:]] extends R2RML to handle RDB, XML, JSON, CSV
 - [[http://github.com/semantalytics/xsparql][XSPARQL:]] extends XQuery with SPARQL construct and JSON input
 - DONE [[https://tarql.github.io/][tarql]]: handles TSV/CSV with SPARQL construct
+- DONE OntoRefine: transformation of TSV/CSV and direct loading to GraphDB with SPARQL Update
 
 * Citations
-If you use this software, please cite it.
+If you use this software, please cite it:
 - RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation.
   Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16), Bonn, Germany, November 2016.
   [[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index.html][Presentation]], [[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index-full.html][HTML]], [[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf][PDF]], [[https://youtu.be/4WoYlaGF6DE][Video]].
 - Github should show a green ~Cite~ button on the top right (see [[https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-citation-files][about-citation-files]])
-- [[CITATION.cff]] (see https://citation-file-format.github.io/)
-- [[CITATION.bib]] (bibtex)
+- [[CITATION.cff]] (see https://citation-file-format.github.io/): describes both the software and the above presentation
+- [[CITATION.bib]] (bibtex): describes only the above presentation
 
 The following papers mention the software:
 - Zhuhadar, L., & Ciampa, M. (2017). Leveraging learning innovations in cognitive computing with massive data sets: Using the offshore Panama papers leak to discover patterns. Computers in Human Behavior. doi:10.1016/j.chb.2017.12.013
