@@ -3,7 +3,7 @@
 #+OPTIONS: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t timestamp:nil title:t toc:5
 #+OPTIONS: todo:t |:t
 #+TITLE: RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation
-#+DATE: <2021-09-02>
+#+DATE: <2022-07-20>
 #+AUTHOR: Vladimir Alexiev
 #+EMAIL: vladimir.alexiev@ontotext.com
 #+LANGUAGE: en
@@ -27,7 +27,7 @@
 - [[#documentation][Documentation]]
 - [[#installation][Installation]]
 - [[#debian-repo][Debian Repo]]
-- [[#change-log-78][Change Log {7/8}]]
+- [[#change-log-78][Change Log [7/8]​]]
   - [[#2018-11-14-avoid-pumlstereotype-class-node][2018-11-14 Avoid puml:stereotype class node]]
   - [[#2018-06-29-bug-class-and-pumlinlineproperty][2018-06-29 Bug: class and puml:InlineProperty]]
   - [[#2018-04-05-arrow-attributes][2018-04-05 Arrow Attributes]]
@@ -36,24 +36,25 @@
   - [[#2020-06-01-rdf2rmlsh-rdf2rmlru][2020-06-01 rdf2rml.sh, rdf2rml.ru]]
   - [[#2020-09-17-rdf2rml-logicaltable][2020-09-17 rdf2rml: logicalTable]]
   - [[#2021-09-02-unicode-processing][2021-09-02 Unicode Processing]]
+  - [[#2022-04018-rdf2ontorefinepl][2022-04018 rdf2ontorefine.pl]]
   - [[#2020-09-17-rdf2rml-disentangle-inverse-edge][2020-09-17 rdf2rml: disentangle inverse edge]]
-- [[#to-do-tasks-221][To Do Tasks {2/21}]]
-  - [[#near-term-211][Near-term {2/11}]]
+- [[#to-do-tasks-221][To Do Tasks [2/21]​]]
+  - [[#near-term-211][Near-term [2/11]​]]
     - [[#modularize-and-package-better][Modularize and Package Better]]
     - [[#regression-tests][Regression Tests]]
     - [[#release-on-cpan][Release on CPAN]]
     - [[#easier-installation][Easier installation]]
-    - [[#unicode-02][Unicode {0/2}]]
+    - [[#unicode-02][Unicode [0/2]​]]
       - [[#get-rid-of-myprint][Get rid of myprint()]]
       - [[#add-unicode-tests][Add Unicode tests]]
-    - [[#prefixes-03][Prefixes {0/3}]]
+    - [[#prefixes-03][Prefixes [0/3]​]]
       - [[#eliminate-curiepm][Eliminate Curie.pm]]
       - [[#remember-prefixes-from-input-file][Remember prefixes from input file]]
       - [[#allow-specifying-the-prefixes-file][Allow specifying the prefixes file]]
       - [[#support-more-rdf-formats][Support more RDF Formats]]
     - [[#batch-processing][Batch Processing]]
       - [[#manual-batching]["Manual" Batching]]
-  - [[#mid-term-05][Mid-Term {0/5}]]
+  - [[#mid-term-05][Mid-Term [0/5]​]]
     - [[#upgrade-to-use-attean][Upgrade to use Attean]]
     - [[#integrate-in-emacs-org-mode][Integrate in Emacs org-mode]]
     - [[#node-colors-icons-tooltips][Node colors, icons, tooltips]]
@@ -61,7 +62,7 @@
     - [[#extra-layout-options][Extra Layout Options]]
     - [[#custom-reification][Custom Reification]]
     - [[#use-mindmapwbs-for-hierarchies][Use MindMap/WBS for Hierarchies]]
-  - [[#long-term-03][Long-Term {0/3}]]
+  - [[#long-term-03][Long-Term [0/3]​]]
     - [[#rdf2soml-to-generate-semantic-object-models][rdf2soml to Generate Semantic Object Models]]
       - [[#cardinality-with-rdf][Cardinality With RDF*]]
       - [[#cardinality-with-blank-node][Cardinality With Blank Node]]
@@ -188,6 +189,9 @@ Warning: this assumes that all instances of one subjectMap use the same query.
 ** DONE 2021-09-02 Unicode Processing                      :VladimirAlexiev:
 Use Perl option ~-C~ when invoking for proper Unicode processing.
 See doc section ~rdfpuml.html#Unicode~
+
+** DONE 2022-04018 rdf2ontorefine.pl                       :VladimirAlexiev:
+Add script to generate OntoRefine SPARQL Update queries from model.
 
 ** TODO 2020-09-17 rdf2rml: disentangle inverse edge       :VladimirAlexiev:
 In the case  ~Y-P-X~ described above:
@@ -367,28 +371,13 @@ Extend rdf2rml to generate:
 - DONE [[https://tarql.github.io/][tarql]]: handles TSV/CSV with SPARQL construct
 
 * Citations
-If you use this software, please cite it
+If you use this software, please cite it.
 - RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation.
   Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16), Bonn, Germany, November 2016.
   [[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index.html][Presentation]], [[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index-full.html][HTML]], [[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf][PDF]], [[https://youtu.be/4WoYlaGF6DE][Video]].
-
-#+BEGIN_SRC bibtex
-@InProceedings{Alexiev-rdfpuml-rdf2rml,
-  author       = {Vladimir Alexiev},
-  title        = {{RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation}},
-  booktitle    = {Semantic Web in Libraries 2016 (SWIB 16)},
-  year         = 2016,
-  month        = nov,
-  address      = {Bonn, Germany},
-  url_Slides   = {http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index.html},
-  url_HTML     = {http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index-full.html},
-  keywords     = {RDF, visualization, PlantUML, cultural heritage, NLP, NIF, EHRI, R2RML, generation, model-driven, RDF by Example, rdfpuml, rdf2rml},
-  url_PDF      = {http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf}, 
-  url_Video    = {https://youtu.be/4WoYlaGF6DE},
-  type         = {presentation},
-  abstract     = {RDF is a graph data model, so the best way to understand RDF data schemas (ontologies, application profiles, RDF shapes) is with a diagram. Many RDF visualization tools exist, but they either focus on large graphs (where the details are not easily visible), or the visualization results are not satisfactory, or manual tweaking of the diagrams is required. We describe a tool *rdfpuml* that makes true diagrams directly from Turtle examples using PlantUML and GraphViz. Diagram readability is of prime concern, and rdfpuml introduces various diagram control mechanisms using triples in the puml: namespace. Special attention is paid to inlining and visualizing various Reification mechanisms (described with PRV). We give examples from Getty CONA, Getty Museum, AAC (mappings of museum data to CIDOC CRM), Multisensor (NIF and FrameNet), EHRI (Holocaust Research into Jewish social networks), Duraspace (Portland Common Data Model for holding metadata in institutional repositories), Video annotation. If the example instances include SQL queries and embedded field names, they can describe a mapping precisely. Another tool *rdf2rdb* generates R2RML transformations from such examples, saving about 15x in complexity.},
-}
-#+END_SRC
+- Github should show a green ~Cite~ button on the top right (see [[https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-citation-files][about-citation-files]])
+- [[CITATION.cff]] (see https://citation-file-format.github.io/)
+- [[CITATION.bib]] (bibtex)
 
 The following papers mention the software:
 - Zhuhadar, L., & Ciampa, M. (2017). Leveraging learning innovations in cognitive computing with massive data sets: Using the offshore Panama papers leak to discover patterns. Computers in Human Behavior. doi:10.1016/j.chb.2017.12.013
@@ -397,3 +386,4 @@ The following papers mention the software:
 ** Related Work
 
 - https://github.com/mrihtar/rdfgraph by Matjaz Rihtar (a colleague in euBusinessGraph) is inspired by rdfpuml, written in Python 2.7, and uses Redland's librdf library
+
