@@ -12,10 +12,10 @@
   :houseNumber "(house_number)";
   :street "(street)";
   :postalCode "(postal_code)";
-  :city <country/(country)/city/urlify(city)>;
+  :city <country/(country)/city/URLIFY(city)>;
   :country <country/(country)>.
 
-<country/(country)/city/urlify(city)> a :City; :country <country/(country)>; :name "(city)".
+<country/(country)/city/URLIFY(city)> a :City; :country <country/(country)>; :name "(city)".
 
 <country/(country)> a :Country; :code "(country)".
 
@@ -23,5 +23,5 @@
 
 <person/(customer_id)/education> a :EducationEvent;
   :hasDate "(enrollment_date)"^^xsd:date;
-  :university <university/urlify(university)>;
-  :degree <degree/urlify(education_degree)>.
+  :university <university/URLIFY(university)>;
+  :degree <degree/URLIFY(education_degree)>.

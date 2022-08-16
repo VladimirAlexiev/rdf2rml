@@ -1,79 +1,74 @@
+@base          <http://example.org/resource/> .
 @prefix :  <http://example.org/ontology/> .
 @prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 
-<http://example.org/resource/person/C1234>
-        rdf:type     :NaturalPerson ;
+<person/C1234>  rdf:type  :NaturalPerson ;
         :id          "C1234" ;
         :firstName   "John" ;
         :lastName    "Smith" ;
         :gender      "male" ;
         :religion    "Catholic" ;
-        :hasAddress  <http://example.org/resource/person/C1234/address> ;
-        :hasEvent    <http://example.org/resource/person/C1234/birth> ;
-        :hasEvent    <http://example.org/resource/person/C1234/education> .
+        :hasAddress  <person/C1234/address> ;
+        :hasEvent    <person/C1234/birth> ;
+        :hasEvent    <person/C1234/education> .
 
-<http://example.org/resource/person/C1234/address>
+<person/C1234/address>
         rdf:type      :Address ;
         :houseNumber  "123" ;
         :street       "Capitol Str" ;
         :postalCode   "1A2 3B4" ;
-        :city         <http://example.org/resource/country/UK/city/London> ;
-        :country      <http://example.org/resource/country/UK> .
+        :city         <country/UK/city/London> ;
+        :country      <country/UK> .
 
-<http://example.org/resource/country/UK/city/London>
+<country/UK/city/London>
         rdf:type  :City ;
-        :country  <http://example.org/resource/country/UK> ;
+        :country  <country/UK> ;
         :name     "London" .
 
-<http://example.org/resource/country/UK>
-        rdf:type  :Country ;
+<country/UK>  rdf:type  :Country ;
         :code   "UK" .
 
-<http://example.org/resource/person/C1234/birth>
-        rdf:type  :BirthEvent ;
+<person/C1234/birth>  rdf:type  :BirthEvent ;
         :hasDate  "1950-01-02"^^xsd:date .
 
-<http://example.org/resource/person/C1234/education>
+<person/C1234/education>
         rdf:type     :EducationEvent ;
         :hasDate     "1970-03-04"^^xsd:date ;
-        :university  <http://example.org/resource/university/North_State_University> ;
-        :degree      <http://example.org/resource/degree/MBA> .
+        :university  <university/North_State_University> ;
+        :degree      <degree/MBA> .
 
-<http://example.org/resource/person/C3456>
-        rdf:type     :NaturalPerson ;
+<person/C3456>  rdf:type  :NaturalPerson ;
         :id          "C3456" ;
         :firstName   "Иван" ;
         :lastName    "Петров" ;
         :gender      "male" ;
         :religion    "Orthodox" ;
-        :hasAddress  <http://example.org/resource/person/C3456/address> ;
-        :hasEvent    <http://example.org/resource/person/C3456/birth> ;
-        :hasEvent    <http://example.org/resource/person/C3456/education> .
+        :hasAddress  <person/C3456/address> ;
+        :hasEvent    <person/C3456/birth> ;
+        :hasEvent    <person/C3456/education> .
 
-<http://example.org/resource/person/C3456/address>
+<person/C3456/address>
         rdf:type      :Address ;
         :houseNumber  "432" ;
         :street       "ул.Черни връх" ;
         :postalCode   "1000" ;
-        :city         <http://example.org/resource/country/BG/city/Sofia> ;
-        :country      <http://example.org/resource/country/BG> .
+        :city         <country/BG/city/Sofia> ;
+        :country      <country/BG> .
 
-<http://example.org/resource/country/BG/city/Sofia>
+<country/BG/city/Sofia>
         rdf:type  :City ;
-        :country  <http://example.org/resource/country/BG> ;
+        :country  <country/BG> ;
         :name     "Sofia" .
 
-<http://example.org/resource/country/BG>
-        rdf:type  :Country ;
+<country/BG>  rdf:type  :Country ;
         :code   "BG" .
 
-<http://example.org/resource/person/C3456/birth>
-        rdf:type  :BirthEvent ;
+<person/C3456/birth>  rdf:type  :BirthEvent ;
         :hasDate  "1952-05-06"^^xsd:date .
 
-<http://example.org/resource/person/C3456/education>
+<person/C3456/education>
         rdf:type     :EducationEvent ;
         :hasDate     "1972-12-01"^^xsd:date ;
-        :university  <http://example.org/resource/university/Sofia_University> ;
-        :degree      <http://example.org/resource/degree/computer_science> .
+        :university  <university/Sofia_University> ;
+        :degree      <degree/computer_science> .

@@ -3,7 +3,7 @@
 #+OPTIONS: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t timestamp:nil title:t toc:5
 #+OPTIONS: todo:t |:t
 #+TITLE: RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation
-#+DATE: <2022-07-21>
+#+DATE: <2022-08-15>
 #+AUTHOR: Vladimir Alexiev
 #+EMAIL: vladimir.alexiev@ontotext.com
 #+LANGUAGE: en
@@ -14,7 +14,7 @@
 #+HTML_DOCTYPE: xhtml-strict
 #+HTML_CONTAINER: div
 #+DESCRIPTION:
-#+KEYWORDS: RDF, visualization, PlantUML, R2RML, generation, model-driven, RDF by Example, rdfpuml, rdf2rml, rdf2tarql, rdf2ontorefine
+#+KEYWORDS: RDF, visualization, PlantUML, R2RML, generation, model-driven, RDF by Example, rdfpuml, rdf2rml, rdf2sparql, rdf2tarql, rdf2ontorefine
 
 
 * Table of Contents                                 :TOC:noexport:
@@ -30,15 +30,16 @@
 - [[#installation][Installation]]
 - [[#debian-repo][Debian Repo]]
 - [[#change-log][Change Log]]
+  - [[#2022-08-15-rdf2sparqlpl][2022-08-15 rdf2sparql.pl]]
+  - [[#2022-04-08-rdf2ontorefinepl][2022-04-08 rdf2ontorefine.pl]]
+  - [[#2021-09-02-unicode-processing][2021-09-02 Unicode Processing]]
+  - [[#2020-09-17-rdf2rml-logicaltable][2020-09-17 rdf2rml: logicalTable]]
+  - [[#2020-06-01-rdf2tarqlpl][2020-06-01 rdf2tarql.pl]]
+  - [[#2020-06-01-rdf2rmlsh-rdf2rmlru][2020-06-01 rdf2rml.sh, rdf2rml.ru]]
+  - [[#2020-05-30-rdf2rml-inverse-edge][2020-05-30 rdf2rml: inverse edge]]
   - [[#2018-11-14-avoid-pumlstereotype-class-node][2018-11-14 Avoid puml:stereotype class node]]
   - [[#2018-06-29-bug-class-and-pumlinlineproperty][2018-06-29 Bug: class and puml:InlineProperty]]
   - [[#2018-04-05-arrow-attributes][2018-04-05 Arrow Attributes]]
-  - [[#2020-05-30-rdf2rml-inverse-edge][2020-05-30 rdf2rml: inverse edge]]
-  - [[#2020-06-01-rdf2tarqlpl][2020-06-01 rdf2tarql.pl]]
-  - [[#2020-06-01-rdf2rmlsh-rdf2rmlru][2020-06-01 rdf2rml.sh, rdf2rml.ru]]
-  - [[#2020-09-17-rdf2rml-logicaltable][2020-09-17 rdf2rml: logicalTable]]
-  - [[#2021-09-02-unicode-processing][2021-09-02 Unicode Processing]]
-  - [[#2022-04018-rdf2ontorefinepl][2022-04018 rdf2ontorefine.pl]]
 - [[#to-do-tasks][To Do Tasks]]
   - [[#near-term][Near-term]]
     - [[#dockerization][Dockerization]]
@@ -96,11 +97,12 @@ Multisensor (NIF and FrameNet), EHRI (Holocaust Research into Jewish social netw
 If the example instances include embedded source field names, they can describe a mapping precisely.
 I've implemented a few more tools to generate transformations:
 - *rdf2rml* generates [[https://www.w3.org/TR/r2rml/][R2RML]] transformations for RDBMS tables or SQL queries. Compared to R2RML, this saves about 15x in complexity and is competitive with the dedicated DSL [[https://rml.io/yarrrml/][YARRML]]
-- *rdf2tarql* generates [[https://tarql.github.io/][TARQL]] transformations from CSV/TSV to RDF that take the form of SPARQL CONSTRUCT
-- *rdf2ontorefine* generates OntoRefine transformations from tabular data to direct GraphDB loading in the form of SPARQL UPDATE queries
+- *rdf2sparql* generates [[https://platform.ontotext.com/ontorefine/][OntoRefine]] or [[https://tarql.github.io/][TARQL]] transformations from CSV/TSV
+  that take the form of SPARQL UPDATE (for direct GraphDB loading)
+  or CONSTRUCT (for conversion to RDF).
+  (Subsumes two deprecated tools ~rdf2tarql~ and ~rdf2ontorefine~)
 
 See http://twitter.com/hashtag/rdfpuml for news, diagrams and announcements.
-
 
 ** Citation
 If you use this software, please cite it as shown above.
@@ -112,15 +114,14 @@ If you use this software, please cite it as shown above.
 ** Documentation
 - http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdfpuml.html
 - http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdf2rml.html
-- http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdf2tarql.html
-- http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdf2ontorefine.html
+- http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdf2sparql.html
+  (subsumes ~rdf2tarql~ and ~rdf2ontorefine~)
 
 Documentation source:
 - [[./doc/rdfpuml.pod]]
 - [[./doc/rdf2rml.pod]]
-- [[./doc/rdf2tarql.pod]]
-- [[./doc/rdf2ontorefine.pod]]
-
+- [[./doc/rdf2sparql.pod]]
+  (subsumes ~rdf2tarql~ and ~rdf2ontorefine~)
   
 ** Related Work
 
@@ -185,6 +186,37 @@ To adopt changes, do something like this.
 
 * Change Log 
 
+** 2022-08-15 rdf2sparql.pl
+Merge ~rdf2tarql~ and ~rdf2ontorefine~ to one tool ~rdf2sparql~
+
+** 2022-04-08 rdf2ontorefine.pl                       :VladimirAlexiev:
+Add script to generate OntoRefine SPARQL Update queries from model.
+
+** 2021-09-02 Unicode Processing                      :VladimirAlexiev:
+Use Perl option ~-C~ when invoking for proper Unicode processing.
+See doc section ~rdfpuml.html#Unicode~
+
+** 2020-09-17 rdf2rml: logicalTable                   :VladimirAlexiev:
+Use URL for logicalTable instead of blank node, so that R2RML generated from different models for different tables can be merged more easily.
+Warning: this assumes that all instances of one subjectMap use the same query.
+
+** 2020-06-01 rdf2tarql.pl                            :VladimirAlexiev:
+Add rdf2tarql.pl script to generate TARQL script (CSV-RDF conversion) from model.
+
+** 2020-06-01 rdf2rml.sh, rdf2rml.ru                  :VladimirAlexiev:
+- Improve script to abort if the first pipeline step ("update") fails
+- Improve script to work on Cygwin (invokes the Jena tools as ~riot.bat~ and ~update.bat~)
+- Filter out harmless warnings from Jena update's error log, eg ~"(some_date)"^^xsd:date~
+- If a node has single outgoing link and no SQL query/table (~puml:label~), 
+  propagate that property backward across the link into the node
+  (previously that was done only for incoming links)
+
+** 2020-05-30 rdf2rml: inverse edge                   :VladimirAlexiev:
+When an edge ~Y-P-X~ is recorded in the RDB table of ~X~ (as foreign key) or in an association table,
+it is awkward to specify that table in the node ~Y~.
+So I added this SPARQL UPDATE clause:
+- If a node ?y has no SQL, is not Inlined, has a single outgoing edge, then add the SQL of its counterparty ?x as default
+
 ** 2018-11-14 Avoid puml:stereotype class node        :VladimirAlexiev:
 I often define ~puml:stereotype~ for some classes in prefixes.ttl.
 If the class is not used in some particular turtle, it should avoid emitting a disconnected puml class.
@@ -205,34 +237,6 @@ Add arrow attributes (dotted, dashed, bold) and length
 
 Test: [[./test/regression/arrowLen.ttl]]
 
-
-** 2020-05-30 rdf2rml: inverse edge                   :VladimirAlexiev:
-When an edge ~Y-P-X~ is recorded in the RDB table of ~X~ (as foreign key) or in an association table,
-it is awkward to specify that table in the node ~Y~.
-So I added this SPARQL UPDATE clause:
-- If a node ?y has no SQL, is not Inlined, has a single outgoing edge, then add the SQL of its counterparty ?x as default
-
-** 2020-06-01 rdf2tarql.pl                            :VladimirAlexiev:
-Add rdf2tarql.pl script to generate TARQL script (CSV-RDF conversion) from model.
-
-** 2020-06-01 rdf2rml.sh, rdf2rml.ru                  :VladimirAlexiev:
-- Improve script to abort if the first pipeline step ("update") fails
-- Improve script to work on Cygwin (invokes the Jena tools as ~riot.bat~ and ~update.bat~)
-- Filter out harmless warnings from Jena update's error log, eg ~"(some_date)"^^xsd:date~
-- If a node has single outgoing link and no SQL query/table (~puml:label~), 
-  propagate that property backward across the link into the node
-  (previously that was done only for incoming links)
-
-** 2020-09-17 rdf2rml: logicalTable                   :VladimirAlexiev:
-Use URL for logicalTable instead of blank node, so that R2RML generated from different models for different tables can be merged more easily.
-Warning: this assumes that all instances of one subjectMap use the same query.
-
-** 2021-09-02 Unicode Processing                      :VladimirAlexiev:
-Use Perl option ~-C~ when invoking for proper Unicode processing.
-See doc section ~rdfpuml.html#Unicode~
-
-** 2022-04018 rdf2ontorefine.pl                       :VladimirAlexiev:
-Add script to generate OntoRefine SPARQL Update queries from model.
 
 * To Do Tasks
 Help needed for the following tasks.
