@@ -31,6 +31,7 @@
 - [[#debian-repo][Debian Repo]]
 - [[#change-log][Change Log]]
   - [[#2022-08-23-rdf2sparqlpl][2022-08-23 rdf2sparql.pl]]
+  - [[#2022-08-23-rdfpumlpl][2022-08-23 rdfpuml.pl]]
   - [[#2022-08-15-rdf2sparqlpl][2022-08-15 rdf2sparql.pl]]
   - [[#2022-04-08-rdf2ontorefinepl][2022-04-08 rdf2ontorefine.pl]]
   - [[#2021-09-02-unicode-processing][2021-09-02 Unicode Processing]]
@@ -189,6 +190,10 @@ To adopt changes, do something like this.
 
 ** 2022-08-23 rdf2sparql.pl
 Datatype attachment eg ~strdt(?var,xsd:date)~ now outputs to ~?var_xsd_date~ to avoid conflict with input field names in ALL_UPPERCASE
+
+** 2022-08-23 rdfpuml.pl
+- Handle blank-node types that occur on owl:Restriction (see https://github.com/VladimirAlexiev/rdf2rml/issues/10 and ~test/blank-node~)
+- Duplicate ~rdfpuml.bat, puml.bat~ as shell scripts ~rdfpuml, puml~ for use in Makefiles across Linux and Windows 
 
 ** 2022-08-15 rdf2sparql.pl
 Merge ~rdf2tarql~ and ~rdf2ontorefine~ to one tool ~rdf2sparql~
