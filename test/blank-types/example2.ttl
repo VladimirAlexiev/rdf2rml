@@ -1,28 +1,28 @@
-ont:CTODEV18198000  rdf:type1  owl:Class ;
+ont:CTODEV18198000  rdf:type  owl:Class ;
         rdfs:label           "macula densa epithelial cell"@en ;
         rdfs:subClassOf      ont:CTODEV70164000 , ont:CTODEV54509000 ;
-        rdfs:subClassOf      [ rdf:type1             owl:Class ;
-                               owl:intersectionOf  ( [ rdf:type1             owl:Restriction ;
+        rdfs:subClassOf      [ rdf:type             owl:Class ;
+                               owl:intersectionOf  ( [ rdf:type             owl:Restriction ;
                                                        owl:onProperty      SWAT4LS2011:participates_in ;
                                                        owl:someValuesFrom  GO:GO_0003093
                                                      ]
-                                                     [ rdf:type1             owl:Restriction ;
+                                                     [ rdf:type             owl:Restriction ;
                                                        owl:onProperty      SWAT4LS2011:participates_in ;
                                                        owl:someValuesFrom  GO:GO_0003098
                                                      ]
                                                    )
                              ] ;
-        rdfs:subClassOf      [ rdf:type1             owl:Class ;
-                               owl:intersectionOf  ( [ rdf:type1             owl:Restriction ;
+        rdfs:subClassOf      [ rdf:type             owl:Class ;
+                               owl:intersectionOf  ( [ rdf:type             owl:Restriction ;
                                                        owl:onProperty      SWAT4LS2011:has_phenotypic_quality ;
                                                        owl:someValuesFrom  PATO:PATO_0001407
                                                      ]
                                                    )
                              ] ;
-        owl:equivalentClass  [ rdf:type1             owl:Class ;
+        owl:equivalentClass  [ rdf:type             owl:Class ;
                                owl:intersectionOf  ( obo:CL_0000000
-                                                     [ rdf:type1             owl:Class ;
-                                                       owl:intersectionOf  ( [ rdf:type1             owl:Restriction ;
+                                                     [ rdf:type             owl:Class ;
+                                                       owl:intersectionOf  ( [ rdf:type             owl:Restriction ;
                                                                                owl:onProperty      OBO_REL:part_of ;
                                                                                owl:someValuesFrom  obo:UBERON_0002335
                                                                              ]

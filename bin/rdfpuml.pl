@@ -133,7 +133,8 @@ myprint ("\@enduml\n");
 
 sub print_types {
   my ($s, $s1) = @_;
-  my @types = map puml_node2($_), $model->objects ($s, U("rdf:type"));
+  # collect only named types; blank node types (that occur on owl:Restriction) are handled in print_relations
+  my @types = map puml_node2($_), $model->objects ($s, U("rdf:type"), undef, type=>'resource');
   my $noReify = grep m{puml:NoReify}, @types;
   my $types = join ", ", grep !m{puml:NoReify}, @types;
   myprint (qq{$s1 : a $types\n}) if $types;
@@ -144,9 +145,10 @@ sub print_relations {
   my ($s, $s1, $noReify) = @_;
   for my $o ($model->objects ($s, undef, undef, type=>'resource'),
              $model->objects ($s, undef, undef, type=>'blank')) {
-    # collect all relations between the two nodes.
+    # collect all relations between the nodes $s and $o
+    # Allow the predicate to be rdf:type only if $0 is a blank type (that occurs on owl:Restriction)
     # TODO: also collect inverse relations? Then be careful for reifications!
-    my @predicates = grep !m{rdf:type}, map puml_predicate($_), $model->predicates ($s, $o);
+    my @predicates = grep $o->is_blank() || !m{rdf:type}, map puml_predicate($_), $model->predicates ($s, $o);
     # TODO: remove actually reified predicates (see reification()), not potentially reifiable ($NOREL)
     @predicates = grep !m{$NOREL}o, @predicates if !$noReify;
     next unless @predicates;
