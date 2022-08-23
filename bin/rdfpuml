@@ -1,0 +1,2 @@
+#!/bin/sh
+perl -S -C rdfpuml.pl $1
