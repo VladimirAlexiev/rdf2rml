@@ -58,10 +58,13 @@ sub function($$$) {
 }
 
 sub typecast($$) {
-  # convert 'var'^^xsd:datatype to strdt(var,xsd:datatype) as VAR
-  my $var = "?" . shift;
+  # convert 'var'^^xsd:datatype to strdt(var,xsd:datatype) as var_xsd_datatype
+  my $var = shift;
   my $dt = shift;
-  my $VAR = uc $var; # upcase var name to show it's been changed
+  my $VAR = "${var}_$dt";
+  $VAR =~ s{([^\w])}{_}g; # replace punctuation with underscore
+  $var = "?$var";
+  $VAR = "?$VAR";
   $bound{$VAR} && $bound{$VAR} ne "typecast" and die "$VAR is used for both typecast and $bound{$VAR}\n";
   $bound{$VAR} and return $VAR;
   $bound{$VAR} = "typecast";

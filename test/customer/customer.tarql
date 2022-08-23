@@ -19,9 +19,9 @@ construct {
     :country ?country_country_URL.
   ?country_country_city_city_URLIFY_URL a :City; :country ?country_country_URL; :name ?city.
   ?country_country_URL a :Country; :code ?country.
-  ?person_customer_id_birth_URL a :BirthEvent; :hasDate ?DATE_OF_BIRTH.
+  ?person_customer_id_birth_URL a :BirthEvent; :hasDate ?date_of_birth_xsd_date.
   ?person_customer_id_education_URL a :EducationEvent;
-    :hasDate ?ENROLLMENT_DATE;
+    :hasDate ?enrollment_date_xsd_date;
     :university ?university_university_URLIFY_URL;
     :degree ?degree_education_degree_URLIFY_URL.
 }
@@ -33,8 +33,8 @@ where {
     bind(replace(replace(replace(?city, "[^\\p{L}0-9]", "_"), "_+", "_"), "^_|_$", "") as ?city_URLIFY)
     bind(iri(concat("country/",?country,"/city/",?city_URLIFY)) as ?country_country_city_city_URLIFY_URL)
     bind(iri(concat("country/",?country)) as ?country_country_URL)
-    bind(strdt(?date_of_birth,xsd:date) as ?DATE_OF_BIRTH)
-    bind(strdt(?enrollment_date,xsd:date) as ?ENROLLMENT_DATE)
+    bind(strdt(?date_of_birth,xsd:date) as ?date_of_birth_xsd_date)
+    bind(strdt(?enrollment_date,xsd:date) as ?enrollment_date_xsd_date)
     bind(replace(replace(replace(?university, "[^\\p{L}0-9]", "_"), "_+", "_"), "^_|_$", "") as ?university_URLIFY)
     bind(iri(concat("university/",?university_URLIFY)) as ?university_university_URLIFY_URL)
     bind(replace(replace(replace(?education_degree, "[^\\p{L}0-9]", "_"), "_+", "_"), "^_|_$", "") as ?education_degree_URLIFY)

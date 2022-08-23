@@ -480,9 +480,6 @@
 <li><p>Write builtin SPARQL functions in lowercase to avoid mistaking them for macro definitions</p>
 
 </li>
-<li><p>The script converts datatyped fields to UPPERCASE, so avoid source fields in all uppercase</p>
-
-</li>
 <li><p>To implement <b>SPLIT</b>, use <b>apf:strSplit</b> in TARQL and <b>spif:split</b> in OntoRefine. (In a future version, this tool may take care of that difference.)</p>
 
 </li>
@@ -555,7 +552,7 @@
 
 <h3 id="Insert-Patterns:-Crunchbase-Organizations">Insert Patterns: Crunchbase Organizations</h3>
 
-<p>The script unrolls macro (function) calls into binds, adding uppercase suffixes to the variable names. In addition, it knows how to process templatized URLs (see var names with a <b>_URL</b> suffix) and how to process datatype attachments (which uses variable names converted to uppercase). Compare the patterns below to the first model example:</p>
+<p>The script unrolls macro (function) calls into binds, adding uppercase suffixes to the variable names. In addition, it knows how to process templatized URLs (see var names with a <b>_URL</b> suffix) and how to process datatype attachments (adding the datatype as suffix). Compare the patterns below to the first model example:</p>
 
 <pre><code>  ?cb_agent_uuid_URL a cb:Organization;
     cb:uuid ?uuid;
@@ -563,12 +560,12 @@
     cb:permalink ?permalink;
     cb:url ?CB_URL;
     cb:rank ?RANK;
-    cb:createdAt ?CREATED_AT_FIXDATETIME;
-    cb:updatedAt ?UPDATED_AT_FIXDATETIME;
+    cb:createdAt ?created_at_FIXDATETIME_xsd_dateTime;
+    cb:updatedAt ?updated_at_FIXDATETIME_xsd_dateTime;
     cb:legalName ?legal_name;
     cb:organizationRole ?cb_organizationRole_roles_SPLIT_URLIFY_URL;
     cb:domain ?domain;
-    cb:homepageUrl ?HOMEPAGE_URL;
+    cb:homepageUrl ?homepage_url_xsd_anyURI;
     cb:countryCode ?country_code;
     cb:stateCode ?state_code;
     cb:region ?region;
@@ -578,25 +575,25 @@
     cb:status ?cb_organizationStatus_status_URLIFY_URL;
     cb:shortDescription ?short_description;
     cb:industry ?cb_industry_category_list_SPLIT1_URLIFY_URL;
-    cb:numFundingRounds ?NUM_FUNDING_ROUNDS;
-    cb:totalFundingUsd ?TOTAL_FUNDING_USD;
-    cb:totalFunding ?TOTAL_FUNDING;
+    cb:numFundingRounds ?num_funding_rounds_xsd_integer;
+    cb:totalFundingUsd ?total_funding_usd_xsd_decimal;
+    cb:totalFunding ?total_funding_xsd_decimal;
     cb:totalFundingCurrencyCode ?total_funding_currency_code;
-    cb:foundedOn ?FOUNDED_ON_FIXDATE;
-    cb:lastFundingOn ?LAST_FUNDING_ON_FIXDATE;
-    cb:closedOn ?CLOSED_ON_FIXDATE;
+    cb:foundedOn ?founded_on_FIXDATE_xsd_date;
+    cb:lastFundingOn ?last_funding_on_FIXDATE_xsd_date;
+    cb:closedOn ?closed_on_FIXDATE_xsd_date;
     cb:employeeCount ?cb_employeeCount_employee_count_IFNOTNULL_URLIFY_URL;
     cb:email ?email;
     cb:phone ?phone;
-    cb:facebookUrl ?FACEBOOK_URL;
-    cb:linkedinUrl ?LINKEDIN_URL;
-    cb:twitterUrl ?TWITTER_URL;
-    cb:logoUrl ?LOGO_URL;
+    cb:facebookUrl ?facebook_url_xsd_anyURI;
+    cb:linkedinUrl ?linkedin_url_xsd_anyURI;
+    cb:twitterUrl ?twitter_url_xsd_anyURI;
+    cb:logoUrl ?logo_url_xsd_anyURI;
     cb:alias ?alias1;
     cb:alias ?alias2;
     cb:alias ?alias3;
     cb:primaryRole ?cb_organizationRole_primary_role_URLIFY_URL;
-    cb:numExits ?NUM_EXITS.</code></pre>
+    cb:numExits ?num_exits_xsd_integer.</code></pre>
 
 <h3 id="Generated-Pre-Binds">Generated Pre-Binds</h3>
 
@@ -665,37 +662,37 @@
   bind(strdt(?cb_url,xsd:anyURI) as ?CB_URL)
   bind(strdt(?rank,xsd:integer) as ?RANK)
   bind(replace(?created_at,&#39; &#39;,&#39;T&#39;) as ?created_at_FIXDATETIME)
-  bind(strdt(?created_at_FIXDATETIME,xsd:dateTime) as ?CREATED_AT_FIXDATETIME)
+  bind(strdt(?created_at_FIXDATETIME,xsd:dateTime) as ?created_at_FIXDATETIME_xsd_dateTime)
   bind(replace(?updated_at,&#39; &#39;,&#39;T&#39;) as ?updated_at_FIXDATETIME)
-  bind(strdt(?updated_at_FIXDATETIME,xsd:dateTime) as ?UPDATED_AT_FIXDATETIME)
+  bind(strdt(?updated_at_FIXDATETIME,xsd:dateTime) as ?updated_at_FIXDATETIME_xsd_dateTime)
   ?roles_SPLIT_COMMA spif:split (?roles &#39;,&#39;).
   bind(lcase(replace(replace(replace(?roles_SPLIT_COMMA, &quot;[^\\p{L}0-9]&quot;, &quot;_&quot;), &quot;_+&quot;, &quot;_&quot;), &quot;^_|_$&quot;, &quot;&quot;)) as ?roles_SPLIT_COMMA_URLIFY)
   bind(iri(concat(&quot;cb/organizationRole/&quot;,?roles_SPLIT_COMMA_URLIFY)) as ?cb_organizationRole_roles_SPLIT_COMMA_URLIFY_URL)
-  bind(strdt(?homepage_url,xsd:anyURI) as ?HOMEPAGE_URL)
+  bind(strdt(?homepage_url,xsd:anyURI) as ?homepage_url_xsd_anyURI)
   bind(lcase(replace(replace(replace(?status, &quot;[^\\p{L}0-9]&quot;, &quot;_&quot;), &quot;_+&quot;, &quot;_&quot;), &quot;^_|_$&quot;, &quot;&quot;)) as ?status_URLIFY)
   bind(iri(concat(&quot;cb/organizationStatus/&quot;,?status_URLIFY)) as ?cb_organizationStatus_status_URLIFY_URL)
   ?category_list_SPLIT_COMMA spif:split (?category_list &#39;,&#39;).
   bind(lcase(replace(replace(replace(?category_list_SPLIT_COMMA, &quot;[^\\p{L}0-9]&quot;, &quot;_&quot;), &quot;_+&quot;, &quot;_&quot;), &quot;^_|_$&quot;, &quot;&quot;)) as ?category_list_SPLIT_COMMA_URLIFY)
   bind(iri(concat(&quot;cb/industry/&quot;,?category_list_SPLIT_COMMA_URLIFY)) as ?cb_industry_category_list_SPLIT_COMMA_URLIFY_URL)
-  bind(strdt(?num_funding_rounds,xsd:integer) as ?NUM_FUNDING_ROUNDS)
-  bind(strdt(?total_funding_usd,xsd:decimal) as ?TOTAL_FUNDING_USD)
-  bind(strdt(?total_funding,xsd:decimal) as ?TOTAL_FUNDING)
+  bind(strdt(?num_funding_rounds,xsd:integer) as ?num_funding_rounds_xsd_integer)
+  bind(strdt(?total_funding_usd,xsd:decimal) as ?total_funding_usd_xsd_decimal)
+  bind(strdt(?total_funding,xsd:decimal) as ?total_funding_xsd_decimal)
   bind(replace(?founded_on,&#39; &#39;,&#39;T&#39;) as ?founded_on_FIXDATETIME)
-  bind(strdt(?founded_on_FIXDATETIME,xsd:dateTime) as ?FOUNDED_ON_FIXDATETIME)
+  bind(strdt(?founded_on_FIXDATETIME,xsd:dateTime) as ?founded_on_FIXDATETIME_xsd_dateTime)
   bind(replace(?last_funding_on,&#39; &#39;,&#39;T&#39;) as ?last_funding_on_FIXDATETIME)
-  bind(strdt(?last_funding_on_FIXDATETIME,xsd:dateTime) as ?LAST_FUNDING_ON_FIXDATETIME)
+  bind(strdt(?last_funding_on_FIXDATETIME,xsd:dateTime) as ?last_funding_on_FIXDATETIME_xsd_dateTime)
   bind(replace(?closed_on,&#39; &#39;,&#39;T&#39;) as ?closed_on_FIXDATETIME)
-  bind(strdt(?closed_on_FIXDATETIME,xsd:dateTime) as ?CLOSED_ON_FIXDATETIME)
+  bind(strdt(?closed_on_FIXDATETIME,xsd:dateTime) as ?closed_on_FIXDATETIME_xsd_dateTime)
   bind(if(?employee_count in (&quot;other&quot;,&quot;not provided&quot;,&quot;unknown&quot;),?UNDEF,?employee_count) as ?employee_count_IFNOTNULL)
   bind(lcase(replace(replace(replace(?employee_count_IFNOTNULL, &quot;[^\\p{L}0-9]&quot;, &quot;_&quot;), &quot;_+&quot;, &quot;_&quot;), &quot;^_|_$&quot;, &quot;&quot;)) as ?employee_count_IFNOTNULL_URLIFY)
   bind(iri(concat(&quot;cb/employeeCount/&quot;,?employee_count_IFNOTNULL_URLIFY)) as ?cb_employeeCount_employee_count_IFNOTNULL_URLIFY_URL)
-  bind(strdt(?facebook_url,xsd:anyURI) as ?FACEBOOK_URL)
-  bind(strdt(?linkedin_url,xsd:anyURI) as ?LINKEDIN_URL)
-  bind(strdt(?twitter_url,xsd:anyURI) as ?TWITTER_URL)
-  bind(strdt(?logo_url,xsd:anyURI) as ?LOGO_URL)
+  bind(strdt(?facebook_url,xsd:anyURI) as ?facebook_url_xsd_anyURI)
+  bind(strdt(?linkedin_url,xsd:anyURI) as ?linkedin_url_xsd_anyURI)
+  bind(strdt(?twitter_url,xsd:anyURI) as ?twitter_url_xsd_anyURI)
+  bind(strdt(?logo_url,xsd:anyURI) as ?logo_url_xsd_anyURI)
   bind(lcase(replace(replace(replace(?primary_role, &quot;[^\\p{L}0-9]&quot;, &quot;_&quot;), &quot;_+&quot;, &quot;_&quot;), &quot;^_|_$&quot;, &quot;&quot;)) as ?primary_role_URLIFY)
   bind(iri(concat(&quot;cb/organizationRole/&quot;,?primary_role_URLIFY)) as ?cb_organizationRole_primary_role_URLIFY_URL)
-  bind(strdt(?num_exits,xsd:integer) as ?NUM_EXITS)</code></pre>
+  bind(strdt(?num_exits,xsd:integer) as ?num_exits_xsd_integer)</code></pre>
 
 <h3 id="Generated-Binds:-Customers">Generated Binds: Customers</h3>
 
@@ -708,8 +705,8 @@
   bind(replace(replace(replace(?city,&#39;[^\\p{L}\\p{N}]+&#39;,&#39;_&#39;),&#39;^_&#39;,&#39;&#39;),&#39;_$&#39;,&#39;&#39;) as ?city_URLIFY)
   bind(iri(concat(&quot;country/&quot;,?country,&quot;/city/&quot;,?city_URLIFY)) as ?country_city_URLIFY_URL)
   bind(iri(concat(&quot;country/&quot;,?country)) as ?country_URL)
-  bind(strdt(?date_of_birth,xsd:date) as ?DATE_OF_BIRTH)
-  bind(strdt(?enrollment_date,xsd:date) as ?ENROLLMENT_DATE)
+  bind(strdt(?date_of_birth,xsd:date) as ?date_of_birth_xsd_date)
+  bind(strdt(?enrollment_date,xsd:date) as ?enrollment_DATE_xsd_date)
   bind(replace(replace(replace(?university,&#39;[^\\p{L}\\p{N}]+&#39;,&#39;_&#39;),&#39;^_&#39;,&#39;&#39;),&#39;_$&#39;,&#39;&#39;) as ?university_URLIFY)
   bind(iri(concat(&quot;university/&quot;,university_URLIFY)) as ?university_URLIFY_URL)
   bind(replace(replace(replace(?education_degree,&#39;[^\\p{L}\\p{N}]+&#39;,&#39;_&#39;),&#39;^_&#39;,&#39;&#39;),&#39;_$&#39;,&#39;&#39;) as ?education_degree_URLIFY)
@@ -721,12 +718,12 @@
 
 <pre><code>  delete where {graph &lt;extra/revenue&gt; {?x ?p ?o}};
   insert {graph  &lt;extra/revenue&gt; {
-    ?permalink_CB_AGENT_URL ex:annualRevenueUsd ?REVENUE
+    ?permalink_CB_AGENT_URL ex:annualRevenueUsd ?revenue_xsd_decimal
   }}
   where {
     service &lt;rdf-mapper:ontorefine:PROJECT_ID&gt; {
       bind(?c_revenue as ?revenue)
-      bind(strdt(?revenue,xsd:decimal) as ?REVENUE)
+      bind(strdt(?revenue,xsd:decimal) as ?revenue_xsd_decimal)
     }
     filter(bound(?permalink))
     ?permalink_CB_AGENT_URL a ?permalink_TYPE; k2:permalink ?permalink
