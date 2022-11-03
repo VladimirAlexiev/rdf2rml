@@ -99,7 +99,7 @@ sub templated_url {
 
 if ($form eq "update") {
   $_ = <>;
-  $GRAPH = m{#+ GRAPH (<.*>)} or die "Expected # GRAPH <...> got $_";
+  ($GRAPH) = m{#+ GRAPH (<.*>)} or die "Expected # GRAPH <...> got $_";
 };
 while ($_ = <>) {
   m{puml:|plantuml} and next; # skip any puml statements
