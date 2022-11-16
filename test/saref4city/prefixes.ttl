@@ -1,0 +1,27 @@
+@prefix : <https://saref.etsi.org/saref4city/v1.1.2/example/example1/> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix saref: <https://saref.etsi.org/core/> .
+@prefix s4envi: <https://saref.etsi.org/saref4envi/> .
+@prefix s4city: <https://saref.etsi.org/saref4city/> .
+@prefix wurvoc: <http://www.wurvoc.org/vocabularies/om-1.8/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix dctype: <http://purl.org/dc/dcmitype/> .
+
+@prefix s4ener: <https://saref.etsi.org/saref4ener/> .
+@prefix s4bldg: <https://saref.etsi.org/saref4bldg/> .
+@prefix lexvo: <http://lexvo.org/id/iso639-3/> .
+@prefix om2: <http://www.ontology-of-units-of-measure.org/resource/om-2/>.
+@prefix geosp: <http://www.opengis.net/ont/geosparql#>.
+@prefix cpsv: <http://purl.org/vocab/cpsv#>.
+@prefix puml: <http://plantuml.com/ontology#> .
+
+@base <https://saref.etsi.org/saref4city/data/city/>. 
+
+dcterms:creator    a puml:InlineProperty.
+dcterms:license    a puml:InlineProperty.
+dcterms:conformsTo a puml:InlineProperty.

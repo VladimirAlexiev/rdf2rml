@@ -1,0 +1,106 @@
+@startuml
+left to right direction
+hide empty methods
+hide empty attributes
+hide circle
+skinparam classAttributeIconSize 0
+class _example1_Metro_ as "<example1/Metro>"
+_example1_Metro_ : a owl:NamedIndividual
+class _example1_Camera1Measurement200_ as "<example1/Camera1Measurement200>"
+_example1_Camera1Measurement200_ : a owl:NamedIndividual, saref:Measurement
+class _example1_Speed_ as "<example1/Speed>"
+_example1_Camera1Measurement200_ -down-> _example1_Speed_ : saref:relatesToProperty
+class _example1_Car35_ as "<example1/Car35>"
+_example1_Camera1Measurement200_ -down-> _example1_Car35_ : saref:isMeasurementOf
+class om2_kilometrePerHour as "om2:kilometrePerHour"
+_example1_Camera1Measurement200_ -down-> om2_kilometrePerHour : saref:isMeasuredIn
+class _example1_Camera1_ as "<example1/Camera1>"
+_example1_Camera1Measurement200_ -down-> _example1_Camera1_ : saref:measurementMadeBy
+_example1_Camera1Measurement200_ : saref:hasValue "35.0"^^xsd:float
+class _example1_RoadSegment50Geometry_ as "<example1/RoadSegment50Geometry>"
+_example1_RoadSegment50Geometry_ : a geosp:Geometry, owl:NamedIndividual
+class _example1_BasketArena7_ as "<example1/BasketArena7>"
+_example1_BasketArena7_ : a owl:NamedIndividual, s4city:Facility
+class s4city_v1_1_2_example_example1_ as "s4city:v1.1.2/example/example1#"
+s4city_v1_1_2_example_example1_ : a dctype:Dataset
+s4city_v1_1_2_example_example1_ : dcterms:conformsTo\n  s4bldg:v1.1.2/,\n  s4city:v1.1.2/,\n  s4ener:v1.1.2/,\n  s4envi:v1.1.2/,\n  saref:v3.1.1/
+s4city_v1_1_2_example_example1_ : dcterms:creator\n  <http://purl.org/net/mpoveda>,\n  <http://www.garcia-castro.com/foaf.rdf#me>
+s4city_v1_1_2_example_example1_ : dcterms:description "Example of use for the SAREF extension for Smart Cities"@en
+s4city_v1_1_2_example_example1_ : dcterms:license <https://forge.etsi.org/etsi-software-license>
+s4city_v1_1_2_example_example1_ : dcterms:title "Example of use for the SAREF extension for Smart Cities"@en
+class _example1_BasketMatch23_ as "<example1/BasketMatch23>"
+_example1_BasketMatch23_ : a owl:NamedIndividual, s4city:Event
+_example1_BasketMatch23_ -down-> _example1_BasketArena7_ : s4city:takesPlaceAtFacility
+_example1_BasketMatch23_ -down-> _example1_Metro_ : s4city:hasAccesibility
+class _example1_City4_ as "<example1/City4>"
+_example1_BasketMatch23_ -down-> _example1_City4_ : s4city:isOrganizedBy
+class _example1_BasketWeek2018_ as "<example1/BasketWeek2018>"
+_example1_BasketMatch23_ -down-> _example1_BasketWeek2018_ : s4city:isSubEventOf
+class _example1_GMapsAPI2018_11_20_ as "<example1/GMapsAPI2018-11-20>"
+_example1_GMapsAPI2018_11_20_ : a owl:NamedIndividual, saref:Measurement
+class _example1_Lamppost6_ as "<example1/Lamppost6>"
+_example1_Lamppost6_ : a owl:NamedIndividual, s4city:CityObject, s4envi:Lamppost
+class _example1_RoadSegment50Congestion2018_11_20T13_30_00_ as "<example1/RoadSegment50Congestion2018-11-20T13-30-00>"
+_example1_RoadSegment50Congestion2018_11_20T13_30_00_ : a s4city:KeyPerformanceIndicatorAssessment, owl:NamedIndividual
+class _example1_RoadCongestion_ as "<example1/RoadCongestion>"
+_example1_RoadSegment50Congestion2018_11_20T13_30_00_ -down-> _example1_RoadCongestion_ : s4city:quantifiesKPI
+_example1_RoadSegment50Congestion2018_11_20T13_30_00_ -down-> _example1_GMapsAPI2018_11_20_ : s4city:isDerivedFrom
+_example1_RoadSegment50Congestion2018_11_20T13_30_00_ -down-> _example1_City4_ : s4city:isAssessedBy
+class _example1_CarsSpeed2018_11_20_ as "<example1/CarsSpeed2018-11-20>"
+_example1_RoadSegment50Congestion2018_11_20T13_30_00_ -down-> _example1_CarsSpeed2018_11_20_ : s4city:isDerivedFrom
+class _example1_RoadSegment50_ as "<example1/RoadSegment50>"
+_example1_RoadSegment50Congestion2018_11_20T13_30_00_ -down-> _example1_RoadSegment50_ : s4city:assesses
+class _example1_2018_11_20_ as "<example1#2018-11-20>"
+_example1_RoadSegment50Congestion2018_11_20T13_30_00_ -down-> _example1_2018_11_20_ : s4city:refersToTime
+class _example1_Pollution2018_11_20_ as "<example1/Pollution2018-11-20>"
+_example1_RoadSegment50Congestion2018_11_20T13_30_00_ -down-> _example1_Pollution2018_11_20_ : s4city:isDerivedFrom
+_example1_RoadSegment50Congestion2018_11_20T13_30_00_ : s4city:hasCreationDate "2018-11-20T13:20:00"^^xsd:dateTime
+_example1_RoadSegment50Congestion2018_11_20T13_30_00_ : saref:hasValue "70%"
+om2_kilometrePerHour : a owl:NamedIndividual, saref:UnitOfMeasure
+class lexvo_spa as "lexvo:spa"
+lexvo_spa : a dcterms:LinguisticSystem, owl:NamedIndividual
+_example1_Speed_ : a owl:NamedIndividual, saref:Property
+_example1_CarsSpeed2018_11_20_ : a saref:Measurement, owl:NamedIndividual
+_example1_RoadSegment50_ : a geosp:SpatialObject, owl:NamedIndividual
+_example1_RoadSegment50_ -down-> _example1_Lamppost6_ : geosp:sfContains
+class _example1_Building54_ as "<example1/Building54>"
+_example1_RoadSegment50_ -down-> _example1_Building54_ : geosp:sfContains
+class _example1_CarLocation2018_11_20T13_30_00_ as "<example1/CarLocation2018-11-20T13-30-00>"
+_example1_RoadSegment50_ -down-> _example1_CarLocation2018_11_20T13_30_00_ : geosp:sfContains
+_example1_RoadSegment50_ -down-> _example1_RoadSegment50Geometry_ : geosp:hasGeometry
+_example1_Pollution2018_11_20_ : a owl:NamedIndividual, saref:Measurement
+_example1_Camera1_ : a saref:Device, owl:NamedIndividual
+_example1_RoadCongestion_ : a owl:NamedIndividual, s4city:KeyPerformanceIndicator
+_example1_RoadCongestion_ -down-> _example1_RoadSegment50Geometry_ : s4city:isKPIOf
+class _example1_RoadCongestionPeriod_ as "<example1/RoadCongestionPeriod>"
+_example1_RoadCongestion_ -down-> _example1_RoadCongestionPeriod_ : s4city:hasCalculationPeriod
+_example1_Building54_ : a owl:NamedIndividual, s4bldg:Building, s4city:CityObject
+class _example1_TransportCo_ as "<example1/TransportCo>"
+_example1_TransportCo_ : a <http://www.w3.org/ns/org#Organization>, owl:NamedIndividual, s4city:Agent
+class _example1_Bus33Service_ as "<example1/Bus33Service>"
+_example1_TransportCo_ -down-> _example1_Bus33Service_ : cpsv:provides
+_example1_CarLocation2018_11_20T13_30_00_ : a owl:NamedIndividual, geo:Point
+_example1_CarLocation2018_11_20T13_30_00_ -down-> _example1_RoadSegment50_ : geosp:sfWithin
+_example1_CarLocation2018_11_20T13_30_00_ : geo:lat 40.405013
+_example1_CarLocation2018_11_20T13_30_00_ : geo:long -3.839349
+class _example1_HealthService123_ as "<example1/HealthService123>"
+_example1_HealthService123_ : a owl:NamedIndividual, cpsv:PublicService
+class _example1_Neighbourhood34_ as "<example1/Neighbourhood34>"
+_example1_HealthService123_ -down-> _example1_Neighbourhood34_ : cpsv:physicallyAvailableAt
+_example1_HealthService123_ -down-> _example1_BasketArena7_ : s4city:involvesFacility
+_example1_HealthService123_ -down-> lexvo_spa : s4city:isAvailableInLanguage
+_example1_Bus33Service_ : a owl:NamedIndividual, cpsv:PublicService
+_example1_BasketWeek2018_ : a s4city:Event, owl:NamedIndividual
+_example1_City4_ : a s4city:PublicAdministration, owl:NamedIndividual, s4city:Agent
+_example1_City4_ -down-> _example1_HealthService123_ : cpsv:provides
+_example1_Neighbourhood34_ : a s4city:Neighbourhood, owl:NamedIndividual
+_example1_Neighbourhood34_ -down-> _example1_City4_ : geosp:sfWithin
+_example1_2018_11_20_ : a time:TemporalEntity, owl:NamedIndividual
+_example1_RoadCongestionPeriod_ : a owl:NamedIndividual, time:TemporalDuration
+_example1_Car35_ : a owl:NamedIndividual, geosp:SpatialObject, saref:FeatureOfInterest
+_example1_Car35_ -down-> _example1_CarLocation2018_11_20T13_30_00_ : geo:location
+_example1_Car35_ -down-> _example1_Speed_ : saref:hasProperty
+class _example1_Citizen11111_ as "<example1/Citizen11111>"
+_example1_Citizen11111_ : a s4city:Agent, owl:NamedIndividual, <http://xmlns.com/foaf/0.1/Person>
+_example1_Citizen11111_ -down-> _example1_Bus33Service_ : cpsv:uses
+@enduml

@@ -1,0 +1,210 @@
+@prefix : <https://saref.etsi.org/saref4city/v1.1.2/example/example1/> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix saref: <https://saref.etsi.org/core/> .
+@prefix s4envi: <https://saref.etsi.org/saref4envi/> .
+@prefix s4city: <https://saref.etsi.org/saref4city/> .
+@prefix wurvoc: <http://www.wurvoc.org/vocabularies/om-1.8/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix dctype: <http://purl.org/dc/dcmitype/> .
+
+
+<https://saref.etsi.org/saref4city/v1.1.2/example/example1#> a dctype:Dataset ;
+  dcterms:creator <http://purl.org/net/mpoveda> ,
+                  <http://www.garcia-castro.com/foaf.rdf#me> ;
+  dcterms:license <https://forge.etsi.org/etsi-software-license> ;
+  dcterms:conformsTo <https://saref.etsi.org/saref4city/v1.1.2/> ;
+  dcterms:conformsTo <https://saref.etsi.org/core/v3.1.1/> ;
+  dcterms:conformsTo <https://saref.etsi.org/saref4envi/v1.1.2/> ;
+  dcterms:conformsTo <https://saref.etsi.org/saref4bldg/v1.1.2/> ;
+  dcterms:conformsTo <https://saref.etsi.org/saref4ener/v1.1.2/> ;
+  dcterms:title "Example of use for the SAREF extension for Smart Cities"@en ;
+  dcterms:description "Example of use for the SAREF extension for Smart Cities"@en .
+
+
+###  http://lexvo.org/id/iso639-3/spa
+<http://lexvo.org/id/iso639-3/spa> rdf:type owl:NamedIndividual ,
+                                            dcterms:LinguisticSystem .
+
+
+###  http://www.ontology-of-units-of-measure.org/resource/om-2/kilometrePerHour
+<http://www.ontology-of-units-of-measure.org/resource/om-2/kilometrePerHour> rdf:type owl:NamedIndividual ,
+                                                                                      saref:UnitOfMeasure .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1#2018-11-20
+<https://saref.etsi.org/saref4city/data/city/example1#2018-11-20> rdf:type owl:NamedIndividual ,
+                                                                           time:TemporalEntity .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/BasketArena7
+<https://saref.etsi.org/saref4city/data/city/example1/BasketArena7> rdf:type owl:NamedIndividual ,
+                                                                             <https://saref.etsi.org/saref4city/Facility> .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/BasketMatch23
+<https://saref.etsi.org/saref4city/data/city/example1/BasketMatch23> rdf:type owl:NamedIndividual ,
+                                                                              <https://saref.etsi.org/saref4city/Event> ;
+                                                                     <https://saref.etsi.org/saref4city/hasAccesibility> <https://saref.etsi.org/saref4city/data/city/example1/Metro> ;
+                                                                     <https://saref.etsi.org/saref4city/isOrganizedBy> <https://saref.etsi.org/saref4city/data/city/example1/City4> ;
+                                                                     <https://saref.etsi.org/saref4city/isSubEventOf> <https://saref.etsi.org/saref4city/data/city/example1/BasketWeek2018> ;
+                                                                     <https://saref.etsi.org/saref4city/takesPlaceAtFacility> <https://saref.etsi.org/saref4city/data/city/example1/BasketArena7> .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/BasketWeek2018
+<https://saref.etsi.org/saref4city/data/city/example1/BasketWeek2018> rdf:type owl:NamedIndividual ,
+                                                                               <https://saref.etsi.org/saref4city/Event> .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/Building54
+<https://saref.etsi.org/saref4city/data/city/example1/Building54> rdf:type owl:NamedIndividual ,
+                                                                           <https://saref.etsi.org/saref4bldg/Building> ,
+                                                                           <https://saref.etsi.org/saref4city/CityObject> .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/Bus33Service
+<https://saref.etsi.org/saref4city/data/city/example1/Bus33Service> rdf:type owl:NamedIndividual ,
+                                                                             <http://purl.org/vocab/cpsv#PublicService> .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/Camera1
+<https://saref.etsi.org/saref4city/data/city/example1/Camera1> rdf:type owl:NamedIndividual ,
+                                                                        saref:Device .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/Camera1Measurement200
+<https://saref.etsi.org/saref4city/data/city/example1/Camera1Measurement200> rdf:type owl:NamedIndividual ,
+                                                                                      saref:Measurement ;
+                                                                             saref:isMeasurementOf <https://saref.etsi.org/saref4city/data/city/example1/Car35> ;
+                                                                             saref:isMeasuredIn <http://www.ontology-of-units-of-measure.org/resource/om-2/kilometrePerHour> ;
+                                                                             saref:measurementMadeBy <https://saref.etsi.org/saref4city/data/city/example1/Camera1> ;
+                                                                             saref:relatesToProperty <https://saref.etsi.org/saref4city/data/city/example1/Speed> ;
+                                                                             saref:hasValue "35.0"^^xsd:float .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/Car35
+<https://saref.etsi.org/saref4city/data/city/example1/Car35> rdf:type owl:NamedIndividual ,
+                                                                      <http://www.opengis.net/ont/geosparql#SpatialObject> ,
+                                                                      saref:FeatureOfInterest ;
+                                                             geo:location <https://saref.etsi.org/saref4city/data/city/example1/CarLocation2018-11-20T13-30-00> ;
+                                                             saref:hasProperty <https://saref.etsi.org/saref4city/data/city/example1/Speed> .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/CarLocation2018-11-20T13-30-00
+<https://saref.etsi.org/saref4city/data/city/example1/CarLocation2018-11-20T13-30-00> rdf:type owl:NamedIndividual ,
+                                                                                               geo:Point ;
+                                                                                      <http://www.opengis.net/ont/geosparql#sfWithin> <https://saref.etsi.org/saref4city/data/city/example1/RoadSegment50> ;
+                                                                                      geo:lat 40.405013 ;
+                                                                                      geo:long -3.839349 .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/CarsSpeed2018-11-20
+<https://saref.etsi.org/saref4city/data/city/example1/CarsSpeed2018-11-20> rdf:type owl:NamedIndividual ,
+                                                                                    saref:Measurement .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/Citizen11111
+<https://saref.etsi.org/saref4city/data/city/example1/Citizen11111> rdf:type owl:NamedIndividual ,
+                                                                             <http://xmlns.com/foaf/0.1/Person> ,
+                                                                             <https://saref.etsi.org/saref4city/Agent> ;
+                                                                    <http://purl.org/vocab/cpsv#uses> <https://saref.etsi.org/saref4city/data/city/example1/Bus33Service> .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/City4
+<https://saref.etsi.org/saref4city/data/city/example1/City4> rdf:type owl:NamedIndividual ,
+                                                                      <https://saref.etsi.org/saref4city/Agent> ,
+                                                                      <https://saref.etsi.org/saref4city/PublicAdministration> ;
+                                                             <http://purl.org/vocab/cpsv#provides> <https://saref.etsi.org/saref4city/data/city/example1/HealthService123> .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/GMapsAPI2018-11-20
+<https://saref.etsi.org/saref4city/data/city/example1/GMapsAPI2018-11-20> rdf:type owl:NamedIndividual ,
+                                                                                   saref:Measurement .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/HealthService123
+<https://saref.etsi.org/saref4city/data/city/example1/HealthService123> rdf:type owl:NamedIndividual ,
+                                                                                 <http://purl.org/vocab/cpsv#PublicService> ;
+                                                                        <http://purl.org/vocab/cpsv#physicallyAvailableAt> <https://saref.etsi.org/saref4city/data/city/example1/Neighbourhood34> ;
+                                                                        <https://saref.etsi.org/saref4city/involvesFacility> <https://saref.etsi.org/saref4city/data/city/example1/BasketArena7> ;
+                                                                        <https://saref.etsi.org/saref4city/isAvailableInLanguage> <http://lexvo.org/id/iso639-3/spa> .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/Lamppost6
+<https://saref.etsi.org/saref4city/data/city/example1/Lamppost6> rdf:type owl:NamedIndividual ,
+                                                                          <https://saref.etsi.org/saref4city/CityObject> ,
+                                                                          <https://saref.etsi.org/saref4envi/Lamppost> .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/Metro
+<https://saref.etsi.org/saref4city/data/city/example1/Metro> rdf:type owl:NamedIndividual .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/Neighbourhood34
+<https://saref.etsi.org/saref4city/data/city/example1/Neighbourhood34> rdf:type owl:NamedIndividual ,
+                                                                                <https://saref.etsi.org/saref4city/Neighbourhood> ;
+                                                                       <http://www.opengis.net/ont/geosparql#sfWithin> <https://saref.etsi.org/saref4city/data/city/example1/City4> .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/Pollution2018-11-20
+<https://saref.etsi.org/saref4city/data/city/example1/Pollution2018-11-20> rdf:type owl:NamedIndividual ,
+                                                                                    saref:Measurement .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/RoadCongestion
+<https://saref.etsi.org/saref4city/data/city/example1/RoadCongestion> rdf:type owl:NamedIndividual ,
+                                                                               <https://saref.etsi.org/saref4city/KeyPerformanceIndicator> ;
+                                                                      <https://saref.etsi.org/saref4city/hasCalculationPeriod> <https://saref.etsi.org/saref4city/data/city/example1/RoadCongestionPeriod> ;
+                                                                      <https://saref.etsi.org/saref4city/isKPIOf> <https://saref.etsi.org/saref4city/data/city/example1/RoadSegment50Geometry> .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/RoadCongestionPeriod
+<https://saref.etsi.org/saref4city/data/city/example1/RoadCongestionPeriod> rdf:type owl:NamedIndividual ,
+                                                                                     time:TemporalDuration .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/RoadSegment50
+<https://saref.etsi.org/saref4city/data/city/example1/RoadSegment50> rdf:type owl:NamedIndividual ,
+                                                                              <http://www.opengis.net/ont/geosparql#SpatialObject> ;
+                                                                     <http://www.opengis.net/ont/geosparql#hasGeometry> <https://saref.etsi.org/saref4city/data/city/example1/RoadSegment50Geometry> ;
+                                                                     <http://www.opengis.net/ont/geosparql#sfContains> <https://saref.etsi.org/saref4city/data/city/example1/Building54> ,
+                                                                                                                       <https://saref.etsi.org/saref4city/data/city/example1/CarLocation2018-11-20T13-30-00> ,
+                                                                                                                       <https://saref.etsi.org/saref4city/data/city/example1/Lamppost6> .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/RoadSegment50Congestion2018-11-20T13-30-00
+<https://saref.etsi.org/saref4city/data/city/example1/RoadSegment50Congestion2018-11-20T13-30-00> rdf:type owl:NamedIndividual ,
+                                                                                                           <https://saref.etsi.org/saref4city/KeyPerformanceIndicatorAssessment> ;
+                                                                                                  <https://saref.etsi.org/saref4city/assesses> <https://saref.etsi.org/saref4city/data/city/example1/RoadSegment50> ;
+                                                                                                  <https://saref.etsi.org/saref4city/isAssessedBy> <https://saref.etsi.org/saref4city/data/city/example1/City4> ;
+                                                                                                  <https://saref.etsi.org/saref4city/isDerivedFrom> <https://saref.etsi.org/saref4city/data/city/example1/CarsSpeed2018-11-20> ,
+                                                                                                                                                    <https://saref.etsi.org/saref4city/data/city/example1/GMapsAPI2018-11-20> ,
+                                                                                                                                                    <https://saref.etsi.org/saref4city/data/city/example1/Pollution2018-11-20> ;
+                                                                                                  <https://saref.etsi.org/saref4city/quantifiesKPI> <https://saref.etsi.org/saref4city/data/city/example1/RoadCongestion> ;
+                                                                                                  <https://saref.etsi.org/saref4city/refersToTime> <https://saref.etsi.org/saref4city/data/city/example1#2018-11-20> ;
+                                                                                                  saref:hasValue "70%" ;
+                                                                                                  <https://saref.etsi.org/saref4city/hasCreationDate> "2018-11-20T13:20:00"^^xsd:dateTime .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/RoadSegment50Geometry
+<https://saref.etsi.org/saref4city/data/city/example1/RoadSegment50Geometry> rdf:type owl:NamedIndividual ,
+                                                                                      <http://www.opengis.net/ont/geosparql#Geometry> .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/Speed
+<https://saref.etsi.org/saref4city/data/city/example1/Speed> rdf:type owl:NamedIndividual ,
+                                                                      saref:Property .
+
+
+###  https://saref.etsi.org/saref4city/data/city/example1/TransportCo
+<https://saref.etsi.org/saref4city/data/city/example1/TransportCo> rdf:type owl:NamedIndividual ,
+                                                                            <http://www.w3.org/ns/org#Organization> ,
+                                                                            <https://saref.etsi.org/saref4city/Agent> ;
+                                                                   <http://purl.org/vocab/cpsv#provides> <https://saref.etsi.org/saref4city/data/city/example1/Bus33Service> .
+
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
