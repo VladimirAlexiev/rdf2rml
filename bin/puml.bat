@@ -1,2 +1,2 @@
-#!/bin/sh
-java -jar 'c:\prog\plantuml\plantuml.jar' -charset UTF-8 $1
+@echo off
+java -jar c:\prog\plantuml\plantuml.jar -charset UTF-8 %*

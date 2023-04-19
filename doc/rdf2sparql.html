@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>rdf2sparql - Convert RDF examples to SPARQL queries (OntoRefine or TARQL)</title>
+<title>rdf2sparql - Convert RDF examples to SPARQL queries (Ontotext Refine or TARQL)</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link rev="made" href="mailto:" />
 </head>
@@ -25,6 +25,7 @@
           <li><a href="#RDF-Model:-Customers">RDF Model: Customers</a></li>
           <li><a href="#RDF-Model:-Annual-Revenue-by-Permalink">RDF Model: Annual Revenue by Permalink</a></li>
           <li><a href="#RDF-Model:-Grant-Spending-Categories">RDF Model: Grant Spending Categories</a></li>
+          <li><a href="#Filtering">Filtering</a></li>
           <li><a href="#RDF-Model-Concatenation">RDF Model Concatenation</a></li>
         </ul>
       </li>
@@ -35,7 +36,7 @@
       </li>
       <li><a href="#Generated-SPARQL">Generated SPARQL</a>
         <ul>
-          <li><a href="#Insert-Patterns:-Crunchbase-Organizations">Insert Patterns: Crunchbase Organizations</a></li>
+          <li><a href="#Insert-Patterns:-CrunchBase-Organizations">Insert Patterns: CrunchBase Organizations</a></li>
           <li><a href="#Generated-Pre-Binds">Generated Pre-Binds</a></li>
           <li><a href="#Generated-Binds:-CrunchBase-Organizations">Generated Binds: CrunchBase Organizations</a></li>
           <li><a href="#Generated-Binds:-Customers">Generated Binds: Customers</a></li>
@@ -51,7 +52,7 @@
 
 <h1 id="NAME">NAME</h1>
 
-<p>rdf2sparql - Convert RDF examples to SPARQL queries (OntoRefine or TARQL)</p>
+<p>rdf2sparql - Convert RDF examples to SPARQL queries (Ontotext Refine or TARQL)</p>
 
 <h1 id="SYNOPSIS">SYNOPSIS</h1>
 
@@ -60,8 +61,8 @@
   perl rdf2sparql.pl --tarql     model.ttl | cat common.h prefixes.rq - | cpp -P -C -nostdinc - &gt; model.tarql
 
   Options:
-    --construct: generate CONSTRUCT query (default is UPDATE; applies only for OntoRefine)
-    --tarql: generate for TARQL (default is OntoRefine)</code></pre>
+    --construct: generate CONSTRUCT query (default is UPDATE; applies only for Ontotext Refine)
+    --tarql: generate for TARQL (default is Ontotext Refine)</code></pre>
 
 <h1 id="DESCRIPTION">DESCRIPTION</h1>
 
@@ -72,18 +73,18 @@
 <li><p><a href="https://tarql.github.io/">TARQL</a>, which is a is a high-speed streaming convertor. It&#39;s a SPARQL processor for tabular data, where each column <b>col</b> of each row is exposed as a variable binding <b>?col</b> (punctuation is replaced with underscores). See <a href="https://github.com/tarql/tarql/releases">releases</a>, tested with version 1.2-SNAPSHOT, BUILD_DATE: 2017-12-07T13:33:10Z</p>
 
 </li>
-<li><p><a href="https://graphdb.ontotext.com/documentation/standard/loading-data-using-ontorefine.html">OntoRefine</a>, which is an adaptation of OpenRefine for working with RDF data. It exposes a table as a virtual SPARQL endpoint (special service), where each column <b>col</b> of each row is exposed as a variable binding <b>?c_col</b>.</p>
+<li><p><a href="https://graphdb.ontotext.com/documentation/standard/loading-data-using-ontorefine.html">Ontotext Refine</a>, which is an adaptation of OpenRefine for working with RDF data. It exposes a table as a virtual SPARQL endpoint (special service), where each column <b>col</b> of each row is exposed as a variable binding <b>?c_col</b>.</p>
 
 </li>
 </ul>
 
 <p>We&#39;ve used TARQL to convert large files (over 10M rows, 145 columns) using complex TARQL queries (480 lines: 110 prefixes, 33 nodes, 250 triples, 110 binds).</p>
 
-<p>We&#39;ve used OntoRefine for large and complex CSV files, e.g. Crunchbase consisting of 18 tables, total 10.5M rows, 318 columns; for both initial loading and data updates. See <a href="https://gist.github.com/VladimirAlexiev/d5d67feb002dbcfa6b3d4c3dd59b52da">CrunchBase Challenge</a> for details. (Please note that we use a customized script that works with named graph per <b>table row</b>, not per <b>table</b>.)</p>
+<p>We&#39;ve used Ontotext Refine for large and complex CSV files, e.g. CrunchBase consisting of 18 tables, total 10.5M rows, 318 columns; for both initial loading and data updates. See <a href="https://gist.github.com/VladimirAlexiev/d5d67feb002dbcfa6b3d4c3dd59b52da">CrunchBase Challenge</a> for details. (Please note that we use a customized script that works with named graph per <b>table row</b>, not per <b>table</b>.)</p>
 
 <h2 id="Options">Options</h2>
 
-<p>The default is to generate a SPARQL UPDATE query for OntoRefine. It encloses OntoRefine variables in a <b>service</b> clause that accesses the OntoRefine virtual SPARQL endpoint (see later about the handling of <b>PROJECT_ID</b>):</p>
+<p>The default is to generate a SPARQL UPDATE query for Ontotext Refine. It encloses Ontotext Refine variables in a <b>service</b> clause that accesses the Ontotext Refine virtual SPARQL endpoint (see later about the handling of <b>PROJECT_ID</b>):</p>
 
 <pre><code>  service &lt;rdf-mapper:ontorefine:PROJECT_ID&gt; {
     ...
@@ -96,12 +97,13 @@
 <li><p>It ingests directly to GraphDB (without producing an intermediate RDF file), which is faster.</p>
 
 </li>
-<li><p>It overwrites a named graph, so it can be used for ingest or update. The first model line must look like this where <b>graph</b> is the graph to overwrite (in angle brackets).</p>
+<li><p>It overwrites a named graph, so it can be used for ingest or update. The first model line must look like this where <b>graph</b> is the graph to overwrite (in angle brackets). You can use parenthesized variable name(s) to compute the graph at runtime (see second example from Crunchbase):</p>
 
-<pre><code>  ## GRAPH &lt;graph&gt;</code></pre>
+<pre><code>  # GRAPH &lt;constant_graph&gt;
+  # GRAPH &lt;graph/organizations/(uuid)&gt;</code></pre>
 
 </li>
-<li><p>You can match real triples in GraphDB, which can be used to resolve entities (&quot;strings&quot; to &quot;things&quot;). A macro name that ends in &quot;URL&quot; (case-insensitively), e.g. <b>CB_AGENT_URL(permalink)</b>, causes the respective patterns to be interpreted outside of the OntoRefine virtual service.</p>
+<li><p>You can match real triples in GraphDB, which can be used to resolve entities (&quot;strings&quot; to &quot;things&quot;). A macro name that ends in &quot;URL&quot; (case-insensitively), e.g. <b>CB_AGENT_URL(permalink)</b>, causes the respective patterns to be interpreted outside of the Ontotext Refine virtual service.</p>
 
 </li>
 <li><p>You can split several multi-valued columns (using the <b>SPLIT</b> macro) to produce multiple bindings, without fear of Cartesian Product (i.e. their values will not be combined with each other).</p>
@@ -122,7 +124,7 @@
 
 <ul>
 
-<li><p>OntoRefine or TARQL as described above</p>
+<li><p>Ontotext Refine or TARQL as described above</p>
 
 </li>
 <li><p>Perl. Tested with 5.32.1 (Straberry Perl on Cygwin)</p>
@@ -158,7 +160,7 @@
 <pre><code>  tarql    model.tarql data.csv &gt; data.ttl
   tarql -t model.tarql data.tsv &gt; data.ttl</code></pre>
 
-<p>Process <b>model-ontorefine.ru</b> with OntoRefine:</p>
+<p>Process <b>model-ontorefine.ru</b> with Ontotext Refine:</p>
 
 <ul>
 
@@ -179,14 +181,14 @@
 </li>
 </ul>
 
-<p>If you save the OntoRefine cleaning script (operations JSON), you can automate the OntoRefine process by using the <a href="https://github.com/Ontotext-AD/ontorefine-client">ontorefine-client</a> CLI (it will become part of the OntoRefine distribution). We have scripts to automate the following steps:</p>
+<p>If you save the Ontotext Refine cleaning script (operations JSON), you can automate the Ontotext Refine process by using the <a href="https://github.com/Ontotext-AD/ontorefine-client">ontorefine-client</a> CLI (it will become part of the Ontotext Refine distribution). We have scripts to automate the following steps:</p>
 
 <ul>
 
-<li><p>Create an OntoRefine project and capture its project ID</p>
+<li><p>Create an Ontotext Refine project and capture its project ID</p>
 
 </li>
-<li><p>Load tabular data into the OntoRefine project</p>
+<li><p>Load tabular data into the Ontotext Refine project</p>
 
 </li>
 <li><p>Optionally, apply an OpenRefine data cleaning script</p>
@@ -198,7 +200,7 @@
 <li><p>Run the query against a GraphDB repository: it will replace the defined named graph</p>
 
 </li>
-<li><p>Delete the OntoRefine project</p>
+<li><p>Delete the Ontotext Refine project</p>
 
 </li>
 </ul>
@@ -215,9 +217,9 @@
 
 <h3 id="RDF-Model:-CrunchBase-Organizations">RDF Model: CrunchBase Organizations</h3>
 
-<p>The first example is a simple semantic representation of Crunchbase&#39;s <b>organizations.csv</b> table:</p>
+<p>The first example is a simple semantic representation of CrunchBase&#39;s <b>organizations.csv</b> table:</p>
 
-<pre><code>  ## GRAPH &lt;cb/graph/organizations&gt;
+<pre><code>  # GRAPH &lt;graph/organizations/(uuid)&gt;
   
   &lt;cb/agent/(uuid)&gt; a cb:Organization;
     cb:uuid &#39;(uuid)&#39;;
@@ -260,7 +262,7 @@
     cb:primaryRole &lt;cb/organizationRole/URLIFY(primary_role)&gt;;
     cb:numExits &#39;(num_exits)&#39;^^xsd:integer.</code></pre>
 
-<p>It puts all fields in one table and uses macros like URLIFY to make a phrase usable in URL, IFNOTNULL to discard parasitic phrases, SPLIT to split a multi-valued field into multiple bindings, etc. It uses a GRAPH comment to specify which named graph should be overwritten.</p>
+<p>It puts all fields in one table and uses macros like URLIFY to make a phrase usable in URL, IFNOTNULL to discard parasitic phrases, SPLIT to split a multi-valued field into multiple bindings, etc. It uses a GRAPH comment to specify which named graph should be overwritten: it is computed dynamically from the &quot;uuid&quot; field.</p>
 
 <h3 id="RDF-Model:-Customers">RDF Model: Customers</h3>
 
@@ -298,12 +300,12 @@
 
 <h3 id="RDF-Model:-Annual-Revenue-by-Permalink">RDF Model: Annual Revenue by Permalink</h3>
 
-<p>Next is a very simple model that adds &quot;revenue&quot; into to CrunchBase organizations.</p>
+<p>Next is a very simple model that adds a field &quot;revenue&quot; to CrunchBase organizations, based on two columns: &quot;permalink&quot; identifying the company, and &quot;revenue&quot; being a decimal</p>
 
-<pre><code>  ## GRAPH &lt;extra/revenue&gt;
+<pre><code>  # GRAPH &lt;extra/revenue&gt;
   &lt;CB_AGENT_URL(permalink)&gt; ex:annualRevenueUsd &quot;(revenue)&quot;^^xsd:decimal.</code></pre>
 
-<p>The revenue is keyed by &quot;permalink&quot; so we use the <b>CB_AGENT_URL()</b> macro to lookup by permalink.</p>
+<p>The revenue is keyed by &quot;permalink&quot;. But CrunchBase organizations use a different URL (primary key) based on &quot;uuid&quot;. So we use the <b>CB_AGENT_URL()</b> macro to lookup by permalink.</p>
 
 <h3 id="RDF-Model:-Grant-Spending-Categories">RDF Model: Grant Spending Categories</h3>
 
@@ -323,6 +325,55 @@
 <p>Note that in addition to making the <b>gr:spendingCategory</b> relation, this model also emits extra nodes. This will lead to redundant triples: each individual <b>skos:Concept</b> is duplicated as many times as it&#39;s used in grants, and <b>skos:ConceptScheme</b> is duplicated as the total number of grants.</p>
 
 <p>This does not lead to conflicts since the same triple cannot be recorded multiple times in an RDF repository. However, if this data redundancy is bothersome, you can normalize the Concept data to a separate file of unique concepts; and move the ConceptScheme into a separate &quot;constant&quot; RDF file that doesn&#39;t need to be processed with <b>rdf2sparql</b>.</p>
+
+<h3 id="Filtering">Filtering</h3>
+
+<p>You can use the field <b>puml:label</b> to specify a filter condition to be applied for each row. For example, let&#39;s say we have a table of some content (web pages) that needs to be published as RDF only when the field <b>status</b> is &quot;published&quot;. Use the following model:</p>
+
+<pre><code>  &lt;(url)&gt; a s:WebPage;
+    puml:label &quot;filter(?status=&#39;published&#39;)&quot;; ## RDFize only &quot;published&quot; pages
+    s:name     &quot;(title)&quot;;
+    s:author   &quot;(author)&quot;;
+    s:date     &quot;(date)&quot;^^xsd:date.</code></pre>
+
+<p><b>puml:label</b> is printed out in red, and its contents are added at the end of the query. For Ontotext Refine, this will look like:</p>
+
+<pre><code>  delete ...
+  insert ...
+  where {
+    service &lt;rdf-mapper:ontorefine:PROJECT_ID&gt; {
+      ...
+      filter(?status=&#39;published&#39;)
+    }
+  }</code></pre>
+
+<p>For TARQL, this will look like:</p>
+
+<pre><code>  construct ...
+  where {
+    ...
+    filter(?status=&#39;published&#39;)
+  }</code></pre>
+
+<p>See the folder <b>filter-content</b> for a complete test case using TARQL. There are 3 rows in <b>content.csv</b> but the first one doesn&#39;t have <b>status=&#39;published&#39;</b>, so it&#39;s omitted from <b>content-result.ttl</b>.</p>
+
+<p>Notes:</p>
+
+<ul>
+
+<li><p>Don&#39;t forget to write out <b>filter(...)</b> and use question marks to identify the variables (fields).</p>
+
+</li>
+<li><p>Since the model Turtle is not really parsed, you should write the <b>puml:label</b> on one line, trailed by semicolon or dot (and optional trailing comment).</p>
+
+</li>
+<li><p>You can use triple quotes or apostrophes to surround the content.</p>
+
+</li>
+<li><p>The same field is used in <b>rdf2rml</b> with a completely different meaning: as a SQL table or query. I know, this is an ugly hack.</p>
+
+</li>
+</ul>
 
 <h3 id="RDF-Model-Concatenation">RDF Model Concatenation</h3>
 
@@ -457,10 +508,10 @@
 <li><p><b>##</b> concatenates two preprocessor tokens (a variable name and a constant string) to make a new variable name</p>
 
 </li>
-<li><p><b>CB_AGENT_URL(x)</b>: uses a real RDF lookup (outside of the OntoRefine virtual endpoint). Before that guards with <b>bound(x)</b> (otherwise an unbound variable will return all agents), then checks for respective <b>rdf:type</b></p>
+<li><p><b>CB_AGENT_URL(x)</b>: uses a real RDF lookup (outside of the Ontotext Refine virtual endpoint). Before that guards with <b>bound(x)</b> (otherwise an unbound variable will return all agents), then checks for respective <b>rdf:type</b></p>
 
 </li>
-<li><p><b>SPLIT(x)</b>: uses a &quot;magic predicate&quot; (<b>apf:strSplit</b> in TARQL or <b>spif:split</b> in OntoRefine) to split x and produce multiple bindings</p>
+<li><p><b>SPLIT(x)</b>: uses a &quot;magic predicate&quot; (<b>apf:strSplit</b> in TARQL or <b>spif:split</b> in Ontotext Refine) to split x and produce multiple bindings</p>
 
 </li>
 <li><p><b>COALESCE(x,...)</b> uses <b>__VA_ARGS__</b> to take any number of arguments (variadic arguments)</p>
@@ -480,7 +531,7 @@
 <li><p>Write builtin SPARQL functions in lowercase to avoid mistaking them for macro definitions</p>
 
 </li>
-<li><p>To implement <b>SPLIT</b>, use <b>apf:strSplit</b> in TARQL and <b>spif:split</b> in OntoRefine. (In a future version, this tool may take care of that difference.)</p>
+<li><p>To implement <b>SPLIT</b>, use <b>apf:strSplit</b> in TARQL and <b>spif:split</b> in Ontotext Refine. (In a future version, this tool may take care of that difference.)</p>
 
 </li>
 <li><p><b>SPLIT</b> delimiters often use URL-unfriendly chars. So don&#39;t use &quot;raw&quot; SPLIT with 2 arguments, but define &quot;business&quot; versions of SPLIT as above.</p>
@@ -495,7 +546,7 @@
 
 <p>The overall structure of the generated SPARQL query depends on the options you used.</p>
 
-<p>For OntoRefine UPDATE:</p>
+<p>For Ontotext Refine UPDATE:</p>
 
 <pre><code>  delete where {graph $GRAPH {?s ?p ?o}};
   insert {graph $GRAPH {
@@ -512,18 +563,18 @@
 
 <ul>
 
-<li><p><b>$GRAPH</b> is the named graph mentioned in the first model line. This way the query can handle both initial data loading and updates. Please note that for Crunchbase it is unfeasible to regenerate all Organization data on every update. So we have a slightly more complex script (not published) that uses a named graph per table <b>row</b> (uuid) not per <b>table</b>, and selects only recently updated rows for processing.</p>
+<li><p><b>$GRAPH</b> is the named graph mentioned in the first model line. This way the query can handle both initial data loading and updates. Please note that for CrunchBase it is unfeasible to regenerate all Organization data on every update. So we have a slightly more complex script (not published) that uses a named graph per table <b>row</b> (uuid) not per <b>table</b>, and selects only recently updated rows for processing.</p>
 
 </li>
-<li><p><b>PROJECT_ID</b> is a placeholder that must be replaced with the actual OntoRefine project ID before running the query.</p>
+<li><p><b>PROJECT_ID</b> is a placeholder that must be replaced with the actual Ontotext Refine project ID before running the query.</p>
 
 </li>
-<li><p>The script has a special case for macro names matching <b>*_URL</b>, that&#39;s why the <b>CB_AGENT_URL</b> pattern is evaluated outside of the OntoRefine virtual endpoint.</p>
+<li><p>The script has a special case for macro names matching <b>*_URL</b>, that&#39;s why the <b>CB_AGENT_URL</b> pattern is evaluated outside of the Ontotext Refine virtual endpoint.</p>
 
 </li>
 </ul>
 
-<p>For OntoRefine CONSTRUCT:</p>
+<p>For Ontotext Refine CONSTRUCT:</p>
 
 <pre><code>  construct {
     &lt;Insert Patterns&gt;
@@ -550,7 +601,7 @@
 
 <p>TARQL cannot make a lookup in existing RDF data, so macro names matching <b>*_URL</b> are not allowed.</p>
 
-<h3 id="Insert-Patterns:-Crunchbase-Organizations">Insert Patterns: Crunchbase Organizations</h3>
+<h3 id="Insert-Patterns:-CrunchBase-Organizations">Insert Patterns: CrunchBase Organizations</h3>
 
 <p>The script unrolls macro (function) calls into binds, adding uppercase suffixes to the variable names. In addition, it knows how to process templatized URLs (see var names with a <b>_URL</b> suffix) and how to process datatype attachments (adding the datatype as suffix). Compare the patterns below to the first model example:</p>
 
@@ -599,7 +650,7 @@
 
 <p>The script emits a bunch of bindings.</p>
 
-<p>For OntoRefine, first come silly &quot;aliases&quot; for each variable used in the model because of some peculiarities of the OntoRefine virtual endpoint (issue <a href="https://ontotext.atlassian.net/browse/GDB-6600">GDB-6600</a>):</p>
+<p>For Ontotext Refine, first come silly &quot;aliases&quot; for each variable used in the model because of some peculiarities of the Ontotext Refine virtual endpoint (issue <a href="https://ontotext.atlassian.net/browse/GDB-6600">GDB-6600</a>):</p>
 
 <pre><code>    bind(?c_uuid as ?uuid)
     bind(?c_name as ?name)
@@ -714,7 +765,7 @@
 
 <h3 id="Generated-Update:-Annual-Revenue-by-Permalink">Generated Update: Annual Revenue by Permalink</h3>
 
-<p>This model adds some extra Revenue triples into a specified named graph. The overall OntoRefine UPDATE looks like this:</p>
+<p>This model adds some extra Revenue triples into a specified named graph. The overall Ontotext Refine UPDATE looks like this:</p>
 
 <pre><code>  delete where {graph &lt;extra/revenue&gt; {?x ?p ?o}};
   insert {graph  &lt;extra/revenue&gt; {
@@ -730,7 +781,7 @@
     filter(?permalink_TYPE in (cb:Person,cb:Organization))
   };</code></pre>
 
-<p>As you can see, the <b>CB_AGENT_URL</b> macro is evaluated outside of the OntoRefine virtual endpoint.</p>
+<p>As you can see, the <b>CB_AGENT_URL</b> macro is evaluated outside of the Ontotext Refine virtual endpoint.</p>
 
 <h3 id="Generated-Binds:-Spending-Categories">Generated Binds: Spending Categories</h3>
 
@@ -741,7 +792,9 @@
 
 <h1 id="SEE-ALSO">SEE ALSO</h1>
 
-<p>The gist <a href="https://gist.github.com/VladimirAlexiev/d5d67feb002dbcfa6b3d4c3dd59b52da">Crunchbase Semantic Model and Challenge</a> that publishes all our Crunchbase models. It also shows an overall model diagram made by <b>rdfpuml</b>.</p>
+<p><b>test/graphs-crunchbase</b> for the worked example of generating a SPARQL Update for CrunchBase organizations with dynamic (computed) graph.</p>
+
+<p>The gist <a href="https://gist.github.com/VladimirAlexiev/d5d67feb002dbcfa6b3d4c3dd59b52da">CrunchBase Semantic Model and Challenge</a> that publishes all our CrunchBase models. It also shows an overall model diagram made by <b>rdfpuml</b>.</p>
 
 <p>The issue <a href="https://github.com/kg-construct/best-practices/issues/7">Generate Transforms and Shapes from Models</a> in the Knowledge Graph Construct W3C community group &quot;Best Practices&quot; github project.</p>
 
@@ -755,7 +808,7 @@
 
 <p>Vladimir Alexiev, Ontotext Corp</p>
 
-<p>Last update: 15-Aug-2022</p>
+<p>Last update: 8-Dec-2022</p>
 
 
 </body>

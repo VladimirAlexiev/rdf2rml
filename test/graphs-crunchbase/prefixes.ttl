@@ -1,0 +1,18 @@
+@base         <https://data.ontotext.com/crunchbase/> .
+@prefix cb:   <https://data.ontotext.com/crunchbase/ontology/>.
+
+@prefix puml:   <http://plantuml.com/ontology#> .
+@prefix spif:   <http://spinrdf.org/spif#> .
+@prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+####################
+
+# Inlined thesaurus values. Alternative: display them as skos:Concepts
+cb:employeeCount    a puml:InlineProperty.
+cb:gender           a puml:InlineProperty.
+cb:industry         a puml:InlineProperty.
+cb:organizationRole a puml:InlineProperty.
+cb:primaryRole      a puml:InlineProperty.
+cb:status           a puml:InlineProperty.
+

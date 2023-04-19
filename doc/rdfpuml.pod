@@ -12,7 +12,7 @@ rdfpuml - Convert RDF to PlantUML diagrams
 
 =head1 DESCRIPTION
 
-Converts an RDF Turtle file to a readable diagram using L<plantuml|http://plantuml.com>.
+Converts an RDF Turtle file to a readable diagram using L<PlantUML|http://plantuml.com>.
 
 =head2 Motivation
 
@@ -258,14 +258,11 @@ Nodes can have labels: C<puml:label, rdfs:label, skos:prefLabel>.
 
 =over
 
-=item *
+=item * If a node is inlined, its label is added as a comment. If several nodes are inlined at the same property, all their comments are also gathered together.
 
-If a node is inlined, its label is added as a comment. If several nodes are inlined at the same property, all their comments are also gathered together.
+=item * If a node is shown normally, its label is shown amongst the other node attributes.
 
-=item *
-
-If a node is shown normally, its label is shown amongst the other node attributes.
-As an exception, C<puml:label> is used to give a label (or comment) without any attribute.
+=item * C<puml:label> is used to give a label without any predicate (attribute) name. It's printed in red (but only if single-line). It's used with completely different meanings in B<rdf2rml> (to specify a SQL table or join) and in B<rdf2sparql> (to specify a row filter): I know this is a hack.
 
 =back
 

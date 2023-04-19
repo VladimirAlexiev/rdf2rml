@@ -1,0 +1,5 @@
+<(url)> a s:WebPage;
+  s:name     "(title)";
+  s:author   "(author)";
+  s:date     "(date)"^^xsd:date;
+  puml:label "filter(?status='published')". ## RDFize only "published" pages

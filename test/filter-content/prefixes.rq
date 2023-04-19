@@ -1,0 +1,3 @@
+prefix s:    <http://schema.org/>
+prefix puml: <http://plantuml.com/ontology#>
+prefix xsd:  <http://www.w3.org/2001/XMLSchema#>

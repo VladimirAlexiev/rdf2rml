@@ -1,0 +1,16 @@
+@prefix puml:  <http://plantuml.com/ontology#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix s:  <http://schema.org/> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+<https://www.ontotext.com/company/news/graphdb-passes-both-ldbc-benchmarks/>
+        rdf:type  s:WebPage ;
+        s:name    "Ontotext GraphDB Passes the Linked Data Benchmarking Council’s Social Network and the Semantic Publishing Benchmarks" ;
+        s:author  "Jane Doe" ;
+        s:date    "2023-04-18"^^xsd:date .
+
+<https://www.ontotext.com/company/event/himss-2023/>
+        rdf:type  s:WebPage ;
+        s:name    "HIMSS 2023" ;
+        s:author  "John Smith" ;
+        s:date    "2023-04-17"^^xsd:date .

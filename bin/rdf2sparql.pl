@@ -99,10 +99,12 @@ sub templated_url {
 
 if ($form eq "update") {
   $_ = <>;
-  ($GRAPH) = m{#+ GRAPH (<.*>)} or die "Expected # GRAPH <...> got $_";
+  m{#+ GRAPH <(.*)>} or die "Expected # GRAPH <...> got $_";
+  $GRAPH = templated_url($1);
 };
 while ($_ = <>) {
-  m{puml:|plantuml} and next; # skip any puml statements
+  m{puml:label *['"]+(.*?)['"]+ *[;.]( *#.*)$} and do {addWhere(1,$1); next};
+  m{puml:|plantuml} and next; # skip any other puml statements
   s{\((\w+)\)}{ontorefine($1)}ge;
   while (s{(\w+)\((\w+)([,?\w]*)\)}{function($1,$2,$3)}ge)
     # recursively replace function calls.
@@ -122,7 +124,13 @@ my $WHERE_PRE  = join'',@where;
 print
 
   $form eq "update" ? << "EOF"
-clear silent graph $GRAPH;
+delete {graph $GRAPH {?s ?p ?o}}
+where {
+  service <rdf-mapper:ontorefine:PROJECT_ID> {
+$WHERE_PRE
+  }
+$WHERE_POST
+  $GRAPH {?s ?p ?o}};
 
 insert {graph $GRAPH {
 $output}}

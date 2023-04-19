@@ -1,0 +1,8 @@
+base         <https://data.ontotext.com/crunchbase/>
+prefix cb:   <https://data.ontotext.com/crunchbase/ontology/>
+
+prefix puml:   <http://plantuml.com/ontology#>
+prefix spif:   <http://spinrdf.org/spif#>
+prefix skos:   <http://www.w3.org/2004/02/skos/core#>
+prefix xsd:    <http://www.w3.org/2001/XMLSchema#>
+

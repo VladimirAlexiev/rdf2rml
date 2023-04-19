@@ -1,0 +1,15 @@
+prefix s:    <http://schema.org/>
+prefix puml: <http://plantuml.com/ontology#>
+prefix xsd:  <http://www.w3.org/2001/XMLSchema#>
+construct {
+  ?url_URL a s:WebPage;
+    s:name     ?title;
+    s:author   ?author;
+    s:date     ?date_xsd_date;
+}
+where {
+
+    bind(iri(concat(?url)) as ?url_URL)
+    bind(strdt(?date,xsd:date) as ?date_xsd_date)
+    filter(?status='published')
+}

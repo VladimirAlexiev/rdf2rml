@@ -1,6 +1,6 @@
 =head1 NAME
 
-rdf2sparql - Convert RDF examples to SPARQL queries (OntoRefine or TARQL)
+rdf2sparql - Convert RDF examples to SPARQL queries (Ontotext Refine or TARQL)
 
 =head1 SYNOPSIS
 
@@ -9,8 +9,8 @@ rdf2sparql - Convert RDF examples to SPARQL queries (OntoRefine or TARQL)
   perl rdf2sparql.pl --tarql     model.ttl | cat common.h prefixes.rq - | cpp -P -C -nostdinc - > model.tarql
 
   Options:
-    --construct: generate CONSTRUCT query (default is UPDATE; applies only for OntoRefine)
-    --tarql: generate for TARQL (default is OntoRefine)
+    --construct: generate CONSTRUCT query (default is UPDATE; applies only for Ontotext Refine)
+    --tarql: generate for TARQL (default is Ontotext Refine)
 
 =head1 DESCRIPTION
 
@@ -21,22 +21,22 @@ B<rdf2sparql> converts an RDF example with embedded CSV/TSV column names into a 
 =item * L<TARQL|https://tarql.github.io/>, which is a is a high-speed streaming convertor. It's a SPARQL processor for tabular data, where each column B<col> of each row is exposed as a variable binding B<?col> (punctuation is replaced with underscores). See L<releases|https://github.com/tarql/tarql/releases>, tested with version 1.2-SNAPSHOT, BUILD_DATE: 2017-12-07T13:33:10Z
 
 
-=item * L<OntoRefine|https://graphdb.ontotext.com/documentation/standard/loading-data-using-ontorefine.html>, which is an adaptation of OpenRefine for working with RDF data. It exposes a table as a virtual SPARQL endpoint (special service), where each column B<col> of each row is exposed as a variable binding B<?c_col>.
+=item * L<Ontotext Refine|https://graphdb.ontotext.com/documentation/standard/loading-data-using-ontorefine.html>, which is an adaptation of OpenRefine for working with RDF data. It exposes a table as a virtual SPARQL endpoint (special service), where each column B<col> of each row is exposed as a variable binding B<?c_col>.
 
 =back
 
 We've used TARQL to convert large files (over 10M rows, 145 columns) using complex TARQL queries (480 lines: 110 prefixes, 33 nodes, 250 triples, 110 binds).
 
-We've used OntoRefine for large and complex CSV files,
-e.g. Crunchbase consisting of 18 tables, total 10.5M rows, 318 columns;
+We've used Ontotext Refine for large and complex CSV files,
+e.g. CrunchBase consisting of 18 tables, total 10.5M rows, 318 columns;
 for both initial loading and data updates.
 See L<CrunchBase Challenge|https://gist.github.com/VladimirAlexiev/d5d67feb002dbcfa6b3d4c3dd59b52da> for details.
 (Please note that we use a customized script that works with named graph per B<table row>, not per B<table>.)
 
 =head2 Options
 
-The default is to generate a SPARQL UPDATE query for OntoRefine.
-It encloses OntoRefine variables in a B<service> clause that accesses the OntoRefine virtual SPARQL endpoint
+The default is to generate a SPARQL UPDATE query for Ontotext Refine.
+It encloses Ontotext Refine variables in a B<service> clause that accesses the Ontotext Refine virtual SPARQL endpoint
 (see later about the handling of B<PROJECT_ID>):
 
   service <rdf-mapper:ontorefine:PROJECT_ID> {
@@ -49,11 +49,12 @@ This has several benefits:
 
 =item * It ingests directly to GraphDB (without producing an intermediate RDF file), which is faster.
 
-=item * It overwrites a named graph, so it can be used for ingest or update. The first model line must look like this where B<graph> is the graph to overwrite (in angle brackets).
+=item * It overwrites a named graph, so it can be used for ingest or update. The first model line must look like this where B<graph> is the graph to overwrite (in angle brackets). You can use parenthesized variable name(s) to compute the graph at runtime (see second example from Crunchbase):
 
-  ## GRAPH <graph>
+  # GRAPH <constant_graph>
+  # GRAPH <graph/organizations/(uuid)>
 
-=item * You can match real triples in GraphDB, which can be used to resolve entities ("strings" to "things"). A macro name that ends in "URL" (case-insensitively), e.g. B<CB_AGENT_URL(permalink)>, causes the respective patterns to be interpreted outside of the OntoRefine virtual service.
+=item * You can match real triples in GraphDB, which can be used to resolve entities ("strings" to "things"). A macro name that ends in "URL" (case-insensitively), e.g. B<CB_AGENT_URL(permalink)>, causes the respective patterns to be interpreted outside of the Ontotext Refine virtual service.
 
 =item * You can split several multi-valued columns (using the B<SPLIT> macro) to produce multiple bindings, without fear of Cartesian Product (i.e. their values will not be combined with each other).
 
@@ -84,7 +85,7 @@ You can abbreviate options. All these are equivalent:
 
 =over
 
-=item * OntoRefine or TARQL as described above
+=item * Ontotext Refine or TARQL as described above
 
 =item * Perl. Tested with 5.32.1 (Straberry Perl on Cygwin)
 
@@ -113,7 +114,7 @@ Process with B<model.tarql> (variants for CSV or TSV):
   tarql    model.tarql data.csv > data.ttl
   tarql -t model.tarql data.tsv > data.ttl
 
-Process B<model-ontorefine.ru> with OntoRefine:
+Process B<model-ontorefine.ru> with Ontotext Refine:
 
 =over
 
@@ -129,17 +130,17 @@ Process B<model-ontorefine.ru> with OntoRefine:
 
 =back
 
-If you save the OntoRefine cleaning script (operations JSON),
-you can automate the OntoRefine process by using the
+If you save the Ontotext Refine cleaning script (operations JSON),
+you can automate the Ontotext Refine process by using the
 L<ontorefine-client|https://github.com/Ontotext-AD/ontorefine-client> CLI
-(it will become part of the OntoRefine distribution).
+(it will become part of the Ontotext Refine distribution).
 We have scripts to automate the following steps:
 
 =over
 
-=item * Create an OntoRefine project and capture its project ID
+=item * Create an Ontotext Refine project and capture its project ID
 
-=item * Load tabular data into the OntoRefine project
+=item * Load tabular data into the Ontotext Refine project
 
 =item * Optionally, apply an OpenRefine data cleaning script
 
@@ -147,7 +148,7 @@ We have scripts to automate the following steps:
 
 =item * Run the query against a GraphDB repository: it will replace the defined named graph
 
-=item * Delete the OntoRefine project
+=item * Delete the Ontotext Refine project
 
 =back
 
@@ -166,9 +167,9 @@ See also B<test/customer> for a separate example (includes a Makefile).
 
 =head3 RDF Model: CrunchBase Organizations
 
-The first example is a simple semantic representation of Crunchbase's B<organizations.csv> table:
+The first example is a simple semantic representation of CrunchBase's B<organizations.csv> table:
 
-  ## GRAPH <cb/graph/organizations>
+  # GRAPH <graph/organizations/(uuid)>
   
   <cb/agent/(uuid)> a cb:Organization;
     cb:uuid '(uuid)';
@@ -215,7 +216,7 @@ It puts all fields in one table and uses macros like
 URLIFY to make a phrase usable in URL,
 IFNOTNULL to discard parasitic phrases,
 SPLIT to split a multi-valued field into multiple bindings, etc.
-It uses a GRAPH comment to specify which named graph should be overwritten.
+It uses a GRAPH comment to specify which named graph should be overwritten: it is computed dynamically from the "uuid" field.
 
 =head3 RDF Model: Customers
 
@@ -253,12 +254,15 @@ It dispatches fields to several nodes and uses only one macro (B<URLIFY>).
 
 =head3 RDF Model: Annual Revenue by Permalink
 
-Next is a very simple model that adds "revenue" into to CrunchBase organizations.
+Next is a very simple model that adds a field "revenue" to CrunchBase organizations,
+based on two columns: "permalink" identifying the company, and "revenue" being a decimal
 
-  ## GRAPH <extra/revenue>
+  # GRAPH <extra/revenue>
   <CB_AGENT_URL(permalink)> ex:annualRevenueUsd "(revenue)"^^xsd:decimal.
 
-The revenue is keyed by "permalink" so we use the B<CB_AGENT_URL()> macro to lookup by permalink.
+The revenue is keyed by "permalink".
+But CrunchBase organizations use a different URL (primary key) based on "uuid".
+So we use the B<CB_AGENT_URL()> macro to lookup by permalink.
 
 =head3 RDF Model: Grant Spending Categories
 
@@ -287,6 +291,57 @@ However, if this data redundancy is bothersome, you can
 normalize the Concept data to a separate file of unique concepts;
 and move the ConceptScheme into a separate "constant" RDF file
 that doesn't need to be processed with B<rdf2sparql>.
+
+=head3 Filtering
+
+You can use the field B<puml:label> to specify a filter condition to be applied for each row.
+For example, let's say we have a table of some content (web pages)
+that needs to be published as RDF only when the field B<status> is "published".
+Use the following model:
+
+  <(url)> a s:WebPage;
+    puml:label "filter(?status='published')"; ## RDFize only "published" pages
+    s:name     "(title)";
+    s:author   "(author)";
+    s:date     "(date)"^^xsd:date.
+
+B<puml:label> is printed out in red, and its contents are added at the end of the query.
+For Ontotext Refine, this will look like:
+
+  delete ...
+  insert ...
+  where {
+    service <rdf-mapper:ontorefine:PROJECT_ID> {
+      ...
+      filter(?status='published')
+    }
+  }
+
+For TARQL, this will look like:
+
+  construct ...
+  where {
+    ...
+    filter(?status='published')
+  }
+
+See the folder B<filter-content> for a complete test case using TARQL.
+There are 3 rows in B<content.csv> but the first one doesn't have B<status='published'>,
+so it's omitted from B<content-result.ttl>.
+
+Notes:
+
+=over
+
+=item * Don't forget to write out B<filter(...)> and use question marks to identify the variables (fields).
+
+=item * Since the model Turtle is not really parsed, you should write the B<puml:label> on one line, trailed by semicolon or dot (and optional trailing comment).
+
+=item * You can use triple quotes or apostrophes to surround the content.
+
+=item * The same field is used in B<rdf2rml> with a completely different meaning: as a SQL table or query. I know, this is an ugly hack.
+
+=back
 
 =head3 RDF Model Concatenation
 
@@ -416,9 +471,9 @@ Notes about unusual constructs:
 
 =item * B<##> concatenates two preprocessor tokens (a variable name and a constant string) to make a new variable name
 
-=item * B<CB_AGENT_URL(x)>: uses a real RDF lookup (outside of the OntoRefine virtual endpoint). Before that guards with B<bound(x)> (otherwise an unbound variable will return all agents), then checks for respective B<rdf:type>
+=item * B<CB_AGENT_URL(x)>: uses a real RDF lookup (outside of the Ontotext Refine virtual endpoint). Before that guards with B<bound(x)> (otherwise an unbound variable will return all agents), then checks for respective B<rdf:type>
 
-=item * B<SPLIT(x)>: uses a "magic predicate" (B<apf:strSplit> in TARQL or B<spif:split> in OntoRefine) to split x and produce multiple bindings
+=item * B<SPLIT(x)>: uses a "magic predicate" (B<apf:strSplit> in TARQL or B<spif:split> in Ontotext Refine) to split x and produce multiple bindings
 
 =item * B<COALESCE(x,...)> uses B<__VA_ARGS__> to take any number of arguments (variadic arguments)
 
@@ -435,7 +490,7 @@ To save yourself some trouble, here are some hints for writing and using macros:
 
 =item * Write builtin SPARQL functions in lowercase to avoid mistaking them for macro definitions
 
-=item * To implement B<SPLIT>, use B<apf:strSplit> in TARQL and B<spif:split> in OntoRefine. (In a future version, this tool may take care of that difference.)
+=item * To implement B<SPLIT>, use B<apf:strSplit> in TARQL and B<spif:split> in Ontotext Refine. (In a future version, this tool may take care of that difference.)
 
 =item * B<SPLIT> delimiters often use URL-unfriendly chars. So don't use "raw" SPLIT with 2 arguments, but define "business" versions of SPLIT as above.
 
@@ -447,7 +502,7 @@ To save yourself some trouble, here are some hints for writing and using macros:
 
 The overall structure of the generated SPARQL query depends on the options you used.
 
-For OntoRefine UPDATE:
+For Ontotext Refine UPDATE:
 
   delete where {graph $GRAPH {?s ?p ?o}};
   insert {graph $GRAPH {
@@ -464,15 +519,15 @@ For OntoRefine UPDATE:
 
 =over
 
-=item * B<$GRAPH> is the named graph mentioned in the first model line. This way the query can handle both initial data loading and updates. Please note that for Crunchbase it is unfeasible to regenerate all Organization data on every update. So we have a slightly more complex script (not published) that uses a named graph per table B<row> (uuid) not per B<table>, and selects only recently updated rows for processing.
+=item * B<$GRAPH> is the named graph mentioned in the first model line. This way the query can handle both initial data loading and updates. Please note that for CrunchBase it is unfeasible to regenerate all Organization data on every update. So we have a slightly more complex script (not published) that uses a named graph per table B<row> (uuid) not per B<table>, and selects only recently updated rows for processing.
 
-=item * B<PROJECT_ID> is a placeholder that must be replaced with the actual OntoRefine project ID before running the query.
+=item * B<PROJECT_ID> is a placeholder that must be replaced with the actual Ontotext Refine project ID before running the query.
 
-=item * The script has a special case for macro names matching B<*_URL>, that's why the B<CB_AGENT_URL> pattern is evaluated outside of the OntoRefine virtual endpoint.
+=item * The script has a special case for macro names matching B<*_URL>, that's why the B<CB_AGENT_URL> pattern is evaluated outside of the Ontotext Refine virtual endpoint.
 
 =back
 
-For OntoRefine CONSTRUCT:
+For Ontotext Refine CONSTRUCT:
 
   construct {
     <Insert Patterns>
@@ -499,7 +554,7 @@ For TARQL CONSTRUCT:
 
 TARQL cannot make a lookup in existing RDF data, so macro names matching B<*_URL> are not allowed.
 
-=head3 Insert Patterns: Crunchbase Organizations
+=head3 Insert Patterns: CrunchBase Organizations
 
 The script unrolls macro (function) calls into binds, adding uppercase suffixes to the variable names.
 In addition, it knows how to process templatized URLs (see var names with a B<_URL> suffix)
@@ -551,8 +606,8 @@ Compare the patterns below to the first model example:
 
 The script emits a bunch of bindings.
 
-For OntoRefine, first come silly "aliases" for each variable used in the model
-because of some peculiarities of the OntoRefine virtual endpoint
+For Ontotext Refine, first come silly "aliases" for each variable used in the model
+because of some peculiarities of the Ontotext Refine virtual endpoint
 (issue L<GDB-6600|https://ontotext.atlassian.net/browse/GDB-6600>):
 
     bind(?c_uuid as ?uuid)
@@ -667,7 +722,7 @@ but we use a slightly different definition of B<URLIFY> (uses teh Unicode Numeri
 =head3 Generated Update: Annual Revenue by Permalink
 
 This model adds some extra Revenue triples into a specified named graph.
-The overall OntoRefine UPDATE looks like this:
+The overall Ontotext Refine UPDATE looks like this:
 
   delete where {graph <extra/revenue> {?x ?p ?o}};
   insert {graph  <extra/revenue> {
@@ -683,7 +738,7 @@ The overall OntoRefine UPDATE looks like this:
     filter(?permalink_TYPE in (cb:Person,cb:Organization))
   };
 
-As you can see, the B<CB_AGENT_URL> macro is evaluated outside of the OntoRefine virtual endpoint.
+As you can see, the B<CB_AGENT_URL> macro is evaluated outside of the Ontotext Refine virtual endpoint.
 
 =head3 Generated Binds: Spending Categories
 
@@ -695,7 +750,9 @@ As you can see, the B<CB_AGENT_URL> macro is evaluated outside of the OntoRefine
 
 =head1 SEE ALSO
 
-The gist L<Crunchbase Semantic Model and Challenge|https://gist.github.com/VladimirAlexiev/d5d67feb002dbcfa6b3d4c3dd59b52da> that publishes all our Crunchbase models.
+B<test/graphs-crunchbase> for the worked example of generating a SPARQL Update for CrunchBase organizations with dynamic (computed) graph.
+
+The gist L<CrunchBase Semantic Model and Challenge|https://gist.github.com/VladimirAlexiev/d5d67feb002dbcfa6b3d4c3dd59b52da> that publishes all our CrunchBase models.
 It also shows an overall model diagram made by B<rdfpuml>.
 
 The issue L<Generate Transforms and Shapes from Models|https://github.com/kg-construct/best-practices/issues/7> in the Knowledge Graph Construct W3C community group "Best Practices" github project.
@@ -710,4 +767,4 @@ B<rdf2tarql>: a tool that generates TARQL queries from RDF examples.
 
 Vladimir Alexiev, Ontotext Corp
 
-Last update: 15-Aug-2022
+Last update:  8-Dec-2022

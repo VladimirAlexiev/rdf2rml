@@ -52,7 +52,7 @@
 
 <h1 id="DESCRIPTION">DESCRIPTION</h1>
 
-<p>Converts an RDF Turtle file to a readable diagram using <a href="http://plantuml.com">plantuml</a>.</p>
+<p>Converts an RDF Turtle file to a readable diagram using <a href="http://plantuml.com">PlantUML</a>.</p>
 
 <h2 id="Motivation">Motivation</h2>
 
@@ -244,7 +244,10 @@
 <li><p>If a node is inlined, its label is added as a comment. If several nodes are inlined at the same property, all their comments are also gathered together.</p>
 
 </li>
-<li><p>If a node is shown normally, its label is shown amongst the other node attributes. As an exception, <code>puml:label</code> is used to give a label (or comment) without any attribute.</p>
+<li><p>If a node is shown normally, its label is shown amongst the other node attributes.</p>
+
+</li>
+<li><p><code>puml:label</code> is used to give a label without any predicate (attribute) name. It&#39;s printed in red (but only if single-line). It&#39;s used with completely different meanings in <b>rdf2rml</b> (to specify a SQL table or join) and in <b>rdf2sparql</b> (to specify a row filter): I know this is a hack.</p>
 
 </li>
 </ul>

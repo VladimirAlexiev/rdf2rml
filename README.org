@@ -2,14 +2,15 @@
 #+OPTIONS: c:nil creator:nil d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:nil
 #+OPTIONS: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t timestamp:nil title:t toc:5
 #+OPTIONS: todo:t |:t
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:auto html-preamble:t html-scripts:t
+#+OPTIONS: html-style:t html5-fancy:nil tex:nil
+#+STARTUP: nonum
 #+TITLE: RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation
-#+DATE: <2022-08-23>
+#+DATE: <2022-09-20>
 #+AUTHOR: Vladimir Alexiev
 #+EMAIL: vladimir.alexiev@ontotext.com
 #+LANGUAGE: en
 #+CREATOR: Emacs 25.3.1 (Org mode 9.1.13)
-#+OPTIONS: html-link-use-abs-url:nil html-postamble:auto html-preamble:t html-scripts:t
-#+OPTIONS: html-style:t html5-fancy:nil tex:nil
 #+TODO: TODO INPROGRESS | DONE CANCELED
 #+HTML_DOCTYPE: xhtml-strict
 #+HTML_CONTAINER: div
@@ -30,6 +31,7 @@
 - [[#installation][Installation]]
 - [[#debian-repo][Debian Repo]]
 - [[#change-log][Change Log]]
+  - [[#2023-04-19-rdf2sparqlpl][2023-04-19 rdf2sparql.pl]]
   - [[#2022-08-23-rdf2sparqlpl][2022-08-23 rdf2sparql.pl]]
   - [[#2022-08-23-rdfpumlpl][2022-08-23 rdfpuml.pl]]
   - [[#2022-08-15-rdf2sparqlpl][2022-08-15 rdf2sparql.pl]]
@@ -84,17 +86,17 @@ Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16), Bonn, Germany, November
 [[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf][PDF]],
 [[https://youtu.be/4WoYlaGF6DE][Video]]
 
-RDF is a graph data model, so the best way to understand RDF data schemas (ontologies, application profiles, RDF shapes) is with a diagram. 
-Many RDF visualization tools exist, 
-but they either focus on large graphs (where the details are not easily visible), 
-or the visualization results are not satisfactory, 
-or manual tweaking of the diagrams is required. 
+RDF is a graph data model, so the best way to understand RDF data schemas (ontologies, application profiles, RDF shapes) is with a diagram.
+Many RDF visualization tools exist,
+but they either focus on large graphs (where the details are not easily visible),
+or the visualization results are not satisfactory,
+or manual tweaking of the diagrams is required.
 
-We describe a tool *rdfpuml* that makes true diagrams directly from Turtle examples using PlantUML and GraphViz. 
-Diagram readability is of prime concern, and rdfpuml introduces various diagram control mechanisms using triples in the ~puml:~ namespace. 
-Special attention is paid to inlining and visualizing various Reification mechanisms (described with PRV). 
-We give examples from Getty CONA, Getty Museum, AAC (mappings of museum data to CIDOC CRM), 
-Multisensor (NIF and FrameNet), EHRI (Holocaust Research into Jewish social networks), Duraspace (Portland Common Data Model for holding metadata in institutional repositories), Video annotation. 
+We describe a tool *rdfpuml* that makes true diagrams directly from Turtle examples using PlantUML and GraphViz.
+Diagram readability is of prime concern, and rdfpuml introduces various diagram control mechanisms using triples in the ~puml:~ namespace.
+Special attention is paid to inlining and visualizing various Reification mechanisms (described with PRV).
+We give examples from Getty CONA, Getty Museum, AAC (mappings of museum data to CIDOC CRM),
+Multisensor (NIF and FrameNet), EHRI (Holocaust Research into Jewish social networks), Duraspace (Portland Common Data Model for holding metadata in institutional repositories), Video annotation.
 
 If the example instances include embedded source field names, they can describe a mapping precisely.
 I've implemented a few more tools to generate transformations:
@@ -124,7 +126,7 @@ Documentation source:
 - [[./doc/rdf2rml.pod]]
 - [[./doc/rdf2sparql.pod]]
   (subsumes ~rdf2tarql~ and ~rdf2ontorefine~)
-  
+
 ** Related Work
 
 The following works use or mention this software:
@@ -152,13 +154,13 @@ The following works use or mention this software:
   I worked with Matjaz in the euBusinessGraph project.
 
 * Installation
-Checkout this repo and add ~rdf2rml/bin~ to your path. 
+Checkout this repo and add ~rdf2rml/bin~ to your path.
 Install the following prerequisites:
 - both tools: Perl. Tested with version 5.22 on Windows (cygwin and Strawberry).
 - rdfpuml:
   - [[http://www.graphviz.org/][GraphViz]]
-  - [[http://plantuml.com/download][PlantUML]]. 
-    You need a recent version for new features like arrow length and color. I'm currently running 1.2018.10beta7. 
+  - [[http://plantuml.com/download][PlantUML]].
+    You need a recent version for new features like arrow length and color. I'm currently running 1.2018.10beta7.
     See in particular [[http://plantuml.com/class-diagram][plantuml class diagrams]].
   - Perl modules: use ~cpan~ or ~cpanm~ to install them:
     ~RDF::Trine RDF::Query Encode FindBin Carp::Always Slurp~
@@ -171,7 +173,7 @@ Install the following prerequisites:
 * Debian Repo
 Jonas Smedegaard (@jonassmedegaard, dr at jones fullstop dk) has volunteered for some of the tasks below.
 His development is at https://salsa.debian.org/debian/rdf2rml/branches.
-To adopt changes, do something like this. 
+To adopt changes, do something like this.
 
 - To merge *all* commits in the ~salsa/develop~ branch:
   #+begin_src sh
@@ -186,53 +188,58 @@ To adopt changes, do something like this.
   git cherry-pick $commit1 $commit2 $commit3
   #+end_src
 
-* Change Log 
+* Change Log
+
+** 2023-04-19 rdf2sparql.pl
+- [[https://github.com/VladimirAlexiev/rdf2rml/issues/19][issue 19]] Implement filter function, see ~test/filter-content~
+- [[https://github.com/VladimirAlexiev/rdf2rml/issues/20][issue 20]] Allow dynamic graph (computed from a data column), see ~test/graphs-crunchbase~
 
 ** 2022-08-23 rdf2sparql.pl
 Datatype attachment eg ~strdt(?var,xsd:date)~ now outputs to ~?var_xsd_date~ to avoid conflict with input field names in ALL_UPPERCASE
 
 ** 2022-08-23 rdfpuml.pl
 - Handle blank-node types that occur on owl:Restriction (see https://github.com/VladimirAlexiev/rdf2rml/issues/10 and ~test/blank-node~)
-- Duplicate ~rdfpuml.bat, puml.bat~ as shell scripts ~rdfpuml, puml~ for use in Makefiles across Linux and Windows 
+- Duplicate ~rdfpuml.bat, puml.bat~ as shell scripts ~rdfpuml, puml~ for use in Makefiles across Linux and Windows
 
 ** 2022-08-15 rdf2sparql.pl
 Merge ~rdf2tarql~ and ~rdf2ontorefine~ to one tool ~rdf2sparql~
 
-** 2022-04-08 rdf2ontorefine.pl                       :VladimirAlexiev:
+** 2022-04-08 rdf2ontorefine.pl
 Add script to generate OntoRefine SPARQL Update queries from model.
 
-** 2021-09-02 Unicode Processing                      :VladimirAlexiev:
+** 2021-09-02 Unicode Processing
 Use Perl option ~-C~ when invoking for proper Unicode processing.
 See doc section ~rdfpuml.html#Unicode~
 
-** 2020-09-17 rdf2rml: logicalTable                   :VladimirAlexiev:
+** 2020-09-17 rdf2rml: logicalTable
 Use URL for logicalTable instead of blank node, so that R2RML generated from different models for different tables can be merged more easily.
 Warning: this assumes that all instances of one subjectMap use the same query.
 
-** 2020-06-01 rdf2tarql.pl                            :VladimirAlexiev:
+** 2020-06-01 rdf2tarql.pl
 Add rdf2tarql.pl script to generate TARQL script (CSV-RDF conversion) from model.
 
-** 2020-06-01 rdf2rml.sh, rdf2rml.ru                  :VladimirAlexiev:
+** 2020-06-01 rdf2rml.sh, rdf2rml.ru
 - Improve script to abort if the first pipeline step ("update") fails
 - Improve script to work on Cygwin (invokes the Jena tools as ~riot.bat~ and ~update.bat~)
-- Filter out harmless warnings from Jena update's error log, eg ~"(some_date)"^^xsd:date~
-- If a node has single outgoing link and no SQL query/table (~puml:label~), 
+- Filter out harmless warnings from Jena update's error log
+  for datatypes like ~xsd:integer, xsd:date~ etc since the mention of a source field doesn't match the syntax of such literals.
+- If a node has single outgoing link and no SQL query/table (~puml:label~),
   propagate that property backward across the link into the node
   (previously that was done only for incoming links)
 
-** 2020-05-30 rdf2rml: inverse edge                   :VladimirAlexiev:
+** 2020-05-30 rdf2rml: inverse edge
 When an edge ~Y-P-X~ is recorded in the RDB table of ~X~ (as foreign key) or in an association table,
 it is awkward to specify that table in the node ~Y~.
 So I added this SPARQL UPDATE clause:
 - If a node ?y has no SQL, is not Inlined, has a single outgoing edge, then add the SQL of its counterparty ?x as default
 
-** 2018-11-14 Avoid puml:stereotype class node        :VladimirAlexiev:
+** 2018-11-14 Avoid puml:stereotype class node
 I often define ~puml:stereotype~ for some classes in prefixes.ttl.
 If the class is not used in some particular turtle, it should avoid emitting a disconnected puml class.
 - `stereotypes`: Avoid emitting
 - `has_statements_different_from`: Check that a node has statements other than puml:stereotype
 
-** 2018-06-29 Bug: class and puml:InlineProperty      :VladimirAlexiev:
+** 2018-06-29 Bug: class and puml:InlineProperty
 When a type is also used with puml:InlineProperty, it caused this error:
 : Can't locate object method "uri_value" via package "RDF::Trine::Node::Literal" at rdfpuml.pl line 261.
 :    main::puml_qname(RDF::Trine::Node::Literal=ARRAY(0x4fd0920)) called at rdfpuml.pl line 279
@@ -241,7 +248,7 @@ An inline is converted to a literal, but rdf:type is always assumed to be a URL.
 
 Test: [[./test/regression/type-inlineProperty.ttl]]
 
-** 2018-04-05 Arrow Attributes                        :VladimirAlexiev:
+** 2018-04-05 Arrow Attributes
 Add arrow attributes (dotted, dashed, bold) and length
 
 Test: [[./test/regression/arrowLen.ttl]]
@@ -296,12 +303,12 @@ The best way is to have a smarter script or ~Makefile~ that uses the following h
 - Keep the intermediate ~puml~ files (the current ~Makefile~ doesn't preserve them)
 - Run ~plantuml~ on a whole folder (with ~-r[ecurse]~ it can even recurse through subfolders)
 - Use ~-checkmetadata~ to skip ~png~ files that don't need to be regenerated.
-  (The whole ~puml~ text is stored in the ~png~, 
+  (The whole ~puml~ text is stored in the ~png~,
   so ~plantuml~ can quickly check that there are no changes)
 - The ~Makefile~ should start ~plantuml~ only once, if some of the ~puml~ files is newer than its respective ~png~ file
 
 **** "Manual" Batching
-Before I discovered the ~-checkmetadata~ option, 
+Before I discovered the ~-checkmetadata~ option,
 I had the idea that ~rdfpuml~ could put several diagrams in one ~puml~ file:
 #+BEGIN_EXAMPLE
 @startuml file1.png
@@ -314,7 +321,7 @@ I had the idea that ~rdfpuml~ could put several diagrams in one ~puml~ file:
 However, this interferes with ~make~ processing that regenerates only ~png~ for changed ~ttl~ files,
 and makes things less modular overall.
 
-** Mid-Term 
+** Mid-Term
 
 *** Upgrade to use Attean
 [[https://github.com/kasei/perlrdf][Trine (Perl RDF)]] is end of life. [[https://github.com/kasei/attean][Attean]] is the new generation
@@ -365,7 +372,7 @@ Here are examples of the two styles:
 - [[http://www.plantuml.com/plantuml/uml/SoWkIImgoStCIybDBE3IKd1szUVIqbBmLGi6Ka0wiIWxjIGpBntC2qxCIIq6IJk7W5Mv-0Q0nTsB4WioN9p0x82Sn9Aq_A9SBeVKl1IekG00][Mindmap]]
 - [[http://www.plantuml.com/plantuml/uml/SoWkIImgAKygvj9IS7RrvzBIKl1L2mPIG3gnA3kr93Cl7SmBJin9BGP9EuU0LRdu1e35tOiI2p9SdC3iW9p4ahJyebmkXzIy5A2P0000][WBS]]
 
-** Long-Term 
+** Long-Term
 *** rdf2soml to Generate Semantic Object Models
 A new tool ~rdf2soml~ to generate Ontotext Platform SOML from RDF examples.
 
@@ -375,7 +382,7 @@ PlantUML can show arrow cardinalities, and this simple and natural [[http://www.
 #+BEGIN_SRC plantuml
 X "0:1" -left-> "1:m" Y : prop/\ninvProp
 #+END_SRC
-Is depicted as follows: 
+Is depicted as follows:
 
 [[./ideas/cardinality-and-inverse.png]]
 
@@ -384,9 +391,9 @@ We have two options how to express this in triples:
 **** Cardinality With RDF*
 #+BEGIN_SRC turtle
 ##### model triples
-:X :prop :Y. 
+:X :prop :Y.
 ##### puml triples
-<< :X :prop :Y >> 
+<< :X :prop :Y >>
   puml:arrow puml:left; # direction
   puml:min 1; puml:max puml:inf; # cardinality
   puml:inverseAlias [puml:min 0; puml:max 1; puml:name "invProp"]. # virtual inverse
@@ -400,7 +407,7 @@ We have two options how to express this in triples:
 
 #+BEGIN_SRC turtle
 ##### model triples
-:X :prop :Y. 
+:X :prop :Y.
 ##### puml triples
 :X puml:left :Y. # direction
 :X :prop [ # a puml:Cardinality; # may need this marker class to skip the node from the diagram
@@ -432,4 +439,3 @@ Extend rdf2rml to generate:
 - [[http://github.com/semantalytics/xsparql][XSPARQL:]] extends XQuery with SPARQL construct and JSON input
 - DONE [[https://tarql.github.io/][tarql]]: handles TSV/CSV with SPARQL construct
 - DONE OntoRefine: transformation of TSV/CSV and direct loading to GraphDB with SPARQL Update
-

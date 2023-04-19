@@ -172,6 +172,8 @@ sub print_attributes {
     next unless $o->is_literal;
     my $o1 = puml_literal($o);
     my $p = $st->predicate;
+    $o1 = "<color:red>$o1</color>" if
+      puml_qname($p) eq "puml:label" && $o1 !~ m{/n};
     my $p1 = puml_predicate($p);
     push @{$st{$p1}}, $o1
   }
