@@ -1,0 +1,143 @@
+<1-ORGANIZATION> a tr-org:Organization;
+  mdaas:HeadquartersAddress "headquarters\n address\n postal\n country";
+  mdaas:RegisteredAddress "registered\n address\n postal\n country";
+  tr-org:hasHeadquartersFaxNumber "with country code" ;
+  tr-org:hasHeadquartersPhoneNumber "with country code" ;
+  tr-org:hasRegisteredFaxNumber "with country code" ;
+  tr-org:hasRegisteredPhoneNumber "with country code" ;
+  tr-common:hasPermId "ORGANIZATION" ;
+  tr-org:hasActivityStatus tr-org:statusActive ;
+  tr-org:hasHoldingClassification tr-org:publiclyHeld ;
+  tr-org:hasLatestOrganizationFoundedDate "yyyy-mm-ddT00:00:00Z"^^xsd:dateTime ;
+  tr-org:hasInactiveDate "yyyy-mm-ddT00:00:00Z"^^xsd:dateTime ;
+  tr-org:hasIPODate "yyyy-mm-ddT05:00:00Z"^^xsd:dateTime ;
+  tr-org:hasLEI "GLEI" ;
+  tr-org:hasPrimaryIndustryGroup <1-INDUSTRY_GROUP> ;
+  tr-org:hasPrimaryBusinessSector <1-BUSINESS_SECTOR> ;
+  tr-org:hasPrimaryEconomicSector <1-ECONOMIC_SECTOR> ;
+  tr-org:isIncorporatedIn <http://sws.geonames.org/GEONAME1/> ;
+  fibo-be-le-cb:isDomiciledIn <http://sws.geonames.org/GEONAME2/> ;
+  vcard:hasURL <http://example.org/> ;
+  vcard:organization-name "Official name".
+
+tr-org:statusActive a tr-org:OrganizationActivityStatus, skos:Concept;
+  # TODO: topConceptOf or inScheme missing
+  rdfs:label "Active"@en ;
+  skos:notation "ACTIVE".
+
+tr-org:organizationStatusScheme a skos:ConceptScheme ;
+  rdfs:label "Organization status"@en ;
+  skos:hasTopConcept tr-org:statusActive .
+
+tr-org:publiclyHeld a tr-org:HoldingClassification, skos:Concept ;
+  # TODO: topConceptOf or inScheme missing
+  rdfs:label "Publicly held"@en.
+
+tr-org:holdingClassificationScheme a skos:ConceptScheme ;
+  rdfs:label "Holding classification"@en ;
+  skos:hasTopConcept tr-org:publiclyHeld .
+
+<1-ACTIVITY> a trbc:Activity , trbc:BusinessClassification ;
+  rdfs:comment "description" ;
+  rdfs:label "label" ;
+  tr-common:hasPermId "ACTIVITY" ;
+  trbc:BusinessClassificationCode "xxyyzzttuu" ;
+  skos:broader <1-INDUSTRY> ;
+  skos:prefLabel "label" .
+
+<1-INDUSTRY> a trbc:Industry , trbc:BusinessClassification ;
+  rdfs:comment "description" ;
+  rdfs:label "label" ;
+  tr-common:hasPermId "INDUSTRY" ;
+  trbc:BusinessClassificationCode "xxyyzztt" ;
+  skos:broader <1-INDUSTRY_GROUP> ;
+  skos:prefLabel "label" .
+
+<1-INDUSTRY_GROUP> a trbc:IndustryGroup , trbc:BusinessClassification ;
+  rdfs:comment "description" ;
+  rdfs:label "label" ;
+  tr-common:hasPermId "INDUSTRY_GROUP" ;
+  trbc:BusinessClassificationCode "xxyyzz" ;
+  skos:broader <1-BUSINESS_SECTOR> ;
+  skos:prefLabel "label" .
+
+<1-BUSINESS_SECTOR>
+  a trbc:BusinessSector , trbc:BusinessClassification ;
+  rdfs:comment "description" ;
+  rdfs:label "label" ;
+  tr-common:hasPermId "BUSINESS_SECTOR" ;
+  trbc:BusinessClassificationCode "xxyy" ;
+  skos:broader <1-ECONOMIC_SECTOR> ;
+  skos:prefLabel "label" .
+
+<1-ECONOMIC_SECTOR>
+  a trbc:EconomicSector , trbc:BusinessClassification ;
+  rdfs:comment "description" ;
+  rdfs:label "label" ;
+  tr-common:hasPermId "ECONOMIC_SECTOR" ;
+  trbc:BusinessClassificationCode "xx" ;
+  skos:prefLabel "label" .
+
+# MISSING:
+# tr-org:hasOrganizationType
+# tr-org:hasSubTypeCode
+# tr-org:hasSubTypeName
+# tr-org:subunitClassificationScheme. Eg this division https://permid.org/1-4296000803 doesn't have it
+# tr-org:hasIndustryActivity (as opposed to primary)
+# tr-org:hasIndustryGroup (as opposed to primary)
+# tr-org:hasEconomicSector (as opposed to primary)
+# tr-org:hasCIK
+# tr-org:hasPrimaryCIK
+# tr-org:hasCusip6
+# tr-org:hasPrimaryCusip6
+# tr-org:hasEdcoid
+# tr-org:hasLegacyPI
+# tr-org:hasMXID
+# tr-org:hasNDAOrgID
+# tr-org:hasRCPID
+# tr-org:hasSDCID
+# tr-org:hasPrimarySDCID
+# tr-org:hasTMTCompanyID
+# tr-org:hasPrimaryTMTCompanyID
+# tr-org:hasVentureEconomicsID
+# tr-org:hasPrimaryVentureEconomicsID
+# tr-org:hasWorldscopeID
+# tr-org:hasWorldscopeLegacyPermID
+# tr-org:hasOfficialName (as opposed to vcard:organization-name)
+# tr-org:hasOfficialNameNormalized
+# tr-org:hasOfficialNameTransliterated
+# tr-org:hasAKAName
+# tr-org:hasAKANameNormalized
+# tr-org:hasAKANameTransliterated
+# tr-org:hasFKAName
+# tr-org:hasFKANameNormalized
+# tr-org:hasFKANameTransliterated
+# tr-org:hasDBAName
+# tr-org:hasDBANameNormalized
+# tr-org:hasDBANameTransliterated
+# tr-org:hasShortName
+# tr-org:hasShortNameNormalized
+# tr-org:hasShortNameTransliterated
+# tr-org:hasDateOfIncorporation
+# tr-org:hasOrganizationFoundedDate (as opposed to tr-org:hasLatestOrganizationFoundedDate)
+# tr-org:hasInactiveDate
+# tr-org:hasImmediateParent eg these subsidiaries of EBSCO don't have it: https://permid.org/1-4296000803, https://permid.org/1-4296658992
+# tr-org:hasTopmostPublicParent
+# tr-org:hasUltimateParent
+# tr-org:isManaged
+# tr-org:isSucceededBy
+# tr-org:isAffiliatedWith
+# tr-org:hasHeadquartersAddress (as opposed to mdaas:HeadquartersAddress)
+# tr-org:hasRegisteredAddress (as opposed to mdaas:RegisteredAddress)
+# vcard:Address (as opposed to free-text address)
+# tr-org:isDomiciledIn (as opposed to fibo-be-le-cb:isDomiciledIn)
+# tr-org:isVerified
+
+####################
+
+tr-org:isIncorporatedIn     puml:arrow puml:up.
+fibo-be-le-cb:isDomiciledIn puml:arrow puml:up.
+skos:hasTopConcept          puml:arrow puml:up.
+
+<http://sws.geonames.org/GEONAME1/> puml:label "Country/State".
+<http://sws.geonames.org/GEONAME2/> puml:label "Country/State".

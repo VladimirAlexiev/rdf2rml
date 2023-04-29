@@ -124,13 +124,13 @@ my $WHERE_PRE  = join'',@where;
 print
 
   $form eq "update" ? << "EOF"
-delete {graph $GRAPH {?s ?p ?o}}
+delete {graph $GRAPH {?_s_ ?_p_ ?_o_}}
 where {
   service <rdf-mapper:ontorefine:PROJECT_ID> {
 $WHERE_PRE
   }
 $WHERE_POST
-  $GRAPH {?s ?p ?o}};
+  $GRAPH {?_s_ ?_p_ ?_o_}};
 
 insert {graph $GRAPH {
 $output}}

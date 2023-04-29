@@ -1,0 +1,70 @@
+@base <https://permid.org/>.
+
+# TR prefixes
+@prefix mdaas:            <http://ont.thomsonreuters.com/mdaas/>.
+@prefix tr-common:        <http://permid.org/ontology/common/>.
+@prefix tr-currency:      <http://permid.org/ontology/currency/>.
+@prefix tr-fin:           <http://permid.org/ontology/financial/>.
+@prefix tr-org:           <http://permid.org/ontology/organization/>.
+@prefix tr-person:        <http://permid.org/ontology/person/>.
+@prefix tr-vcard:         <http://permid.org/ontology/tr-vcard/#>. # TODO: trailing slash-hash is a bad practice
+@prefix trbc:             <http://permid.org/ontology/trbc/>.
+
+# Common prefixes
+@prefix cc:               <http://creativecommons.org/ns#>.
+@prefix dct:              <http://purl.org/dc/terms/>.
+@prefix fibo-be-le-cb:    <http://www.omg.org/spec/EDMC-FIBO/BE/LegalEntities/CorporateBodies/>.
+@prefix owl:              <http://www.w3.org/2002/07/owl#>.
+@prefix puml:             <http://plantuml.com/ontology#>.
+@prefix rdf:              <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs:             <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix skos:             <http://www.w3.org/2004/02/skos/core#>.
+@prefix vcard:            <http://www.w3.org/2006/vcard/ns#>.
+@prefix xml:              <http://www.w3.org/XML/1998/namespace>.
+@prefix xsd:              <http://www.w3.org/2001/XMLSchema#>.
+
+# not needed prefixes
+@prefix sm:               <http://www.omg.org/techprocess/ab/SpecificationMetadata/>.
+@prefix fibo-be-le-fbo:   <http://www.omg.org/spec/EDMC-FIBO/BE/LegalEntities/FormalBusinessOrganizations/>.
+@prefix fibo-be-le-lp:    <http://www.omg.org/spec/EDMC-FIBO/BE/LegalEntities/LegalPersons/>.
+@prefix fibo-fnd-acc-aeq: <http://www.omg.org/spec/EDMC-FIBO/FND/Accounting/AccountingEquity/>.
+@prefix fibo-fnd-acc-cur: <http://www.omg.org/spec/EDMC-FIBO/FND/Accounting/CurrencyAmount/>.
+@prefix fibo-fnd-law-cor: <http://www.omg.org/spec/EDMC-FIBO/FND/Law/LegalCore/>.
+@prefix fibo-fnd-law-jur: <http://www.omg.org/spec/EDMC-FIBO/FND/Law/Jurisdiction/>.
+@prefix fibo-fnd-org-fm:  <http://www.omg.org/spec/EDMC-FIBO/FND/Organizations/FormalOrganizations/>.
+@prefix fibo-fnd-plc-cty: <http://www.omg.org/spec/EDMC-FIBO/FND/Places/Countries/>.
+@prefix fibo-fnd-rel-rel: <http://www.omg.org/spec/EDMC-FIBO/FND/Relations/Relations/>.
+@prefix fibo-fnd-utl-av:  <http://www.omg.org/spec/EDMC-FIBO/FND/Utilities/AnnotationVocabulary/>.
+@prefix fibo-fnd-utl-bt:  <http://www.omg.org/spec/EDMC-FIBO/FND/Utilities/BusinessFacingTypes/>.
+
+### colored circles
+tr-currency:Currency                puml:stereotype "(C,green)".
+tr-currency:CurrencySubunit         puml:stereotype "(S,green)".
+tr-fin:AssetClass                   puml:stereotype "(A,pink)".
+tr-fin:Instrument                   puml:stereotype "(I,pink)".
+tr-fin:InstrumentStatus             puml:stereotype "(S,green)".
+tr-fin:Quote                        puml:stereotype "(Q,pink)".
+tr-org:Organization                 puml:stereotype "(O,red)".
+tr-org:HoldingClassification        puml:stereotype "(H,green)".
+tr-org:OrganizationActivityStatus   puml:stereotype "(S,green)".
+tr-person:AcademicDegree            puml:stereotype "(D,green)".
+tr-person:AcademicQualification     puml:stereotype "(Q,orange)".
+tr-person:DirectorRole              puml:stereotype "(R,green)".
+tr-person:Directorship              puml:stereotype "(D,orange)".
+tr-person:Major                     puml:stereotype "(M,green)".
+tr-person:OfficerRole               puml:stereotype "(R,green)".
+tr-person:Officership               puml:stereotype "(O,orange)".
+tr-person:Person                    puml:stereotype "(P,red)".
+tr-person:TenureInOrganization      puml:stereotype "(T,orange)".
+trbc:Activity                       puml:stereotype "(A,lightgreen)".
+trbc:BusinessClassification         puml:stereotype "(C,lightgreen)".
+trbc:BusinessSector                 puml:stereotype "(B,lightgreen)".
+trbc:EconomicSector                 puml:stereotype "(E,lightgreen)".
+trbc:Industry                       puml:stereotype "(I,lightgreen)".
+trbc:IndustryGroup                  puml:stereotype "(G,lightgreen)".
+skos:ConceptScheme                  puml:stereotype "(S,green)".
+
+#### Inline props
+tr-common:hasPublicationStatus a puml:InlineProperty.
+vcard:hasGender                a puml:InlineProperty.
+vcard:hasURL a puml:InlineProperty.

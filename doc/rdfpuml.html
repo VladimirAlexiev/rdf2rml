@@ -31,6 +31,7 @@
       </li>
       <li><a href="#Stereotypes-and-Colored-Circles">Stereotypes and Colored Circles</a></li>
       <li><a href="#Blank-Nodes">Blank Nodes</a></li>
+      <li><a href="#PlantUML-Options">PlantUML Options</a></li>
       <li><a href="#Unicode">Unicode</a></li>
       <li><a href="#Limitations">Limitations</a></li>
       <li><a href="#Prerequisites">Prerequisites</a></li>
@@ -387,6 +388,38 @@
 
 <img src="img/OA-eg41.png">
 
+<h2 id="PlantUML-Options">PlantUML Options</h2>
+
+<p>You can pass options and pragmas to PlantUML using the <code>puml:options</code> property (attached to an empty node). The default options are as per <i>plantuml.cfg</i>:</p>
+
+<pre><code>  [] puml:options &quot;&quot;&quot;
+    hide empty members
+    hide circle
+    skinparam classAttributeIconSize 0
+  &quot;&quot;&quot;;</code></pre>
+
+<p>You can use <code>left to right direction</code> to fit diagrams with large nodes (see two examples below). Don&#39;t forget to add the <code>hide</code> options, else you&#39;ll get unwanted compartments and circles in nodes:</p>
+
+<pre><code>  [] puml:options &quot;&quot;&quot;
+    hide empty members
+    hide circle
+    left to right direction
+  &quot;&quot;&quot;;</code></pre>
+
+<p>You can also try your luck with <a href="https://plantuml.com/smetana02">smetana</a>, which uses an internal Java implementation of GraphViz instead of an external C program. One way to invoke <code>smetana</code> is by adding a pragma to <code>puml:options</code>. See <i>text/saref4city</i> for another way, and a trial.</p>
+
+<pre><code>    !pragma layout smetana</code></pre>
+
+<p>First example (<i>test/saref4city</i>):</p>
+
+
+<img src="../test/saref4city/example1-saref4city.png">
+
+<p>Second example (<i>test/permid</i>):</p>
+
+
+<img src="../test/permid/sample-RobinSmith-positions.png">
+
 <h2 id="Unicode">Unicode</h2>
 
 <p>The input Turtle can include Unicode chars (accented chars, Cyrillic, etc). Please invoke the script with option <code>-C</code> for proper processing of Unicode, eg:</p>
@@ -441,7 +474,7 @@
 
 <p>Vladimir Alexiev, Ontotext Corp</p>
 
-<p>Last update: 2018-11-14</p>
+<p>Last update: 2023-04-29</p>
 
 
 </body>

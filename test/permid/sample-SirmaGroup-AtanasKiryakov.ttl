@@ -1,0 +1,146 @@
+<1-5039949718>
+        a                               tr-org:Organization ;
+        mdaas:HeadquartersAddress       "Bul. Tsarigradsko shose No. 135..." ;
+        mdaas:RegisteredAddress         "rayon r-n Mladost..." ;
+        tr-common:hasPermId             "5039949718" ;
+        tr-fin:hasOrganizationPrimaryQuote <1-21572076306> ;
+        tr-fin:hasPrimaryInstrument     <1-21572075775> ;
+        tr-org:hasActivityStatus        tr-org:statusActive ;
+        tr-org:hasHeadquartersFaxNumber "35929743988" ;
+        tr-org:hasHeadquartersPhoneNumber "35929768310" ;
+        tr-org:hasHoldingClassification tr-org:publiclyHeld ;
+        tr-org:hasIPODate               "2015-11-23T05:00:00Z"^^xsd:dateTime ;
+        tr-org:hasLEI                   "8945007AD80FTJTEGH37" ;
+        tr-org:hasLatestOrganizationFoundedDate "2008-04-25T00:00:00Z"^^xsd:dateTime ;
+        tr-org:hasPrimaryIndustryGroup  <https://permid.org/1-4294952829> ;
+        tr-org:hasPrimaryBusinessSector <https://permid.org/1-4294952830> ;
+        tr-org:hasPrimaryEconomicSector <https://permid.org/1-4294952723> ;
+        tr-org:hasRegisteredFaxNumber   "35929743988" ;
+        tr-org:hasRegisteredPhoneNumber "35929768310" ;
+        tr-org:isIncorporatedIn         <http://sws.geonames.org/732800/> ;
+        fibo-be-le-cb:isDomiciledIn     <http://sws.geonames.org/732800/> ;
+        vcard:hasURL                    <http://www.sirma.bg/> ;
+        vcard:organization-name         "Sirma Group Holding AD" .
+
+<1-34414279895>
+        a                               tr-person:Person ;
+        tr-common:hasPermId             "34414279895" ;
+        tr-common:hasPublicationStatus  tr-common:publicationstatuspublished ;
+        tr-person:hasTenureInOrganization <1-36436954018> , <1-36436261523> , <1-36436261522> ;
+        tr-person:holdsPosition         <2-ab03d64ac...> , <2-08cac732fc...> , <2-2f1fe614bd...> ;
+        vcard:additional-name           "Kostadinov" ;
+        vcard:family-name               "Kiryakov" ;
+        vcard:given-name                "Atanas" ;
+        vcard:hasGender                 vcard:male ;
+        vcard:honorific-prefix          "Mr." .
+
+<1-36436954018>
+        a                     tr-person:TenureInOrganization ;
+        tr-common:from        "1753-01-01T00:00:00Z"^^xsd:dateTime ;
+        tr-common:hasPermId   "36436954018" ;
+        tr-person:hasHolder   <1-34414279895> ;
+        tr-person:isTenureIn  <1-5039949718> .
+
+<2-ab03d64ac...>
+        a                               tr-person:Directorship ;
+        tr-common:hasPermId             "2-ab03d64ac..." ;
+        tr-common:hasPublicationStatus  tr-common:publicationstatuspublished ;
+        tr-person:hasHolder             <1-34414279895> ;
+        tr-person:hasPositionType       <1-10010134> ;
+        tr-person:hasReportedTitle      "Director" ;
+        tr-person:isPositionIn          <1-5039949718> .
+
+<1-21572075775>
+        a                           tr-fin:Instrument ;
+        tr-common:hasName           "Sirma Group Holding AD Ord Shs" ;
+        tr-common:hasPermId         "21572075775" ;
+        tr-fin:hasAssetClass        <1-300281> ;
+        tr-fin:hasInstrumentStatus  tr-fin:instrumentStatusActive ;
+        tr-fin:hasPrimaryQuote      <1-21572076306> ;
+        tr-fin:isIssuedBy           <1-5039949718> .
+
+<1-300281>
+        a                    tr-fin:AssetClass ;
+        rdfs:comment         "Securities representing ..." ;
+        rdfs:label           "Ordinary Shares" ;
+        tr-common:hasPermId  "300281" ;
+        skos:broader         <1-300100> .
+
+<1-300100>
+        a                    tr-fin:AssetClass ;
+        rdfs:comment         "Stock or any other security...";
+        rdfs:label           "Equities";
+        tr-common:hasPermId  "300100".
+
+<1-21572076306>
+        a                         tr-fin:Quote ;
+        tr-common:hasName         "SIRMA GROUP HOLDING AD" ;
+        tr-common:hasPermId       "21572076306" ;
+        tr-fin:hasExchangeCode    "BLG" ;
+        tr-fin:hasExchangeTicker  "SKK" ;
+        tr-fin:hasMic             "XBUL" ;
+        tr-fin:hasRic             "SKK.BB" ;
+        tr-fin:isQuoteOf          <1-21572075775> ;
+        tr-fin:isQuotedIn         <1-500136> .
+
+<1-500136>
+        a                            tr-currency:Currency ;
+        tr-common:hasPermId          "500136" ;
+        tr-currency:decimalPlaces    "2"^^xsd:decimal ;
+        tr-currency:isCurrencyOf     <http://sws.geonames.org/73280O> ;
+        tr-currency:isISOHistorical  false ;
+        tr-currency:isPrimaryCurrencyOf <http://sws.geonames.org/73280O> ;
+        tr-currency:iso4217          "BGN" ;
+        tr-currency:iso4217Numeric   "975" ;
+        skos:prefLabel               "Bulgarian Lev" .
+
+<1-10010134>
+        a                    tr-person:DirectorRole ;
+        tr-common:hasPermId  "10010134" ;
+        tr-person:rank       "82" ;
+        skos:prefLabel       "Director" .
+
+<https://permid.org/1-4294952723>
+        a                    trbc:EconomicSector , trbc:BusinessClassification ;
+        rdfs:comment         "Manufacturers of semiconductors, communications equipment..." ;
+        rdfs:label           "Technology"^^xsd:string ;
+        tr-common:hasPermId  "4294952723"^^xsd:string ;
+        trbc:BusinessClassificationCode "57"^^xsd:string ;
+        skos:prefLabel       "Technology".
+
+<https://permid.org/1-4294952830>
+        a                    trbc:BusinessSector , trbc:BusinessClassification ;
+        rdfs:comment         "Developers and marketers of generic system and application software...";
+        rdfs:label           "Software & IT Services"^^xsd:string ;
+        tr-common:hasPermId  "4294952830"^^xsd:string ;
+        trbc:BusinessClassificationCode "5720"^^xsd:string ;
+        skos:broader         <https://permid.org/1-4294952723> ;
+        skos:prefLabel       "Software & IT Services" .
+
+<https://permid.org/1-4294952829>
+        a                    trbc:IndustryGroup , trbc:BusinessClassification ;
+        rdfs:comment         "Developers and marketers of generic system and application software..." ;
+        rdfs:label           "Software & IT Services"^^xsd:string ;
+        tr-common:hasPermId  "4294952829"^^xsd:string ;
+        trbc:BusinessClassificationCode "572010"^^xsd:string ;
+        skos:broader         <https://permid.org/1-4294952830> ;
+        skos:prefLabel       "Software & IT Services" .
+        
+####################
+
+tr-common:hasPublicationStatus  a puml:InlineProperty.
+tr-fin:hasInstrumentStatus      a puml:InlineProperty.
+tr-org:hasActivityStatus        a puml:InlineProperty.
+tr-org:hasHoldingClassification a puml:InlineProperty.
+
+<2-08cac732fc...> a puml:Inline.
+<2-2f1fe614bd...> a puml:Inline.
+<1-36436261523>   a puml:Inline.
+<1-36436261522>   a puml:Inline.
+
+tr-person:hasHolder       puml:arrow puml:up.
+tr-person:hasPositionType puml:arrow puml:up.
+tr-org:isIncorporatedIn   puml:arrow puml:right.
+
+<http://sws.geonames.org/73280O>  rdfs:label "Bulgaria"; puml:label "missing trailing slash".
+<http://sws.geonames.org/732800/> rdfs:label "Bulgaria".

@@ -1,0 +1,98 @@
+<1-ORGANIZATION> a tr-org:Organization;
+  tr-fin:hasOrganizationPrimaryQuote <1-QUOTE> ;
+  tr-fin:hasPrimaryInstrument <1-INSTRUMENT> .
+
+<1-INSTRUMENT>
+  a tr-fin:Instrument ;
+  tr-common:hasName     "company name - kind of shares" ;
+  tr-common:hasPermId   "INSTRUMENT" ;
+  tr-fin:hasAssetClass  <1-ASSET_CLASS> ;
+  tr-fin:hasInstrumentStatus  tr-fin:instrumentStatusActive ;
+  tr-fin:hasPrimaryQuote      <1-QUOTE> ;
+  tr-fin:isIssuedBy     <1-ORGANIZATION> .
+
+<1-QUOTE>
+  a       tr-fin:Quote ;
+  tr-common:hasName   "company name - kind of shares" ;
+  tr-common:hasPermId       "QUOTE" ;
+  tr-fin:hasExchangeCode    "CO" ;
+  tr-fin:hasExchangeTicker  "TICK" ;
+  tr-fin:hasMic       "XCO" ;
+  tr-fin:hasRic       "TICK.CO" ;
+  tr-fin:isQuoteOf    <1-INSTRUMENT> ;
+  tr-fin:isQuotedIn   <1-CURRENCY> .
+
+<1-ASSET_CLASS> a tr-fin:AssetClass, skos:Concept ;
+  rdfs:comment   "asset description" ;
+  rdfs:label     "asset name" ;
+  tr-common:hasPermId  "ASSET_CLASS" ;
+  skos:broader   <1-ASSET_SUPERCLASS> .
+
+<1-ASSET_SUPERCLASS>  a tr-fin:AssetClass, skos:Concept ;
+  # TODO: missing inScheme
+  rdfs:comment   "asset description" ;
+  rdfs:label     "asset name" ;
+  tr-common:hasPermId  "ASSET_SUPERCLASS" .
+
+# tr-fin:AssetClassScheme
+#   rdf:type skos:ConceptScheme ;
+#   rdfs:label "Asset class scheme"@en ;
+  
+tr-fin:instrumentStatusActive a tr-fin:InstrumentStatus, skos:Concept ;
+  # TODO: missing inScheme
+  rdfs:label "Active"@en ;
+  skos:notation "AC".
+
+tr-fin:InstrumentStatusScheme a skos:ConceptScheme ;
+  rdfs:label "Instrument status scheme"@en ;
+  skos:hasTopConcept tr-fin:instrumentStatusActive .
+
+<1-CURRENCY>
+  a tr-currency:Currency ;
+  tr-common:hasPermId "CURRENCY" ;
+  tr-currency:decimalPlaces "2"^^xsd:decimal ;
+  tr-currency:isCurrencyOf <http://sws.geonames.org/GEONAME1> ;
+  tr-currency:isISOHistorical false ;
+  tr-currency:isPrimaryCurrencyOf <http://sws.geonames.org/GEONAME2> ;
+  tr-currency:iso4217 "CCX # eg AUD" ;
+  tr-currency:iso4217Numeric "36" ;
+  skos:prefLabel "currency name" .
+
+<1-SUBCURRENCY> a tr-currency:CurrencySubunit;
+  tr-common:hasPermId "SUBCURRENCY" ;
+  tr-currency:isCurrencySubunitOf <1-CURRENCY>;
+  tr-currency:subUnitLC "CCy # eg AUc";
+  tr-currency:subUnitX  "CCZ # eg AUX";
+  tr-currency:isISOHistorical "false"^^xsd:boolean;
+  tr-currency:decimalPlaces "0"^^xsd:decimal;
+  tr-currency:subunitFactor "100"^^xsd:float;
+  skos:prefLabel "subcurrency name".
+
+<http://sws.geonames.org/GEONAME1>
+  puml:label "Country # Missing trailing slash".
+
+<http://sws.geonames.org/GEONAME2>
+  puml:label "Country # Missing trailing slash".
+
+# MISSING:
+# tr-fin:OptionType
+# tr-fin:OptionTypeScheme
+# tr-fin:QuoteStatusScheme
+# tr-fin:QuoteType
+# tr-fin:QuoteTypeScheme
+# tr-fin:hasCFICode
+# tr-fin:hasExpiryDate
+# tr-fin:hasOptionType
+# tr-fin:hasQuoteStatus
+# tr-fin:hasQuoteType
+# tr-fin:hasStrikePrice
+# tr-fin:hasStrikePriceMultiplier
+# tr-fin:hasUnderlyingInstrument
+# tr-fin:hasUnderlyingQuote
+
+####################
+
+tr-fin:isIssuedBy               puml:arrow puml:up.
+tr-fin:hasPrimaryQuote          puml:arrow puml:down.
+skos:hasTopConcept              puml:arrow puml:up.
+tr-currency:isCurrencySubunitOf puml:arrow puml:up.

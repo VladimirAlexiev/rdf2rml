@@ -4,7 +4,7 @@ prefix puml: <http://plantuml.com/ontology#>
 prefix spif: <http://spinrdf.org/spif#>
 prefix skos: <http://www.w3.org/2004/02/skos/core#>
 prefix xsd: <http://www.w3.org/2001/XMLSchema#>
-delete {graph ?graph_organizations_uuid_URL {?s ?p ?o}}
+delete {graph ?graph_organizations_uuid_URL {?_s_ ?_p_ ?_o_}}
 where {
   service <rdf-mapper:ontorefine:PROJECT_ID> {
     bind(?c_uuid as ?uuid)
@@ -80,7 +80,7 @@ where {
     bind(iri(concat("cb/organizationRole/",?primary_role_URLIFY)) as ?cb_organizationRole_primary_role_URLIFY_URL)
     bind(strdt(?num_exits,xsd:integer) as ?num_exits_xsd_integer)
   }
-  ?graph_organizations_uuid_URL {?s ?p ?o}};
+  ?graph_organizations_uuid_URL {?_s_ ?_p_ ?_o_}};
 insert {graph ?graph_organizations_uuid_URL {
   ?cb_agent_uuid_URL a cb:Organization;
     cb:cbId ?uuid;

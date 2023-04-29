@@ -104,19 +104,13 @@ open (STDOUT, "> $fname.puml") or die "can't create $fname.puml: $!\n"; # omitte
 #print STDERR $turtle; die;
 
 my $store = RDF::Trine::Store::Memory->new();
-my $model = RDF::Trine::Model->new($store) or die "can't create model: $!\n";
+our $model = RDF::Trine::Model->new($store) or die "can't create model: $!\n";
 my $parser = RDF::Trine::Parser->new('turtle');
 $parser->parse_into_model (undef, $turtle, $model);
 my $map = RDF::Prefixes::Curie->new ($prefixes_all);
 
-myprint (<<'EOF');
-@startuml
-hide empty methods
-hide empty attributes
-hide circle
-skinparam classAttributeIconSize 0
-EOF
-
+myprint ("\@startuml\n");
+options();
 stereotypes();
 replace_inlines();
 collect_predicate_arrows();
@@ -404,4 +398,19 @@ sub has_statements_different_from {
   return
     $model->count_statements($node, undef, undef) - $model->count_statements($node, $except, undef) ||
     $model->count_statements(undef, undef, $node) - $model->count_statements(undef, $except, $node)
+}
+
+sub options {
+  my ($options) = $model->objects (undef, U("puml:options"));
+  if ($options) {
+    $options = $options->value;
+    $model->remove_statements (undef, U("puml:options"), undef);
+  } else {
+    $options = <<'EOF';
+hide empty members
+hide circle
+skinparam classAttributeIconSize 0
+EOF
+  };
+  myprint $options
 }

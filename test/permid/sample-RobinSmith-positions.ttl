@@ -1,0 +1,165 @@
+@prefix tr-common: <http://permid.org/ontology/common/> .
+@prefix tr-person: <http://permid.org/ontology/person/> .
+@prefix tr-vcard:  <http://permid.org/ontology/tr-vcard/#> .
+@prefix vcard:     <http://www.w3.org/2006/vcard/ns#> .
+@prefix xsd:       <http://www.w3.org/2001/XMLSchema#> .
+@prefix puml: <http://plantuml.com/ontology#> .
+
+<https://permid.org/1-34415693987>
+        a                               tr-person:Person ;
+        tr-common:hasPermId             "34415693987" ;
+        tr-common:hasPublicationStatus  tr-common:publicationstatuspublished ;
+        tr-person:hasTenureInOrganization
+                <https://permid.org/1-36436573042> , <https://permid.org/1-36436573045> , <https://permid.org/1-36436573041> , <https://permid.org/1-36436573043> , <https://permid.org/1-36436573046> , <https://permid.org/1-36436573044> , <https://permid.org/1-36436573047> , <https://permid.org/1-36436573048> , <https://permid.org/1-36436573040> , <https://permid.org/1-36436573049> ;
+        tr-person:holdsPosition         <https://permid.org/2-d133309e58d8aaa6264fb69876e7688868dcb1a279ee97715d0632a0deafcdbc> , <https://permid.org/2-1056db4a633c4aee3fb5c85bf3805932cde1bc247db3d7f55ba1013275bb2292> , <https://permid.org/2-55cd35e0fa75a6469db1046b8ff85244461129ca22eeae29d8780891a7554443> , <https://permid.org/2-60344313ae384f20f94b8ef2f75cf97a9d0f70cb4878fb8d46ca600b3b90cd0b> , <https://permid.org/2-324ae476e2495bed6a007f84d39ce42bf58235eee9fd4c33993afb946418be04> ;
+        vcard:additional-name           "B." ;
+        vcard:family-name               "Smith" ;
+        vcard:given-name                "Robin" ;
+        vcard:hasGender                 vcard:female ;
+        vcard:honorific-prefix          "Ms." .
+
+<https://permid.org/1-36436573044>
+        a                     tr-person:TenureInOrganization ;
+        tr-common:from        "1996-01-01T00:00:00Z"^^xsd:dateTime ;
+        tr-common:hasPermId   "36436573044" ;
+        tr-common:to          "2003-01-01T00:00:00Z"^^xsd:dateTime ;
+        tr-person:hasHolder   <https://permid.org/1-34415693987> ;
+        tr-person:isTenureIn  <https://permid.org/1-4295903166> .
+
+<https://permid.org/1-36436573040>
+        a                     tr-person:TenureInOrganization ;
+        tr-common:from        "2010-12-10T00:00:00Z"^^xsd:dateTime ;
+        tr-common:hasPermId   "36436573040" ;
+        tr-person:hasHolder   <https://permid.org/1-34415693987> ;
+        tr-person:isTenureIn  <https://permid.org/1-4295867694> .
+
+<https://permid.org/1-36436573041>
+        a                     tr-person:TenureInOrganization ;
+        tr-common:from        "2010-12-10T00:00:00Z"^^xsd:dateTime ;
+        tr-common:hasPermId   "36436573041" ;
+        tr-person:hasHolder   <https://permid.org/1-34415693987> ;
+        tr-person:isTenureIn  <https://permid.org/1-4295867694> .
+
+<https://permid.org/1-36436573042>
+        a                     tr-person:TenureInOrganization ;
+        tr-common:from        "2003-01-01T00:00:00Z"^^xsd:dateTime ;
+        tr-common:hasPermId   "36436573042" ;
+        tr-common:to          "2009-06-17T00:00:00Z"^^xsd:dateTime ;
+        tr-person:hasHolder   <https://permid.org/1-34415693987> ;
+        tr-person:isTenureIn  <https://permid.org/1-4295901178> .
+
+<https://permid.org/1-36436573043>
+        a                     tr-person:TenureInOrganization ;
+        tr-common:from        "2005-01-03T00:00:00Z"^^xsd:dateTime ;
+        tr-common:hasPermId   "36436573043" ;
+        tr-common:to          "2009-06-17T00:00:00Z"^^xsd:dateTime ;
+        tr-person:hasHolder   <https://permid.org/1-34415693987> ;
+        tr-person:isTenureIn  <https://permid.org/1-4295901186> .
+
+<https://permid.org/1-36436573045>
+        a                     tr-person:TenureInOrganization ;
+        tr-common:from        "1992-01-01T00:00:00Z"^^xsd:dateTime ;
+        tr-common:hasPermId   "36436573045" ;
+        tr-common:to          "2001-10-01T00:00:00Z"^^xsd:dateTime ;
+        tr-person:hasHolder   <https://permid.org/1-34415693987> ;
+        tr-person:isTenureIn  <https://permid.org/1-4295903232> .
+
+<https://permid.org/1-36436573046>
+        a                     tr-person:TenureInOrganization ;
+        tr-common:from        "1994-09-01T00:00:00Z"^^xsd:dateTime ;
+        tr-common:hasPermId   "36436573046" ;
+        tr-common:to          "2007-01-04T00:00:00Z"^^xsd:dateTime ;
+        tr-person:hasHolder   <https://permid.org/1-34415693987> ;
+        tr-person:isTenureIn  <https://permid.org/1-4295903541> .
+
+<https://permid.org/1-36436573047>
+        a                     tr-person:TenureInOrganization ;
+        tr-common:from        "1993-01-01T00:00:00Z"^^xsd:dateTime ;
+        tr-common:hasPermId   "36436573047" ;
+        tr-common:to          "2001-09-01T00:00:00Z"^^xsd:dateTime ;
+        tr-person:hasHolder   <https://permid.org/1-34415693987> ;
+        tr-person:isTenureIn  <https://permid.org/1-4295904965> .
+
+<https://permid.org/1-36436573048>
+        a                     tr-person:TenureInOrganization ;
+        tr-common:from        "2011-11-01T00:00:00Z"^^xsd:dateTime ;
+        tr-common:hasPermId   "36436573048" ;
+        tr-common:to          "2015-01-01T00:00:00Z"^^xsd:dateTime ;
+        tr-person:hasHolder   <https://permid.org/1-34415693987> ;
+        tr-person:isTenureIn  <https://permid.org/1-5036756917> .
+
+<https://permid.org/1-36436573049>
+        a                     tr-person:TenureInOrganization ;
+        tr-common:from        "1753-01-01T00:00:00Z"^^xsd:dateTime ;
+        tr-common:hasPermId   "36436573049" ;
+        tr-common:to          "2015-01-01T00:00:00Z"^^xsd:dateTime ;
+        tr-person:hasHolder   <https://permid.org/1-34415693987> ;
+        tr-person:isTenureIn  <https://permid.org/1-5037649390> .
+
+<https://permid.org/2-1056db4a633c4aee3fb5c85bf3805932cde1bc247db3d7f55ba1013275bb2292>
+        a                               tr-person:Directorship ;
+        tr-common:hasPermId             "2-1056db4a633c4aee3fb5c85bf3805932cde1bc247db3d7f55ba1013275bb2292" ;
+        tr-common:hasPublicationStatus  tr-common:publicationstatuspublished ;
+        tr-common:to                    "2014-12-31T00:00:00Z"^^xsd:dateTime ;
+        tr-person:hasHolder             <https://permid.org/1-34415693987> ;
+        tr-person:hasPositionType       <https://permid.org/1-10010135> ;
+        tr-person:hasReportedTitle      "Independent Director" ;
+        tr-person:isPositionIn          <https://permid.org/1-5037649390> .
+
+<https://permid.org/2-324ae476e2495bed6a007f84d39ce42bf58235eee9fd4c33993afb946418be04>
+        a                               tr-person:Directorship ;
+        tr-common:from                  "2010-12-10T00:00:00Z"^^xsd:dateTime ;
+        tr-common:hasPermId             "2-324ae476e2495bed6a007f84d39ce42bf58235eee9fd4c33993afb946418be04" ;
+        tr-common:hasPublicationStatus  tr-common:publicationstatuspublished ;
+        tr-person:hasHolder             <https://permid.org/1-34415693987> ;
+        tr-person:hasPositionType       <https://permid.org/1-10010135> ;
+        tr-person:hasReportedTitle      "Independent Vice Chairwoman of the Supervisory Board" ;
+        tr-person:isPositionIn          <https://permid.org/1-4295867694> .
+
+<https://permid.org/2-55cd35e0fa75a6469db1046b8ff85244461129ca22eeae29d8780891a7554443>
+        a                               tr-person:Directorship ;
+        tr-common:from                  "2011-11-01T00:00:00Z"^^xsd:dateTime ;
+        tr-common:hasPermId             "2-55cd35e0fa75a6469db1046b8ff85244461129ca22eeae29d8780891a7554443" ;
+        tr-common:hasPublicationStatus  tr-common:publicationstatuspublished ;
+        tr-common:to                    "2014-12-31T00:00:00Z"^^xsd:dateTime ;
+        tr-person:hasHolder             <https://permid.org/1-34415693987> ;
+        tr-person:hasPositionType       <https://permid.org/1-10010135> ;
+        tr-person:hasReportedTitle      "Independent Director" ;
+        tr-person:isPositionIn          <https://permid.org/1-5036756917> .
+
+<https://permid.org/2-60344313ae384f20f94b8ef2f75cf97a9d0f70cb4878fb8d46ca600b3b90cd0b>
+        a                               tr-person:Officership ;
+        tr-common:from                  "2010-12-10T00:00:00Z"^^xsd:dateTime ;
+        tr-common:hasPermId             "2-60344313ae384f20f94b8ef2f75cf97a9d0f70cb4878fb8d46ca600b3b90cd0b" ;
+        tr-common:hasPublicationStatus  tr-common:publicationstatuspublished ;
+        tr-person:hasHolder             <https://permid.org/1-34415693987> ;
+        tr-person:hasPositionType       <https://permid.org/1-10010133> ;
+        tr-person:hasReportedTitle      "Independent Vice Chairwoman of the Supervisory Board" ;
+        tr-person:isPositionIn          <https://permid.org/1-4295867694> .
+
+<https://permid.org/2-d133309e58d8aaa6264fb69876e7688868dcb1a279ee97715d0632a0deafcdbc>
+        a                               tr-person:Directorship ;
+        tr-common:from                  "2010-12-10T00:00:00Z"^^xsd:dateTime ;
+        tr-common:hasPermId             "2-d133309e58d8aaa6264fb69876e7688868dcb1a279ee97715d0632a0deafcdbc" ;
+        tr-common:hasPublicationStatus  tr-common:publicationstatuspublished ;
+        tr-person:hasHolder             <https://permid.org/1-34415693987> ;
+        tr-person:hasPositionType       <https://permid.org/1-10010141> ;
+        tr-person:hasReportedTitle      "Independent Vice Chairwoman of the Supervisory Board" ;
+        tr-person:isPositionIn          <https://permid.org/1-4295867694> .
+
+####################
+[] puml:options """
+  hide empty members
+  hide circle
+  left to right direction
+""".
+
+# down/up now mean right/left
+tr-person:hasTenureInOrganization puml:arrow puml:down.
+tr-person:hasHolder               puml:arrow puml:up. 
+
+tr-person:holdsPosition           puml:arrow puml:up. 
+tr-person:isPositionIn            puml:arrow puml:down.
+tr-person:hasPositionType       a puml:InlineProperty.
+
+# tr-person:isTenureIn goes in either direction

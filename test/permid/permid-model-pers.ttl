@@ -1,0 +1,84 @@
+<1-ORGANIZATION>
+  a tr-org:Organization ;
+  tr-common:hasPermId "ORGANIZATION" .
+
+<1-PERSON>
+  a tr-person:Person ;
+  tr-common:hasPermId "PERSON" ;
+  tr-common:hasPublicationStatus tr-common:publicationstatuspublished ;
+  tr-person:hasQualification <1-QUALIFICATION>;
+  tr-person:hasTenureInOrganization <1-TENURE>;
+  tr-person:holdsPosition <2-OFFICERSHIP>, <2-DIRECTORSHIP>;
+  vcard:additional-name "middle name" ;
+  vcard:family-name "last name" ;
+  vcard:given-name "first name" ;
+  vcard:hasGender vcard:male ;
+  vcard:honorific-prefix "Mr." ;
+  vcard:honorific-suffix "CPA";
+  tr-person:hasYearOfBirth "yyyy";
+  tr-vcard:date-of-death "yyyy-mm-dd";
+  tr-vcard:preferred-name "alias".
+
+<1-TENURE>
+  a tr-person:TenureInOrganization ;
+  tr-common:from "yyyy-mm-ddThh:mm:ss00:00:00Z\n (DELETE '1753-01-01T00:00:00Z'^^xsd:dateTime)" ;
+  tr-common:to "yyyy-mm-ddThh:mm:ss00:00:00Z"^^xsd:dateTime;
+  tr-common:hasPermId "TENURE" ;
+  tr-person:hasHolder <1-PERSON> ;
+  tr-person:isTenureIn <1-ORGANIZATION> .
+
+<2-DIRECTORSHIP>
+  a tr-person:Directorship ;
+  tr-common:hasPermId "2-DIRECTORSHIP" ;
+  tr-common:hasPublicationStatus tr-common:publicationstatuspublished ;
+  tr-person:hasHolder <1-PERSON> ;
+  tr-person:hasPositionType <1-DIRECTOR_ROLE> ;
+  tr-person:hasReportedTitle "Director of Waterfall Affairs" ;
+  tr-person:isPositionIn <1-ORGANIZATION> .
+
+<2-OFFICERSHIP>
+  a tr-person:Officership ;
+  tr-common:hasPermId "2-OFFICERSHIP" ;
+  tr-common:hasPublicationStatus tr-common:publicationstatuspublished ;
+  tr-person:hasHolder <1-PERSON> ;
+  tr-person:hasPositionType <1-OFFICER_ROLE> ;
+  tr-person:hasReportedTitle "Principal of Diddly Squat";
+  tr-person:isPositionIn <1-ORGANIZATION> .
+
+<1-DIRECTOR_ROLE>
+  a tr-person:DirectorRole ;
+  tr-common:hasPermId "DIRECTOR_ROLE" ;
+  tr-person:rank "82" ;
+  skos:prefLabel "Director" .
+
+<1-OFFICER_ROLE>
+  a tr-person:OfficerRole ;
+  tr-common:hasPermId "OFFICER_ROLE" ;
+  tr-person:rank "48" ;
+  skos:prefLabel "Principal".
+
+<1-QUALIFICATION>
+  a tr-person:AcademicQualification ;
+  tr-common:hasPermId "QUALIFICATION" ;
+  tr-common:hasPublicationStatus tr-common:publicationstatuspublished ;
+  tr-common:from "yyyy-mm-ddT00:00:00Z"^^xsd:dateTime ;
+  tr-common:to "yyyy-mm-ddT00:00:00Z"^^xsd:dateTime ;
+  tr-person:fromInstitutionName "Some University" ;
+  tr-person:withDegree <1-DEGREE>;
+  tr-person:inSubject <1-MAJOR>.
+
+<1-MAJOR>
+  a tr-person:Major ;
+  tr-common:hasPermId "MAJOR" ;
+  skos:prefLabel "Business Administration" .
+
+<1-DEGREE>
+  a tr-person:AcademicDegree ;
+  tr-common:hasPermId "DEGREE" ;
+  skos:prefLabel "Master of Business Administration".
+
+####################
+
+tr-person:hasQualification puml:arrow puml:up.
+tr-person:withDegree       puml:arrow puml:up.
+tr-person:inSubject        puml:arrow puml:up.

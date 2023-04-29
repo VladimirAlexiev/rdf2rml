@@ -429,6 +429,48 @@ It should have had a type C<rdf:List>, this is an omission in the example.
 =for text
 See F<img/OA-eg41.png>
 
+=head2 PlantUML Options
+
+You can pass options and pragmas to PlantUML using the C<puml:options> property (attached to an empty node).
+The default options are as per F<plantuml.cfg>:
+
+  [] puml:options """
+    hide empty members
+    hide circle
+    skinparam classAttributeIconSize 0
+  """;
+
+You can use C<left to right direction> to fit diagrams with large nodes (see two examples below).
+Don't forget to add the C<hide> options, else you'll get unwanted compartments and circles in nodes:
+
+  [] puml:options """
+    hide empty members
+    hide circle
+    left to right direction
+  """;
+
+You can also try your luck with L<smetana|https://plantuml.com/smetana02>, which uses an internal Java implementation of GraphViz instead of an external C program.
+One way to invoke C<smetana> is by adding a pragma to C<puml:options>.
+See F<text/saref4city> for another way, and a trial.
+
+    !pragma layout smetana
+
+First example (F<test/saref4city>):
+
+=for html
+<img src="../test/saref4city/example1-saref4city.png">
+
+=for text
+See F<../test/saref4city/example1-saref4city.png>
+
+Second example (F<test/permid>):
+
+=for html
+<img src="../test/permid/sample-RobinSmith-positions.png">
+
+=for text
+See F<../test/permid/sample-RobinSmith-positions.png">
+
 =head2 Unicode
 
 The input Turtle can include Unicode chars (accented chars, Cyrillic, etc).
@@ -490,7 +532,7 @@ See L<https://twitter.com/hashtag/rdfpuml> for news, screenshots and announcemen
 
 Vladimir Alexiev, Ontotext Corp
 
-Last update: 2018-11-14
+Last update: 2023-04-29
 
 =cut
 
