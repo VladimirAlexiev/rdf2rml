@@ -1,4 +1,18 @@
-# saref4city Example Diagram with `rdfpuml`
+# saref4city Example Diagram
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+**Table of Contents**
+
+- [saref4city Example Diagram](#saref4city-example-diagram)
+- [Model](#model)
+    - [Installing rdfpuml](#installing-rdfpuml)
+    - [Diagram With GraphViz Layout](#diagram-with-graphviz-layout)
+    - [Diagram With Smetana Layout](#diagram-with-smetana-layout)
+    - [Diagram With VizJs Layout](#diagram-with-vizjs-layout)
+    - [Diagram With ELK Layout](#diagram-with-elk-layout)
+
+<!-- markdown-toc end -->
+
+# Model
 
 - Get the example from https://labs.etsi.org/rep/saref/saref4city/-/tree/develop-v1.1.2/examples and save as `example1-saref4city.ttl`
 - Copy the prefixes to `prefixes.ttl` (my tool looks for prefixes there, need to change that)
@@ -33,7 +47,7 @@ dcterms:license    a puml:InlineProperty.
 dcterms:conformsTo a puml:InlineProperty.
 ```
 
-## Installing
+## Installing rdfpuml
 Do this once, then just run `make`:
 
 - Install `rdfpuml` from https://github.com/VladimirAlexiev/rdf2rml and add its `bin` folder to your path
@@ -64,3 +78,26 @@ You can invoke it in two ways:
 As you can see, the result is almost the same:
 
 ![](example1-saref4city-smetana.png)
+
+## Diagram With VizJs Layout
+
+Let's try the [vizjs](https://plantuml.com/vizjs) layouter. For that you need to get two more jars (see the page), then:
+
+- `-graphvizdot vizjs` on the command line
+
+The result is almost the same:
+
+![](example1-saref4city-vizjs.png)
+
+
+## Diagram With ELK Layout
+
+Let's try the [elk](https://plantuml.com/elk) layouter. For that you need to get two more jars (see the page), then:
+
+- `!pragma layout elk` in the puml file
+- `-Playout=elk` on the command line
+
+The result is inferior because ELK doesn't support `left to right direction`:
+
+![](example1-saref4city-elk.png)
+
