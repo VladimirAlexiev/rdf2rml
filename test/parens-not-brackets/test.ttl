@@ -1,0 +1,5 @@
+<person/(id)> a s:Person;
+  s:additionalType <type/(type)>;
+  s:name "(name)".
+
+<type/(type)> a puml:Inline.

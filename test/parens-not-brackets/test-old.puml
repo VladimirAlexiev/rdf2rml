@@ -1,0 +1,9 @@
+@startuml
+hide empty members
+hide circle
+skinparam classAttributeIconSize 0
+class _person_id_ as "<person/(id)>"
+_person_id_ : a s:Person
+_person_id_ : s:additionalType <type/[type]>
+_person_id_ : s:name "[name]"
+@enduml

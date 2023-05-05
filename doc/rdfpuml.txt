@@ -389,11 +389,6 @@ See F<../test/permid/sample-RobinSmith-positions.png">
 
     That's how the included bin/rdfpuml.bat invokes the script.
 
-  Limitations
-    Round brackets in labels eg "(1975)" are converted to square brackets,
-    eg "[1975]". PlantUML interprets round brackets as a function (method)
-    and renders them below a line, so I had to implement this hack.
-
   Prerequisites
     GraphViz <http://www.graphviz.org/>
 

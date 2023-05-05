@@ -128,10 +128,10 @@ myprint ("\@enduml\n");
 sub print_types {
   my ($s, $s1) = @_;
   # collect only named types; blank node types (that occur on owl:Restriction) are handled in print_relations
-  my @types = map puml_node2($_), $model->objects ($s, U("rdf:type"), undef, type=>'resource');
+  my @types = map puml_qname($_), $model->objects ($s, U("rdf:type"), undef, type=>'resource');
   my $noReify = grep m{puml:NoReify}, @types;
   my $types = join ", ", grep !m{puml:NoReify}, @types;
-  myprint (qq{$s1 : a $types\n}) if $types;
+  myprint (qq{$s1 : {field} a $types\n}) if $types; # See #21
   return $noReify
 }
 
@@ -175,7 +175,7 @@ sub print_attributes {
     my $os = scalar @{$st{$p1}} > 1 ?
       "\\n  ".(join ",\\n  ", sort @{$st{$p1}}) :
       " ".$st{$p1}->[0];
-    myprint ("$s1 : $p1$os\n")
+    myprint ("$s1 : {field} $p1$os\n") # See #21
   }
 }
 
@@ -244,9 +244,9 @@ sub reification {
     my $sp = puml_predicate($row->{sp});
     my $pp = puml_predicate($row->{pp}); $pp = undef if $pp eq 'rdf:nil';
     my $op = puml_predicate($row->{op});
-    my $s  = puml_node2    ($row->{s}); # semi-sanitized
+    my $s  = puml_qname    ($row->{s}); # semi-sanitized
     my $p  = puml_predicate($row->{p});
-    my $o  = puml_node2    ($row->{o}); # semi-sanitized
+    my $o  = puml_qname    ($row->{o}); # semi-sanitized
     my $s1 = puml_node     ($row->{s}); # sanitized
     my $o1 = puml_node     ($row->{o}); # sanitized
     my $dir2 = $dir{$s1}{$o1} or die "$s->$o is in reification $re but not as direct relation\n";
@@ -271,6 +271,7 @@ sub puml_qname {
   my $node = shift;
   return "" unless $node;
   $map->get_qname($node->uri_value);
+  # $node =~ tr{()}{[]}; # Not needed anymore, see #21. Round parens to square parens else PUML makes a method
 }
 
 sub puml_predicate {
@@ -284,13 +285,6 @@ sub puml_node1 {
   my $isBlank = $node->is_blank;
   $node = $isBlank ? $node->as_string : puml_qname($node);
   ($node,$isBlank)
-}
-
-sub puml_node2 {
-  # semi-sanitize: round parens to square parens else PUML makes a method
-  my $node = puml_qname(shift);
-  $node =~ tr{()}{[]};
-  $node
 }
 
 sub puml_node {
@@ -318,7 +312,7 @@ sub puml_literal {
     || $dt eq 'xsd:double'  && $val =~ /^(?:(?:[+-]?[0-9]+\.[0-9]+)|(?:[+-]?\.[0-9]+)|(?:[+-]?[0-9]))[Ee][+-]?[0-9]+$/
     || $dt eq 'xsd:boolean' && $val =~ /^(true|false|0|1)/;
   $val =~ s{\n}{\\n}g; # newline to PUML newline
-  $val =~ tr{()}{[]}; # round parens to square parens else PUML makes a method
+  # $val =~ tr{()}{[]}; # Not needed anymore, see #21. Round parens to square parens else PUML makes a method
   $val = qq{"$val"} unless $dt eq "puml:noquote";
   $val .= '@' . $lang if $lang;
   $val .= '^^' . $dt if $dt && $dt ne "puml:noquote";

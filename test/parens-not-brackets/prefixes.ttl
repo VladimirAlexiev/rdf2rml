@@ -1,0 +1,2 @@
+@prefix s:    <http://schema.org/> .
+@prefix puml: <http://plantuml.com/ontology#> .
