@@ -26,6 +26,7 @@
           <li><a href="#RDF-Model:-Annual-Revenue-by-Permalink">RDF Model: Annual Revenue by Permalink</a></li>
           <li><a href="#RDF-Model:-Grant-Spending-Categories">RDF Model: Grant Spending Categories</a></li>
           <li><a href="#Filtering">Filtering</a></li>
+          <li><a href="#Conditional-Nodes">Conditional Nodes</a></li>
           <li><a href="#RDF-Model-Concatenation">RDF Model Concatenation</a></li>
         </ul>
       </li>
@@ -374,6 +375,64 @@
 
 </li>
 </ul>
+
+<h3 id="Conditional-Nodes">Conditional Nodes</h3>
+
+<p>Consider the following more advanced model, which maps Crunchbase data to the <a href="https://github.com/euBusinessGraph/eubg-data/tree/master/model">euBusinessGraph model</a> (see <a href="https://docs.google.com/document/d/1dhMOTlIOC6dOK_jksJRX0CB-GIRoiYY6fWtCnZArUhU/edit">google doc</a>), which itself uses W3C Org, ADMS, Schema.org, etc.</p>
+
+
+<img src="../test/conditional-node/organizations.png">
+
+<p>See the test <a>conditional-node</a>, in particular the model is <a>organizations.ttl</a> and the key parts look like this:</p>
+
+<pre><code>   &lt;cb/agent/(uuid)&gt; a org:Organization;
+     org:hasSite &lt;cb/agent/(uuid)/_IF_BOUND(address,?country_code,?region,?postal_code,?address)&gt;;
+     adms:identifier
+       &lt;cb/agent/(uuid)/id/_IF_BOUND(facebook,?facebookUrl)&gt;,
+       &lt;cb/agent/(uuid)/id/_IF_BOUND(linkedin,?linkedinUrl)&gt; .
+   &lt;cb/agent/(uuid)/_IF_BOUND(address,?country_code,?region,?postal_code,?address)&gt; a locn:Address;
+     ...
+   &lt;cb/agent/(uuid)/id/_IF_BOUND(facebook,?facebookUrl)&gt; a adms:Identifier;
+     ...
+   &lt;cb/agent/(uuid)/id/_IF_BOUND(linkedin,?linkedinUrl)&gt; a adms:Identifier;</code></pre>
+
+<p>We emit some of the fields in structured nodes. But we want to create these nodes only if the fields are bound, i.e. we don&#39;t want to create parasitic &quot;empty&quot; nodes with no business payload. For this we create the <b>_IF_BOUND(...)</b> macro, see <a>common.h</a>:</p>
+
+<pre><code>  #define _IF_BOUND(x,...)   bind(if(bound(coalesce(__VA_ARGS__),#x,?UNDEF) as ?x##_IF_BOUND)</code></pre>
+
+<p>Several things are going on here:</p>
+
+<ul>
+
+<li><p>The <b>coalesce()</b> SPARQL function returns the first of its bound arguments (if any). The extra arguments <b>...</b> in the macro declaration are passed as <b>__VA_ARGS__</b> to that function.</p>
+
+</li>
+<li><p>The <b>bound()</b> SPARQL function therefore checks if any of the extra arguments are bound.</p>
+
+</li>
+<li><p>If so, the &quot;stringify&quot; macro operator <b>#</b> returns the <b>string representation</b> of the first argument.</p>
+
+</li>
+<li><p>Otherwise, the <b>?UNDEF</b> variable is returned, which by convention is never bound.</p>
+
+</li>
+<li><p>Be careful about the resulting variable: we need to write out the question mark before it (since the same name <b>x</b> is also used in its stringified form), and we follow it by one underscore <b>_</b> even though the macro name itself starts with underscore.</p>
+
+</li>
+</ul>
+
+<p>When <b>rdf2sparql</b> sees a macro name starting with underscore <b>_</b>, it leaves its arguments alone (doesn&#39;t add a question mark before the first argument), and doesn&#39;t prepend an extra underscore before the macro name.</p>
+
+<p>This results in the following binds in the <b>where</b> clause:</p>
+
+<pre><code>    bind(if(bound(coalesce(?country_code,?region,?postal_code,?address),&quot;address&quot;,?UNDEF) as ?address_IF_BOUND)
+    bind(iri(concat(&quot;cb/agent/&quot;,?uuid,&quot;/&quot;,?address_IF_BOUND)) as ?cb_agent_uuid_address_IF_BOUND_URL)
+    bind(if(bound(coalesce(?facebookUrl),&quot;facebook&quot;,?UNDEF) as ?facebook_IF_BOUND)
+    bind(iri(concat(&quot;cb/agent/&quot;,?uuid,&quot;/id/&quot;,?facebook_IF_BOUND)) as ?cb_agent_uuid_id_facebook_IF_BOUND_URL)
+    bind(if(bound(coalesce(?linkedinUrl),&quot;linkedin&quot;,?UNDEF) as ?linkedin_IF_BOUND)
+    bind(iri(concat(&quot;cb/agent/&quot;,?uuid,&quot;/id/&quot;,?linkedin_IF_BOUND)) as ?cb_agent_uuid_id_linkedin_IF_BOUND_URL)</code></pre>
+
+<p>To explain the first couple of lines: first we check if any of the &quot;business payload&quot; fields are bound, and return the string &quot;address&quot; or UNDEF. Then we concat this tring with some constant and variabel parts to form a URL. If the string is unbound, then the URL will be unbound. Then any triple using the unbound URL will <b>not</b> be emitted, avoiding the creation of a parasitic node.</p>
 
 <h3 id="RDF-Model-Concatenation">RDF Model Concatenation</h3>
 

@@ -1,0 +1,17 @@
+@base           <https://example.org/>.
+@prefix adms:   <http://www.w3.org/ns/adms#> .
+@prefix dct:    <http://purl.org/dc/terms/> .
+@prefix ebg:    <http://data.businessgraph.io/ontology#> .
+@prefix locn:   <http://www.w3.org/ns/locn#> .
+@prefix org:    <http://www.w3.org/ns/org#> .
+@prefix schema: <http://schema.org/> .
+@prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
+
+####
+
+schema:url         a puml:InlineProperty.
+org:hasSite          puml:arrow puml:right.
+org:Organization     puml:stereotype "(O,red)".
+locn:Address         puml:stereotype "(A,orange)".
+adms:Identifier      puml:stereotype "(I,green)".
+ebg:IdentifierSystem puml:stereotype "(S,green)".

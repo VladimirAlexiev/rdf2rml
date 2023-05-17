@@ -31,6 +31,7 @@
 - [[#installation][Installation]]
 - [[#debian-repo][Debian Repo]]
 - [[#change-log][Change Log]]
+  - [[#2023-05-17-rdf2sparqlpl][2023-05-17 rdf2sparql.pl]]
   - [[#2023-05-05-rdfpumlpl][2023-05-05 rdfpuml.pl]]
   - [[#2023-04-29-rdfpumlpl][2023-04-29 rdfpuml.pl]]
   - [[#2023-04-19-rdf2sparqlpl][2023-04-19 rdf2sparql.pl]]
@@ -192,6 +193,8 @@ To adopt changes, do something like this.
 
 * Change Log
 
+** 2023-05-17 rdf2sparql.pl
+- Support "Conditional Nodes", i.e. URLs that are conditional on the existence of some fields.
 ** 2023-05-05 rdfpuml.pl
 - [[https://github.com/VladimirAlexiev/rdf2rml/issues/21][issue 21]]: Round brackets in fields (eg ~"(name)"~) and URLs (eg ~<type/(type)>~) are not mangled to square brackets anymore
 

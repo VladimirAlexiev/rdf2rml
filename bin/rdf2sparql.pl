@@ -44,7 +44,12 @@ sub function($$$) {
   my $var = shift;
   my $rest = shift;
   my $FUN = uc $fun;
-  my $var1 = "${var}_${FUN}";
+  # eg _IF_BOUND(x,?y,?z): don't add extra underscore, nor question mark
+  my $startsWithUnderscore = $fun =~ m{^_};
+  my $questionMark = $startsWithUnderscore ? "" : "?";
+  my $var1 = $var;
+  $var1 .= "_" unless $startsWithUnderscore;
+  $var1 .= $FUN;
   $bound{$var1} && $bound{$var1} ne "function" and die "$var is used for both function and $bound{$var}\n";
   $bound{$var1} and return "($var1)";
   $bound{$var1} = "function";
@@ -53,7 +58,7 @@ sub function($$$) {
     $tool eq "ontorefine" or die "Macro $fun ends in 'url' and can only be used with OntoRefine\n";
     $where = 2
   };
-  addWhere ($where, "$fun(?$var$rest)");
+  addWhere ($where, "$fun($questionMark$var$rest)");
   "($var1)"
 }
 

@@ -349,6 +349,76 @@ DESCRIPTION
     *   The same field is used in rdf2rml with a completely different
         meaning: as a SQL table or query. I know, this is an ugly hack.
 
+   Conditional Nodes
+    Consider the following more advanced model, which maps Crunchbase data
+    to the euBusinessGraph model
+    <https://github.com/euBusinessGraph/eubg-data/tree/master/model> (see
+    google doc
+    <https://docs.google.com/document/d/1dhMOTlIOC6dOK_jksJRX0CB-GIRoiYY6fWt
+    CnZArUhU/edit>), which itself uses W3C Org, ADMS, Schema.org, etc.
+
+    See the test conditional-node, in particular the model is
+    organizations.ttl and the key parts look like this:
+
+       <cb/agent/(uuid)> a org:Organization;
+         org:hasSite <cb/agent/(uuid)/_IF_BOUND(address,?country_code,?region,?postal_code,?address)>;
+         adms:identifier
+           <cb/agent/(uuid)/id/_IF_BOUND(facebook,?facebookUrl)>,
+           <cb/agent/(uuid)/id/_IF_BOUND(linkedin,?linkedinUrl)> .
+       <cb/agent/(uuid)/_IF_BOUND(address,?country_code,?region,?postal_code,?address)> a locn:Address;
+         ...
+       <cb/agent/(uuid)/id/_IF_BOUND(facebook,?facebookUrl)> a adms:Identifier;
+         ...
+       <cb/agent/(uuid)/id/_IF_BOUND(linkedin,?linkedinUrl)> a adms:Identifier;
+
+    We emit some of the fields in structured nodes. But we want to create
+    these nodes only if the fields are bound, i.e. we don't want to create
+    parasitic "empty" nodes with no business payload. For this we create the
+    _IF_BOUND(...) macro, see common.h:
+
+      #define _IF_BOUND(x,...)   bind(if(bound(coalesce(__VA_ARGS__),#x,?UNDEF) as ?x##_IF_BOUND)
+
+    Several things are going on here:
+
+    *   The coalesce() SPARQL function returns the first of its bound
+        arguments (if any). The extra arguments ... in the macro declaration
+        are passed as __VA_ARGS__ to that function.
+
+    *   The bound() SPARQL function therefore checks if any of the extra
+        arguments are bound.
+
+    *   If so, the "stringify" macro operator # returns the string
+        representation of the first argument.
+
+    *   Otherwise, the ?UNDEF variable is returned, which by convention is
+        never bound.
+
+    *   Be careful about the resulting variable: we need to write out the
+        question mark before it (since the same name x is also used in its
+        stringified form), and we follow it by one underscore _ even though
+        the macro name itself starts with underscore.
+
+    When rdf2sparql sees a macro name starting with underscore _, it leaves
+    its arguments alone (doesn't add a question mark before the first
+    argument), and doesn't prepend an extra underscore before the macro
+    name.
+
+    This results in the following binds in the where clause:
+
+        bind(if(bound(coalesce(?country_code,?region,?postal_code,?address),"address",?UNDEF) as ?address_IF_BOUND)
+        bind(iri(concat("cb/agent/",?uuid,"/",?address_IF_BOUND)) as ?cb_agent_uuid_address_IF_BOUND_URL)
+        bind(if(bound(coalesce(?facebookUrl),"facebook",?UNDEF) as ?facebook_IF_BOUND)
+        bind(iri(concat("cb/agent/",?uuid,"/id/",?facebook_IF_BOUND)) as ?cb_agent_uuid_id_facebook_IF_BOUND_URL)
+        bind(if(bound(coalesce(?linkedinUrl),"linkedin",?UNDEF) as ?linkedin_IF_BOUND)
+        bind(iri(concat("cb/agent/",?uuid,"/id/",?linkedin_IF_BOUND)) as ?cb_agent_uuid_id_linkedin_IF_BOUND_URL)
+
+    To explain the first couple of lines: first we check if any of the
+    "business payload" fields are bound, and return the string "address" or
+    UNDEF. Then we concat this tring with some constant and variabel parts
+    to form a URL. If the string is unbound, then the URL will be unbound.
+    Then any triple using the unbound URL will not be emitted, avoiding the
+    creation of a parasitic node.
+
    RDF Model Concatenation
     rdf2sparql works on a single CSV table at a time (rdf2rml does not have
     this limitation). Furthermore, as seen above, you may need to split a

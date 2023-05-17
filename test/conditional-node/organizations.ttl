@@ -1,0 +1,34 @@
+# GRAPH <graph/cb/organizations/(uuid)>
+
+<cb/agent/(uuid)> a org:Organization;
+  org:hasSite <cb/agent/(uuid)/_IF_BOUND(address,?country_code,?region,?postal_code,?address)>;
+  adms:identifier
+    <cb/agent/(uuid)/id/_IF_BOUND(facebook,?facebookUrl)>,
+    <cb/agent/(uuid)/id/_IF_BOUND(linkedin,?linkedinUrl)> .
+
+<cb/agent/(uuid)/_IF_BOUND(address,?country_code,?region,?postal_code,?address)> a locn:Address;
+  locn:fullAddress "(address)";
+  locn:postCode "(postal_code)";
+  locn:adminUnitL2 "(region)";
+  locn:adminUnitL1 "(country_code)".
+
+<cb/agent/(uuid)/id/_IF_BOUND(facebook,?facebookUrl)> a adms:Identifier;
+  dct:isPartOf <identifier/Facebook>;
+  skos:notation "(facebookUrl)".
+
+<cb/agent/(uuid)/id/_IF_BOUND(linkedin,?linkedinUrl)> a adms:Identifier;
+  dct:isPartOf <identifier/Linkedin>;
+  skos:notation "(linkedinUrl)".
+
+<identifier/Facebook> a ebg:IdentifierSystem;
+  skos:notation "Facebook";
+  schema:name "Facebook";
+  schema:url <https://facebook.com>;
+  ebg:urlTemplate "https://facebook.com/{}".
+
+<identifier/Linkedin> a ebg:IdentifierSystem;
+  skos:notation "Linkedin";
+  schema:name "Linkedin";
+  schema:url <https://linkedin.com>;
+  ebg:urlTemplate "https://linkedin.com/company/{}".
+

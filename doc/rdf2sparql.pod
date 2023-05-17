@@ -343,6 +343,71 @@ Notes:
 
 =back
 
+=head3 Conditional Nodes
+
+Consider the following more advanced model, which maps Crunchbase data to the
+L<euBusinessGraph model|https://github.com/euBusinessGraph/eubg-data/tree/master/model>
+(see L<google doc|https://docs.google.com/document/d/1dhMOTlIOC6dOK_jksJRX0CB-GIRoiYY6fWtCnZArUhU/edit>),
+which itself uses W3C Org, ADMS, Schema.org, etc.
+
+=for html
+<img src="../test/conditional-node/organizations.png">
+
+See the test L<conditional-node|../test/conditional-node>,
+in particular the model is L<organizations.ttl|../test/conditional-node/organizations.ttl>
+and the key parts look like this:
+
+   <cb/agent/(uuid)> a org:Organization;
+     org:hasSite <cb/agent/(uuid)/_IF_BOUND(address,?country_code,?region,?postal_code,?address)>;
+     adms:identifier
+       <cb/agent/(uuid)/id/_IF_BOUND(facebook,?facebookUrl)>,
+       <cb/agent/(uuid)/id/_IF_BOUND(linkedin,?linkedinUrl)> .
+   <cb/agent/(uuid)/_IF_BOUND(address,?country_code,?region,?postal_code,?address)> a locn:Address;
+     ...
+   <cb/agent/(uuid)/id/_IF_BOUND(facebook,?facebookUrl)> a adms:Identifier;
+     ...
+   <cb/agent/(uuid)/id/_IF_BOUND(linkedin,?linkedinUrl)> a adms:Identifier;
+
+We emit some of the fields in structured nodes.
+But we want to create these nodes only if the fields are bound,
+i.e. we don't want to create parasitic "empty" nodes with no business payload.
+For this we create the B<_IF_BOUND(...)> macro, see L<common.h|../test/conditional-node/common.h>:
+
+  #define _IF_BOUND(x,...)   bind(if(bound(coalesce(__VA_ARGS__),#x,?UNDEF) as ?x##_IF_BOUND)
+
+Several things are going on here:
+
+=over
+
+=item * The B<coalesce()> SPARQL function returns the first of its bound arguments (if any). The extra arguments B<...> in the macro declaration are passed as B<__VA_ARGS__> to that function.
+
+=item * The B<bound()> SPARQL function therefore checks if any of the extra arguments are bound.
+
+=item * If so, the "stringify" macro operator B<#> returns the B<string representation> of the first argument.
+
+=item * Otherwise, the B<?UNDEF> variable is returned, which by convention is never bound.
+
+=item * Be careful about the resulting variable: we need to write out the question mark before it (since the same name B<x> is also used in its stringified form), and we follow it by one underscore B<_> even though the macro name itself starts with underscore.
+
+=back
+
+When B<rdf2sparql> sees a macro name starting with underscore B<_>, it leaves its arguments alone (doesn't add a question mark before the first argument), and doesn't prepend an extra underscore before the macro name.
+
+This results in the following binds in the B<where> clause:
+
+    bind(if(bound(coalesce(?country_code,?region,?postal_code,?address),"address",?UNDEF) as ?address_IF_BOUND)
+    bind(iri(concat("cb/agent/",?uuid,"/",?address_IF_BOUND)) as ?cb_agent_uuid_address_IF_BOUND_URL)
+    bind(if(bound(coalesce(?facebookUrl),"facebook",?UNDEF) as ?facebook_IF_BOUND)
+    bind(iri(concat("cb/agent/",?uuid,"/id/",?facebook_IF_BOUND)) as ?cb_agent_uuid_id_facebook_IF_BOUND_URL)
+    bind(if(bound(coalesce(?linkedinUrl),"linkedin",?UNDEF) as ?linkedin_IF_BOUND)
+    bind(iri(concat("cb/agent/",?uuid,"/id/",?linkedin_IF_BOUND)) as ?cb_agent_uuid_id_linkedin_IF_BOUND_URL)
+
+To explain the first couple of lines:
+first we check if any of the "business payload" fields are bound, and return the string "address" or UNDEF.
+Then we concat this tring with some constant and variabel parts to form a URL.
+If the string is unbound, then the URL will be unbound.
+Then any triple using the unbound URL will B<not> be emitted, avoiding the creation of a parasitic node.
+
 =head3 RDF Model Concatenation
 
 B<rdf2sparql> works on a single CSV table at a time (B<rdf2rml> does not have this limitation).
