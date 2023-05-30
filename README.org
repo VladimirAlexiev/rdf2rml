@@ -275,6 +275,24 @@ Post bugs and enhancement requests to this repo!
 There's a pull request https://github.com/VladimirAlexiev/rdf2rml/pull/7 that dockerizes the installation.
 As of 18-Sep-2019 it's undergoing code review.
 
+**** Docker Image
+
+A docker image exits on the public Nexus of Ontotext. To run type:
+
+`docker run -v <your directory>:/files --rm docker-registry.ontotext.com/rdf2rml:latest`
+
+where `<your directory>` is a local directory holding your `.ttl` files.
+
+***** Changelog
+
+**2023-05-19**
+
+Uses the following version
+
+- rdf2rml: commit [d4e97d5](https://github.com/VladimirAlexiev/rdf2rml/commit/d4e97d5dd29da45fb97b685d824f2906ba973722)
+- plantuml: [1.2023.7](https://plantuml.com/download)
+- jena: [4.8.0](https://jena.apache.org/download/)
+
 *** Modularize and Package Better
 
 *** Regression Tests
