@@ -361,42 +361,60 @@ DESCRIPTION
     organizations.ttl and the key parts look like this:
 
        <cb/agent/(uuid)> a org:Organization;
-         org:hasSite <cb/agent/(uuid)/_IF_BOUND(address,?country_code,?region,?postal_code,?address)>;
+         org:hasSite <cb/agent/(uuid)/_IF_BOUND(address,country_code,region,postal_code,street)>;
          adms:identifier
-           <cb/agent/(uuid)/id/_IF_BOUND(facebook,?facebookUrl)>,
-           <cb/agent/(uuid)/id/_IF_BOUND(linkedin,?linkedinUrl)> .
-       <cb/agent/(uuid)/_IF_BOUND(address,?country_code,?region,?postal_code,?address)> a locn:Address;
+           <cb/agent/(uuid)/id/_IF_BOUND(facebook,facebookUrl)>,
+           <cb/agent/(uuid)/id/_IF_BOUND(linkedin,linkedinUrl)> .
+       <cb/agent/(uuid)/_IF_BOUND(address,country_code,region,postal_code,street)> a locn:Address;
          ...
-       <cb/agent/(uuid)/id/_IF_BOUND(facebook,?facebookUrl)> a adms:Identifier;
+       <cb/agent/(uuid)/id/_IF_BOUND(facebook,facebookUrl)> a adms:Identifier;
          ...
-       <cb/agent/(uuid)/id/_IF_BOUND(linkedin,?linkedinUrl)> a adms:Identifier;
+       <cb/agent/(uuid)/id/_IF_BOUND(linkedin,linkedinUrl)> a adms:Identifier;
 
     We emit some of the fields in structured nodes. But we want to create
     these nodes only if the fields are bound, i.e. we don't want to create
     parasitic "empty" nodes with no business payload. For this we create the
-    _IF_BOUND(...) macro, see common.h:
+    _IF_BOUND(...) macro, see common.h. It uses techniques from this
+    StackOverflow answer <https://stackoverflow.com/a/65997567/20282178>
+    about iteration over "__VA_ARGS_" variadic extra arguments (in this
+    case, limited to 5).
 
-      #define _IF_BOUND(x,...)   bind(if(bound(coalesce(__VA_ARGS__),#x,?UNDEF) as ?x##_IF_BOUND)
+      #define __IF_BOUND_1(x,y1)             bind(if(bound(?y1),#x,?UNDEF) as ?x##_IF_BOUND)
+      #define __IF_BOUND_2(x,y1,y2)          bind(if(bound(?y1)||bound(?y2),#x,?UNDEF) as ?x##_IF_BOUND)
+      #define __IF_BOUND_3(x,y1,y2,y3)       bind(if(bound(?y1)||bound(?y2)||bound(?y3),#x,?UNDEF) as ?x##_IF_BOUND)
+      #define __IF_BOUND_4(x,y1,y2,y3,y4)    bind(if(bound(?y1)||bound(?y2)||bound(?y3)||bound(?y4),#x,?UNDEF) as ?x##_IF_BOUND)
+      #define __IF_BOUND_5(x,y1,y2,y3,y4,y5) bind(if(bound(?y1)||bound(?y2)||bound(?y3)||bound(?y4)||bound(?y5),#x,?UNDEF) as ?x##_IF_BOUND)
+
+      #define __IF_BOUND_PICK_N(_1,_2,_3,_4,_5,N,...) __IF_BOUND_##N
+      #define _IF_BOUND(x,...) __IF_BOUND_PICK_N(__VA_ARGS__,5,4,3,2,1)(x,__VA_ARGS__)
 
     Several things are going on here:
 
-    *   The coalesce() SPARQL function returns the first of its bound
-        arguments (if any). The extra arguments ... in the macro declaration
-        are passed as __VA_ARGS__ to that function.
+    *   First we define 5 macros that handle the cases of 1..5 extra
+        arguments.
 
-    *   The bound() SPARQL function therefore checks if any of the extra
+    *   They use a disjunction of bound() to check if any of the extra
         arguments are bound.
 
-    *   If so, the "stringify" macro operator # returns the string
-        representation of the first argument.
+    *   If so, the "stringify" macro operator # returns the "string
+        representation" of the first argument.
 
     *   Otherwise, the ?UNDEF variable is returned, which by convention is
         never bound.
 
-    *   Be careful about the resulting variable: we need to write out the
+    *   Be careful about the output variable: we need to write out the
         question mark before it (since the same name x is also used in its
         stringified form), and we follow it by one underscore _ even though
         the macro name itself starts with underscore.
+
+    *   The macro __IF_BOUND_PICK_N uses the ## token concatenation operator
+        to pick one of the 5 macros.
+
+    *   The final macro _IF_BOUND calls __IF_BOUND_PICK_N with a carefully
+        crafted tail sequence 5,4,3,2,1. Eg if __VA_ARGS__ has 4 elements,
+        they will be eaten up by the argumentss _1,_2,_3,_4. The constant 5
+        will be eaten by the argument _5, so the argument N will be bound to
+        the next constant 4, so the macro __IF_BOUND_4 will be picked.
 
     When rdf2sparql sees a macro name starting with underscore _, it leaves
     its arguments alone (doesn't add a question mark before the first

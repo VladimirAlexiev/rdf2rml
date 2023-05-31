@@ -386,37 +386,50 @@
 <p>See the test <a>conditional-node</a>, in particular the model is <a>organizations.ttl</a> and the key parts look like this:</p>
 
 <pre><code>   &lt;cb/agent/(uuid)&gt; a org:Organization;
-     org:hasSite &lt;cb/agent/(uuid)/_IF_BOUND(address,?country_code,?region,?postal_code,?address)&gt;;
+     org:hasSite &lt;cb/agent/(uuid)/_IF_BOUND(address,country_code,region,postal_code,street)&gt;;
      adms:identifier
-       &lt;cb/agent/(uuid)/id/_IF_BOUND(facebook,?facebookUrl)&gt;,
-       &lt;cb/agent/(uuid)/id/_IF_BOUND(linkedin,?linkedinUrl)&gt; .
-   &lt;cb/agent/(uuid)/_IF_BOUND(address,?country_code,?region,?postal_code,?address)&gt; a locn:Address;
+       &lt;cb/agent/(uuid)/id/_IF_BOUND(facebook,facebookUrl)&gt;,
+       &lt;cb/agent/(uuid)/id/_IF_BOUND(linkedin,linkedinUrl)&gt; .
+   &lt;cb/agent/(uuid)/_IF_BOUND(address,country_code,region,postal_code,street)&gt; a locn:Address;
      ...
-   &lt;cb/agent/(uuid)/id/_IF_BOUND(facebook,?facebookUrl)&gt; a adms:Identifier;
+   &lt;cb/agent/(uuid)/id/_IF_BOUND(facebook,facebookUrl)&gt; a adms:Identifier;
      ...
-   &lt;cb/agent/(uuid)/id/_IF_BOUND(linkedin,?linkedinUrl)&gt; a adms:Identifier;</code></pre>
+   &lt;cb/agent/(uuid)/id/_IF_BOUND(linkedin,linkedinUrl)&gt; a adms:Identifier;</code></pre>
 
-<p>We emit some of the fields in structured nodes. But we want to create these nodes only if the fields are bound, i.e. we don&#39;t want to create parasitic &quot;empty&quot; nodes with no business payload. For this we create the <b>_IF_BOUND(...)</b> macro, see <a>common.h</a>:</p>
+<p>We emit some of the fields in structured nodes. But we want to create these nodes only if the fields are bound, i.e. we don&#39;t want to create parasitic &quot;empty&quot; nodes with no business payload. For this we create the <b>_IF_BOUND(...)</b> macro, see <a>common.h</a>. It uses techniques from this <a href="https://stackoverflow.com/a/65997567/20282178">StackOverflow answer</a> about iteration over <code>__VA_ARGS_</code> variadic extra arguments (in this case, limited to 5).</p>
 
-<pre><code>  #define _IF_BOUND(x,...)   bind(if(bound(coalesce(__VA_ARGS__),#x,?UNDEF) as ?x##_IF_BOUND)</code></pre>
+<pre><code>  #define __IF_BOUND_1(x,y1)             bind(if(bound(?y1),#x,?UNDEF) as ?x##_IF_BOUND)
+  #define __IF_BOUND_2(x,y1,y2)          bind(if(bound(?y1)||bound(?y2),#x,?UNDEF) as ?x##_IF_BOUND)
+  #define __IF_BOUND_3(x,y1,y2,y3)       bind(if(bound(?y1)||bound(?y2)||bound(?y3),#x,?UNDEF) as ?x##_IF_BOUND)
+  #define __IF_BOUND_4(x,y1,y2,y3,y4)    bind(if(bound(?y1)||bound(?y2)||bound(?y3)||bound(?y4),#x,?UNDEF) as ?x##_IF_BOUND)
+  #define __IF_BOUND_5(x,y1,y2,y3,y4,y5) bind(if(bound(?y1)||bound(?y2)||bound(?y3)||bound(?y4)||bound(?y5),#x,?UNDEF) as ?x##_IF_BOUND)
+
+  #define __IF_BOUND_PICK_N(_1,_2,_3,_4,_5,N,...) __IF_BOUND_##N
+  #define _IF_BOUND(x,...) __IF_BOUND_PICK_N(__VA_ARGS__,5,4,3,2,1)(x,__VA_ARGS__)</code></pre>
 
 <p>Several things are going on here:</p>
 
 <ul>
 
-<li><p>The <b>coalesce()</b> SPARQL function returns the first of its bound arguments (if any). The extra arguments <b>...</b> in the macro declaration are passed as <b>__VA_ARGS__</b> to that function.</p>
+<li><p>First we define 5 macros that handle the cases of 1..5 extra arguments.</p>
 
 </li>
-<li><p>The <b>bound()</b> SPARQL function therefore checks if any of the extra arguments are bound.</p>
+<li><p>They use a disjunction of <b>bound()</b> to check if any of the extra arguments are bound.</p>
 
 </li>
-<li><p>If so, the &quot;stringify&quot; macro operator <b>#</b> returns the <b>string representation</b> of the first argument.</p>
+<li><p>If so, the &quot;stringify&quot; macro operator <b>#</b> returns the &quot;string representation&quot; of the first argument.</p>
 
 </li>
 <li><p>Otherwise, the <b>?UNDEF</b> variable is returned, which by convention is never bound.</p>
 
 </li>
-<li><p>Be careful about the resulting variable: we need to write out the question mark before it (since the same name <b>x</b> is also used in its stringified form), and we follow it by one underscore <b>_</b> even though the macro name itself starts with underscore.</p>
+<li><p>Be careful about the output variable: we need to write out the question mark before it (since the same name <b>x</b> is also used in its stringified form), and we follow it by one underscore <b>_</b> even though the macro name itself starts with underscore.</p>
+
+</li>
+<li><p>The macro <b>__IF_BOUND_PICK_N</b> uses the <b>##</b> token concatenation operator to pick one of the 5 macros.</p>
+
+</li>
+<li><p>The final macro <b>_IF_BOUND</b> calls <b>__IF_BOUND_PICK_N</b> with a carefully crafted tail sequence <b>5,4,3,2,1</b>. Eg if <b>__VA_ARGS__</b> has 4 elements, they will be eaten up by the argumentss <b>_1,_2,_3,_4</b>. The constant <b>5</b> will be eaten by the argument <b>_5</b>, so the argument <b>N</b> will be bound to the next constant <b>4</b>, so the macro <b>__IF_BOUND_4</b> will be picked.</p>
 
 </li>
 </ul>

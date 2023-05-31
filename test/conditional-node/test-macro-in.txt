@@ -1,0 +1,9 @@
+#include "common.h"
+
+// test
+_IF_BOUND(address,street)
+_IF_BOUND(address,street,city)
+_IF_BOUND(address,street,city,region)
+_IF_BOUND(address,street,city,region,zip)
+_IF_BOUND(address,street,city,region,zip,country)
+

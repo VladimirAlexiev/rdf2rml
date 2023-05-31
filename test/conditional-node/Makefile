@@ -1,4 +1,4 @@
-all: prefixes.rq organizations.png organizations.ru
+all: prefixes.rq organizations.png organizations.ru test-macro-out.txt
 
 prefixes.rq: prefixes.ttl
 	perl -pe 'm{###} and last; s{^@}{}; s{ *\.$$}{}' $^ > $@
@@ -10,3 +10,6 @@ prefixes.rq: prefixes.ttl
 
 %.ru: prefixes.rq %.ttl
 	perl -S rdf2sparql.pl $*.ttl | cat common.h prefixes.rq - | cpp -P -C -nostdinc - > $*.ru
+
+test-macro-out.txt: test-macro-in.txt
+	cpp -P -C -nostdinc $^ > $@

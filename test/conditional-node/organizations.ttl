@@ -1,22 +1,22 @@
 # GRAPH <graph/cb/organizations/(uuid)>
 
 <cb/agent/(uuid)> a org:Organization;
-  org:hasSite <cb/agent/(uuid)/_IF_BOUND(address,?country_code,?region,?postal_code,?address)>;
+  org:hasSite <cb/agent/(uuid)/_IF_BOUND(address,country_code,region,postal_code,street)>;
   adms:identifier
-    <cb/agent/(uuid)/id/_IF_BOUND(facebook,?facebookUrl)>,
-    <cb/agent/(uuid)/id/_IF_BOUND(linkedin,?linkedinUrl)> .
+    <cb/agent/(uuid)/id/_IF_BOUND(facebook,facebookUrl)>,
+    <cb/agent/(uuid)/id/_IF_BOUND(linkedin,linkedinUrl)> .
 
-<cb/agent/(uuid)/_IF_BOUND(address,?country_code,?region,?postal_code,?address)> a locn:Address;
-  locn:fullAddress "(address)";
+<cb/agent/(uuid)/_IF_BOUND(address,country_code,region,postal_code,street)> a locn:Address;
+  locn:fullAddress "(street)";
   locn:postCode "(postal_code)";
   locn:adminUnitL2 "(region)";
   locn:adminUnitL1 "(country_code)".
 
-<cb/agent/(uuid)/id/_IF_BOUND(facebook,?facebookUrl)> a adms:Identifier;
+<cb/agent/(uuid)/id/_IF_BOUND(facebook,facebookUrl)> a adms:Identifier;
   dct:isPartOf <identifier/Facebook>;
   skos:notation "(facebookUrl)".
 
-<cb/agent/(uuid)/id/_IF_BOUND(linkedin,?linkedinUrl)> a adms:Identifier;
+<cb/agent/(uuid)/id/_IF_BOUND(linkedin,linkedinUrl)> a adms:Identifier;
   dct:isPartOf <identifier/Linkedin>;
   skos:notation "(linkedinUrl)".
 

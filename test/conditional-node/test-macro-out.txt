@@ -1,0 +1,6 @@
+// test
+bind(if(bound(?street),"address",?UNDEF) as ?address_IF_BOUND)
+bind(if(bound(?street)||bound(?city),"address",?UNDEF) as ?address_IF_BOUND)
+bind(if(bound(?street)||bound(?city)||bound(?region),"address",?UNDEF) as ?address_IF_BOUND)
+bind(if(bound(?street)||bound(?city)||bound(?region)||bound(?zip),"address",?UNDEF) as ?address_IF_BOUND)
+bind(if(bound(?street)||bound(?city)||bound(?region)||bound(?zip)||bound(?country),"address",?UNDEF) as ?address_IF_BOUND)
