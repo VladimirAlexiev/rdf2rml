@@ -402,22 +402,24 @@ Several things are going on here:
 
 =item * The final macro B<_IF_BOUND> calls B<__IF_BOUND_PICK_N> with a carefully crafted tail sequence B<5,4,3,2,1>. Eg if B<__VA_ARGS__> has 4 elements, they will be eaten up by the argumentss B<_1,_2,_3,_4>. The constant B<5> will be eaten by the argument B<_5>, so the argument B<N> will be bound to the next constant B<4>, so the macro B<__IF_BOUND_4> will be picked.
 
+=item * After the correct macro is picked, all arguments B<(x,__VA_ARGS__)> are passed to it. So you see that in the implementation of B<_IF_BOUND>, B<__VA_ARGS__> is used twice: first to pick the correct numbered macro, then to provide it with arguments.
+
 =back
 
 When B<rdf2sparql> sees a macro name starting with underscore B<_>, it leaves its arguments alone (doesn't add a question mark before the first argument), and doesn't prepend an extra underscore before the macro name.
 
 This results in the following binds in the B<where> clause:
 
-    bind(if(bound(coalesce(?country_code,?region,?postal_code,?address),"address",?UNDEF) as ?address_IF_BOUND)
+    bind(if(bound(?country_code)||bound(?region)||bound(?postal_code)||bound(?street),"address",?UNDEF) as ?address_IF_BOUND)
     bind(iri(concat("cb/agent/",?uuid,"/",?address_IF_BOUND)) as ?cb_agent_uuid_address_IF_BOUND_URL)
-    bind(if(bound(coalesce(?facebookUrl),"facebook",?UNDEF) as ?facebook_IF_BOUND)
+    bind(if(bound(?facebookUrl),"facebook",?UNDEF) as ?facebook_IF_BOUND)
     bind(iri(concat("cb/agent/",?uuid,"/id/",?facebook_IF_BOUND)) as ?cb_agent_uuid_id_facebook_IF_BOUND_URL)
-    bind(if(bound(coalesce(?linkedinUrl),"linkedin",?UNDEF) as ?linkedin_IF_BOUND)
+    bind(if(bound(?linkedinUrl),"linkedin",?UNDEF) as ?linkedin_IF_BOUND)
     bind(iri(concat("cb/agent/",?uuid,"/id/",?linkedin_IF_BOUND)) as ?cb_agent_uuid_id_linkedin_IF_BOUND_URL)
 
-To explain the first couple of lines:
+To explain the first two lines:
 first we check if any of the "business payload" fields are bound, and return the string "address" or UNDEF.
-Then we concat this tring with some constant and variabel parts to form a URL.
+Then we concat this string with some constant and variabel parts to form a URL.
 If the string is unbound, then the URL will be unbound.
 Then any triple using the unbound URL will B<not> be emitted, avoiding the creation of a parasitic node.
 

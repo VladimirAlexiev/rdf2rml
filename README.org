@@ -29,6 +29,7 @@
   - [[#documentation][Documentation]]
   - [[#related-work][Related Work]]
 - [[#installation][Installation]]
+  - [[#docker-image][Docker Image]]
 - [[#debian-repo][Debian Repo]]
 - [[#change-log][Change Log]]
   - [[#2023-05-17-rdf2sparqlpl][2023-05-17 rdf2sparql.pl]]
@@ -49,7 +50,6 @@
   - [[#2018-04-05-arrow-attributes][2018-04-05 Arrow Attributes]]
 - [[#to-do-tasks][To Do Tasks]]
   - [[#near-term][Near-term]]
-    - [[#dockerization][Dockerization]]
     - [[#modularize-and-package-better][Modularize and Package Better]]
     - [[#regression-tests][Regression Tests]]
     - [[#rdf2rml-disentangle-inverse-edge][rdf2rml: disentangle inverse edge]]
@@ -172,9 +172,25 @@ Install the following prerequisites:
   - [[https://jena.apache.org/download/][Apache Jena]]: ~riot~, ~update~. Tested with version 3.1.0 of 2016-05-10.
   - cat, grep, rm
 
+** Docker Image
+If you prefer to work with Docker so you don't need to install software manually,
+you can use this [[https://docker-registry.ontotext.com/#browse/search=keyword%3Drdf2rml][rdf2rml image]] from the public Nexus (Docker Registry) of Ontotext.
+To run it, use:
+
+: docker run -v <directory>:/files --rm docker-registry.ontotext.com/rdf2rml:latest`
+
+Where ~<directory>~ is the local directory holding your ~.ttl~ files.
+It was made on 31 May 2023 and uses the following versions:
+- [[https://github.com/VladimirAlexiev/rdf2rml][rdf2rml]]: 31 May 2023, with fixed https://github.com/VladimirAlexiev/rdf2rml/issues/22
+- [[https://plantuml.com/download][PlantUML]]: 1.2023.7
+- [[https://jena.apache.org/download/][Jena]]: 4.8.0
+
+Note: pull request https://github.com/VladimirAlexiev/rdf2rml/pull/7 of  17 Sep 2019 by Jem Rayfield (~@jazzyray~)
+dockerizes the installation, and makes extra changes related to input/output and configuration.
+However, it has not been merged yet
 
 * Debian Repo
-Jonas Smedegaard (@jonassmedegaard, dr at jones fullstop dk) has volunteered for some of the tasks below.
+Jonas Smedegaard (~@jonassmedegaard~, dr at jones fullstop dk) has volunteered for some of the tasks below.
 His development is at https://salsa.debian.org/debian/rdf2rml/branches.
 To adopt changes, do something like this.
 
@@ -192,43 +208,33 @@ To adopt changes, do something like this.
   #+end_src
 
 * Change Log
-
 ** 2023-05-17 rdf2sparql.pl
 - Support "Conditional Nodes", i.e. URLs that are conditional on the existence of some fields.
+- 2023-05-31: fixed bug https://github.com/VladimirAlexiev/rdf2rml/issues/22
 ** 2023-05-05 rdfpuml.pl
 - [[https://github.com/VladimirAlexiev/rdf2rml/issues/21][issue 21]]: Round brackets in fields (eg ~"(name)"~) and URLs (eg ~<type/(type)>~) are not mangled to square brackets anymore
-
 ** 2023-04-29 rdfpuml.pl
 - [[https://github.com/VladimirAlexiev/rdf2rml/issues/18][issue 18]] Add ~puml:option~ for ~left to right direction~ etc
-
 ** 2023-04-19 rdf2sparql.pl
 - [[https://github.com/VladimirAlexiev/rdf2rml/issues/19][issue 19]] Implement filter function, see ~test/filter-content~
 - [[https://github.com/VladimirAlexiev/rdf2rml/issues/20][issue 20]] Allow dynamic graph (computed from a data column), see ~test/graphs-crunchbase~
-
 ** 2022-08-23 rdf2sparql.pl
 Datatype attachment eg ~strdt(?var,xsd:date)~ now outputs to ~?var_xsd_date~ to avoid conflict with input field names in ALL_UPPERCASE
-
 ** 2022-08-23 rdfpuml.pl
 - Handle blank-node types that occur on owl:Restriction (see https://github.com/VladimirAlexiev/rdf2rml/issues/10 and ~test/blank-node~)
 - Duplicate ~rdfpuml.bat, puml.bat~ as shell scripts ~rdfpuml, puml~ for use in Makefiles across Linux and Windows
-
 ** 2022-08-15 rdf2sparql.pl
 Merge ~rdf2tarql~ and ~rdf2ontorefine~ to one tool ~rdf2sparql~
-
 ** 2022-04-08 rdf2ontorefine.pl
 Add script to generate OntoRefine SPARQL Update queries from model.
-
 ** 2021-09-02 Unicode Processing
 Use Perl option ~-C~ when invoking for proper Unicode processing.
 See doc section ~rdfpuml.html#Unicode~
-
 ** 2020-09-17 rdf2rml: logicalTable
 Use URL for logicalTable instead of blank node, so that R2RML generated from different models for different tables can be merged more easily.
 Warning: this assumes that all instances of one subjectMap use the same query.
-
 ** 2020-06-01 rdf2tarql.pl
 Add rdf2tarql.pl script to generate TARQL script (CSV-RDF conversion) from model.
-
 ** 2020-06-01 rdf2rml.sh, rdf2rml.ru
 - Improve script to abort if the first pipeline step ("update") fails
 - Improve script to work on Cygwin (invokes the Jena tools as ~riot.bat~ and ~update.bat~)
@@ -237,19 +243,16 @@ Add rdf2tarql.pl script to generate TARQL script (CSV-RDF conversion) from model
 - If a node has single outgoing link and no SQL query/table (~puml:label~),
   propagate that property backward across the link into the node
   (previously that was done only for incoming links)
-
 ** 2020-05-30 rdf2rml: inverse edge
 When an edge ~Y-P-X~ is recorded in the RDB table of ~X~ (as foreign key) or in an association table,
 it is awkward to specify that table in the node ~Y~.
 So I added this SPARQL UPDATE clause:
 - If a node ?y has no SQL, is not Inlined, has a single outgoing edge, then add the SQL of its counterparty ?x as default
-
 ** 2018-11-14 Avoid puml:stereotype class node
 I often define ~puml:stereotype~ for some classes in prefixes.ttl.
 If the class is not used in some particular turtle, it should avoid emitting a disconnected puml class.
 - `stereotypes`: Avoid emitting
 - `has_statements_different_from`: Check that a node has statements other than puml:stereotype
-
 ** 2018-06-29 Bug: class and puml:InlineProperty
 When a type is also used with puml:InlineProperty, it caused this error:
 : Can't locate object method "uri_value" via package "RDF::Trine::Node::Literal" at rdfpuml.pl line 261.
@@ -258,7 +261,6 @@ When a type is also used with puml:InlineProperty, it caused this error:
 An inline is converted to a literal, but rdf:type is always assumed to be a URL.
 
 Test: [[./test/regression/type-inlineProperty.ttl]]
-
 ** 2018-04-05 Arrow Attributes
 Add arrow attributes (dotted, dashed, bold) and length
 
@@ -270,10 +272,6 @@ Help needed for the following tasks.
 Post bugs and enhancement requests to this repo!
 
 ** Near-term
-
-*** Dockerization
-There's a pull request https://github.com/VladimirAlexiev/rdf2rml/pull/7 that dockerizes the installation.
-As of 18-Sep-2019 it's undergoing code review.
 
 *** Modularize and Package Better
 
