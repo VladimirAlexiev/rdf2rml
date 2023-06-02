@@ -8,59 +8,76 @@ authors:
     orcid: https://orcid.org/0000-0001-7508-7428
     email: vladimir.alexiev@ontotext.com
     affiliation: Ontotext Corp
-version: 1.0
-date-released: 2021-09-02
+version: 2.0
+date-released: 2023-06-02
 license: Apache-2.0
 repository-code: https://github.com/VladimirAlexiev/rdf2rml
 url: https://github.com/VladimirAlexiev/rdf2rml
 keywords:
   - visualization
-  - graphviz
-  - plantuml
-  - uml-diagram
-  - r2rml
-  - r2rml-mapping
+  - GraphViz
+  - UML-diagram
+  - PlantUML
+  - R2RML
+  - R2RML-mapping
   - rdfpuml
   - rdf2rml
-  - rdf2tarql
-  - rdf2ontorefine
-preferred-citation:
-  type: conference-paper
-  title: "RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation"
-  authors:
-    - family-names: Alexiev
-      given-names: Vladimir
-      orcid: https://orcid.org/0000-0001-7508-7428
-      email: vladimir.alexiev@ontotext.com
-      affiliation: Ontotext Corp
-  abstract:  "RDF is a graph data model, so the best way to understand RDF data schemas (ontologies, application profiles, RDF shapes) is with a diagram. Many RDF visualization tools exist, but they either focus on large graphs (where the details are not easily visible), or the visualization results are not satisfactory, or manual tweaking of the diagrams is required. We describe a tool *rdfpuml* that makes true diagrams directly from Turtle examples using PlantUML and GraphViz. Diagram readability is of prime concern, and rdfpuml introduces various diagram control mechanisms using triples in the puml: namespace. Special attention is paid to inlining and visualizing various Reification mechanisms (described with PRV). We give examples from Getty CONA, Getty Museum, AAC (mappings of museum data to CIDOC CRM), Multisensor (NIF and FrameNet), EHRI (Holocaust Research into Jewish social networks), Duraspace (Portland Common Data Model for holding metadata in institutional repositories), Video annotation. If the example instances include SQL queries and embedded field names, they can describe a mapping precisely. Another tool *rdf2rdb* generates R2RML transformations from such examples, saving about 15x in complexity."
-  conference:
-    name: Semantic Web in Libraries 2016 (SWIB 16)
-    date-start: 2019-11-01
-    address: Bonn, Germany
-  url: http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index.html
-  identifiers:
-    - type: url
-      value: http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index.html
-      description: Presentation slides
-    - type: url
-      value: http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index-full.html
-      description: HTML version (one page)
-    - type: url
-      value: http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf
-      description: PDF version 
-    - type: url
-      value: https://youtu.be/4WoYlaGF6DE
-      description: Video
-  keywords:
-    - RDF
-    - visualization
-    - PlantUML
-    - R2RML
-    - generation
-    - model-driven
-    - RDF by Example
-    - rdfpuml
-    - rdf2rml
-    - rdf2tarql
-    - rdf2ontorefine
+  - rdf2sparql
+  - OntoRefine
+  - Crunchbase
+  - semantic model
+  - semantic data integration
+  - ETL
+  - semantic conversion
+  - declarative approaches
+  - generation
+  - model-driven
+  - RDF by Example
+references:
+  - type: conference-paper
+    title: "Generation of Declarative Transformations from Semantic Models"
+    abstract: "The daily work of the Knowledge Graph Solutions group at Ontotext involves KG building activities such as investigating data standards and datasets, ontology engineering, harmonizing data through semantic models, converting or virtualizing data to semantic form, entity matching, semantic text enrichment, etc. Semantic pipelines have a variety of desirable properties, of which maintainability and consistency of the various artefacts are some of the most important ones. Despite significant recent progress (eg in the KG Building W3C community group), semantic conversion still remains one of the difficult steps. We favor generation of semantic transformations from semantic models that are both sufficiently precise, easily understandable, can be used to generate diagrams, and are valid RDF to allow processing with RDF tools. We call this approach RDF by Example and have developed a set of open source tools at https://github.com/VladimirAlexiev/rdf2rml. This includes *rdfpuml* for generating diagrams, *rdf2rml* for generating R2RML for semantization of relational data and ONTOP virtualization, *rdf2sparql* for semantization of tabular data with Ontotext Refine or TARQL. We describe our approach and illustrate it with complex and high-performance transformations in a variety of domains, such as company data and NIH research grants."
+    authors:
+      - family-names: Alexiev
+        given-names: Vladimir
+        orcid: https://orcid.org/0000-0001-7508-7428
+        email: vladimir.alexiev@ontotext.com
+        affiliation: Ontotext Corp
+    conference:
+      name: European Data Conference on Reference Data and Semantics (ENDORSE 2023)
+      date-start: 2023-03-14
+    url: https://drive.google.com/open?id=1Cq5o9th_P812paqGkDsaEomJyAmnypkD
+    identifiers:
+      - type: url
+        value: https://docs.google.com/presentation/d/1JCMQEH8Tw_F-ta6haIToXMLYJxQ9LRv6/edit
+        description: presentation slides
+      - type: url
+        value: https://youtu.be/yL5nI_3ccxs
+        description: video
+  - type: conference-paper
+    title: "RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation"
+    authors:
+      - family-names: Alexiev
+        given-names: Vladimir
+        orcid: https://orcid.org/0000-0001-7508-7428
+        email: vladimir.alexiev@ontotext.com
+        affiliation: Ontotext Corp
+    abstract:  "RDF is a graph data model, so the best way to understand RDF data schemas (ontologies, application profiles, RDF shapes) is with a diagram. Many RDF visualization tools exist, but they either focus on large graphs (where the details are not easily visible), or the visualization results are not satisfactory, or manual tweaking of the diagrams is required. We describe a tool *rdfpuml* that makes true diagrams directly from Turtle examples using PlantUML and GraphViz. Diagram readability is of prime concern, and rdfpuml introduces various diagram control mechanisms using triples in the puml: namespace. Special attention is paid to inlining and visualizing various Reification mechanisms (described with PRV). We give examples from Getty CONA, Getty Museum, AAC (mappings of museum data to CIDOC CRM), Multisensor (NIF and FrameNet), EHRI (Holocaust Research into Jewish social networks), Duraspace (Portland Common Data Model for holding metadata in institutional repositories), Video annotation. If the example instances include SQL queries and embedded field names, they can describe a mapping precisely. Another tool *rdf2rdb* generates R2RML transformations from such examples, saving about 15x in complexity."
+    conference:
+      name: Semantic Web in Libraries 2016 (SWIB 16)
+      date-start: 2019-11-01
+      address: Bonn, Germany
+    url: http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index.html
+    identifiers:
+      - type: url
+        value: http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index.html
+        description: Presentation slides
+      - type: url
+        value: http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index-full.html
+        description: HTML version (one page)
+      - type: url
+        value: http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf
+        description: PDF version 
+      - type: url
+        value: https://youtu.be/4WoYlaGF6DE
+        description: Video

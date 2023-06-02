@@ -84,14 +84,13 @@
 :END:
 
 * Introduction
-See this presentation:
-
-*RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation*
-Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16), Bonn, Germany, November 2016.
-[[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index.html][Presentation]],
-[[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index-full.html][HTML]],
-[[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf][PDF]],
-[[https://youtu.be/4WoYlaGF6DE][Video]]
+See these publications:
+- RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation.
+  Vladimir Alexiev. In Semantic Web in Libraries 2016 (SWIB 16), Bonn, Germany, November 2016:
+  [[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index.html][Presentation]], [[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index-full.html][HTML]], [[http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf][PDF]], [[https://youtu.be/4WoYlaGF6DE][Video]]
+- Generation of Declarative Transformations from Semantic Models.
+  Vladimir Alexiev. In European Data Conference on Reference Data and Semantics (ENDORSE 2023), Mar 2023:
+  [[https://drive.google.com/open?id=1Cq5o9th_P812paqGkDsaEomJyAmnypkD][paper]], [[https://docs.google.com/presentation/d/1JCMQEH8Tw_F-ta6haIToXMLYJxQ9LRv6/edit][presentation]], [[https://youtu.be/yL5nI_3ccxs][video]]
 
 RDF is a graph data model, so the best way to understand RDF data schemas (ontologies, application profiles, RDF shapes) is with a diagram.
 Many RDF visualization tools exist,
@@ -118,21 +117,14 @@ See http://twitter.com/hashtag/rdfpuml for news, diagrams and announcements.
 ** Citation
 If you use this software, please cite it as shown above.
 - Github shows a link "About> Cite this repository" (see [[https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-citation-files][about-citation-files]])
-- [[CITATION.cff]] describes both the software and the above presentation.
+- [[CITATION.cff]] describes both the software and the above publications.
   It's a YAML CFF file, see https://citation-file-format.github.io/
-- [[CITATION.bib]] describes only the above presentation. It's a bibtex file
+- [[CITATION.bib]] describes only the above publications. It's a bibtex file
 
 ** Documentation
-- http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdfpuml.html
-- http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdf2rml.html
-- http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdf2sparql.html
-  (subsumes ~rdf2tarql~ and ~rdf2ontorefine~)
-
-Documentation source:
-- [[./doc/rdfpuml.pod]]
-- [[./doc/rdf2rml.pod]]
-- [[./doc/rdf2sparql.pod]]
-  (subsumes ~rdf2tarql~ and ~rdf2ontorefine~)
+- [[https://github.com/VladimirAlexiev/rdf2rml/blob/master/doc/rdfpuml.md][rdfpuml.md]] or [[http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdfpuml.html][rdfpuml.html]]
+- [[https://github.com/VladimirAlexiev/rdf2rml/blob/master/doc/rdf2rml.md][rdf2rml.md]] or [[http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdf2rml.html][rdf2rml.html]]
+- [[https://github.com/VladimirAlexiev/rdf2rml/blob/master/doc/rdf2sparql.md][rdf2sparql.md]] or [[http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdf2sparql.html][rdf2sparql.html]] (subsumes ~rdf2tarql~ and ~rdf2ontorefine~)
 
 ** Related Work
 
