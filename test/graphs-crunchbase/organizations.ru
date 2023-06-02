@@ -80,7 +80,7 @@ where {
     bind(iri(concat("cb/organizationRole/",?primary_role_URLIFY)) as ?cb_organizationRole_primary_role_URLIFY_URL)
     bind(strdt(?num_exits,xsd:integer) as ?num_exits_xsd_integer)
   }
-  ?graph_organizations_uuid_URL {?_s_ ?_p_ ?_o_}};
+  graph ?graph_organizations_uuid_URL {?_s_ ?_p_ ?_o_}};
 insert {graph ?graph_organizations_uuid_URL {
   ?cb_agent_uuid_URL a cb:Organization;
     cb:cbId ?uuid;

@@ -135,7 +135,7 @@ where {
 $WHERE_PRE
   }
 $WHERE_POST
-  $GRAPH {?_s_ ?_p_ ?_o_}};
+  graph $GRAPH {?_s_ ?_p_ ?_o_}};
 
 insert {graph $GRAPH {
 $output}}

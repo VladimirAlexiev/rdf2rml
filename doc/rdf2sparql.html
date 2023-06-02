@@ -303,7 +303,7 @@
 
 <p>Next is a very simple model that adds a field &quot;revenue&quot; to CrunchBase organizations, based on two columns: &quot;permalink&quot; identifying the company, and &quot;revenue&quot; being a decimal</p>
 
-<pre><code>  # GRAPH &lt;extra/revenue&gt;
+<pre><code>  # GRAPH &lt;extra/(permalink)/revenue&gt;
   &lt;CB_AGENT_URL(permalink)&gt; ex:annualRevenueUsd &quot;(revenue)&quot;^^xsd:decimal.</code></pre>
 
 <p>The revenue is keyed by &quot;permalink&quot;. But CrunchBase organizations use a different URL (primary key) based on &quot;uuid&quot;. So we use the <b>CB_AGENT_URL()</b> macro to lookup by permalink.</p>
@@ -432,20 +432,23 @@
 <li><p>The final macro <b>_IF_BOUND</b> calls <b>__IF_BOUND_PICK_N</b> with a carefully crafted tail sequence <b>5,4,3,2,1</b>. Eg if <b>__VA_ARGS__</b> has 4 elements, they will be eaten up by the argumentss <b>_1,_2,_3,_4</b>. The constant <b>5</b> will be eaten by the argument <b>_5</b>, so the argument <b>N</b> will be bound to the next constant <b>4</b>, so the macro <b>__IF_BOUND_4</b> will be picked.</p>
 
 </li>
+<li><p>After the correct macro is picked, all arguments <b>(x,__VA_ARGS__)</b> are passed to it. So you see that in the implementation of <b>_IF_BOUND</b>, <b>__VA_ARGS__</b> is used twice: first to pick the correct numbered macro, then to provide it with arguments.</p>
+
+</li>
 </ul>
 
 <p>When <b>rdf2sparql</b> sees a macro name starting with underscore <b>_</b>, it leaves its arguments alone (doesn&#39;t add a question mark before the first argument), and doesn&#39;t prepend an extra underscore before the macro name.</p>
 
 <p>This results in the following binds in the <b>where</b> clause:</p>
 
-<pre><code>    bind(if(bound(coalesce(?country_code,?region,?postal_code,?address),&quot;address&quot;,?UNDEF) as ?address_IF_BOUND)
+<pre><code>    bind(if(bound(?country_code)||bound(?region)||bound(?postal_code)||bound(?street),&quot;address&quot;,?UNDEF) as ?address_IF_BOUND)
     bind(iri(concat(&quot;cb/agent/&quot;,?uuid,&quot;/&quot;,?address_IF_BOUND)) as ?cb_agent_uuid_address_IF_BOUND_URL)
-    bind(if(bound(coalesce(?facebookUrl),&quot;facebook&quot;,?UNDEF) as ?facebook_IF_BOUND)
+    bind(if(bound(?facebookUrl),&quot;facebook&quot;,?UNDEF) as ?facebook_IF_BOUND)
     bind(iri(concat(&quot;cb/agent/&quot;,?uuid,&quot;/id/&quot;,?facebook_IF_BOUND)) as ?cb_agent_uuid_id_facebook_IF_BOUND_URL)
-    bind(if(bound(coalesce(?linkedinUrl),&quot;linkedin&quot;,?UNDEF) as ?linkedin_IF_BOUND)
+    bind(if(bound(?linkedinUrl),&quot;linkedin&quot;,?UNDEF) as ?linkedin_IF_BOUND)
     bind(iri(concat(&quot;cb/agent/&quot;,?uuid,&quot;/id/&quot;,?linkedin_IF_BOUND)) as ?cb_agent_uuid_id_linkedin_IF_BOUND_URL)</code></pre>
 
-<p>To explain the first couple of lines: first we check if any of the &quot;business payload&quot; fields are bound, and return the string &quot;address&quot; or UNDEF. Then we concat this tring with some constant and variabel parts to form a URL. If the string is unbound, then the URL will be unbound. Then any triple using the unbound URL will <b>not</b> be emitted, avoiding the creation of a parasitic node.</p>
+<p>To explain the first two lines: first we check if any of the &quot;business payload&quot; fields are bound, and return the string &quot;address&quot; or UNDEF. Then we concat this string with some constant and variabel parts to form a URL. If the string is unbound, then the URL will be unbound. Then any triple using the unbound URL will <b>not</b> be emitted, avoiding the creation of a parasitic node.</p>
 
 <h3 id="RDF-Model-Concatenation">RDF Model Concatenation</h3>
 
@@ -565,6 +568,11 @@
 <pre><code>  #define AMOUNT(x)                                        bind(replace(x##_SPLIT_BACKSL,&quot;(.+):(.+)&quot;,&quot;$2&quot;) as x##_AMOUNT)</code></pre>
 
 </li>
+<li><p>bind variable <b>?x_IF_BOUND</b> to the string &quot;x&quot; if any of the extra arguments is bound, else leave it unbound</p>
+
+<pre><code>  #define _IF_BOUND(x,...)  // see definition in section Conditional Nodes</code></pre>
+
+</li>
 </ul>
 
 <p>Most of the macros implement binds (computations), but you can also use more specialized constructs. Notes about unusual constructs:</p>
@@ -592,6 +600,9 @@
 <li><p><b>SPLIT(x,&quot;\\\\&quot;)</b> escapes backslash twice: once for a SPARQL string, and a second time for the regular expression taht it represents</p>
 
 </li>
+<li><p><b>_IF_BOUND(x,...)</b> is a complex macro. See its definition in section Conditional Nodes</p>
+
+</li>
 </ul>
 
 <h3 id="Macro-Best-Practices">Macro Best Practices</h3>
@@ -616,26 +627,42 @@
 
 <h2 id="Generated-SPARQL">Generated SPARQL</h2>
 
-<p>The overall structure of the generated SPARQL query depends on the options you used.</p>
+<p>The overall structure of the generated SPARQL query depends on the options you used. Assume the example in section &quot;RDF Model: Annual Revenue by Permalink&quot;, which has 2 special features:</p>
+
+<ul>
+
+<li><p>The graph is computed from data: GRAPH &lt;extra/(permalink)/revenue&gt;</p>
+
+</li>
+<li><p>The subject is looked up in the RDF database (see the definition of the respective macro): &lt;CB_AGENT_URL(permalink)&gt; -&gt; filter(bound(?permalink)) ?permalink_CB_AGENT_URL a ?permalink_TYPE; k2:permalink ?permalink filter(?permalink_TYPE in (cb:Person,cb:Organization))</p>
+
+</li>
+</ul>
 
 <p>For Ontotext Refine UPDATE:</p>
 
-<pre><code>  delete where {graph $GRAPH {?s ?p ?o}};
-  insert {graph $GRAPH {
-    &lt;Insert Patterns&gt;
+<pre><code>  delete {graph ?extra_permalink_revenue_URL {?_s_ ?_p_ ?_o_}}
+  where {
+    service &lt;rdf-mapper:ontorefine:PROJECT_ID&gt; {
+      # generated binds
+    }
+    filter(bound(?permalink)) ?permalink_CB_AGENT_URL a ?permalink_TYPE; cb:permalink ?permalink filter(?permalink_TYPE in (cb:Person,cb:Organization))
+    graph ?extra_permalink_revenue_URL {?_s_ ?_p_ ?_o_}};
+  insert {graph ?extra_permalink_revenue_URL {
+    # insert patterns
   }}
   where {
     service &lt;rdf-mapper:ontorefine:PROJECT_ID&gt; {
-      &lt;Generated Binds&gt;
+      # generated binds
     }
-    filter(bound(?permalink))
-    ?permalink_CB_AGENT_URL a ?permalink_TYPE; cb:permalink ?permalink
-    filter(?permalink_TYPE in (cb:Person,cb:Organization))
   };</code></pre>
 
 <ul>
 
-<li><p><b>$GRAPH</b> is the named graph mentioned in the first model line. This way the query can handle both initial data loading and updates. Please note that for CrunchBase it is unfeasible to regenerate all Organization data on every update. So we have a slightly more complex script (not published) that uses a named graph per table <b>row</b> (uuid) not per <b>table</b>, and selects only recently updated rows for processing.</p>
+<li><p>The graph URL pattern mentioned in the first model line is expanded to a calculated variable <b>?extra_permalink_revenue_URL</b>. In this case we use named graph per table <b>row</b>; if you use a constant URL then it would be graph per <b>table</b>. This way the query can handle both initial data loading and updates.</p>
+
+</li>
+<li><p>Crunchbase tables include <b>updated_at</b> timestamps in every row that we compare to a global timestamp (recorded in the database) and find only updated rows. This is an extra filter generated by a slightly more complex script (not published).</p>
 
 </li>
 <li><p><b>PROJECT_ID</b> is a placeholder that must be replaced with the actual Ontotext Refine project ID before running the query.</p>
@@ -644,20 +671,21 @@
 <li><p>The script has a special case for macro names matching <b>*_URL</b>, that&#39;s why the <b>CB_AGENT_URL</b> pattern is evaluated outside of the Ontotext Refine virtual endpoint.</p>
 
 </li>
+<li><p>The wildcard pattern <b>where {... graph ?extra_permalink_revenue_URL {?_s_ ?_p_ ?_o_}}</b> selects all triples in the graph, to be deleted</p>
+
+</li>
 </ul>
 
 <p>For Ontotext Refine CONSTRUCT:</p>
 
 <pre><code>  construct {
-    &lt;Insert Patterns&gt;
+    # insert patterns
   }
   where {
     service &lt;rdf-mapper:ontorefine:PROJECT_ID&gt; {
-      &lt;Generated Binds&gt;
+      # generated binds
     }
-    filter(bound(?permalink))
-    ?permalink_CB_AGENT_URL a ?permalink_TYPE; k2:permalink ?permalink
-    filter(?permalink_TYPE in (cb:Person,cb:Organization))
+    filter(bound(?permalink)) ?permalink_CB_AGENT_URL a ?permalink_TYPE; k2:permalink ?permalink filter(?permalink_TYPE in (cb:Person,cb:Organization))
   }</code></pre>
 
 <p>CONSTRUCT doesn&#39;t work with named graphs, so any graph is ignored.</p>
@@ -665,10 +693,10 @@
 <p>For TARQL CONSTRUCT:</p>
 
 <pre><code>  construct {
-    &lt;Insert Patterns&gt;
+    # insert patterns
   }
   where {
-    &lt;Generated Binds&gt;
+    # generated binds
   }</code></pre>
 
 <p>TARQL cannot make a lookup in existing RDF data, so macro names matching <b>*_URL</b> are not allowed.</p>

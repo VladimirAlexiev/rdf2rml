@@ -263,7 +263,7 @@ DESCRIPTION
     organizations, based on two columns: "permalink" identifying the
     company, and "revenue" being a decimal
 
-      # GRAPH <extra/revenue>
+      # GRAPH <extra/(permalink)/revenue>
       <CB_AGENT_URL(permalink)> ex:annualRevenueUsd "(revenue)"^^xsd:decimal.
 
     The revenue is keyed by "permalink". But CrunchBase organizations use a
@@ -416,6 +416,11 @@ DESCRIPTION
         will be eaten by the argument _5, so the argument N will be bound to
         the next constant 4, so the macro __IF_BOUND_4 will be picked.
 
+    *   After the correct macro is picked, all arguments (x,__VA_ARGS__) are
+        passed to it. So you see that in the implementation of _IF_BOUND,
+        __VA_ARGS__ is used twice: first to pick the correct numbered macro,
+        then to provide it with arguments.
+
     When rdf2sparql sees a macro name starting with underscore _, it leaves
     its arguments alone (doesn't add a question mark before the first
     argument), and doesn't prepend an extra underscore before the macro
@@ -423,19 +428,19 @@ DESCRIPTION
 
     This results in the following binds in the where clause:
 
-        bind(if(bound(coalesce(?country_code,?region,?postal_code,?address),"address",?UNDEF) as ?address_IF_BOUND)
+        bind(if(bound(?country_code)||bound(?region)||bound(?postal_code)||bound(?street),"address",?UNDEF) as ?address_IF_BOUND)
         bind(iri(concat("cb/agent/",?uuid,"/",?address_IF_BOUND)) as ?cb_agent_uuid_address_IF_BOUND_URL)
-        bind(if(bound(coalesce(?facebookUrl),"facebook",?UNDEF) as ?facebook_IF_BOUND)
+        bind(if(bound(?facebookUrl),"facebook",?UNDEF) as ?facebook_IF_BOUND)
         bind(iri(concat("cb/agent/",?uuid,"/id/",?facebook_IF_BOUND)) as ?cb_agent_uuid_id_facebook_IF_BOUND_URL)
-        bind(if(bound(coalesce(?linkedinUrl),"linkedin",?UNDEF) as ?linkedin_IF_BOUND)
+        bind(if(bound(?linkedinUrl),"linkedin",?UNDEF) as ?linkedin_IF_BOUND)
         bind(iri(concat("cb/agent/",?uuid,"/id/",?linkedin_IF_BOUND)) as ?cb_agent_uuid_id_linkedin_IF_BOUND_URL)
 
-    To explain the first couple of lines: first we check if any of the
-    "business payload" fields are bound, and return the string "address" or
-    UNDEF. Then we concat this tring with some constant and variabel parts
-    to form a URL. If the string is unbound, then the URL will be unbound.
-    Then any triple using the unbound URL will not be emitted, avoiding the
-    creation of a parasitic node.
+    To explain the first two lines: first we check if any of the "business
+    payload" fields are bound, and return the string "address" or UNDEF.
+    Then we concat this string with some constant and variabel parts to form
+    a URL. If the string is unbound, then the URL will be unbound. Then any
+    triple using the unbound URL will not be emitted, avoiding the creation
+    of a parasitic node.
 
    RDF Model Concatenation
     rdf2sparql works on a single CSV table at a time (rdf2rml does not have
@@ -563,6 +568,11 @@ DESCRIPTION
 
           #define AMOUNT(x)                                        bind(replace(x##_SPLIT_BACKSL,"(.+):(.+)","$2") as x##_AMOUNT)
 
+    *   bind variable ?x_IF_BOUND to the string "x" if any of the extra
+        arguments is bound, else leave it unbound
+
+          #define _IF_BOUND(x,...)  // see definition in section Conditional Nodes
+
     Most of the macros implement binds (computations), but you can also use
     more specialized constructs. Notes about unusual constructs:
 
@@ -589,6 +599,9 @@ DESCRIPTION
     *   SPLIT(x,"\\\\") escapes backslash twice: once for a SPARQL string,
         and a second time for the regular expression taht it represents
 
+    *   _IF_BOUND(x,...) is a complex macro. See its definition in section
+        Conditional Nodes
+
    Macro Best Practices
     To save yourself some trouble, here are some hints for writing and using
     macros:
@@ -610,30 +623,45 @@ DESCRIPTION
 
   Generated SPARQL
     The overall structure of the generated SPARQL query depends on the
-    options you used.
+    options you used. Assume the example in section "RDF Model: Annual
+    Revenue by Permalink", which has 2 special features:
+
+    *   The graph is computed from data: GRAPH <extra/(permalink)/revenue>
+
+    *   The subject is looked up in the RDF database (see the definition of
+        the respective macro): <CB_AGENT_URL(permalink)> ->
+        filter(bound(?permalink)) ?permalink_CB_AGENT_URL a ?permalink_TYPE;
+        k2:permalink ?permalink filter(?permalink_TYPE in
+        (cb:Person,cb:Organization))
 
     For Ontotext Refine UPDATE:
 
-      delete where {graph $GRAPH {?s ?p ?o}};
-      insert {graph $GRAPH {
-        <Insert Patterns>
+      delete {graph ?extra_permalink_revenue_URL {?_s_ ?_p_ ?_o_}}
+      where {
+        service <rdf-mapper:ontorefine:PROJECT_ID> {
+          # generated binds
+        }
+        filter(bound(?permalink)) ?permalink_CB_AGENT_URL a ?permalink_TYPE; cb:permalink ?permalink filter(?permalink_TYPE in (cb:Person,cb:Organization))
+        graph ?extra_permalink_revenue_URL {?_s_ ?_p_ ?_o_}};
+      insert {graph ?extra_permalink_revenue_URL {
+        # insert patterns
       }}
       where {
         service <rdf-mapper:ontorefine:PROJECT_ID> {
-          <Generated Binds>
+          # generated binds
         }
-        filter(bound(?permalink))
-        ?permalink_CB_AGENT_URL a ?permalink_TYPE; cb:permalink ?permalink
-        filter(?permalink_TYPE in (cb:Person,cb:Organization))
       };
 
-    *   $GRAPH is the named graph mentioned in the first model line. This
-        way the query can handle both initial data loading and updates.
-        Please note that for CrunchBase it is unfeasible to regenerate all
-        Organization data on every update. So we have a slightly more
-        complex script (not published) that uses a named graph per table row
-        (uuid) not per table, and selects only recently updated rows for
-        processing.
+    *   The graph URL pattern mentioned in the first model line is expanded
+        to a calculated variable ?extra_permalink_revenue_URL. In this case
+        we use named graph per table row; if you use a constant URL then it
+        would be graph per table. This way the query can handle both initial
+        data loading and updates.
+
+    *   Crunchbase tables include updated_at timestamps in every row that we
+        compare to a global timestamp (recorded in the database) and find
+        only updated rows. This is an extra filter generated by a slightly
+        more complex script (not published).
 
     *   PROJECT_ID is a placeholder that must be replaced with the actual
         Ontotext Refine project ID before running the query.
@@ -642,18 +670,19 @@ DESCRIPTION
         why the CB_AGENT_URL pattern is evaluated outside of the Ontotext
         Refine virtual endpoint.
 
+    *   The wildcard pattern where {... graph ?extra_permalink_revenue_URL
+        {?_s_ ?_p_ ?_o_}} selects all triples in the graph, to be deleted
+
     For Ontotext Refine CONSTRUCT:
 
       construct {
-        <Insert Patterns>
+        # insert patterns
       }
       where {
         service <rdf-mapper:ontorefine:PROJECT_ID> {
-          <Generated Binds>
+          # generated binds
         }
-        filter(bound(?permalink))
-        ?permalink_CB_AGENT_URL a ?permalink_TYPE; k2:permalink ?permalink
-        filter(?permalink_TYPE in (cb:Person,cb:Organization))
+        filter(bound(?permalink)) ?permalink_CB_AGENT_URL a ?permalink_TYPE; k2:permalink ?permalink filter(?permalink_TYPE in (cb:Person,cb:Organization))
       }
 
     CONSTRUCT doesn't work with named graphs, so any graph is ignored.
@@ -661,10 +690,10 @@ DESCRIPTION
     For TARQL CONSTRUCT:
 
       construct {
-        <Insert Patterns>
+        # insert patterns
       }
       where {
-        <Generated Binds>
+        # generated binds
       }
 
     TARQL cannot make a lookup in existing RDF data, so macro names matching

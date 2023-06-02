@@ -25,7 +25,7 @@ where {
     bind(if(bound(?linkedinUrl),"linkedin",?UNDEF) as ?linkedin_IF_BOUND)
     bind(iri(concat("cb/agent/",?uuid,"/id/",?linkedin_IF_BOUND)) as ?cb_agent_uuid_id_linkedin_IF_BOUND_URL)
   }
-  ?graph_cb_organizations_uuid_URL {?_s_ ?_p_ ?_o_}};
+  graph ?graph_cb_organizations_uuid_URL {?_s_ ?_p_ ?_o_}};
 insert {graph ?graph_cb_organizations_uuid_URL {
   ?cb_agent_uuid_URL a org:Organization;
     org:hasSite ?cb_agent_uuid_address_IF_BOUND_URL;
