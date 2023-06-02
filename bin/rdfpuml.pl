@@ -1,14 +1,5 @@
 #!perl -w
 
-# Author: vladimir.alexiev@ontotext.com
-# 20160210 1.0
-# - support blank nodes
-# - support new puml "hidden" links that can sometimes help the layout: http://plantuml.com/class-diagram#layout
-# 20170825 1.1
-# - fix unicode of "decorative arrows"
-# 20180225
-# - support arrow color (named or hex)
-
 # #!/bin/sh
 # #! -*-perl-*-
 # eval 'exec perl -x -wS "$( cygpath -w "$0" )" ${1+"$@"}'
@@ -16,7 +7,9 @@
 
 use strict;
 # use Encode; # decode_utf8
-use Carp::Always; # http://search.cpan.org/~ferreira/Carp-Always-0.13/lib/Carp/Always.pm
+# use Carp::Always; # http://search.cpan.org/~ferreira/Carp-Always-0.13/lib/Carp/Always.pm
+  # https://github.com/VladimirAlexiev/rdf2rml/issues/2
+  # It'll show a stack trace on every die but who needs this for a missing file?
   # stronger than $Carp::Verbose = 1;
 use RDF::Trine;
 use RDF::Query;
