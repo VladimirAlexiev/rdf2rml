@@ -2,7 +2,6 @@
 title: rdfpuml - Convert RDF to PlantUML diagrams
 author: Vladimir Alexiev, Ontotext Corp
 date: 2023-06-02
-maxwidth: 100%
 ---
 
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->

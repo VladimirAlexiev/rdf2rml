@@ -98,11 +98,11 @@ but they either focus on large graphs (where the details are not easily visible)
 or the visualization results are not satisfactory,
 or manual tweaking of the diagrams is required.
 
-We describe a tool *rdfpuml* that makes true diagrams directly from Turtle examples using PlantUML and GraphViz.
-Diagram readability is of prime concern, and rdfpuml introduces various diagram control mechanisms using triples in the ~puml:~ namespace.
-Special attention is paid to inlining and visualizing various Reification mechanisms (described with PRV).
-We give examples from Getty CONA, Getty Museum, AAC (mappings of museum data to CIDOC CRM),
-Multisensor (NIF and FrameNet), EHRI (Holocaust Research into Jewish social networks), Duraspace (Portland Common Data Model for holding metadata in institutional repositories), Video annotation.
+- *rdfpuml* makes true diagrams directly from Turtle examples using PlantUML and GraphViz.
+  Diagram readability is of prime concern, and rdfpuml introduces various diagram control mechanisms using triples in the ~puml:~ namespace.
+  Special attention is paid to inlining and visualizing various Reification mechanisms (described with PRV).
+  We give examples from Getty CONA, Getty Museum, AAC (mappings of museum data to CIDOC CRM),
+  Multisensor (NIF and FrameNet), EHRI (Holocaust Research into Jewish social networks), Duraspace (Portland Common Data Model for holding metadata in institutional repositories), Video annotation.
 
 If the example instances include embedded source field names, they can describe a mapping precisely.
 I've implemented a few more tools to generate transformations:
