@@ -1,14 +1,4 @@
-POD    = $(wildcard *.pod)
-HTML   = $(patsubst %.pod, %.html, $(POD))
-TXT    = $(patsubst %.pod, %.txt,  $(POD))
+all: rdf2rml.html rdfpuml.html rdf2sparql.html
 
-all : $(HTML) $(TXT) clean
-
-%.html : %.pod
-	pod2html.bat $< >$@
-
-%.txt : %.pod
-	pod2text.bat $< >$@
-
-clean : pod2htmd.tmp
-	rm $<
+%.html : %.md
+	pandoc --standalone --wrap=preserve $< -o $@

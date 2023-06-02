@@ -1,757 +1,712 @@
-<?xml version="1.0" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
-<title>rdf2sparql - Convert RDF examples to SPARQL queries (Ontotext Refine or TARQL)</title>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<link rev="made" href="mailto:" />
-</head>
-
-<body>
-
-
-
-<ul id="index">
-  <li><a href="#NAME">NAME</a></li>
-  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
-  <li><a href="#DESCRIPTION">DESCRIPTION</a>
-    <ul>
-      <li><a href="#Options">Options</a></li>
-      <li><a href="#Prerequisites">Prerequisites</a></li>
-      <li><a href="#Process">Process</a></li>
-      <li><a href="#RDF-Model-Examples">RDF Model Examples</a>
-        <ul>
-          <li><a href="#RDF-Model:-CrunchBase-Organizations">RDF Model: CrunchBase Organizations</a></li>
-          <li><a href="#RDF-Model:-Customers">RDF Model: Customers</a></li>
-          <li><a href="#RDF-Model:-Annual-Revenue-by-Permalink">RDF Model: Annual Revenue by Permalink</a></li>
-          <li><a href="#RDF-Model:-Grant-Spending-Categories">RDF Model: Grant Spending Categories</a></li>
-          <li><a href="#Filtering">Filtering</a></li>
-          <li><a href="#Conditional-Nodes">Conditional Nodes</a></li>
-          <li><a href="#RDF-Model-Concatenation">RDF Model Concatenation</a></li>
-        </ul>
-      </li>
-      <li><a href="#Preprocessor-Macros">Preprocessor Macros</a>
-        <ul>
-          <li><a href="#Macro-Best-Practices">Macro Best Practices</a></li>
-        </ul>
-      </li>
-      <li><a href="#Generated-SPARQL">Generated SPARQL</a>
-        <ul>
-          <li><a href="#Insert-Patterns:-CrunchBase-Organizations">Insert Patterns: CrunchBase Organizations</a></li>
-          <li><a href="#Generated-Pre-Binds">Generated Pre-Binds</a></li>
-          <li><a href="#Generated-Binds:-CrunchBase-Organizations">Generated Binds: CrunchBase Organizations</a></li>
-          <li><a href="#Generated-Binds:-Customers">Generated Binds: Customers</a></li>
-          <li><a href="#Generated-Update:-Annual-Revenue-by-Permalink">Generated Update: Annual Revenue by Permalink</a></li>
-          <li><a href="#Generated-Binds:-Spending-Categories">Generated Binds: Spending Categories</a></li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li><a href="#SEE-ALSO">SEE ALSO</a></li>
-  <li><a href="#AUTHOR">AUTHOR</a></li>
-</ul>
-
-<h1 id="NAME">NAME</h1>
-
-<p>rdf2sparql - Convert RDF examples to SPARQL queries (Ontotext Refine or TARQL)</p>
-
-<h1 id="SYNOPSIS">SYNOPSIS</h1>
-
-<pre><code>  perl rdf2sparql.pl             model.ttl | cat common.h prefixes.rq - | cpp -P -C -nostdinc - &gt; model-ontorefine.ru
-  perl rdf2sparql.pl --construct model.ttl | cat common.h prefixes.rq - | cpp -P -C -nostdinc - &gt; model-ontorefine.rq
-  perl rdf2sparql.pl --tarql     model.ttl | cat common.h prefixes.rq - | cpp -P -C -nostdinc - &gt; model.tarql
-
-  Options:
-    --construct: generate CONSTRUCT query (default is UPDATE; applies only for Ontotext Refine)
-    --tarql: generate for TARQL (default is Ontotext Refine)</code></pre>
-
-<h1 id="DESCRIPTION">DESCRIPTION</h1>
-
-<p><b>rdf2sparql</b> converts an RDF example with embedded CSV/TSV column names into a SPARQL query for:</p>
-
-<ul>
-
-<li><p><a href="https://tarql.github.io/">TARQL</a>, which is a is a high-speed streaming convertor. It&#39;s a SPARQL processor for tabular data, where each column <b>col</b> of each row is exposed as a variable binding <b>?col</b> (punctuation is replaced with underscores). See <a href="https://github.com/tarql/tarql/releases">releases</a>, tested with version 1.2-SNAPSHOT, BUILD_DATE: 2017-12-07T13:33:10Z</p>
-
-</li>
-<li><p><a href="https://graphdb.ontotext.com/documentation/standard/loading-data-using-ontorefine.html">Ontotext Refine</a>, which is an adaptation of OpenRefine for working with RDF data. It exposes a table as a virtual SPARQL endpoint (special service), where each column <b>col</b> of each row is exposed as a variable binding <b>?c_col</b>.</p>
-
-</li>
-</ul>
-
-<p>We&#39;ve used TARQL to convert large files (over 10M rows, 145 columns) using complex TARQL queries (480 lines: 110 prefixes, 33 nodes, 250 triples, 110 binds).</p>
-
-<p>We&#39;ve used Ontotext Refine for large and complex CSV files, e.g. CrunchBase consisting of 18 tables, total 10.5M rows, 318 columns; for both initial loading and data updates. See <a href="https://gist.github.com/VladimirAlexiev/d5d67feb002dbcfa6b3d4c3dd59b52da">CrunchBase Challenge</a> for details. (Please note that we use a customized script that works with named graph per <b>table row</b>, not per <b>table</b>.)</p>
-
-<h2 id="Options">Options</h2>
-
-<p>The default is to generate a SPARQL UPDATE query for Ontotext Refine. It encloses Ontotext Refine variables in a <b>service</b> clause that accesses the Ontotext Refine virtual SPARQL endpoint (see later about the handling of <b>PROJECT_ID</b>):</p>
-
-<pre><code>  service &lt;rdf-mapper:ontorefine:PROJECT_ID&gt; {
-    ...
-  }</code></pre>
-
-<p>This has several benefits:</p>
-
-<ul>
-
-<li><p>It ingests directly to GraphDB (without producing an intermediate RDF file), which is faster.</p>
-
-</li>
-<li><p>It overwrites a named graph, so it can be used for ingest or update. The first model line must look like this where <b>graph</b> is the graph to overwrite (in angle brackets). You can use parenthesized variable name(s) to compute the graph at runtime (see second example from Crunchbase):</p>
-
-<pre><code>  # GRAPH &lt;constant_graph&gt;
-  # GRAPH &lt;graph/organizations/(uuid)&gt;</code></pre>
-
-</li>
-<li><p>You can match real triples in GraphDB, which can be used to resolve entities (&quot;strings&quot; to &quot;things&quot;). A macro name that ends in &quot;URL&quot; (case-insensitively), e.g. <b>CB_AGENT_URL(permalink)</b>, causes the respective patterns to be interpreted outside of the Ontotext Refine virtual service.</p>
-
-</li>
-<li><p>You can split several multi-valued columns (using the <b>SPLIT</b> macro) to produce multiple bindings, without fear of Cartesian Product (i.e. their values will not be combined with each other).</p>
-
-</li>
-</ul>
-
-<p>Option <b>-construct</b> generates a SPARQL CONSTRUCT query. You can still match GraphDB triples and use multiple multi-valued columns. Any <b>GRAPH</b> comment is ignored, because CONSTRUCT does not support graphs (see <a href="https://github.com/w3c/sparql-12/issues/31">SPARQL 1.2 issue 31</a>). The query produces intermediate RDF data that must be saved before loading to GraphDB, then you can use the <a href="https://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph Store Protocol</a> to overwrite the respective graph.</p>
-
-<p>Option <b>--tarql</b> generates a TARQL CONSTRUCT query. You should put each multivalued column (together with the primary key column) in a distinct model to avoid Cartesian Product. You cannot match RDF data in a repository (see <a href="https://github.com/tarql/tarql/issues/25">TARQL issue 25</a>), use UPDATE (see <a href="https://github.com/tarql/tarql/issues/67">TARQL issue 67</a>), nor use graphs (see <a href="https://github.com/tarql/tarql/issues/98">TARQL issue 98</a>).</p>
-
-<p>You can abbreviate options. All these are equivalent:</p>
-
-<pre><code>  --c --co --construct
-  --t --ta --tarql</code></pre>
-
-<h2 id="Prerequisites">Prerequisites</h2>
-
-<ul>
-
-<li><p>Ontotext Refine or TARQL as described above</p>
-
-</li>
-<li><p>Perl. Tested with 5.32.1 (Straberry Perl on Cygwin)</p>
-
-</li>
-<li><p>Working CPP preprocessor. Tested with 8.3.0 (x86_64-posix-seh, Built by strawberryperl.com project)</p>
-
-</li>
-<li><p>A file (eg <b>prefixes.rq</b>) that defines all common prefixes and is prepended to the generated query</p>
-
-</li>
-<li><p>A file (eg <b>common.h</b>) that defines CPP preprocessor macros</p>
-
-</li>
-</ul>
-
-<h2 id="Process">Process</h2>
-
-<ul>
-
-<li><p>Make a <b>rdfpuml</b> semantic model for a single table, using field names as parenthesized embeds. See below for several examples.</p>
-
-</li>
-<li><p>Run the script followed by the CPP proprocessor as shown above and save the SPARQL script</p>
-
-</li>
-</ul>
-
-<p>To process CSV/TSV with the generated SPARQL scripts, use the following steps.</p>
-
-<p>Process with <b>model.tarql</b> (variants for CSV or TSV):</p>
-
-<pre><code>  tarql    model.tarql data.csv &gt; data.ttl
-  tarql -t model.tarql data.tsv &gt; data.ttl</code></pre>
-
-<p>Process <b>model-ontorefine.ru</b> with Ontotext Refine:</p>
-
-<ul>
-
-<li><p>Create a project, load tabular data</p>
-
-</li>
-<li><p>Optionally, perform data cleaning</p>
-
-</li>
-<li><p>Make sure you have a working GraphDB repository to receive the data</p>
-
-</li>
-<li><p>Paste the generated SPARQL into GraphDB workbench and adjust <b>PROJECT_ID</b> to the actual Refine virtual endpoint and project ID</p>
-
-</li>
-<li><p>Run the query to update the data in GraphDB</p>
-
-</li>
-</ul>
-
-<p>If you save the Ontotext Refine cleaning script (operations JSON), you can automate the Ontotext Refine process by using the <a href="https://github.com/Ontotext-AD/ontorefine-client">ontorefine-client</a> CLI (it will become part of the Ontotext Refine distribution). We have scripts to automate the following steps:</p>
-
-<ul>
-
-<li><p>Create an Ontotext Refine project and capture its project ID</p>
-
-</li>
-<li><p>Load tabular data into the Ontotext Refine project</p>
-
-</li>
-<li><p>Optionally, apply an OpenRefine data cleaning script</p>
-
-</li>
-<li><p>Replace the placeholder <b>PROJECT_ID</b> in the generated query with the actual ID</p>
-
-</li>
-<li><p>Run the query against a GraphDB repository: it will replace the defined named graph</p>
-
-</li>
-<li><p>Delete the Ontotext Refine project</p>
-
-</li>
-</ul>
-
-<h2 id="RDF-Model-Examples">RDF Model Examples</h2>
-
-<p><b>rdfpuml</b> models are RDF Turtle examples that use parenthesized column names in URLs (&quot;templated URLs&quot;) and in attribute values (which can be datatyped).</p>
-
-<p>They are valid Turtle, with the exception that RDF tools issue warnings about templated literals such as <b>&quot;(some_date)&quot;^^xsd:date</b> or <b>&quot;(amount)&quot;^^xsd:decimal</b>.</p>
-
-<p>You can also use &quot;functions&quot; that you need to implement as CPP macros. <b>rdf2sparql</b> takes care to unroll the functions into BINDs, adding suffixes to variable names.</p>
-
-<p>See also <b>test/customer</b> for a separate example (includes a Makefile).</p>
-
-<h3 id="RDF-Model:-CrunchBase-Organizations">RDF Model: CrunchBase Organizations</h3>
-
-<p>The first example is a simple semantic representation of CrunchBase&#39;s <b>organizations.csv</b> table:</p>
-
-<pre><code>  # GRAPH &lt;graph/organizations/(uuid)&gt;
-  
-  &lt;cb/agent/(uuid)&gt; a cb:Organization;
-    cb:uuid &#39;(uuid)&#39;;
-    cb:name &#39;(name)&#39;;
-    cb:permalink &#39;(permalink)&#39;;
-    cb:url &#39;(cb_url)&#39;^^xsd:anyURI;
-    cb:rank &#39;(rank)&#39;^^xsd:integer;
-    cb:createdAt &#39;FIXDATE(created_at)&#39;^^xsd:dateTime;
-    cb:updatedAt &#39;FIXDATE(updated_at)&#39;^^xsd:dateTime;
-    cb:legalName &#39;(legal_name)&#39;;
-    cb:organizationRole &lt;cb/organizationRole/URLIFY(SPLIT_COMMA(roles))&gt;;
-    cb:domain &#39;(domain)&#39;;
-    cb:homepageUrl &#39;(homepage_url)&#39;^^xsd:anyURI;
-    cb:countryCode &#39;(country_code)&#39;;
-    cb:stateCode &#39;(state_code)&#39;;
-    cb:region &#39;(region)&#39;;
-    cb:city &#39;(city)&#39;;
-    cb:address &#39;(address)&#39;;
-    cb:postalCode &#39;(postal_code)&#39;;
-    cb:status &lt;cb/organizationStatus/URLIFY(status)&gt;;
-    cb:shortDescription &#39;(short_description)&#39;;
-    cb:industry &lt;cb/industry/URLIFY(SPLIT_COMMA(category_list))&gt;;
-    cb:numFundingRounds &#39;(num_funding_rounds)&#39;^^xsd:integer;
-    cb:totalFundingUsd &#39;(total_funding_usd)&#39;^^xsd:decimal;
-    cb:totalFunding &#39;(total_funding)&#39;^^xsd:decimal;
-    cb:totalFundingCurrencyCode &#39;(total_funding_currency_code)&#39;;
-    cb:foundedOn &#39;FIXDATE(founded_on)&#39;^^xsd:dateTime;
-    cb:lastFundingOn &#39;FIXDATE(last_funding_on)&#39;^^xsd:dateTime;
-    cb:closedOn &#39;FIXDATE(closed_on)&#39;^^xsd:dateTime;
-    cb:employeeCount &lt;cb/employeeCount/URLIFY(IFNOTNULL(employee_count))&gt;;
-    cb:email &#39;(email)&#39;;
-    cb:phone &#39;(phone)&#39;;
-    cb:facebookUrl &#39;(facebook_url)&#39;^^xsd:anyURI;
-    cb:linkedinUrl &#39;(linkedin_url)&#39;^^xsd:anyURI;
-    cb:twitterUrl &#39;(twitter_url)&#39;^^xsd:anyURI;
-    cb:logoUrl &#39;(logo_url)&#39;^^xsd:anyURI;
-    cb:alias &#39;(alias1)&#39;;
-    cb:alias &#39;(alias2)&#39;;
-    cb:alias &#39;(alias3)&#39;;
-    cb:primaryRole &lt;cb/organizationRole/URLIFY(primary_role)&gt;;
-    cb:numExits &#39;(num_exits)&#39;^^xsd:integer.</code></pre>
-
-<p>It puts all fields in one table and uses macros like URLIFY to make a phrase usable in URL, IFNOTNULL to discard parasitic phrases, SPLIT to split a multi-valued field into multiple bindings, etc. It uses a GRAPH comment to specify which named graph should be overwritten: it is computed dynamically from the &quot;uuid&quot; field.</p>
-
-<h3 id="RDF-Model:-Customers">RDF Model: Customers</h3>
-
-<p>Next is an example about persons (customers).</p>
-
-<pre><code>    &lt;person/(customer_id)&gt; a :NaturalPerson;
-      :id &quot;(customer_id)&quot;;
-      :firstName &quot;(first_name)&quot;;
-      :lastName &quot;(last_name)&quot;;
-      :gender &quot;(gender)&quot;;
-      :religion &quot;(religion)&quot;;
-      :hasAddress &lt;person/(customer_id)/address&gt;;
-      :hasEvent  &lt;person/(customer_id)/birth&gt;;
-      :hasEvent  &lt;person/(customer_id)/education&gt;.
-
-    &lt;person/(customer_id)/address&gt; a :Address;
-      :houseNumber &quot;(house_number)&quot;;
-      :street &quot;(street)&quot;;
-      :postalCode &quot;(postal_code)&quot;;
-      :city &lt;country/(country)/city/URLIFY(city)&gt;;
-      :country &lt;country/(country)&gt;.
-
-    &lt;country/(country)/city/URLIFY(city)&gt; a :City; :country &lt;country/(country)&gt;; :name &quot;(city)&quot;.
-
-    &lt;country/(country)&gt; a :Country; :code &quot;(country)&quot;.
-
-    &lt;person/(customer_id)/birth&gt; a :BirthEvent; :hasDate &quot;(date_of_birth)&quot;^^xsd:date.
-
-    &lt;person/(customer_id)/education&gt; a :EducationEvent;
-      :hasDate &quot;(enrollment_date)&quot;^^xsd:date;
-      :university &lt;university/URLIFY(university)&gt;;
-      :degree &lt;degree/URLIFY(education_degree)&gt;.</code></pre>
-
-<p>It dispatches fields to several nodes and uses only one macro (<b>URLIFY</b>).</p>
-
-<h3 id="RDF-Model:-Annual-Revenue-by-Permalink">RDF Model: Annual Revenue by Permalink</h3>
-
-<p>Next is a very simple model that adds a field &quot;revenue&quot; to CrunchBase organizations, based on two columns: &quot;permalink&quot; identifying the company, and &quot;revenue&quot; being a decimal</p>
-
-<pre><code>  # GRAPH &lt;extra/(permalink)/revenue&gt;
-  &lt;CB_AGENT_URL(permalink)&gt; ex:annualRevenueUsd &quot;(revenue)&quot;^^xsd:decimal.</code></pre>
-
-<p>The revenue is keyed by &quot;permalink&quot;. But CrunchBase organizations use a different URL (primary key) based on &quot;uuid&quot;. So we use the <b>CB_AGENT_URL()</b> macro to lookup by permalink.</p>
-
-<h3 id="RDF-Model:-Grant-Spending-Categories">RDF Model: Grant Spending Categories</h3>
-
-<p>This model of NIH grants assumes that an application (with primary key <b>APPLICATION_ID</b>) can have multiple spending categories (field <b>NIH_SPENDING_CATS</b>) separated by semi-colon. To avoid Cartesian Product with TARQL, we put this one field in a separate model file:</p>
-
-<pre><code>  &lt;grant/(APPLICATION_ID)&gt; gr:spendingCategory &lt;spendingCategory/URLIFY(SPLIT_SEMI(NIH_SPENDING_CATS))&gt;.
-
-  &lt;spendingCategory/URLIFY(SPLIT_SEMI(NIH_SPENDING_CATS))&gt;
-    a skos:Concept ;
-    skos:inScheme  &lt;spendingCategory&gt; ;
-    skos:prefLabel &quot;SPLIT_SEMI(NIH_SPENDING_CATS)&quot;.
-
-  &lt;spendingCategory&gt;
-    a skos:ConceptScheme ;
-    skos:prefLabel  &quot;NIH spending category&quot;.</code></pre>
-
-<p>Note that in addition to making the <b>gr:spendingCategory</b> relation, this model also emits extra nodes. This will lead to redundant triples: each individual <b>skos:Concept</b> is duplicated as many times as it&#39;s used in grants, and <b>skos:ConceptScheme</b> is duplicated as the total number of grants.</p>
-
-<p>This does not lead to conflicts since the same triple cannot be recorded multiple times in an RDF repository. However, if this data redundancy is bothersome, you can normalize the Concept data to a separate file of unique concepts; and move the ConceptScheme into a separate &quot;constant&quot; RDF file that doesn&#39;t need to be processed with <b>rdf2sparql</b>.</p>
-
-<h3 id="Filtering">Filtering</h3>
-
-<p>You can use the field <b>puml:label</b> to specify a filter condition to be applied for each row. For example, let&#39;s say we have a table of some content (web pages) that needs to be published as RDF only when the field <b>status</b> is &quot;published&quot;. Use the following model:</p>
-
-<pre><code>  &lt;(url)&gt; a s:WebPage;
-    puml:label &quot;filter(?status=&#39;published&#39;)&quot;; ## RDFize only &quot;published&quot; pages
-    s:name     &quot;(title)&quot;;
-    s:author   &quot;(author)&quot;;
-    s:date     &quot;(date)&quot;^^xsd:date.</code></pre>
-
-<p><b>puml:label</b> is printed out in red, and its contents are added at the end of the query. For Ontotext Refine, this will look like:</p>
-
-<pre><code>  delete ...
-  insert ...
-  where {
-    service &lt;rdf-mapper:ontorefine:PROJECT_ID&gt; {
-      ...
-      filter(?status=&#39;published&#39;)
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Vladimir Alexiev, Ontotext Corp" />
+  <meta name="dcterms.date" content="2023-06-02" />
+  <title>rdf2sparql - Convert RDF examples to SPARQL queries (Ontotext Refine or TARQL)</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
     }
-  }</code></pre>
+    body {
+      margin: 0 auto;
+      max-width: 100%;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">rdf2sparql - Convert RDF examples to SPARQL queries (Ontotext Refine or TARQL)</h1>
+<p class="author">Vladimir Alexiev, Ontotext Corp</p>
+<p class="date">2023-06-02</p>
+</header>
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+<p><strong>Table of Contents</strong></p>
+<ul>
+<li><a href="#synopsis">SYNOPSIS</a></li>
+<li><a href="#description">DESCRIPTION</a>
+<ul>
+<li><a href="#options">Options</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#process">Process</a></li>
+<li><a href="#rdf-model-examples">RDF Model Examples</a>
+<ul>
+<li><a href="#rdf-model-crunchbase-organizations">RDF Model: Crunchbase Organizations</a></li>
+<li><a href="#rdf-model-customers">RDF Model: Customers</a></li>
+<li><a href="#rdf-model-annual-revenue-by-permalink">RDF Model: Annual Revenue by Permalink</a></li>
+<li><a href="#rdf-model-grant-spending-categories">RDF Model: Grant Spending Categories</a></li>
+<li><a href="#filtering">Filtering</a></li>
+<li><a href="#conditional-nodes">Conditional Nodes</a></li>
+<li><a href="#rdf-model-concatenation">RDF Model Concatenation</a></li>
+</ul></li>
+<li><a href="#preprocessor-macros">Preprocessor Macros</a>
+<ul>
+<li><a href="#macro-best-practices">Macro Best Practices</a></li>
+</ul></li>
+<li><a href="#generated-sparql">Generated SPARQL</a>
+<ul>
+<li><a href="#insert-patterns-crunchbase-organizations">Insert Patterns: Crunchbase Organizations</a></li>
+<li><a href="#generated-pre-binds">Generated Pre-Binds</a></li>
+<li><a href="#generated-binds-crunchbase-organizations">Generated Binds: Crunchbase Organizations</a></li>
+<li><a href="#generated-binds-customers">Generated Binds: Customers</a></li>
+<li><a href="#generated-update-annual-revenue-by-permalink">Generated Update: Annual Revenue by Permalink</a></li>
+<li><a href="#generated-binds-spending-categories">Generated Binds: Spending Categories</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#see-also">SEE ALSO</a></li>
+</ul>
+<!-- markdown-toc end -->
+<h1 id="synopsis">SYNOPSIS</h1>
+<pre><code>perl rdf2sparql.pl             model.ttl | cat common.h prefixes.rq - | cpp -P -C -nostdinc - &gt; model-ontorefine.ru
+perl rdf2sparql.pl --construct model.ttl | cat common.h prefixes.rq - | cpp -P -C -nostdinc - &gt; model-ontorefine.rq
+perl rdf2sparql.pl --tarql     model.ttl | cat common.h prefixes.rq - | cpp -P -C -nostdinc - &gt; model.tarql
 
-<p>For TARQL, this will look like:</p>
+Options:
+  --construct: generate CONSTRUCT query (default is UPDATE; applies only for Ontotext Refine)
+  --tarql: generate for TARQL (default is Ontotext Refine)</code></pre>
+<h1 id="description">DESCRIPTION</h1>
+<p><strong>rdf2sparql</strong> converts an RDF example with embedded CSV/TSV column names into a SPARQL query for:</p>
+<ul>
+<li><a href="https://tarql.github.io/">TARQL</a>, which is a is a high-speed streaming convertor. It’s a SPARQL processor for tabular data, where each column <code>col</code> of each row is exposed as a variable binding <code>?col</code> (punctuation is replaced with underscores). See <a href="https://github.com/tarql/tarql/releases">releases</a>, tested with version 1.2-SNAPSHOT, BUILD_DATE: 2017-12-07T13:33:10Z</li>
+<li><a href="https://graphdb.ontotext.com/documentation/standard/loading-data-using-ontorefine.html">Ontotext Refine</a>, which is an adaptation of OpenRefine for working with RDF data. It exposes a table as a virtual SPARQL endpoint (special service), where each column <code>col</code> of each row is exposed as a variable binding <code>?c_col</code>.</li>
+</ul>
+<p>We’ve used TARQL to convert large files (over 10M rows, 145 columns) using complex TARQL queries (480 lines: 110 prefixes, 33 nodes, 250 triples, 110 binds).</p>
+<p>We’ve used Ontotext Refine for large and complex CSV files,
+e.g. Crunchbase consisting of 18 tables, total 10.5M rows, 318 columns;
+for both initial loading and data updates.
+See <a href="https://gist.github.com/VladimirAlexiev/d5d67feb002dbcfa6b3d4c3dd59b52da">Crunchbase Challenge</a> and section “Global Filtering” for details.
+(Please note that we use named graph per <strong>table row</strong>, not per <strong>table</strong>.)</p>
+<h2 id="options">Options</h2>
+<p>The default is to generate a SPARQL UPDATE query for Ontotext Refine.
+It encloses Ontotext Refine variables in a <code>service</code> clause that accesses the Ontotext Refine virtual SPARQL endpoint
+(see later about the handling of <code>PROJECT_ID</code>):</p>
+<pre><code>service &lt;rdf-mapper:ontorefine:PROJECT_ID&gt; {
+  ...
+}</code></pre>
+<p>This has several benefits:</p>
+<ul>
+<li><p>It ingests directly to GraphDB (without producing an intermediate RDF file), which is faster.</p></li>
+<li><p>It overwrites a named graph, so it can be used for ingest or update. The first model line must look like this to specify the graph to overwrite (in angle brackets). You can use parenthesized variable name(s) to compute the graph at runtime (see the second example, which is from the Crunchbase transformation):</p>
+<pre><code>  # GRAPH &lt;constant_graph&gt;
+  # GRAPH &lt;graph/organizations/(uuid)&gt;</code></pre></li>
+<li><p>You can match real triples in GraphDB, which can be used to resolve entities (“strings” to “things”). A macro name that ends in “URL” (case-insensitively), e.g. <code>CB_AGENT_URL(permalink)</code>, causes the respective patterns to be interpreted outside of the Ontotext Refine virtual service.</p></li>
+<li><p>You can split several multi-valued columns (using the <code>SPLIT</code> macro) to produce multiple bindings, without fear of Cartesian Product (i.e. their values will not be combined with each other).</p></li>
+</ul>
+<p>Option <code>-construct</code> generates a SPARQL CONSTRUCT query.
+You can still match GraphDB triples and use multiple multi-valued columns.
+Any <code>GRAPH</code> comment is ignored, because CONSTRUCT does not support graphs
+(see <a href="https://github.com/w3c/sparql-12/issues/31">SPARQL 1.2 issue 31</a>).
+The query produces intermediate RDF data that must be saved before loading to GraphDB,
+then you can use the <a href="https://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph Store Protocol</a>
+to overwrite the respective graph.</p>
+<p>Option <code>--tarql</code> generates a TARQL CONSTRUCT query.
+You should put each multivalued column (together with the primary key column)
+in a distinct model to avoid Cartesian Product.
+You cannot
+match RDF data in a repository (see <a href="https://github.com/tarql/tarql/issues/25">TARQL issue 25</a>),
+use UPDATE (see <a href="https://github.com/tarql/tarql/issues/67">TARQL issue 67</a>),
+nor use graphs (see <a href="https://github.com/tarql/tarql/issues/98">TARQL issue 98</a>).</p>
+<p>You can abbreviate options. All these are equivalent:</p>
+<pre><code>--c --co --construct
+--t --ta --tarql</code></pre>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>Ontotext Refine or TARQL as described above</li>
+<li>Perl. Tested with 5.32.1 (Straberry Perl on Cygwin)</li>
+<li>Working CPP preprocessor. Tested with 8.3.0 (x86_64-posix-seh, Built by strawberryperl.com project)</li>
+<li>A file (eg <code>prefixes.rq</code>) that defines all common prefixes and is prepended to the generated query</li>
+<li>A file (eg <code>common.h</code>) that defines CPP preprocessor macros</li>
+</ul>
+<h2 id="process">Process</h2>
+<ul>
+<li>Make a <strong>rdfpuml</strong> semantic model for a single table, using field names as parenthesized embeds. See below for several examples.</li>
+<li>Run the script followed by the CPP proprocessor as shown above and save the SPARQL script</li>
+</ul>
+<p>To process CSV/TSV with the generated SPARQL scripts, use the following steps.</p>
+<p>Process with <code>model.tarql</code> (variants for CSV or TSV):</p>
+<pre><code>tarql    model.tarql data.csv &gt; data.ttl
+tarql -t model.tarql data.tsv &gt; data.ttl</code></pre>
+<p>Process <code>model-ontorefine.ru</code> with Ontotext Refine:</p>
+<ul>
+<li>Create a project, load tabular data</li>
+<li>Optionally, perform data cleaning</li>
+<li>Make sure you have a working GraphDB repository to receive the data</li>
+<li>Paste the generated SPARQL into GraphDB workbench and adjust <code>PROJECT_ID</code> to the actual Refine virtual endpoint and project ID</li>
+<li>Run the query to update the data in GraphDB</li>
+</ul>
+<p>If you save the Ontotext Refine cleaning script (operations JSON),
+you can automate the Ontotext Refine process by using the
+<a href="https://github.com/Ontotext-AD/ontorefine-client">ontorefine-client</a> CLI
+(it will become part of the Ontotext Refine distribution).
+We have scripts to automate the following steps:</p>
+<ul>
+<li>Create an Ontotext Refine project and capture its project ID</li>
+<li>Load tabular data into the Ontotext Refine project</li>
+<li>Optionally, apply an OpenRefine data cleaning script</li>
+<li>Replace the placeholder <code>PROJECT_ID</code> in the generated query with the actual ID</li>
+<li>Run the query against a GraphDB repository: it will replace the defined named graph</li>
+<li>Delete the Ontotext Refine project</li>
+</ul>
+<h2 id="rdf-model-examples">RDF Model Examples</h2>
+<p><strong>rdfpuml</strong> models are RDF Turtle examples that use parenthesized column names
+in URLs (“templated URLs”) and in attribute values (which can be datatyped).</p>
+<p>They are valid Turtle, with the exception that RDF tools issue warnings
+about templated literals such as <code>"(some_date)"^^xsd:date</code> or <code>"(amount)"^^xsd:decimal</code>.</p>
+<p>You can also use “functions” that you need to implement as CPP macros.
+<strong>rdf2sparql</strong> takes care to unroll the functions into BINDs, adding suffixes to variable names.</p>
+<p>See also <code>test/customer</code> for a separate example (includes a <code>Makefile</code>).</p>
+<h3 id="rdf-model-crunchbase-organizations">RDF Model: Crunchbase Organizations</h3>
+<p>The first example is a simple semantic representation of Crunchbase’s <code>organizations.csv</code> table:</p>
+<pre><code># GRAPH &lt;graph/organizations/(uuid)&gt;
 
-<pre><code>  construct ...
-  where {
+&lt;cb/agent/(uuid)&gt; a cb:Organization;
+  cb:uuid &#39;(uuid)&#39;;
+  cb:name &#39;(name)&#39;;
+  cb:permalink &#39;(permalink)&#39;;
+  cb:url &#39;(cb_url)&#39;^^xsd:anyURI;
+  cb:rank &#39;(rank)&#39;^^xsd:integer;
+  cb:createdAt &#39;FIXDATE(created_at)&#39;^^xsd:dateTime;
+  cb:updatedAt &#39;FIXDATE(updated_at)&#39;^^xsd:dateTime;
+  cb:legalName &#39;(legal_name)&#39;;
+  cb:organizationRole &lt;cb/organizationRole/URLIFY(SPLIT_COMMA(roles))&gt;;
+  cb:domain &#39;(domain)&#39;;
+  cb:homepageUrl &#39;(homepage_url)&#39;^^xsd:anyURI;
+  cb:countryCode &#39;(country_code)&#39;;
+  cb:stateCode &#39;(state_code)&#39;;
+  cb:region &#39;(region)&#39;;
+  cb:city &#39;(city)&#39;;
+  cb:address &#39;(address)&#39;;
+  cb:postalCode &#39;(postal_code)&#39;;
+  cb:status &lt;cb/organizationStatus/URLIFY(status)&gt;;
+  cb:shortDescription &#39;(short_description)&#39;;
+  cb:industry &lt;cb/industry/URLIFY(SPLIT_COMMA(category_list))&gt;;
+  cb:numFundingRounds &#39;(num_funding_rounds)&#39;^^xsd:integer;
+  cb:totalFundingUsd &#39;(total_funding_usd)&#39;^^xsd:decimal;
+  cb:totalFunding &#39;(total_funding)&#39;^^xsd:decimal;
+  cb:totalFundingCurrencyCode &#39;(total_funding_currency_code)&#39;;
+  cb:foundedOn &#39;FIXDATE(founded_on)&#39;^^xsd:dateTime;
+  cb:lastFundingOn &#39;FIXDATE(last_funding_on)&#39;^^xsd:dateTime;
+  cb:closedOn &#39;FIXDATE(closed_on)&#39;^^xsd:dateTime;
+  cb:employeeCount &lt;cb/employeeCount/URLIFY(IFNOTNULL(employee_count))&gt;;
+  cb:email &#39;(email)&#39;;
+  cb:phone &#39;(phone)&#39;;
+  cb:facebookUrl &#39;(facebook_url)&#39;^^xsd:anyURI;
+  cb:linkedinUrl &#39;(linkedin_url)&#39;^^xsd:anyURI;
+  cb:twitterUrl &#39;(twitter_url)&#39;^^xsd:anyURI;
+  cb:logoUrl &#39;(logo_url)&#39;^^xsd:anyURI;
+  cb:alias &#39;(alias1)&#39;;
+  cb:alias &#39;(alias2)&#39;;
+  cb:alias &#39;(alias3)&#39;;
+  cb:primaryRole &lt;cb/organizationRole/URLIFY(primary_role)&gt;;
+  cb:numExits &#39;(num_exits)&#39;^^xsd:integer.</code></pre>
+<p>It puts all fields in one table and uses macros like
+URLIFY to make a phrase usable in URL,
+IFNOTNULL to discard parasitic phrases,
+SPLIT to split a multi-valued field into multiple bindings, etc.
+It uses a GRAPH comment to specify which named graph should be overwritten: it is computed dynamically from the “uuid” field.</p>
+<h3 id="rdf-model-customers">RDF Model: Customers</h3>
+<p>Next is an example about persons (customers).</p>
+<pre><code>&lt;person/(customer_id)&gt; a :NaturalPerson;
+  :id &quot;(customer_id)&quot;;
+  :firstName &quot;(first_name)&quot;;
+  :lastName &quot;(last_name)&quot;;
+  :gender &quot;(gender)&quot;;
+  :religion &quot;(religion)&quot;;
+  :hasAddress &lt;person/(customer_id)/address&gt;;
+  :hasEvent  &lt;person/(customer_id)/birth&gt;;
+  :hasEvent  &lt;person/(customer_id)/education&gt;.
+
+&lt;person/(customer_id)/address&gt; a :Address;
+  :houseNumber &quot;(house_number)&quot;;
+  :street &quot;(street)&quot;;
+  :postalCode &quot;(postal_code)&quot;;
+  :city &lt;country/(country)/city/URLIFY(city)&gt;;
+  :country &lt;country/(country)&gt;.
+
+&lt;country/(country)/city/URLIFY(city)&gt; a :City; :country &lt;country/(country)&gt;; :name &quot;(city)&quot;.
+
+&lt;country/(country)&gt; a :Country; :code &quot;(country)&quot;.
+
+&lt;person/(customer_id)/birth&gt; a :BirthEvent; :hasDate &quot;(date_of_birth)&quot;^^xsd:date.
+
+&lt;person/(customer_id)/education&gt; a :EducationEvent;
+  :hasDate &quot;(enrollment_date)&quot;^^xsd:date;
+  :university &lt;university/URLIFY(university)&gt;;
+  :degree &lt;degree/URLIFY(education_degree)&gt;.</code></pre>
+<p>It dispatches fields to several nodes and uses only one macro (<code>URLIFY</code>).</p>
+<h3 id="rdf-model-annual-revenue-by-permalink">RDF Model: Annual Revenue by Permalink</h3>
+<p>Next is a very simple model that adds a field “revenue” to Crunchbase organizations,
+based on two columns: “permalink” identifying the company, and “revenue” being a decimal</p>
+<pre><code># GRAPH &lt;extra/(permalink)/revenue&gt;
+&lt;CB_AGENT_URL(permalink)&gt; ex:annualRevenueUsd &quot;(revenue)&quot;^^xsd:decimal.</code></pre>
+<p>The revenue is keyed by “permalink”.
+But Crunchbase organizations use a different URL (primary key) based on “uuid”.
+So we use the <code>CB_AGENT_URL()</code> macro to lookup by permalink.</p>
+<h3 id="rdf-model-grant-spending-categories">RDF Model: Grant Spending Categories</h3>
+<p>This model of NIH grants assumes that an application (with primary key <code>APPLICATION_ID</code>)
+can have multiple spending categories (field <code>NIH_SPENDING_CATS</code>) separated by semi-colon.
+To avoid Cartesian Product with TARQL, we put this one field in a separate model file:</p>
+<pre><code>&lt;grant/(APPLICATION_ID)&gt; gr:spendingCategory &lt;spendingCategory/URLIFY(SPLIT_SEMI(NIH_SPENDING_CATS))&gt;.
+
+&lt;spendingCategory/URLIFY(SPLIT_SEMI(NIH_SPENDING_CATS))&gt;
+  a skos:Concept ;
+  skos:inScheme  &lt;spendingCategory&gt; ;
+  skos:prefLabel &quot;SPLIT_SEMI(NIH_SPENDING_CATS)&quot;.
+
+&lt;spendingCategory&gt;
+  a skos:ConceptScheme ;
+  skos:prefLabel  &quot;NIH spending category&quot;.</code></pre>
+<p>Note that in addition to making the <code>gr:spendingCategory</code> relation, this model also emits extra nodes.
+This will lead to redundant triples:
+each individual <code>skos:Concept</code> is duplicated as many times as it’s used in grants,
+and <code>skos:ConceptScheme</code> is duplicated as the total number of grants.</p>
+<p>This does not lead to conflicts since the same triple cannot be recorded multiple times in an RDF repository.
+However, if this data redundancy is bothersome, you can
+normalize the Concept data to a separate file of unique concepts;
+and move the ConceptScheme into a separate “constant” RDF file
+that doesn’t need to be processed with <strong>rdf2sparql</strong>.</p>
+<h3 id="filtering">Filtering</h3>
+<p>You can use the field <code>puml:label</code> to specify a filter condition to be applied for each row.
+For example, let’s say we have a table of some content (web pages)
+that needs to be published as RDF only when the field <code>status</code> is “published”.
+Use the following model:</p>
+<pre><code>&lt;(url)&gt; a s:WebPage;
+  puml:label &quot;filter(?status=&#39;published&#39;)&quot;; ## RDFize only &quot;published&quot; pages
+  s:name     &quot;(title)&quot;;
+  s:author   &quot;(author)&quot;;
+  s:date     &quot;(date)&quot;^^xsd:date.</code></pre>
+<p><code>puml:label</code> is printed out in red, and its contents are added at the end of the query.
+For Ontotext Refine, this will look like:</p>
+<pre><code>delete ...
+insert ...
+where {
+  service &lt;rdf-mapper:ontorefine:PROJECT_ID&gt; {
     ...
     filter(?status=&#39;published&#39;)
-  }</code></pre>
-
-<p>See the folder <b>filter-content</b> for a complete test case using TARQL. There are 3 rows in <b>content.csv</b> but the first one doesn&#39;t have <b>status=&#39;published&#39;</b>, so it&#39;s omitted from <b>content-result.ttl</b>.</p>
-
+  }
+}</code></pre>
+<p>For TARQL, this will look like:</p>
+<pre><code>construct ...
+where {
+  ...
+  filter(?status=&#39;published&#39;)
+}</code></pre>
+<p>See the folder <code>test/filter-content</code> for a complete test case using TARQL.
+There are 3 rows in <code>content.csv</code> but the first one doesn’t have <code>status='published'</code>,
+so it’s omitted from <code>content-result.ttl</code>.</p>
 <p>Notes:</p>
-
 <ul>
-
-<li><p>Don&#39;t forget to write out <b>filter(...)</b> and use question marks to identify the variables (fields).</p>
-
-</li>
-<li><p>Since the model Turtle is not really parsed, you should write the <b>puml:label</b> on one line, trailed by semicolon or dot (and optional trailing comment).</p>
-
-</li>
-<li><p>You can use triple quotes or apostrophes to surround the content.</p>
-
-</li>
-<li><p>The same field is used in <b>rdf2rml</b> with a completely different meaning: as a SQL table or query. I know, this is an ugly hack.</p>
-
-</li>
+<li>Don’t forget to write out <code>filter(...)</code> and use question marks to identify the variables (fields).</li>
+<li>Since the model Turtle is not really parsed, you should write the <code>puml:label</code> on one line, trailed by semicolon or dot (and optional trailing comment).</li>
+<li>You can use triple quotes or apostrophes to surround the content.</li>
+<li>The same field is used in <code>rdf2rml</code> with a completely different meaning: as a SQL table or query. I know, this is an ugly hack.</li>
 </ul>
+<h3 id="conditional-nodes">Conditional Nodes</h3>
+<p>Consider the following more advanced model, which maps Crunchbase data to the
+<a href="https://github.com/euBusinessGraph/eubg-data/tree/master/model">euBusinessGraph model</a> (see <a href="https://docs.google.com/document/d/1dhMOTlIOC6dOK_jksJRX0CB-GIRoiYY6fWtCnZArUhU/edit">google doc</a>),
+which itself uses W3C Org, ADMS, Schema.org, etc.</p>
+<p><img src="../test/conditional-node/organizations.png" /></p>
+<p>See the <code>test/conditional-node</code>
+in particular the model `<code>test/conditional-node/organizations.ttl</code>
+and the key parts:</p>
+<pre><code>&lt;cb/agent/(uuid)&gt; a org:Organization;
+  org:hasSite &lt;cb/agent/(uuid)/_IF_BOUND(address,country_code,region,postal_code,street)&gt;;
+  adms:identifier
+    &lt;cb/agent/(uuid)/id/_IF_BOUND(facebook,facebookUrl)&gt;,
+    &lt;cb/agent/(uuid)/id/_IF_BOUND(linkedin,linkedinUrl)&gt; .
+&lt;cb/agent/(uuid)/_IF_BOUND(address,country_code,region,postal_code,street)&gt; a locn:Address;
+  ...
+&lt;cb/agent/(uuid)/id/_IF_BOUND(facebook,facebookUrl)&gt; a adms:Identifier;
+  ...
+&lt;cb/agent/(uuid)/id/_IF_BOUND(linkedin,linkedinUrl)&gt; a adms:Identifier;</code></pre>
+<p>We emit some of the fields in structured nodes.
+But we want to create these nodes only if the fields are bound,
+i.e. we don’t want to create parasitic “empty” nodes with no business payload.
+For this we create the <code>_IF_BOUND(...)</code> macro, see <code>common.h</code>.
+It uses techniques from this <a href="https://stackoverflow.com/a/65997567/20282178">StackOverflow answer</a>
+about iteration over <code>__VA_ARGS_</code> variadic extra arguments (in this case, limited to 5).</p>
+<pre><code>#define __IF_BOUND_1(x,y1)             bind(if(bound(?y1),#x,?UNDEF) as ?x##_IF_BOUND)
+#define __IF_BOUND_2(x,y1,y2)          bind(if(bound(?y1)||bound(?y2),#x,?UNDEF) as ?x##_IF_BOUND)
+#define __IF_BOUND_3(x,y1,y2,y3)       bind(if(bound(?y1)||bound(?y2)||bound(?y3),#x,?UNDEF) as ?x##_IF_BOUND)
+#define __IF_BOUND_4(x,y1,y2,y3,y4)    bind(if(bound(?y1)||bound(?y2)||bound(?y3)||bound(?y4),#x,?UNDEF) as ?x##_IF_BOUND)
+#define __IF_BOUND_5(x,y1,y2,y3,y4,y5) bind(if(bound(?y1)||bound(?y2)||bound(?y3)||bound(?y4)||bound(?y5),#x,?UNDEF) as ?x##_IF_BOUND)
 
-<h3 id="Conditional-Nodes">Conditional Nodes</h3>
-
-<p>Consider the following more advanced model, which maps Crunchbase data to the <a href="https://github.com/euBusinessGraph/eubg-data/tree/master/model">euBusinessGraph model</a> (see <a href="https://docs.google.com/document/d/1dhMOTlIOC6dOK_jksJRX0CB-GIRoiYY6fWtCnZArUhU/edit">google doc</a>), which itself uses W3C Org, ADMS, Schema.org, etc.</p>
-
-
-<img src="../test/conditional-node/organizations.png">
-
-<p>See the test <a>conditional-node</a>, in particular the model is <a>organizations.ttl</a> and the key parts look like this:</p>
-
-<pre><code>   &lt;cb/agent/(uuid)&gt; a org:Organization;
-     org:hasSite &lt;cb/agent/(uuid)/_IF_BOUND(address,country_code,region,postal_code,street)&gt;;
-     adms:identifier
-       &lt;cb/agent/(uuid)/id/_IF_BOUND(facebook,facebookUrl)&gt;,
-       &lt;cb/agent/(uuid)/id/_IF_BOUND(linkedin,linkedinUrl)&gt; .
-   &lt;cb/agent/(uuid)/_IF_BOUND(address,country_code,region,postal_code,street)&gt; a locn:Address;
-     ...
-   &lt;cb/agent/(uuid)/id/_IF_BOUND(facebook,facebookUrl)&gt; a adms:Identifier;
-     ...
-   &lt;cb/agent/(uuid)/id/_IF_BOUND(linkedin,linkedinUrl)&gt; a adms:Identifier;</code></pre>
-
-<p>We emit some of the fields in structured nodes. But we want to create these nodes only if the fields are bound, i.e. we don&#39;t want to create parasitic &quot;empty&quot; nodes with no business payload. For this we create the <b>_IF_BOUND(...)</b> macro, see <a>common.h</a>. It uses techniques from this <a href="https://stackoverflow.com/a/65997567/20282178">StackOverflow answer</a> about iteration over <code>__VA_ARGS_</code> variadic extra arguments (in this case, limited to 5).</p>
-
-<pre><code>  #define __IF_BOUND_1(x,y1)             bind(if(bound(?y1),#x,?UNDEF) as ?x##_IF_BOUND)
-  #define __IF_BOUND_2(x,y1,y2)          bind(if(bound(?y1)||bound(?y2),#x,?UNDEF) as ?x##_IF_BOUND)
-  #define __IF_BOUND_3(x,y1,y2,y3)       bind(if(bound(?y1)||bound(?y2)||bound(?y3),#x,?UNDEF) as ?x##_IF_BOUND)
-  #define __IF_BOUND_4(x,y1,y2,y3,y4)    bind(if(bound(?y1)||bound(?y2)||bound(?y3)||bound(?y4),#x,?UNDEF) as ?x##_IF_BOUND)
-  #define __IF_BOUND_5(x,y1,y2,y3,y4,y5) bind(if(bound(?y1)||bound(?y2)||bound(?y3)||bound(?y4)||bound(?y5),#x,?UNDEF) as ?x##_IF_BOUND)
-
-  #define __IF_BOUND_PICK_N(_1,_2,_3,_4,_5,N,...) __IF_BOUND_##N
-  #define _IF_BOUND(x,...) __IF_BOUND_PICK_N(__VA_ARGS__,5,4,3,2,1)(x,__VA_ARGS__)</code></pre>
-
+#define __IF_BOUND_PICK_N(_1,_2,_3,_4,_5,N,...) __IF_BOUND_##N
+#define _IF_BOUND(x,...) __IF_BOUND_PICK_N(__VA_ARGS__,5,4,3,2,1)(x,__VA_ARGS__)</code></pre>
 <p>Several things are going on here:</p>
-
 <ul>
-
-<li><p>First we define 5 macros that handle the cases of 1..5 extra arguments.</p>
-
-</li>
-<li><p>They use a disjunction of <b>bound()</b> to check if any of the extra arguments are bound.</p>
-
-</li>
-<li><p>If so, the &quot;stringify&quot; macro operator <b>#</b> returns the &quot;string representation&quot; of the first argument.</p>
-
-</li>
-<li><p>Otherwise, the <b>?UNDEF</b> variable is returned, which by convention is never bound.</p>
-
-</li>
-<li><p>Be careful about the output variable: we need to write out the question mark before it (since the same name <b>x</b> is also used in its stringified form), and we follow it by one underscore <b>_</b> even though the macro name itself starts with underscore.</p>
-
-</li>
-<li><p>The macro <b>__IF_BOUND_PICK_N</b> uses the <b>##</b> token concatenation operator to pick one of the 5 macros.</p>
-
-</li>
-<li><p>The final macro <b>_IF_BOUND</b> calls <b>__IF_BOUND_PICK_N</b> with a carefully crafted tail sequence <b>5,4,3,2,1</b>. Eg if <b>__VA_ARGS__</b> has 4 elements, they will be eaten up by the argumentss <b>_1,_2,_3,_4</b>. The constant <b>5</b> will be eaten by the argument <b>_5</b>, so the argument <b>N</b> will be bound to the next constant <b>4</b>, so the macro <b>__IF_BOUND_4</b> will be picked.</p>
-
-</li>
-<li><p>After the correct macro is picked, all arguments <b>(x,__VA_ARGS__)</b> are passed to it. So you see that in the implementation of <b>_IF_BOUND</b>, <b>__VA_ARGS__</b> is used twice: first to pick the correct numbered macro, then to provide it with arguments.</p>
-
-</li>
+<li>First we define 5 macros that handle the cases of 1..5 extra arguments.</li>
+<li>They use a disjunction of <code>bound()</code> to check if any of the extra arguments are bound.</li>
+<li>If so, the “stringify” macro operator <code>#</code> returns the “string representation” of the first argument.</li>
+<li>Otherwise, the <code>?UNDEF</code> variable is returned, which by convention is never bound.</li>
+<li>Be careful about the output variable: we need to write out the question mark before it (since the same name <code>x</code> is also used in its stringified form), and we follow it by one underscore <code>_</code> even though the macro name itself starts with underscore.</li>
+<li>The macro <code>__IF_BOUND_PICK_N</code> uses the <code>##</code> token concatenation operator to pick one of the 5 macros.</li>
+<li>The final macro <code>_IF_BOUND</code> calls <code>__IF_BOUND_PICK_N</code> with a carefully crafted tail sequence <code>5,4,3,2,1</code>. Eg if <code>__VA_ARGS__</code> has 4 elements, they will be eaten up by the argumentss <code>_1,_2,_3,_4</code>. The constant <code>5</code> will be eaten by the argument <code>_5</code>, so the argument <code>N</code> will be bound to the next constant <code>4</code>, so the macro <code>__IF_BOUND_4</code> will be picked.</li>
+<li>After the correct macro is picked, all arguments <code>(x,__VA_ARGS__)</code> are passed to it. So you see that in the implementation of <code>_IF_BOUND</code>, <code>__VA_ARGS__</code> is used twice: first to pick the correct numbered macro, then to provide it with arguments.</li>
 </ul>
+<p>When <code>rdf2sparql</code> sees a macro name starting with underscore <code>_</code>, it leaves its arguments alone (doesn’t add a question mark before the first argument), and doesn’t prepend an extra underscore before the macro name.</p>
+<p>This results in the following binds in the <code>where</code> clause:</p>
+<pre><code>bind(if(bound(?country_code)||bound(?region)||bound(?postal_code)||bound(?street),&quot;address&quot;,?UNDEF) as ?address_IF_BOUND)
+bind(iri(concat(&quot;cb/agent/&quot;,?uuid,&quot;/&quot;,?address_IF_BOUND)) as ?cb_agent_uuid_address_IF_BOUND_URL)
+bind(if(bound(?facebookUrl),&quot;facebook&quot;,?UNDEF) as ?facebook_IF_BOUND)
+bind(iri(concat(&quot;cb/agent/&quot;,?uuid,&quot;/id/&quot;,?facebook_IF_BOUND)) as ?cb_agent_uuid_id_facebook_IF_BOUND_URL)
+bind(if(bound(?linkedinUrl),&quot;linkedin&quot;,?UNDEF) as ?linkedin_IF_BOUND)
+bind(iri(concat(&quot;cb/agent/&quot;,?uuid,&quot;/id/&quot;,?linkedin_IF_BOUND)) as ?cb_agent_uuid_id_linkedin_IF_BOUND_URL)</code></pre>
+<p>To explain the first two lines:
+first we check if any of the “business payload” fields are bound, and return the string “address” or UNDEF.
+Then we concat this string with some constant and variabel parts to form a URL.
+If the string is unbound, then the URL will be unbound.
+Then any triple using the unbound URL will <strong>not</strong> be emitted, avoiding the creation of a parasitic node.</p>
+<h3 id="rdf-model-concatenation">RDF Model Concatenation</h3>
+<p><strong>rdf2sparql</strong> works on a single CSV table at a time (<strong>rdf2rml</strong> does not have this limitation).
+Furthermore, as seen above, you may need to split a model
+into “component” sub-models to handle multi-valued columns.
+Making diagrams from such tiny models is not very useful.</p>
+<p>Luckily, concatenating several Turtle files is also a valid Turtle.
+So you can make an overall model by concatenating the component models.</p>
+<p>Here is a Makefile from a recent project.
+It specifies how to make the overall <code>nih-model.ttl</code>, and then the diagram <code>nih-model.png</code> from it.</p>
+<pre><code>all: nih-model.ttl nih-model.png prefixes.rq
 
-<p>When <b>rdf2sparql</b> sees a macro name starting with underscore <b>_</b>, it leaves its arguments alone (doesn&#39;t add a question mark before the first argument), and doesn&#39;t prepend an extra underscore before the macro name.</p>
+nih-model.ttl: prefixes.ttl nih-activityType.ttl nih-applicationType.ttl nih-department.ttl \
+  nih-funder.ttl nih-funding.ttl nih-fundingMechanism.ttl nih-grant.ttl nih-linkClinicalStudy.ttl \
+  nih-linkPatent.ttl nih-linkPublication.ttl nih-principalInvestigator.ttl nih-researcher.ttl \
+  nih-spendingCategory.ttl nih-studySection.ttl puml.ttl
+        cat $^ | perl nih-model-rename.pl &gt; $@
 
-<p>This results in the following binds in the <b>where</b> clause:</p>
+%.png: %.ttl
+        rdfpuml.bat $*.ttl
+        puml.bat $*.puml
+        rm $*.puml
 
-<pre><code>    bind(if(bound(?country_code)||bound(?region)||bound(?postal_code)||bound(?street),&quot;address&quot;,?UNDEF) as ?address_IF_BOUND)
-    bind(iri(concat(&quot;cb/agent/&quot;,?uuid,&quot;/&quot;,?address_IF_BOUND)) as ?cb_agent_uuid_address_IF_BOUND_URL)
-    bind(if(bound(?facebookUrl),&quot;facebook&quot;,?UNDEF) as ?facebook_IF_BOUND)
-    bind(iri(concat(&quot;cb/agent/&quot;,?uuid,&quot;/id/&quot;,?facebook_IF_BOUND)) as ?cb_agent_uuid_id_facebook_IF_BOUND_URL)
-    bind(if(bound(?linkedinUrl),&quot;linkedin&quot;,?UNDEF) as ?linkedin_IF_BOUND)
-    bind(iri(concat(&quot;cb/agent/&quot;,?uuid,&quot;/id/&quot;,?linkedin_IF_BOUND)) as ?cb_agent_uuid_id_linkedin_IF_BOUND_URL)</code></pre>
+prefixes.rq: prefixes.ttl
+        perl -pe &#39;m{###} and last; s{^@}{}; s{ *\.$$}{}&#39; $^ &gt; $@</code></pre>
+<p>It uses a shared <code>prefixes.ttl</code> and its SPARQL variant <code>prefixes.rq</code>
+that is prepended to any generated query.
+To ensure connectivity of the overall model, a script like <code>nih-model-rename.pl</code> renames
+URLs in object position (“foreign keys”)
+to respective URLs in subject position (“primary keys”), e.g.:</p>
+<pre><code>#!perl -p
 
-<p>To explain the first two lines: first we check if any of the &quot;business payload&quot; fields are bound, and return the string &quot;address&quot; or UNDEF. Then we concat this string with some constant and variabel parts to form a URL. If the string is unbound, then the URL will be unbound. Then any triple using the unbound URL will <b>not</b> be emitted, avoiding the creation of a parasitic node.</p>
-
-<h3 id="RDF-Model-Concatenation">RDF Model Concatenation</h3>
-
-<p><b>rdf2sparql</b> works on a single CSV table at a time (<b>rdf2rml</b> does not have this limitation). Furthermore, as seen above, you may need to split a model into &quot;component&quot; sub-models to handle multi-valued columns. Making diagrams from such tiny models is not very useful.</p>
-
-<p>Luckily, concatenating several Turtle files is also a valid Turtle. So you can make an overall model by concatenating the component models.</p>
-
-<p>Here is a Makefile from a recent project. It specifies how to make the overall <b>nih-model.ttl</b>, and then the diagram <b>nih-model.png</b> from it.</p>
-
-<pre><code>  all: nih-model.ttl nih-model.png prefixes.rq
-
-  nih-model.ttl: prefixes.ttl nih-activityType.ttl nih-applicationType.ttl nih-department.ttl \
-    nih-funder.ttl nih-funding.ttl nih-fundingMechanism.ttl nih-grant.ttl nih-linkClinicalStudy.ttl \
-    nih-linkPatent.ttl nih-linkPublication.ttl nih-principalInvestigator.ttl nih-researcher.ttl \
-    nih-spendingCategory.ttl nih-studySection.ttl puml.ttl
-          cat $^ | perl nih-model-rename.pl &gt; $@
-
-  %.png: %.ttl
-          rdfpuml.bat $*.ttl
-          puml.bat $*.puml
-          rm $*.puml
-
-  prefixes.rq: prefixes.ttl
-          perl -pe &#39;m{###} and last; s{^@}{}; s{ *\.$$}{}&#39; $^ &gt; $@</code></pre>
-
-<p>It uses a shared <b>prefixes.ttl</b> and its SPARQL variant <b>prefixes.rq</b> that is prepended to any generated query. To ensure connectivity of the overall model, a script like <b>nih-model-rename.pl</b> renames URLs in object position (&quot;foreign keys&quot;) to respective URLs in subject position (&quot;primary keys&quot;), e.g.:</p>
-
-<pre><code>  #!perl -p
-
-  s{\Q/FIND_CONTACT(PI_IDS)}{/(PI_ID)};
-  s{\Q/OMIT_CONTACT(PI_IDS)}{/(PI_ID)};
-  s{\Q/FUNDER(FUNDING_ICs)}{/(FUNDING_IC)};</code></pre>
-
-<h2 id="Preprocessor-Macros">Preprocessor Macros</h2>
-
-<p>In addition to plain CSV field names you can also use macros (&quot;function calls&quot;) that are unrolled by the script into a series of binds using suffixed variable names. Below are some examples we&#39;ve used in various projects. These are implemented as CPP preprocessor macro definitions (e.g. in file <b>common.h</b>):</p>
-
+s{\Q/FIND_CONTACT(PI_IDS)}{/(PI_ID)};
+s{\Q/OMIT_CONTACT(PI_IDS)}{/(PI_ID)};
+s{\Q/FUNDER(FUNDING_ICs)}{/(FUNDING_IC)};</code></pre>
+<h2 id="preprocessor-macros">Preprocessor Macros</h2>
+<p>In addition to plain CSV field names you can also use macros (“function calls”)
+that are unrolled by the script into a series of binds using suffixed variable names.
+Below are some examples we’ve used in various projects.
+These are implemented as CPP preprocessor macro definitions (e.g. in file <code>common.h</code>):</p>
 <ul>
-
 <li><p>make a name usable in URL. Replace punctuations with one underscore; remove leading/trailing punctuation. Support all Unicode alphanumeric chars. Convert alphabetical to lowercase.</p>
-
-<pre><code>  #define URLIFY1(x)      lcase(replace(replace(replace(x, &quot;[^\\p{L}0-9]&quot;, &quot;_&quot;), &quot;_+&quot;, &quot;_&quot;), &quot;^_|_$&quot;, &quot;&quot;))</code></pre>
-
-</li>
+<pre><code>  #define URLIFY1(x)      lcase(replace(replace(replace(x, &quot;[^\\p{L}0-9]&quot;, &quot;_&quot;), &quot;_+&quot;, &quot;_&quot;), &quot;^_|_$&quot;, &quot;&quot;))</code></pre></li>
 <li><p>same but also generates a bind to x_URLIFY</p>
-
-<pre><code>  #define URLIFY(x)       bind(URLIFY1(x) as x##_URLIFY)</code></pre>
-
-</li>
-<li><p>replace space with &quot;T&quot; in a timestamp to conform to xsd:dateTime format</p>
-
-<pre><code>  #define FIXDATETIME(x)  bind(replace(x,&#39; &#39;,&#39;T&#39;) as x##_FIXDATETIME)</code></pre>
-
-</li>
+<pre><code>  #define URLIFY(x)       bind(URLIFY1(x) as x##_URLIFY)</code></pre></li>
+<li><p>replace space with “T” in a timestamp to conform to xsd:dateTime format</p>
+<pre><code>  #define FIXDATETIME(x)  bind(replace(x,&#39; &#39;,&#39;T&#39;) as x##_FIXDATETIME)</code></pre></li>
 <li><p>convert dates from mm/dd/yyyy to yyyy-mm-dd to conform to xsd:date forma</p>
-
-<pre><code>  #define FIXDATE(x)      bind(replace(x,&quot;(..)/(..)/(....)&quot;,&quot;$3-$1-$2&quot;) as x##_FIXDATE)</code></pre>
-
-</li>
-<li><p>lookup a CrunchBase permalink to find the respective agent (organization or person) URL</p>
-
-<pre><code>  #define CB_AGENT_URL(x) filter(bound(x)) x##_CB_AGENT_URL a x##_TYPE; k2:permalink x filter(x##_TYPE in (cb:Person,cb:Organization))</code></pre>
-
-</li>
-<li><p>filter out parasitic values (&quot;other&quot;,&quot;not provided&quot;,&quot;unknown&quot;)</p>
-
-<pre><code>  #define IFNOTNULL(x)    bind(if(x in (&quot;other&quot;,&quot;not provided&quot;,&quot;unknown&quot;),?UNDEF,x) as x##_IFNOTNULL)</code></pre>
-
-</li>
+<pre><code>  #define FIXDATE(x)      bind(replace(x,&quot;(..)/(..)/(....)&quot;,&quot;$3-$1-$2&quot;) as x##_FIXDATE)</code></pre></li>
+<li><p>lookup a Crunchbase permalink to find the respective agent (organization or person) URL</p>
+<pre><code>  #define CB_AGENT_URL(x) filter(bound(x)) x##_CB_AGENT_URL a x##_TYPE; cb:permalink x filter(x##_TYPE in (cb:Person,cb:Organization))</code></pre></li>
+<li><p>filter out parasitic values (“other”,“not provided”,“unknown”)</p>
+<pre><code>  #define IFNOTNULL(x)    bind(if(x in (&quot;other&quot;,&quot;not provided&quot;,&quot;unknown&quot;),?UNDEF,x) as x##_IFNOTNULL)</code></pre></li>
 <li><p>filter out x values that are equal to ?y. Used to strip self-referential parent: CB category mentioning itself as category_group</p>
-
-<pre><code>  #define IFNOTSAME(x,y)  bind(if(x=y,?UNDEF,x) as x##_IFNOTSAME)</code></pre>
-
-</li>
-<li><p>assign the first bound variable amongst the <b>...</b> arguments to variable <b>x##_COALESCE</b></p>
-
-<pre><code>  #define COALESCE(x,...) bind(coalesce(__VA_ARGS__) as x##_COALESCE)</code></pre>
-
-</li>
-<li><p>map &quot;Yes&quot;,&quot;No&quot; to &quot;true&quot;,&quot;false&quot; respectively</p>
-
-<pre><code>  #define YESNO(x)        bind(if(x=&quot;Yes&quot;,true,false) as x##_YESNO)</code></pre>
-
-</li>
-<li><p>split <b>x</b> on a given delimiter <b>y</b> and produce multiple bindings in variable <b>z</b></p>
-
-<pre><code>  #define SPLIT(x,y,z)    z apf:strSplit (x y).</code></pre>
-
-</li>
+<pre><code>  #define IFNOTSAME(x,y)  bind(if(x=y,?UNDEF,x) as x##_IFNOTSAME)</code></pre></li>
+<li><p>assign the first bound variable amongst the <code>...</code> arguments to variable <code>x##_COALESCE</code></p>
+<pre><code>  #define COALESCE(x,...) bind(coalesce(__VA_ARGS__) as x##_COALESCE)</code></pre></li>
+<li><p>map “Yes”,“No” to “true”,“false” respectively</p>
+<pre><code>  #define YESNO(x)        bind(if(x=&quot;Yes&quot;,true,false) as x##_YESNO)</code></pre></li>
+<li><p>split <code>x</code> on a given delimiter <code>y</code> and produce multiple bindings in variable <code>z</code></p>
+<pre><code>  #define SPLIT(x,y,z)    z apf:strSplit (x y).</code></pre></li>
 <li><p>split on semicolon (optionally followed by space) and produce multiple bindings.</p>
-
-<pre><code>  #define SPLIT_SEMI(x)   SPLIT(x,&quot;; ?&quot;,x##_SPLIT_SEMI)</code></pre>
-
-</li>
+<pre><code>  #define SPLIT_SEMI(x)   SPLIT(x,&quot;; ?&quot;,x##_SPLIT_SEMI)</code></pre></li>
 <li><p>split on comma (optionally followed by space) and produce multiple bindings.</p>
-
-<pre><code>  #define SPLIT_COMMA(x)  SPLIT(x,&quot;, ?&quot;,x##_SPLIT_COMMA)</code></pre>
-
-</li>
-<li><p>find a numeric identifier element marked as &quot; (contact)&quot;</p>
-
-<pre><code>  #define FIND_CONTACT(x) bind(replace(x, &quot;.*?([0-9]+) \\(contact\\).*&quot;, &quot;$1&quot;) as x##_FIND_CONTACT)</code></pre>
-
-</li>
-<li><p>split on semicolon and return all numeric identifiers except the one marked as &quot; (contact)&quot;</p>
-
-<pre><code>  #define OMIT_CONTACT(x) SPLIT_SEMI(x)  bind(if(regex(x##_SPLIT_SEMI,&quot;^$| \\(contact\\)&quot;,?UNDEF,x##_SPLIT_SEMI) as x##_OMIT_CONTACT)</code></pre>
-
-</li>
-<li><p>split on backslash then return the first <b>:</b>-delimited part of each pair (funder code)</p>
-
-<pre><code>  #define FUNDER(x)       SPLIT(x,&quot;\\\\&quot;,x##_SPLIT_BACKSL) bind(replace(x##_SPLIT_BACKSL,&quot;(.+):(.+)&quot;,&quot;$1&quot;) as x##_FUNDER)</code></pre>
-
-</li>
-<li><p>return the second <b>:</b>-delimited part of each pair (amount). Must be used together with <b>FUNDER(x)</b> because it uses <b>x##_SPLIT_BACKSL</b> without binding it</p>
-
-<pre><code>  #define AMOUNT(x)                                        bind(replace(x##_SPLIT_BACKSL,&quot;(.+):(.+)&quot;,&quot;$2&quot;) as x##_AMOUNT)</code></pre>
-
-</li>
-<li><p>bind variable <b>?x_IF_BOUND</b> to the string &quot;x&quot; if any of the extra arguments is bound, else leave it unbound</p>
-
-<pre><code>  #define _IF_BOUND(x,...)  // see definition in section Conditional Nodes</code></pre>
-
-</li>
+<pre><code>  #define SPLIT_COMMA(x)  SPLIT(x,&quot;, ?&quot;,x##_SPLIT_COMMA)</code></pre></li>
+<li><p>find a numeric identifier element marked as ” (contact)”</p>
+<pre><code>  #define FIND_CONTACT(x) bind(replace(x, &quot;.*?([0-9]+) \\(contact\\).*&quot;, &quot;$1&quot;) as x##_FIND_CONTACT)</code></pre></li>
+<li><p>split on semicolon and return all numeric identifiers except the one marked as ” (contact)”</p>
+<pre><code>  #define OMIT_CONTACT(x) SPLIT_SEMI(x)  bind(if(regex(x##_SPLIT_SEMI,&quot;^$| \\(contact\\)&quot;,?UNDEF,x##_SPLIT_SEMI) as x##_OMIT_CONTACT)</code></pre></li>
+<li><p>split on backslash then return the first <code>:</code>-delimited part of each pair (funder code)</p>
+<pre><code>  #define FUNDER(x)       SPLIT(x,&quot;\\\\&quot;,x##_SPLIT_BACKSL) bind(replace(x##_SPLIT_BACKSL,&quot;(.+):(.+)&quot;,&quot;$1&quot;) as x##_FUNDER)</code></pre></li>
+<li><p>return the second <code>:</code>-delimited part of each pair (amount). Must be used together with <code>FUNDER(x)</code> because it uses <code>x##_SPLIT_BACKSL</code> without binding it</p>
+<pre><code>  #define AMOUNT(x)                                        bind(replace(x##_SPLIT_BACKSL,&quot;(.+):(.+)&quot;,&quot;$2&quot;) as x##_AMOUNT)</code></pre></li>
+<li><p>bind variable <code>?x_IF_BOUND</code> to the string “x” if any of the extra arguments is bound, else leave it unbound</p>
+<pre><code>  #define _IF_BOUND(x,...)  // see definition in section Conditional Nodes</code></pre></li>
 </ul>
-
-<p>Most of the macros implement binds (computations), but you can also use more specialized constructs. Notes about unusual constructs:</p>
-
+<p>Most of the macros implement binds (computations), but you can also use more specialized constructs.
+Notes about unusual constructs:</p>
 <ul>
-
-<li><p><b>URLIFY1(x)</b> uses the Unicode character class <b>\p{L}</b> for &quot;Letters&quot;</p>
-
-</li>
-<li><p><b>IFNOTNULL(x)</b> and <b>IFNOTSAME(x)</b> use a conditional and the variable <b>?UNDEF</b>, which by convention is never bound, so is undefined</p>
-
-</li>
-<li><p><b>##</b> concatenates two preprocessor tokens (a variable name and a constant string) to make a new variable name</p>
-
-</li>
-<li><p><b>CB_AGENT_URL(x)</b>: uses a real RDF lookup (outside of the Ontotext Refine virtual endpoint). Before that guards with <b>bound(x)</b> (otherwise an unbound variable will return all agents), then checks for respective <b>rdf:type</b></p>
-
-</li>
-<li><p><b>SPLIT(x)</b>: uses a &quot;magic predicate&quot; (<b>apf:strSplit</b> in TARQL or <b>spif:split</b> in Ontotext Refine) to split x and produce multiple bindings</p>
-
-</li>
-<li><p><b>COALESCE(x,...)</b> uses <b>__VA_ARGS__</b> to take any number of arguments (variadic arguments)</p>
-
-</li>
-<li><p><b>SPLIT(x,&quot;\\\\&quot;)</b> escapes backslash twice: once for a SPARQL string, and a second time for the regular expression taht it represents</p>
-
-</li>
-<li><p><b>_IF_BOUND(x,...)</b> is a complex macro. See its definition in section Conditional Nodes</p>
-
-</li>
+<li><code>URLIFY1(x)</code> uses the Unicode character class <code>\\p{L}</code> for “Letters”</li>
+<li><code>IFNOTNULL(x)</code> and <code>IFNOTSAME(x)</code> use a conditional and the variable <code>?UNDEF</code>, which by convention is never bound, so is undefined</li>
+<li><code>##</code> concatenates two preprocessor tokens (a variable name and a constant string) to make a new variable name</li>
+<li><code>CB_AGENT_URL(x)</code>: uses a real RDF lookup (outside of the Ontotext Refine virtual endpoint). Before that guards with <code>bound(x)</code> (otherwise an unbound variable will return all agents), then checks for respective <code>rdf:type</code></li>
+<li><code>SPLIT(x)</code>: uses a “magic predicate” (<code>apf:strSplit</code> in TARQL or <code>spif:split</code> in Ontotext Refine) to split x and produce multiple bindings</li>
+<li><code>COALESCE(x,...)</code> uses <code>__VA_ARGS__</code> to take any number of arguments (variadic arguments)</li>
+<li><code>SPLIT(x,"\\\\\\\\")</code> escapes backslash twice: once for a SPARQL string, and a second time for the regular expression taht it represents</li>
+<li><code>_IF_BOUND(x,...)</code> is a complex macro. See its definition in section Conditional Nodes</li>
 </ul>
-
-<h3 id="Macro-Best-Practices">Macro Best Practices</h3>
-
+<h3 id="macro-best-practices">Macro Best Practices</h3>
 <p>To save yourself some trouble, here are some hints for writing and using macros:</p>
-
 <ul>
-
-<li><p>Write builtin SPARQL functions in lowercase to avoid mistaking them for macro definitions</p>
-
-</li>
-<li><p>To implement <b>SPLIT</b>, use <b>apf:strSplit</b> in TARQL and <b>spif:split</b> in Ontotext Refine. (In a future version, this tool may take care of that difference.)</p>
-
-</li>
-<li><p><b>SPLIT</b> delimiters often use URL-unfriendly chars. So don&#39;t use &quot;raw&quot; SPLIT with 2 arguments, but define &quot;business&quot; versions of SPLIT as above.</p>
-
-</li>
-<li><p>If you want to put comments in models, use double hash <b>##</b> since the single hash is interpreted as a preprocessor directive (even if there is a space after it)</p>
-
-</li>
+<li>Write builtin SPARQL functions in lowercase to avoid mistaking them for macro definitions</li>
+<li>To implement <code>SPLIT</code>, use <code>apf:strSplit</code> in TARQL and <code>spif:split</code> in Ontotext Refine. (In a future version, this tool may take care of that difference.)</li>
+<li><code>SPLIT</code> delimiters often use URL-unfriendly chars. So don’t use “raw” SPLIT with 2 arguments, but define “business” versions of SPLIT as above.</li>
+<li>If you want to put comments in models, use double hash <code>##</code> since the single hash is interpreted as a preprocessor directive (even if there is a space after it)</li>
 </ul>
-
-<h2 id="Generated-SPARQL">Generated SPARQL</h2>
-
-<p>The overall structure of the generated SPARQL query depends on the options you used. Assume the example in section &quot;RDF Model: Annual Revenue by Permalink&quot;, which has 2 special features:</p>
-
+<h2 id="generated-sparql">Generated SPARQL</h2>
+<p>The overall structure of the generated SPARQL query depends on the options you used.
+Assume the example in section “RDF Model: Annual Revenue by Permalink”, which has 2 special features:</p>
 <ul>
-
-<li><p>The graph is computed from data: GRAPH &lt;extra/(permalink)/revenue&gt;</p>
-
-</li>
-<li><p>The subject is looked up in the RDF database (see the definition of the respective macro): &lt;CB_AGENT_URL(permalink)&gt; -&gt; filter(bound(?permalink)) ?permalink_CB_AGENT_URL a ?permalink_TYPE; k2:permalink ?permalink filter(?permalink_TYPE in (cb:Person,cb:Organization))</p>
-
-</li>
+<li><p>The graph is computed from data:</p>
+<pre><code>  GRAPH &lt;extra/(permalink)/revenue&gt;</code></pre></li>
+<li><p>The subject is looked up in the RDF database (see the definition of the respective macro):</p>
+<pre><code>  &lt;CB_AGENT_URL(permalink)&gt;
+  -&gt;
+  filter(bound(?permalink)) ?permalink_CB_AGENT_URL a ?permalink_TYPE; cb:permalink ?permalink filter(?permalink_TYPE in (cb:Person,cb:Organization))</code></pre></li>
 </ul>
-
 <p>For Ontotext Refine UPDATE:</p>
-
-<pre><code>  delete {graph ?extra_permalink_revenue_URL {?_s_ ?_p_ ?_o_}}
-  where {
-    service &lt;rdf-mapper:ontorefine:PROJECT_ID&gt; {
-      # generated binds
-    }
-    filter(bound(?permalink)) ?permalink_CB_AGENT_URL a ?permalink_TYPE; cb:permalink ?permalink filter(?permalink_TYPE in (cb:Person,cb:Organization))
-    graph ?extra_permalink_revenue_URL {?_s_ ?_p_ ?_o_}};
-  insert {graph ?extra_permalink_revenue_URL {
-    # insert patterns
-  }}
-  where {
-    service &lt;rdf-mapper:ontorefine:PROJECT_ID&gt; {
-      # generated binds
-    }
-  };</code></pre>
-
-<ul>
-
-<li><p>The graph URL pattern mentioned in the first model line is expanded to a calculated variable <b>?extra_permalink_revenue_URL</b>. In this case we use named graph per table <b>row</b>; if you use a constant URL then it would be graph per <b>table</b>. This way the query can handle both initial data loading and updates.</p>
-
-</li>
-<li><p>Crunchbase tables include <b>updated_at</b> timestamps in every row that we compare to a global timestamp (recorded in the database) and find only updated rows. This is an extra filter generated by a slightly more complex script (not published).</p>
-
-</li>
-<li><p><b>PROJECT_ID</b> is a placeholder that must be replaced with the actual Ontotext Refine project ID before running the query.</p>
-
-</li>
-<li><p>The script has a special case for macro names matching <b>*_URL</b>, that&#39;s why the <b>CB_AGENT_URL</b> pattern is evaluated outside of the Ontotext Refine virtual endpoint.</p>
-
-</li>
-<li><p>The wildcard pattern <b>where {... graph ?extra_permalink_revenue_URL {?_s_ ?_p_ ?_o_}}</b> selects all triples in the graph, to be deleted</p>
-
-</li>
-</ul>
-
-<p>For Ontotext Refine CONSTRUCT:</p>
-
-<pre><code>  construct {
-    # insert patterns
-  }
-  where {
-    service &lt;rdf-mapper:ontorefine:PROJECT_ID&gt; {
-      # generated binds
-    }
-    filter(bound(?permalink)) ?permalink_CB_AGENT_URL a ?permalink_TYPE; k2:permalink ?permalink filter(?permalink_TYPE in (cb:Person,cb:Organization))
-  }</code></pre>
-
-<p>CONSTRUCT doesn&#39;t work with named graphs, so any graph is ignored.</p>
-
-<p>For TARQL CONSTRUCT:</p>
-
-<pre><code>  construct {
-    # insert patterns
-  }
-  where {
+<pre><code>delete {graph ?extra_permalink_revenue_URL {?_s_ ?_p_ ?_o_}}
+where {
+  service &lt;rdf-mapper:ontorefine:PROJECT_ID&gt; {
     # generated binds
-  }</code></pre>
-
-<p>TARQL cannot make a lookup in existing RDF data, so macro names matching <b>*_URL</b> are not allowed.</p>
-
-<h3 id="Insert-Patterns:-CrunchBase-Organizations">Insert Patterns: CrunchBase Organizations</h3>
-
-<p>The script unrolls macro (function) calls into binds, adding uppercase suffixes to the variable names. In addition, it knows how to process templatized URLs (see var names with a <b>_URL</b> suffix) and how to process datatype attachments (adding the datatype as suffix). Compare the patterns below to the first model example:</p>
-
-<pre><code>  ?cb_agent_uuid_URL a cb:Organization;
-    cb:uuid ?uuid;
-    cb:name ?name;
-    cb:permalink ?permalink;
-    cb:url ?CB_URL;
-    cb:rank ?RANK;
-    cb:createdAt ?created_at_FIXDATETIME_xsd_dateTime;
-    cb:updatedAt ?updated_at_FIXDATETIME_xsd_dateTime;
-    cb:legalName ?legal_name;
-    cb:organizationRole ?cb_organizationRole_roles_SPLIT_URLIFY_URL;
-    cb:domain ?domain;
-    cb:homepageUrl ?homepage_url_xsd_anyURI;
-    cb:countryCode ?country_code;
-    cb:stateCode ?state_code;
-    cb:region ?region;
-    cb:city ?city;
-    cb:address ?address;
-    cb:postalCode ?postal_code;
-    cb:status ?cb_organizationStatus_status_URLIFY_URL;
-    cb:shortDescription ?short_description;
-    cb:industry ?cb_industry_category_list_SPLIT1_URLIFY_URL;
-    cb:numFundingRounds ?num_funding_rounds_xsd_integer;
-    cb:totalFundingUsd ?total_funding_usd_xsd_decimal;
-    cb:totalFunding ?total_funding_xsd_decimal;
-    cb:totalFundingCurrencyCode ?total_funding_currency_code;
-    cb:foundedOn ?founded_on_FIXDATE_xsd_date;
-    cb:lastFundingOn ?last_funding_on_FIXDATE_xsd_date;
-    cb:closedOn ?closed_on_FIXDATE_xsd_date;
-    cb:employeeCount ?cb_employeeCount_employee_count_IFNOTNULL_URLIFY_URL;
-    cb:email ?email;
-    cb:phone ?phone;
-    cb:facebookUrl ?facebook_url_xsd_anyURI;
-    cb:linkedinUrl ?linkedin_url_xsd_anyURI;
-    cb:twitterUrl ?twitter_url_xsd_anyURI;
-    cb:logoUrl ?logo_url_xsd_anyURI;
-    cb:alias ?alias1;
-    cb:alias ?alias2;
-    cb:alias ?alias3;
-    cb:primaryRole ?cb_organizationRole_primary_role_URLIFY_URL;
-    cb:numExits ?num_exits_xsd_integer.</code></pre>
-
-<h3 id="Generated-Pre-Binds">Generated Pre-Binds</h3>
-
+  }
+  filter(bound(?permalink)) ?permalink_CB_AGENT_URL a ?permalink_TYPE; cb:permalink ?permalink filter(?permalink_TYPE in (cb:Person,cb:Organization))
+  graph ?extra_permalink_revenue_URL {?_s_ ?_p_ ?_o_}};
+insert {graph ?extra_permalink_revenue_URL {
+  # insert patterns
+}}
+where {
+  service &lt;rdf-mapper:ontorefine:PROJECT_ID&gt; {
+    # generated binds
+  }
+};</code></pre>
+<ul>
+<li>The graph URL pattern mentioned in the first model line is expanded to a calculated variable <code>?extra_permalink_revenue_URL</code>. In this case we use named graph per <strong>table row</strong>; if you use a constant URL then it would be graph per <strong>table</strong>. This way the query can handle both initial data loading and updates.</li>
+<li>Crunchbase tables include <code>updated_at</code> timestamps in every row that we compare to a global timestamp (recorded in the database) and find only updated rows. This is an extra filter generated by a slightly more complex script (not published).</li>
+<li><code>PROJECT_ID</code> is a placeholder that must be replaced with the actual Ontotext Refine project ID before running the query.</li>
+<li>The script has a special case for macro names matching <code>*_URL</code>, that’s why the <code>CB_AGENT_URL</code> pattern is evaluated outside of the Ontotext Refine virtual endpoint.</li>
+<li>The wildcard pattern <code>where {... graph ?extra_permalink_revenue_URL {?_s_ ?_p_ ?_o_}}</code> selects all triples in the graph, to be deleted</li>
+</ul>
+<p>For Ontotext Refine CONSTRUCT:</p>
+<pre><code>construct {
+  # insert patterns
+}
+where {
+  service &lt;rdf-mapper:ontorefine:PROJECT_ID&gt; {
+    # generated binds
+  }
+  filter(bound(?permalink)) ?permalink_CB_AGENT_URL a ?permalink_TYPE; cb:permalink ?permalink filter(?permalink_TYPE in (cb:Person,cb:Organization))
+}</code></pre>
+<p>CONSTRUCT doesn’t work with named graphs, so any graph is ignored.</p>
+<p>For TARQL CONSTRUCT:</p>
+<pre><code>construct {
+  # insert patterns
+}
+where {
+  # generated binds
+}</code></pre>
+<p>TARQL cannot make a lookup in existing RDF data, so macro names matching <code>*_URL</code> are not allowed.</p>
+<h3 id="insert-patterns-crunchbase-organizations">Insert Patterns: Crunchbase Organizations</h3>
+<p>The script unrolls macro (function) calls into binds, adding uppercase suffixes to the variable names.
+In addition, it knows how to process templatized URLs (see var names with a <code>_URL</code> suffix)
+and how to process datatype attachments (adding the datatype as suffix).
+Compare the patterns below to the first model example:</p>
+<pre><code>?cb_agent_uuid_URL a cb:Organization;
+  cb:uuid ?uuid;
+  cb:name ?name;
+  cb:permalink ?permalink;
+  cb:url ?CB_URL;
+  cb:rank ?RANK;
+  cb:createdAt ?created_at_FIXDATETIME_xsd_dateTime;
+  cb:updatedAt ?updated_at_FIXDATETIME_xsd_dateTime;
+  cb:legalName ?legal_name;
+  cb:organizationRole ?cb_organizationRole_roles_SPLIT_URLIFY_URL;
+  cb:domain ?domain;
+  cb:homepageUrl ?homepage_url_xsd_anyURI;
+  cb:countryCode ?country_code;
+  cb:stateCode ?state_code;
+  cb:region ?region;
+  cb:city ?city;
+  cb:address ?address;
+  cb:postalCode ?postal_code;
+  cb:status ?cb_organizationStatus_status_URLIFY_URL;
+  cb:shortDescription ?short_description;
+  cb:industry ?cb_industry_category_list_SPLIT1_URLIFY_URL;
+  cb:numFundingRounds ?num_funding_rounds_xsd_integer;
+  cb:totalFundingUsd ?total_funding_usd_xsd_decimal;
+  cb:totalFunding ?total_funding_xsd_decimal;
+  cb:totalFundingCurrencyCode ?total_funding_currency_code;
+  cb:foundedOn ?founded_on_FIXDATE_xsd_date;
+  cb:lastFundingOn ?last_funding_on_FIXDATE_xsd_date;
+  cb:closedOn ?closed_on_FIXDATE_xsd_date;
+  cb:employeeCount ?cb_employeeCount_employee_count_IFNOTNULL_URLIFY_URL;
+  cb:email ?email;
+  cb:phone ?phone;
+  cb:facebookUrl ?facebook_url_xsd_anyURI;
+  cb:linkedinUrl ?linkedin_url_xsd_anyURI;
+  cb:twitterUrl ?twitter_url_xsd_anyURI;
+  cb:logoUrl ?logo_url_xsd_anyURI;
+  cb:alias ?alias1;
+  cb:alias ?alias2;
+  cb:alias ?alias3;
+  cb:primaryRole ?cb_organizationRole_primary_role_URLIFY_URL;
+  cb:numExits ?num_exits_xsd_integer.</code></pre>
+<h3 id="generated-pre-binds">Generated Pre-Binds</h3>
 <p>The script emits a bunch of bindings.</p>
-
-<p>For Ontotext Refine, first come silly &quot;aliases&quot; for each variable used in the model because of some peculiarities of the Ontotext Refine virtual endpoint (issue <a href="https://ontotext.atlassian.net/browse/GDB-6600">GDB-6600</a>):</p>
-
+<p>For Ontotext Refine, first come silly “aliases” for each variable used in the model
+because of some peculiarities of the Ontotext Refine virtual endpoint
+(issue <a href="https://ontotext.atlassian.net/browse/GDB-6600">GDB-6600</a>):</p>
 <pre><code>    bind(?c_uuid as ?uuid)
     bind(?c_name as ?name)
     bind(?c_permalink as ?permalink)
@@ -791,128 +746,96 @@
     bind(?c_alias3 as ?alias3)
     bind(?c_primary_role as ?primary_role)
     bind(?c_num_exits as ?num_exits)</code></pre>
-
-<h3 id="Generated-Binds:-CrunchBase-Organizations">Generated Binds: CrunchBase Organizations</h3>
-
+<h3 id="generated-binds-crunchbase-organizations">Generated Binds: Crunchbase Organizations</h3>
 <p>Then come a number of bindings generated by:</p>
-
 <ul>
-
-<li><p>Handling templated URLs (eg <b>?cb_agent_uuid_URL</b>),</p>
-
-</li>
-<li><p>Unrolling macro (function) calls into binds and suffixed variables (eg <b>?roles_SPLIT</b> and then <b>?roles_SPLIT_URLIFY</b>)</p>
-
-</li>
-<li><p>Implementing datatype casting using <b>strdt()</b> and binding to an uppercased variable name (eg <b>?CB_URL, ?RANK</b>)</p>
-
-</li>
+<li>Handling templated URLs (eg <code>?cb_agent_uuid_URL</code>),</li>
+<li>Unrolling macro (function) calls into binds and suffixed variables (eg <code>?roles_SPLIT</code> and then <code>?roles_SPLIT_URLIFY</code>)</li>
+<li>Implementing datatype casting using <code>strdt()</code> and binding to an uppercased variable name (eg <code>?CB_URL, ?RANK</code>)</li>
 </ul>
-
-<pre><code>  bind(iri(concat(&quot;cb/agent/&quot;,?uuid)) as ?cb_agent_uuid_URL)
-  bind(strdt(?cb_url,xsd:anyURI) as ?CB_URL)
-  bind(strdt(?rank,xsd:integer) as ?RANK)
-  bind(replace(?created_at,&#39; &#39;,&#39;T&#39;) as ?created_at_FIXDATETIME)
-  bind(strdt(?created_at_FIXDATETIME,xsd:dateTime) as ?created_at_FIXDATETIME_xsd_dateTime)
-  bind(replace(?updated_at,&#39; &#39;,&#39;T&#39;) as ?updated_at_FIXDATETIME)
-  bind(strdt(?updated_at_FIXDATETIME,xsd:dateTime) as ?updated_at_FIXDATETIME_xsd_dateTime)
-  ?roles_SPLIT_COMMA spif:split (?roles &#39;,&#39;).
-  bind(lcase(replace(replace(replace(?roles_SPLIT_COMMA, &quot;[^\\p{L}0-9]&quot;, &quot;_&quot;), &quot;_+&quot;, &quot;_&quot;), &quot;^_|_$&quot;, &quot;&quot;)) as ?roles_SPLIT_COMMA_URLIFY)
-  bind(iri(concat(&quot;cb/organizationRole/&quot;,?roles_SPLIT_COMMA_URLIFY)) as ?cb_organizationRole_roles_SPLIT_COMMA_URLIFY_URL)
-  bind(strdt(?homepage_url,xsd:anyURI) as ?homepage_url_xsd_anyURI)
-  bind(lcase(replace(replace(replace(?status, &quot;[^\\p{L}0-9]&quot;, &quot;_&quot;), &quot;_+&quot;, &quot;_&quot;), &quot;^_|_$&quot;, &quot;&quot;)) as ?status_URLIFY)
-  bind(iri(concat(&quot;cb/organizationStatus/&quot;,?status_URLIFY)) as ?cb_organizationStatus_status_URLIFY_URL)
-  ?category_list_SPLIT_COMMA spif:split (?category_list &#39;,&#39;).
-  bind(lcase(replace(replace(replace(?category_list_SPLIT_COMMA, &quot;[^\\p{L}0-9]&quot;, &quot;_&quot;), &quot;_+&quot;, &quot;_&quot;), &quot;^_|_$&quot;, &quot;&quot;)) as ?category_list_SPLIT_COMMA_URLIFY)
-  bind(iri(concat(&quot;cb/industry/&quot;,?category_list_SPLIT_COMMA_URLIFY)) as ?cb_industry_category_list_SPLIT_COMMA_URLIFY_URL)
-  bind(strdt(?num_funding_rounds,xsd:integer) as ?num_funding_rounds_xsd_integer)
-  bind(strdt(?total_funding_usd,xsd:decimal) as ?total_funding_usd_xsd_decimal)
-  bind(strdt(?total_funding,xsd:decimal) as ?total_funding_xsd_decimal)
-  bind(replace(?founded_on,&#39; &#39;,&#39;T&#39;) as ?founded_on_FIXDATETIME)
-  bind(strdt(?founded_on_FIXDATETIME,xsd:dateTime) as ?founded_on_FIXDATETIME_xsd_dateTime)
-  bind(replace(?last_funding_on,&#39; &#39;,&#39;T&#39;) as ?last_funding_on_FIXDATETIME)
-  bind(strdt(?last_funding_on_FIXDATETIME,xsd:dateTime) as ?last_funding_on_FIXDATETIME_xsd_dateTime)
-  bind(replace(?closed_on,&#39; &#39;,&#39;T&#39;) as ?closed_on_FIXDATETIME)
-  bind(strdt(?closed_on_FIXDATETIME,xsd:dateTime) as ?closed_on_FIXDATETIME_xsd_dateTime)
-  bind(if(?employee_count in (&quot;other&quot;,&quot;not provided&quot;,&quot;unknown&quot;),?UNDEF,?employee_count) as ?employee_count_IFNOTNULL)
-  bind(lcase(replace(replace(replace(?employee_count_IFNOTNULL, &quot;[^\\p{L}0-9]&quot;, &quot;_&quot;), &quot;_+&quot;, &quot;_&quot;), &quot;^_|_$&quot;, &quot;&quot;)) as ?employee_count_IFNOTNULL_URLIFY)
-  bind(iri(concat(&quot;cb/employeeCount/&quot;,?employee_count_IFNOTNULL_URLIFY)) as ?cb_employeeCount_employee_count_IFNOTNULL_URLIFY_URL)
-  bind(strdt(?facebook_url,xsd:anyURI) as ?facebook_url_xsd_anyURI)
-  bind(strdt(?linkedin_url,xsd:anyURI) as ?linkedin_url_xsd_anyURI)
-  bind(strdt(?twitter_url,xsd:anyURI) as ?twitter_url_xsd_anyURI)
-  bind(strdt(?logo_url,xsd:anyURI) as ?logo_url_xsd_anyURI)
-  bind(lcase(replace(replace(replace(?primary_role, &quot;[^\\p{L}0-9]&quot;, &quot;_&quot;), &quot;_+&quot;, &quot;_&quot;), &quot;^_|_$&quot;, &quot;&quot;)) as ?primary_role_URLIFY)
-  bind(iri(concat(&quot;cb/organizationRole/&quot;,?primary_role_URLIFY)) as ?cb_organizationRole_primary_role_URLIFY_URL)
-  bind(strdt(?num_exits,xsd:integer) as ?num_exits_xsd_integer)</code></pre>
-
-<h3 id="Generated-Binds:-Customers">Generated Binds: Customers</h3>
-
-<p>For the Customers example, the binds are pretty similar, but we use a slightly different definition of <b>URLIFY</b> (uses teh Unicode Numeric character class <b>\p{N}</b> instead of <b>0-9</b>).</p>
-
-<pre><code>  bind(iri(concat(&quot;person/&quot;,?customer_id)) as ?person_URL)
-  bind(iri(concat(&quot;person/&quot;,?customer_id,&quot;/address&quot;)) as ?person_address_URL)
-  bind(iri(concat(&quot;person/&quot;,?customer_id,&quot;/birth&quot;)) as ?person_birth_URL)
-  bind(iri(concat(&quot;person/&quot;,?customer_id,&quot;/education&quot;)) as ?person_education_URL)
-  bind(replace(replace(replace(?city,&#39;[^\\p{L}\\p{N}]+&#39;,&#39;_&#39;),&#39;^_&#39;,&#39;&#39;),&#39;_$&#39;,&#39;&#39;) as ?city_URLIFY)
-  bind(iri(concat(&quot;country/&quot;,?country,&quot;/city/&quot;,?city_URLIFY)) as ?country_city_URLIFY_URL)
-  bind(iri(concat(&quot;country/&quot;,?country)) as ?country_URL)
-  bind(strdt(?date_of_birth,xsd:date) as ?date_of_birth_xsd_date)
-  bind(strdt(?enrollment_date,xsd:date) as ?enrollment_DATE_xsd_date)
-  bind(replace(replace(replace(?university,&#39;[^\\p{L}\\p{N}]+&#39;,&#39;_&#39;),&#39;^_&#39;,&#39;&#39;),&#39;_$&#39;,&#39;&#39;) as ?university_URLIFY)
-  bind(iri(concat(&quot;university/&quot;,university_URLIFY)) as ?university_URLIFY_URL)
-  bind(replace(replace(replace(?education_degree,&#39;[^\\p{L}\\p{N}]+&#39;,&#39;_&#39;),&#39;^_&#39;,&#39;&#39;),&#39;_$&#39;,&#39;&#39;) as ?education_degree_URLIFY)
-  bind(iri(concat(&quot;degree/&quot;,?education_degree_URLIFY)) as ?education_degree_URLIFY</code></pre>
-
-<h3 id="Generated-Update:-Annual-Revenue-by-Permalink">Generated Update: Annual Revenue by Permalink</h3>
-
-<p>This model adds some extra Revenue triples into a specified named graph. The overall Ontotext Refine UPDATE looks like this:</p>
-
-<pre><code>  delete where {graph &lt;extra/revenue&gt; {?x ?p ?o}};
-  insert {graph  &lt;extra/revenue&gt; {
-    ?permalink_CB_AGENT_URL ex:annualRevenueUsd ?revenue_xsd_decimal
-  }}
-  where {
-    service &lt;rdf-mapper:ontorefine:PROJECT_ID&gt; {
-      bind(?c_revenue as ?revenue)
-      bind(strdt(?revenue,xsd:decimal) as ?revenue_xsd_decimal)
-    }
-    filter(bound(?permalink))
-    ?permalink_CB_AGENT_URL a ?permalink_TYPE; k2:permalink ?permalink
-    filter(?permalink_TYPE in (cb:Person,cb:Organization))
-  };</code></pre>
-
-<p>As you can see, the <b>CB_AGENT_URL</b> macro is evaluated outside of the Ontotext Refine virtual endpoint.</p>
-
-<h3 id="Generated-Binds:-Spending-Categories">Generated Binds: Spending Categories</h3>
-
-<pre><code>  bind(iri(concat(&quot;grant/&quot;,?APPLICATION_ID)) as ?grant_APPLICATION_ID_URL)
-  ?NIH_SPENDING_CATS_SPLIT apf:strSplit (?NIH_SPENDING_CATS &quot;; ?&quot;).
-  bind(replace(replace(replace(?NIH_SPENDING_CATS_SPLIT_SEMI, &quot;[^\\p{L}0-9]&quot;, &quot;_&quot;), &quot;_+&quot;, &quot;_&quot;), &quot;^_|_$&quot;, &quot;&quot;) as ?NIH_SPENDING_CATS_SPLIT_SEMI_URLIFY)
-  bind(iri(concat(&quot;spendingCategory/&quot;,?NIH_SPENDING_CATS_SPLIT_SEMI_URLIFY)) as ?spendingCategory_NIH_SPENDING_CATS_SPLIT_SEMI_URLIFY_URL)</code></pre>
-
-<h1 id="SEE-ALSO">SEE ALSO</h1>
-
-<p><b>test/graphs-crunchbase</b> for the worked example of generating a SPARQL Update for CrunchBase organizations with dynamic (computed) graph.</p>
-
-<p>The gist <a href="https://gist.github.com/VladimirAlexiev/d5d67feb002dbcfa6b3d4c3dd59b52da">CrunchBase Semantic Model and Challenge</a> that publishes all our CrunchBase models. It also shows an overall model diagram made by <b>rdfpuml</b>.</p>
-
-<p>The issue <a href="https://github.com/kg-construct/best-practices/issues/7">Generate Transforms and Shapes from Models</a> in the Knowledge Graph Construct W3C community group &quot;Best Practices&quot; github project.</p>
-
-<p><b>rdfpuml</b>: a tool that generates PlantUML diagrams from RDF examples.</p>
-
-<p><b>rdf2rml</b>: a tool that generates R2RML transformations from RDF examples.</p>
-
-<p><b>rdf2tarql</b>: a tool that generates TARQL queries from RDF examples.</p>
-
-<h1 id="AUTHOR">AUTHOR</h1>
-
-<p>Vladimir Alexiev, Ontotext Corp</p>
-
-<p>Last update: 8-Dec-2022</p>
-
-
+<pre><code>    bind(iri(concat(&quot;cb/agent/&quot;,?uuid)) as ?cb_agent_uuid_URL)
+    bind(strdt(?cb_url,xsd:anyURI) as ?CB_URL)
+    bind(strdt(?rank,xsd:integer) as ?RANK)
+    bind(replace(?created_at,&#39; &#39;,&#39;T&#39;) as ?created_at_FIXDATETIME)
+    bind(strdt(?created_at_FIXDATETIME,xsd:dateTime) as ?created_at_FIXDATETIME_xsd_dateTime)
+    bind(replace(?updated_at,&#39; &#39;,&#39;T&#39;) as ?updated_at_FIXDATETIME)
+    bind(strdt(?updated_at_FIXDATETIME,xsd:dateTime) as ?updated_at_FIXDATETIME_xsd_dateTime)
+    ?roles_SPLIT_COMMA spif:split (?roles &#39;,&#39;).
+    bind(lcase(replace(replace(replace(?roles_SPLIT_COMMA, &quot;[^\\p{L}0-9]&quot;, &quot;_&quot;), &quot;_+&quot;, &quot;_&quot;), &quot;^_|_$&quot;, &quot;&quot;)) as ?roles_SPLIT_COMMA_URLIFY)
+    bind(iri(concat(&quot;cb/organizationRole/&quot;,?roles_SPLIT_COMMA_URLIFY)) as ?cb_organizationRole_roles_SPLIT_COMMA_URLIFY_URL)
+    bind(strdt(?homepage_url,xsd:anyURI) as ?homepage_url_xsd_anyURI)
+    bind(lcase(replace(replace(replace(?status, &quot;[^\\p{L}0-9]&quot;, &quot;_&quot;), &quot;_+&quot;, &quot;_&quot;), &quot;^_|_$&quot;, &quot;&quot;)) as ?status_URLIFY)
+    bind(iri(concat(&quot;cb/organizationStatus/&quot;,?status_URLIFY)) as ?cb_organizationStatus_status_URLIFY_URL)
+    ?category_list_SPLIT_COMMA spif:split (?category_list &#39;,&#39;).
+    bind(lcase(replace(replace(replace(?category_list_SPLIT_COMMA, &quot;[^\\p{L}0-9]&quot;, &quot;_&quot;), &quot;_+&quot;, &quot;_&quot;), &quot;^_|_$&quot;, &quot;&quot;)) as ?category_list_SPLIT_COMMA_URLIFY)
+    bind(iri(concat(&quot;cb/industry/&quot;,?category_list_SPLIT_COMMA_URLIFY)) as ?cb_industry_category_list_SPLIT_COMMA_URLIFY_URL)
+    bind(strdt(?num_funding_rounds,xsd:integer) as ?num_funding_rounds_xsd_integer)
+    bind(strdt(?total_funding_usd,xsd:decimal) as ?total_funding_usd_xsd_decimal)
+    bind(strdt(?total_funding,xsd:decimal) as ?total_funding_xsd_decimal)
+    bind(replace(?founded_on,&#39; &#39;,&#39;T&#39;) as ?founded_on_FIXDATETIME)
+    bind(strdt(?founded_on_FIXDATETIME,xsd:dateTime) as ?founded_on_FIXDATETIME_xsd_dateTime)
+    bind(replace(?last_funding_on,&#39; &#39;,&#39;T&#39;) as ?last_funding_on_FIXDATETIME)
+    bind(strdt(?last_funding_on_FIXDATETIME,xsd:dateTime) as ?last_funding_on_FIXDATETIME_xsd_dateTime)
+    bind(replace(?closed_on,&#39; &#39;,&#39;T&#39;) as ?closed_on_FIXDATETIME)
+    bind(strdt(?closed_on_FIXDATETIME,xsd:dateTime) as ?closed_on_FIXDATETIME_xsd_dateTime)
+    bind(if(?employee_count in (&quot;other&quot;,&quot;not provided&quot;,&quot;unknown&quot;),?UNDEF,?employee_count) as ?employee_count_IFNOTNULL)
+    bind(lcase(replace(replace(replace(?employee_count_IFNOTNULL, &quot;[^\\p{L}0-9]&quot;, &quot;_&quot;), &quot;_+&quot;, &quot;_&quot;), &quot;^_|_$&quot;, &quot;&quot;)) as ?employee_count_IFNOTNULL_URLIFY)
+    bind(iri(concat(&quot;cb/employeeCount/&quot;,?employee_count_IFNOTNULL_URLIFY)) as ?cb_employeeCount_employee_count_IFNOTNULL_URLIFY_URL)
+    bind(strdt(?facebook_url,xsd:anyURI) as ?facebook_url_xsd_anyURI)
+    bind(strdt(?linkedin_url,xsd:anyURI) as ?linkedin_url_xsd_anyURI)
+    bind(strdt(?twitter_url,xsd:anyURI) as ?twitter_url_xsd_anyURI)
+    bind(strdt(?logo_url,xsd:anyURI) as ?logo_url_xsd_anyURI)
+    bind(lcase(replace(replace(replace(?primary_role, &quot;[^\\p{L}0-9]&quot;, &quot;_&quot;), &quot;_+&quot;, &quot;_&quot;), &quot;^_|_$&quot;, &quot;&quot;)) as ?primary_role_URLIFY)
+    bind(iri(concat(&quot;cb/organizationRole/&quot;,?primary_role_URLIFY)) as ?cb_organizationRole_primary_role_URLIFY_URL)
+    bind(strdt(?num_exits,xsd:integer) as ?num_exits_xsd_integer)</code></pre>
+<h3 id="generated-binds-customers">Generated Binds: Customers</h3>
+<p>For the Customers example, the binds are pretty similar,
+but we use a slightly different definition of <code>URLIFY</code> (uses teh Unicode Numeric character class <code>\\p{N}</code> instead of <code>0-9</code>).</p>
+<pre><code>bind(iri(concat(&quot;person/&quot;,?customer_id)) as ?person_URL)
+bind(iri(concat(&quot;person/&quot;,?customer_id,&quot;/address&quot;)) as ?person_address_URL)
+bind(iri(concat(&quot;person/&quot;,?customer_id,&quot;/birth&quot;)) as ?person_birth_URL)
+bind(iri(concat(&quot;person/&quot;,?customer_id,&quot;/education&quot;)) as ?person_education_URL)
+bind(replace(replace(replace(?city,&#39;[^\\p{L}\\p{N}]+&#39;,&#39;_&#39;),&#39;^_&#39;,&#39;&#39;),&#39;_$&#39;,&#39;&#39;) as ?city_URLIFY)
+bind(iri(concat(&quot;country/&quot;,?country,&quot;/city/&quot;,?city_URLIFY)) as ?country_city_URLIFY_URL)
+bind(iri(concat(&quot;country/&quot;,?country)) as ?country_URL)
+bind(strdt(?date_of_birth,xsd:date) as ?date_of_birth_xsd_date)
+bind(strdt(?enrollment_date,xsd:date) as ?enrollment_DATE_xsd_date)
+bind(replace(replace(replace(?university,&#39;[^\\p{L}\\p{N}]+&#39;,&#39;_&#39;),&#39;^_&#39;,&#39;&#39;),&#39;_$&#39;,&#39;&#39;) as ?university_URLIFY)
+bind(iri(concat(&quot;university/&quot;,university_URLIFY)) as ?university_URLIFY_URL)
+bind(replace(replace(replace(?education_degree,&#39;[^\\p{L}\\p{N}]+&#39;,&#39;_&#39;),&#39;^_&#39;,&#39;&#39;),&#39;_$&#39;,&#39;&#39;) as ?education_degree_URLIFY)
+bind(iri(concat(&quot;degree/&quot;,?education_degree_URLIFY)) as ?education_degree_URLIFY</code></pre>
+<h3 id="generated-update-annual-revenue-by-permalink">Generated Update: Annual Revenue by Permalink</h3>
+<p>This model adds some extra Revenue triples into a specified named graph.
+The overall Ontotext Refine UPDATE looks like this:</p>
+<pre><code>delete where {graph &lt;extra/revenue&gt; {?x ?p ?o}};
+insert {graph  &lt;extra/revenue&gt; {
+  ?permalink_CB_AGENT_URL ex:annualRevenueUsd ?revenue_xsd_decimal
+}}
+where {
+  service &lt;rdf-mapper:ontorefine:PROJECT_ID&gt; {
+    bind(?c_revenue as ?revenue)
+    bind(strdt(?revenue,xsd:decimal) as ?revenue_xsd_decimal)
+  }
+  filter(bound(?permalink)) ?permalink_CB_AGENT_URL a ?permalink_TYPE; cb:permalink ?permalink filter(?permalink_TYPE in (cb:Person,cb:Organization))
+};</code></pre>
+<p>As you can see, the <code>CB_AGENT_URL</code> macro is evaluated outside of the Ontotext Refine virtual endpoint.</p>
+<h3 id="generated-binds-spending-categories">Generated Binds: Spending Categories</h3>
+<pre><code>bind(iri(concat(&quot;grant/&quot;,?APPLICATION_ID)) as ?grant_APPLICATION_ID_URL)
+?NIH_SPENDING_CATS_SPLIT apf:strSplit (?NIH_SPENDING_CATS &quot;; ?&quot;).
+bind(replace(replace(replace(?NIH_SPENDING_CATS_SPLIT_SEMI, &quot;[^\\p{L}0-9]&quot;, &quot;_&quot;), &quot;_+&quot;, &quot;_&quot;), &quot;^_|_$&quot;, &quot;&quot;) as ?NIH_SPENDING_CATS_SPLIT_SEMI_URLIFY)
+bind(iri(concat(&quot;spendingCategory/&quot;,?NIH_SPENDING_CATS_SPLIT_SEMI_URLIFY)) as ?spendingCategory_NIH_SPENDING_CATS_SPLIT_SEMI_URLIFY_URL)</code></pre>
+<h1 id="see-also">SEE ALSO</h1>
+<ul>
+<li><code>test/graphs-Crunchbase</code> for the worked example of generating a SPARQL Update for Crunchbase organizations with dynamic (computed) graph.</li>
+<li>The gist <a href="https://gist.github.com/VladimirAlexiev/d5d67feb002dbcfa6b3d4c3dd59b52da">Crunchbase Semantic Model and Challenge</a> that publishes all our Crunchbase models.
+It also shows an overall model diagram made by <code>rdfpuml</code></li>
+<li>The issue <a href="https://github.com/kg-construct/best-practices/issues/7">Generate Transforms and Shapes from Models</a> in the Knowledge Graph Construct W3C community group “Best Practices” github project.</li>
+<li>Generation of Declarative Transformations from Semantic Models,
+Vladimir Alexiev,
+European Data Conference on Reference Data and Semantics (ENDORSE 2023):
+<a href="https://drive.google.com/open?id=1Cq5o9th_P812paqGkDsaEomJyAmnypkD">paper</a>, <a href="https://docs.google.com/presentation/d/1JCMQEH8Tw_F-ta6haIToXMLYJxQ9LRv6/edit">presentation</a>, <a href="https://youtu.be/yL5nI_3ccxs">video</a></li>
+<li><strong>rdfpuml</strong>: a tool that generates PlantUML diagrams from RDF examples.</li>
+<li><strong>rdf2rml</strong>: a tool that generates R2RML transformations from RDF examples.</li>
+</ul>
 </body>
-
 </html>
-
-
