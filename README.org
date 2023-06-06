@@ -177,11 +177,11 @@ To run it, use:
 
 Where ~<directory>~ is the local directory holding your ~.ttl~ files.
 It was made on 31 May 2023 and uses the following versions:
-- [[https://github.com/VladimirAlexiev/rdf2rml][rdf2rml]]: 31 May 2023, with fixed https://github.com/VladimirAlexiev/rdf2rml/issues/22
+- [[https://github.com/VladimirAlexiev/rdf2rml][rdf2rml]]: 31 May 2023, with fixed [[https://github.com/VladimirAlexiev/rdf2rml/issues/22][issue 22]]
 - [[https://plantuml.com/download][PlantUML]]: 1.2023.7
 - [[https://jena.apache.org/download/][Jena]]: 4.8.0
 
-Note: pull request https://github.com/VladimirAlexiev/rdf2rml/pull/7 of  17 Sep 2019 by Jem Rayfield (~@jazzyray~)
+Note: [[https://github.com/VladimirAlexiev/rdf2rml/pull/7][pull request 7]] of  17 Sep 2019 by Jem Rayfield (~@jazzyray~)
 dockerizes the installation, and makes extra changes related to input/output and configuration.
 However, it has not been merged yet
 
@@ -210,7 +210,7 @@ To adopt changes, do something like this.
 - Support "Conditional Nodes", i.e. URLs that are conditional on the existence of some fields.
 - [[https://github.com/VladimirAlexiev/rdf2rml/issues/22][issue 22]] fixed (2023-05-31)
 ** 2023-05-05 rdfpuml.pl: don't mangle round brackets
-- [[https://github.com/VladimirAlexiev/rdf2rml/issues/21][issue 21]]: Round brackets in fields (eg ~"(name)"~) and URLs (eg ~<type/(type)>~) are not mangled to square brackets anymore
+- [[https://github.com/VladimirAlexiev/rdf2rml/issues/21][issue 21]]: Round brackets in fields (eg "(name)") and URLs (eg <type/(type)>) are not mangled to square brackets anymore
 ** 2023-04-29 rdfpuml.pl: puml:option
 - [[https://github.com/VladimirAlexiev/rdf2rml/issues/18][issue 18]] Add ~puml:option~ for ~left to right direction~ etc
 ** 2023-04-19 rdf2sparql.pl: filter, dynamic graph
@@ -265,7 +265,7 @@ Test: [[./test/regression/arrowLen.ttl]]
 Support arrow color (named or hex)
 ** 2017-08-25 rdfpuml.pl: decorative arrows
 Fix unicode of "decorative arrows" on links going to a Reified Relation:
-~left => "←", right => "→", up => "↑", down => "↓"~
+: left => "←", right => "→", up => "↑", down => "↓"
 ** 2016-02-10 rdfpuml.pl: blank nodes, hidden links
 - support blank nodes
 - support new puml "hidden" links that can sometimes help the layout: http://plantuml.com/class-diagram#layout

@@ -7,13 +7,13 @@ prefix xsd: <http://www.w3.org/2001/XMLSchema#>
 delete {graph ?graph_organizations_uuid_URL {?_s_ ?_p_ ?_o_}}
 where {
   service <rdf-mapper:ontorefine:PROJECT_ID> {
+    bind(?c_updated_at as ?updated_at)
     bind(?c_uuid as ?uuid)
     bind(?c_name as ?name)
     bind(?c_permalink as ?permalink)
     bind(?c_cb_url as ?cb_url)
     bind(?c_rank as ?rank)
     bind(?c_created_at as ?created_at)
-    bind(?c_updated_at as ?updated_at)
     bind(?c_legal_name as ?legal_name)
     bind(?c_roles as ?roles)
     bind(?c_domain as ?domain)
@@ -80,6 +80,7 @@ where {
     bind(iri(concat("cb/organizationRole/",?primary_role_URLIFY)) as ?cb_organizationRole_primary_role_URLIFY_URL)
     bind(strdt(?num_exits,xsd:integer) as ?num_exits_xsd_integer)
   }
+  <cb> cb:updatedAt ?UPDATED_AT_DT bind(replace(str(?UPDATED_AT_DT),'T',' ') as ?UPDATED_AT) filter(?updated_at > ?UPDATED_AT)
   graph ?graph_organizations_uuid_URL {?_s_ ?_p_ ?_o_}};
 insert {graph ?graph_organizations_uuid_URL {
   ?cb_agent_uuid_URL a cb:Organization;
@@ -125,13 +126,13 @@ insert {graph ?graph_organizations_uuid_URL {
 }}
 where {
   service <rdf-mapper:ontorefine:PROJECT_ID> {
+    bind(?c_updated_at as ?updated_at)
     bind(?c_uuid as ?uuid)
     bind(?c_name as ?name)
     bind(?c_permalink as ?permalink)
     bind(?c_cb_url as ?cb_url)
     bind(?c_rank as ?rank)
     bind(?c_created_at as ?created_at)
-    bind(?c_updated_at as ?updated_at)
     bind(?c_legal_name as ?legal_name)
     bind(?c_roles as ?roles)
     bind(?c_domain as ?domain)
@@ -198,4 +199,4 @@ where {
     bind(iri(concat("cb/organizationRole/",?primary_role_URLIFY)) as ?cb_organizationRole_primary_role_URLIFY_URL)
     bind(strdt(?num_exits,xsd:integer) as ?num_exits_xsd_integer)
   }
-};
+  <cb> cb:updatedAt ?UPDATED_AT_DT bind(replace(str(?UPDATED_AT_DT),'T',' ') as ?UPDATED_AT) filter(?updated_at > ?UPDATED_AT)};

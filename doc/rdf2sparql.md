@@ -17,7 +17,8 @@ date: 2023-06-02
         - [RDF Model: Customers](#rdf-model-customers)
         - [RDF Model: Annual Revenue by Permalink](#rdf-model-annual-revenue-by-permalink)
         - [RDF Model: Grant Spending Categories](#rdf-model-grant-spending-categories)
-        - [Filtering](#filtering)
+        - [Per-model Filtering](#per-model-filtering)
+        - [Global Filtering](#global-filtering)
         - [Conditional Nodes](#conditional-nodes)
         - [RDF Model Concatenation](#rdf-model-concatenation)
     - [Preprocessor Macros](#preprocessor-macros)
@@ -71,15 +72,22 @@ It encloses Ontotext Refine variables in a `service` clause that accesses the On
 This has several benefits:
 
 - It ingests directly to GraphDB (without producing an intermediate RDF file), which is faster.
-- It overwrites a named graph, so it can be used for ingest or update. The first model line must look like this to specify the graph to overwrite (in angle brackets). You can use parenthesized variable name(s) to compute the graph at runtime (see the second example, which is from the Crunchbase transformation):
+- It overwrites a named graph, so it can be used for ingest or update.
+  - The first model line must look like this to specify the graph to overwrite (in angle brackets).
+  - You can use parenthesized variable name(s) to compute the graph at runtime.
+  - An example from Crunchbase: both `organizations.csv` and `organization_descriptions.csv` contribute triples to the same node `<cb/agent/(uuid)>`.
+    However, their respective models specify different named graphs, so that rows from the respective tables can be updated independently.
 
-        # GRAPH <constant_graph>
-        # GRAPH <graph/organizations/(uuid)>
+```
+# GRAPH <constant_graph>
+# GRAPH <graph/organizations/(uuid)>
+# GRAPH <graph/organization_descriptions/(uuid)>
+```
 
 - You can match real triples in GraphDB, which can be used to resolve entities ("strings" to "things"). A macro name that ends in "URL" (case-insensitively), e.g. `CB_AGENT_URL(permalink)`, causes the respective patterns to be interpreted outside of the Ontotext Refine virtual service.
 - You can split several multi-valued columns (using the `SPLIT` macro) to produce multiple bindings, without fear of Cartesian Product (i.e. their values will not be combined with each other).
 
-Option `-construct` generates a SPARQL CONSTRUCT query.
+Option `--construct` generates a SPARQL CONSTRUCT query.
 You can still match GraphDB triples and use multiple multi-valued columns.
 Any `GRAPH` comment is ignored, because CONSTRUCT does not support graphs
 (see [SPARQL 1.2 issue 31](https://github.com/w3c/sparql-12/issues/31)).
@@ -281,9 +289,9 @@ normalize the Concept data to a separate file of unique concepts;
 and move the ConceptScheme into a separate "constant" RDF file
 that doesn't need to be processed with **rdf2sparql**.
 
-### Filtering
+### Per-model Filtering
 
-You can use the field `puml:label` to specify a filter condition to be applied for each row.
+You can use the field `puml:label` to specify a filter condition to be applied for each row of a table (model).
 For example, let's say we have a table of some content (web pages)
 that needs to be published as RDF only when the field `status` is "published".
 Use the following model:
@@ -324,6 +332,41 @@ Notes:
 - Since the model Turtle is not really parsed, you should write the `puml:label` on one line, trailed by semicolon or dot (and optional trailing comment).
 - You can use triple quotes or apostrophes to surround the content.
 - The same field is used in `rdf2rml` with a completely different meaning: as a SQL table or query. I know, this is an ugly hack.
+
+### Global Filtering
+
+In addition to per-model filtering (see previous section), you can also use global filtering specified with command-line options.
+The best use of this feature is to generate transformation scripts that handle both initial loading and data updates, 
+assuming that the tabular source data has update timestamps: see `test/graphs-crunchbase` for details.
+
+- Each Crunchbase table includes an `updated_at` timestamp in every row
+- We initialize a global timestamp using the query `updatedAt_seed.ru`.
+  It's recorded in the database as a single triple like this:
+
+```ttl
+<cb> cb:updatedAt '0001-01-01T00:00:00'^^xsd:dateTime
+```
+
+- We compare the timestamp of each row to the global timestamp like this (see `Makefile`)
+  - We specify `--filterColumn` so that `rdf2sparql.pl` can generate the OntoRefine-specific pre-bind
+  - After fetching the global timestamp, the `--filter` condition converts it to a form compatible with `?updated_at`
+    by replacing 'T' (date-time separator according to `xsd:dateTime` format) to space.
+    (We could have chosen to store the global timestamp with a space, then we wouldn't need this conversion)
+  - The filter is added outside of the OntoRefine `service` because the global timestamp is in the RDF database, not OntoRefine tabular data
+  - The filter eliminates rows that have **not** been updated later than the global timestamp
+```
+perl -S rdf2sparql.pl \
+  --filterColumn updated_at \
+  --filter "<cb> cb:updatedAt ?UPDATED_AT_DT bind(replace(str(?UPDATED_AT_DT),'T',' ') as ?UPDATED_AT) filter(?updated_at > ?UPDATED_AT)" \
+```
+
+- After the per-table updates, we run `updatedAt_bump.ru`, which bumps the timestamp to the greatest update timestamp of all rows in all tables:
+
+```sparql
+delete where {<cb> cb:updatedAt ?old};
+insert {<cb> cb:updatedAt ?new}
+where {select (max(?upd) as ?new) {[] cb:updatedAt ?upd}};
+```
 
 ### Conditional Nodes
 
@@ -563,7 +606,6 @@ For Ontotext Refine UPDATE:
     };
 
 - The graph URL pattern mentioned in the first model line is expanded to a calculated variable `?extra_permalink_revenue_URL`. In this case we use named graph per **table row**; if you use a constant URL then it would be graph per **table**. This way the query can handle both initial data loading and updates.
-- Crunchbase tables include `updated_at` timestamps in every row that we compare to a global timestamp (recorded in the database) and find only updated rows. This is an extra filter generated by a slightly more complex script (not published).
 - `PROJECT_ID` is a placeholder that must be replaced with the actual Ontotext Refine project ID before running the query.
 - The script has a special case for macro names matching `*_URL`, that's why the `CB_AGENT_URL` pattern is evaluated outside of the Ontotext Refine virtual endpoint.
 - The wildcard pattern `where {... graph ?extra_permalink_revenue_URL {?_s_ ?_p_ ?_o_}}` selects all triples in the graph, to be deleted

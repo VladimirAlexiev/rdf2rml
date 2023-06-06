@@ -2,10 +2,15 @@
 
 our $tool = "ontorefine";
 our $form = "update";
+our ($filter, $filterColumn);
 use Getopt::Long qw(:config no_ignore_case auto_abbrev);
 # https://perldoc.perl.org/Getopt::Long#bundling-(default:-disabled)
-GetOptions ('construct' => sub {$form = "construct"},
-            'tarql'     => sub {$form = "construct"; $tool = "tarql"});
+GetOptions
+  ('construct'      => sub {$form = "construct"},
+   'tarql'          => sub {$form = "construct"; $tool = "tarql"},
+   'filter=s'       => \$filter,
+   'filterColumn=s' => \$filterColumn
+   );
 
 our $GRAPH;
 our $output = "";
@@ -28,7 +33,7 @@ sub addWhere($$) {
 sub ontorefine($) {
   # OntoRefine prefixes input cols with `c_`, and we must mention each col in WHERE
   # https://ontotext.atlassian.net/browse/GDB-6600
-  my $var = $1;
+  my $var = shift;
   if ($tool eq "ontorefine") {
     $bound{$var} && $bound{$var} ne "ontorefine" and die "$var is used for both ontorefine and $bound{$var}\n";
     $bound{$var} and return "($var)";
@@ -107,6 +112,15 @@ if ($form eq "update") {
   m{#+ GRAPH <(.*)>} or die "Expected # GRAPH <...> got $_";
   $GRAPH = templated_url($1);
 };
+
+die "--filterColumn and --filter must be used together\n" if $filter xor $filterColumn;
+if ($filterColumn) {
+  die "--filterColumn and --filter can be used only with ontorefine update, but you've selected $tool $form\n"
+    unless $form eq "update" && $tool eq "ontorefine";
+  ontorefine($filterColumn);
+  addWhere(2,$filter)
+};
+
 while ($_ = <>) {
   m{puml:label *['"]+(.*?)['"]+ *[;.]( *#.*)$} and do {addWhere(1,$1); next};
   m{puml:|plantuml} and next; # skip any other puml statements
