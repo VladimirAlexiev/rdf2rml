@@ -341,19 +341,20 @@ assuming that the tabular source data has update timestamps: see `test/graphs-cr
 
 - Each Crunchbase table includes an `updated_at` timestamp in every row
 - We initialize a global timestamp using the query `updatedAt_seed.ru`.
-  It's recorded in the database as a single triple like this:
+  We record it in the database as a single triple with value in proper `xsd:dateTime` format:
 
 ```ttl
 <cb> cb:updatedAt '0001-01-01T00:00:00'^^xsd:dateTime
 ```
 
-- We compare the timestamp of each row to the global timestamp like this (see `Makefile`)
+- We compare the timestamp of each row to the global timestamp like this (see `Makefile`):
   - We specify `--filterColumn` so that `rdf2sparql.pl` can generate the OntoRefine-specific pre-bind
   - After fetching the global timestamp, the `--filter` condition converts it to a form compatible with `?updated_at`
     by replacing 'T' (date-time separator according to `xsd:dateTime` format) to space.
-    (We could have chosen to store the global timestamp with a space, then we wouldn't need this conversion)
+    We could have chosen to store the global timestamp with a space:
+    then we wouldn't need this conversion, but would have to give up the `xsd:dateTime` datatype.
   - The filter is added outside of the OntoRefine `service` because the global timestamp is in the RDF database, not OntoRefine tabular data
-  - The filter eliminates rows that have **not** been updated later than the global timestamp
+  - The filter eliminates rows that have not been updated later than the global timestamp
 ```
 perl -S rdf2sparql.pl \
   --filterColumn updated_at \
@@ -367,6 +368,8 @@ delete where {<cb> cb:updatedAt ?old};
 insert {<cb> cb:updatedAt ?new}
 where {select (max(?upd) as ?new) {[] cb:updatedAt ?upd}};
 ```
+
+- You may want to use a standard predicate like `dct:modified` for the timestamp, instead of the custom predicate `cb:updatedAt`.
 
 ### Conditional Nodes
 

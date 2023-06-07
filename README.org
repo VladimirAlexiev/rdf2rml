@@ -32,11 +32,13 @@
   - [[#docker-image][Docker Image]]
 - [[#debian-repo][Debian Repo]]
 - [[#change-log][Change Log]]
+  - [[#2023-06-07-rdf2sparqlpl-minimize-binds-in-delete-clause][2023-06-07 rdf2sparql.pl: minimize binds in delete clause]]
+  - [[#2023-06-06-rdf2sparqlpl-global---filter-options][2023-06-06 rdf2sparql.pl: global --filter options]]
   - [[#2023-06-01-rdfpumlpl-remove-carpalways][2023-06-01 rdfpuml.pl: remove Carp::Always]]
   - [[#2023-05-17-rdf2sparqlpl-conditional-nodes][2023-05-17 rdf2sparql.pl: Conditional Nodes]]
   - [[#2023-05-05-rdfpumlpl-dont-mangle-round-brackets][2023-05-05 rdfpuml.pl: don't mangle round brackets]]
   - [[#2023-04-29-rdfpumlpl-pumloption][2023-04-29 rdfpuml.pl: puml:option]]
-  - [[#2023-04-19-rdf2sparqlpl-filter-dynamic-graph][2023-04-19 rdf2sparql.pl: filter, dynamic graph]]
+  - [[#2023-04-19-rdf2sparqlpl-per-model-filter-dynamic-graph][2023-04-19 rdf2sparql.pl: per-model filter, dynamic graph]]
   - [[#2022-08-23-rdf2sparqlpl-add-datatype-to-var-name-instead-of-uppercasing][2022-08-23 rdf2sparql.pl: add datatype to var name instead of UPPERCASING]]
   - [[#2022-08-23-rdfpumlpl-handle-blank-node-types-add-shell-scripts][2022-08-23 rdfpuml.pl: handle blank-node types; add shell scripts]]
   - [[#2022-08-15-rdf2sparqlpl-merge-to-one-tool][2022-08-15 rdf2sparql.pl: merge to one tool]]
@@ -204,6 +206,13 @@ To adopt changes, do something like this.
   #+end_src
 
 * Change Log
+** 2023-06-07 rdf2sparql.pl: minimize binds in ~delete~ clause
+[[https://github.com/VladimirAlexiev/rdf2rml/issues/27][Issue 27]]: minimize the ~delete~ clause to include only necessary binds:
+- ~--filterColumn~ variable prebind
+- templated GRAPH URL and its constituent variables
+** 2023-06-06 rdf2sparql.pl: global ~--filter~ options
+[[https://github.com/VladimirAlexiev/rdf2rml/issues/26][Issue 26]]: add command-line options ~--filterColumn, --filter~ that are useful for handling both initial loading and data updates.
+See [[https://github.com/VladimirAlexiev/rdf2rml/blob/master/doc/rdf2sparql.md#global-filtering][global filtering]] and ~test/graphs-crunchbase~
 ** 2023-06-01 rdfpuml.pl: remove Carp::Always
 [[https://github.com/VladimirAlexiev/rdf2rml/issues/2][Issue 2]] remove ~Carp::Always~ since it produces a stack trace that's too verbose
 ** 2023-05-17 rdf2sparql.pl: Conditional Nodes
@@ -213,7 +222,7 @@ To adopt changes, do something like this.
 - [[https://github.com/VladimirAlexiev/rdf2rml/issues/21][issue 21]]: Round brackets in fields (eg "(name)") and URLs (eg <type/(type)>) are not mangled to square brackets anymore
 ** 2023-04-29 rdfpuml.pl: puml:option
 - [[https://github.com/VladimirAlexiev/rdf2rml/issues/18][issue 18]] Add ~puml:option~ for ~left to right direction~ etc
-** 2023-04-19 rdf2sparql.pl: filter, dynamic graph
+** 2023-04-19 rdf2sparql.pl: per-model filter, dynamic graph
 - [[https://github.com/VladimirAlexiev/rdf2rml/issues/19][issue 19]] Implement filter function, see ~test/filter-content~
 - [[https://github.com/VladimirAlexiev/rdf2rml/issues/20][issue 20]] Allow dynamic graph (computed from a data column), see ~test/graphs-crunchbase~
 ** 2022-08-23 rdf2sparql.pl: add datatype to var name instead of UPPERCASING

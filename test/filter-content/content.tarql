@@ -9,7 +9,7 @@ construct {
 }
 where {
 
+    filter(?status='published')
     bind(iri(concat(?url)) as ?url_URL)
     bind(strdt(?date,xsd:date) as ?date_xsd_date)
-    filter(?status='published')
 }
