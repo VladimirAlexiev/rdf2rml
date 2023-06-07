@@ -329,7 +329,7 @@ so it's omitted from `content-result.ttl`.
 Notes:
 
 - Don't forget to write out `filter(...)` and use question marks to identify the variables (fields).
-- Since the model Turtle is not really parsed, you should write the `puml:label` on one line, trailed by semicolon or dot (and optional trailing comment).
+- Since the model Turtle is not really parsed, you should write the `puml:label` on one line, trailed by semicolon or dot (and optional trailing whitespace and comment).
 - You can use triple quotes or apostrophes to surround the content.
 - The same field is used in `rdf2rml` with a completely different meaning: as a SQL table or query. I know, this is an ugly hack.
 

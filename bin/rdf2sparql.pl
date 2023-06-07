@@ -127,7 +127,7 @@ if ($filterColumn) {
 };
 
 while ($_ = <>) {
-  m{puml:label *['"]+(.*?)['"]+ *[;.]( *#.*)$} and do {addWhere(1,$1); next};
+  m{puml:label *['"]+(.*?)['"]+ *[;.] *( *#.*)?$} and do {addWhere(1,$1); next};
   m{puml:|plantuml} and next; # skip any other puml statements
   s{\((\w+)\)}{ontorefine(1,$1)}ge;
   while (s{(\w+)\((\w+)([,?\w]*)\)}{function(2,$1,$2,$3)}ge)
