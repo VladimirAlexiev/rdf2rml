@@ -62,6 +62,10 @@
     img {
       max-width: 100%;
     }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
     h1, h2, h3, h4, h5, h6 {
       margin-top: 1.4em;
     }
@@ -154,8 +158,11 @@
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
     ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
       width: 0.8em;
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
@@ -187,7 +194,8 @@
 <li><a href="#rdf-model-customers">RDF Model: Customers</a></li>
 <li><a href="#rdf-model-annual-revenue-by-permalink">RDF Model: Annual Revenue by Permalink</a></li>
 <li><a href="#rdf-model-grant-spending-categories">RDF Model: Grant Spending Categories</a></li>
-<li><a href="#filtering">Filtering</a></li>
+<li><a href="#per-model-filtering">Per-model Filtering</a></li>
+<li><a href="#global-filtering">Global Filtering</a></li>
 <li><a href="#conditional-nodes">Conditional Nodes</a></li>
 <li><a href="#rdf-model-concatenation">RDF Model Concatenation</a></li>
 </ul></li>
@@ -237,14 +245,23 @@ It encloses Ontotext Refine variables in a <code>service</code> clause that acce
 }</code></pre>
 <p>This has several benefits:</p>
 <ul>
-<li><p>It ingests directly to GraphDB (without producing an intermediate RDF file), which is faster.</p></li>
-<li><p>It overwrites a named graph, so it can be used for ingest or update. The first model line must look like this to specify the graph to overwrite (in angle brackets). You can use parenthesized variable name(s) to compute the graph at runtime (see the second example, which is from the Crunchbase transformation):</p>
-<pre><code>  # GRAPH &lt;constant_graph&gt;
-  # GRAPH &lt;graph/organizations/(uuid)&gt;</code></pre></li>
-<li><p>You can match real triples in GraphDB, which can be used to resolve entities (“strings” to “things”). A macro name that ends in “URL” (case-insensitively), e.g. <code>CB_AGENT_URL(permalink)</code>, causes the respective patterns to be interpreted outside of the Ontotext Refine virtual service.</p></li>
-<li><p>You can split several multi-valued columns (using the <code>SPLIT</code> macro) to produce multiple bindings, without fear of Cartesian Product (i.e. their values will not be combined with each other).</p></li>
+<li>It ingests directly to GraphDB (without producing an intermediate RDF file), which is faster.</li>
+<li>It overwrites a named graph, so it can be used for ingest or update.
+<ul>
+<li>The first model line must look like this to specify the graph to overwrite (in angle brackets).</li>
+<li>You can use parenthesized variable name(s) to compute the graph at runtime.</li>
+<li>An example from Crunchbase: both <code>organizations.csv</code> and <code>organization_descriptions.csv</code> contribute triples to the same node <code>&lt;cb/agent/(uuid)&gt;</code>.
+However, their respective models specify different named graphs, so that rows from the respective tables can be updated independently.</li>
+</ul></li>
 </ul>
-<p>Option <code>-construct</code> generates a SPARQL CONSTRUCT query.
+<pre><code># GRAPH &lt;constant_graph&gt;
+# GRAPH &lt;graph/organizations/(uuid)&gt;
+# GRAPH &lt;graph/organization_descriptions/(uuid)&gt;</code></pre>
+<ul>
+<li>You can match real triples in GraphDB, which can be used to resolve entities (“strings” to “things”). A macro name that ends in “URL” (case-insensitively), e.g. <code>CB_AGENT_URL(permalink)</code>, causes the respective patterns to be interpreted outside of the Ontotext Refine virtual service.</li>
+<li>You can split several multi-valued columns (using the <code>SPLIT</code> macro) to produce multiple bindings, without fear of Cartesian Product (i.e. their values will not be combined with each other).</li>
+</ul>
+<p>Option <code>--construct</code> generates a SPARQL CONSTRUCT query.
 You can still match GraphDB triples and use multiple multi-valued columns.
 Any <code>GRAPH</code> comment is ignored, because CONSTRUCT does not support graphs
 (see <a href="https://github.com/w3c/sparql-12/issues/31">SPARQL 1.2 issue 31</a>).
@@ -417,8 +434,8 @@ However, if this data redundancy is bothersome, you can
 normalize the Concept data to a separate file of unique concepts;
 and move the ConceptScheme into a separate “constant” RDF file
 that doesn’t need to be processed with <strong>rdf2sparql</strong>.</p>
-<h3 id="filtering">Filtering</h3>
-<p>You can use the field <code>puml:label</code> to specify a filter condition to be applied for each row.
+<h3 id="per-model-filtering">Per-model Filtering</h3>
+<p>You can use the field <code>puml:label</code> to specify a filter condition to be applied for each row of a table (model).
 For example, let’s say we have a table of some content (web pages)
 that needs to be published as RDF only when the field <code>status</code> is “published”.
 Use the following model:</p>
@@ -449,9 +466,41 @@ so it’s omitted from <code>content-result.ttl</code>.</p>
 <p>Notes:</p>
 <ul>
 <li>Don’t forget to write out <code>filter(...)</code> and use question marks to identify the variables (fields).</li>
-<li>Since the model Turtle is not really parsed, you should write the <code>puml:label</code> on one line, trailed by semicolon or dot (and optional trailing comment).</li>
+<li>Since the model Turtle is not really parsed, you should write the <code>puml:label</code> on one line, trailed by semicolon or dot (and optional trailing whitespace and comment).</li>
 <li>You can use triple quotes or apostrophes to surround the content.</li>
 <li>The same field is used in <code>rdf2rml</code> with a completely different meaning: as a SQL table or query. I know, this is an ugly hack.</li>
+</ul>
+<h3 id="global-filtering">Global Filtering</h3>
+<p>In addition to per-model filtering (see previous section), you can also use global filtering specified with command-line options.
+The best use of this feature is to generate transformation scripts that handle both initial loading and data updates,
+assuming that the tabular source data has update timestamps: see <code>test/graphs-crunchbase</code> for details.</p>
+<ul>
+<li>Each Crunchbase table includes an <code>updated_at</code> timestamp in every row</li>
+<li>We initialize a global timestamp using the query <code>updatedAt_seed.ru</code>.
+We record it in the database as a single triple with value in proper <code>xsd:dateTime</code> format:</li>
+</ul>
+<pre class="ttl"><code>&lt;cb&gt; cb:updatedAt &#39;0001-01-01T00:00:00&#39;^^xsd:dateTime</code></pre>
+<ul>
+<li>We compare the timestamp of each row to the global timestamp like this (see <code>Makefile</code>):
+<ul>
+<li>We specify <code>--filterColumn</code> so that <code>rdf2sparql.pl</code> can generate the OntoRefine-specific pre-bind</li>
+<li>After fetching the global timestamp, the <code>--filter</code> condition converts it to a form compatible with <code>?updated_at</code>
+by replacing ‘T’ (date-time separator according to <code>xsd:dateTime</code> format) to space.
+We could have chosen to store the global timestamp with a space:
+then we wouldn’t need this conversion, but would have to give up the <code>xsd:dateTime</code> datatype.</li>
+<li>The filter is added outside of the OntoRefine <code>service</code> because the global timestamp is in the RDF database, not OntoRefine tabular data</li>
+<li>The filter eliminates rows that have not been updated later than the global timestamp</li>
+</ul>
+<pre><code>perl -S rdf2sparql.pl \
+--filterColumn updated_at \
+--filter &quot;&lt;cb&gt; cb:updatedAt ?UPDATED_AT_DT bind(replace(str(?UPDATED_AT_DT),&#39;T&#39;,&#39; &#39;) as ?UPDATED_AT) filter(?updated_at &gt; ?UPDATED_AT)&quot; \</code></pre></li>
+<li>After the per-table updates, we run <code>updatedAt_bump.ru</code>, which bumps the timestamp to the greatest update timestamp of all rows in all tables:</li>
+</ul>
+<pre class="sparql"><code>delete where {&lt;cb&gt; cb:updatedAt ?old};
+insert {&lt;cb&gt; cb:updatedAt ?new}
+where {select (max(?upd) as ?new) {[] cb:updatedAt ?upd}};</code></pre>
+<ul>
+<li>You may want to use a standard predicate like <code>dct:modified</code> for the timestamp, instead of the custom predicate <code>cb:updatedAt</code>.</li>
 </ul>
 <h3 id="conditional-nodes">Conditional Nodes</h3>
 <p>Consider the following more advanced model, which maps Crunchbase data to the
@@ -633,7 +682,6 @@ where {
 };</code></pre>
 <ul>
 <li>The graph URL pattern mentioned in the first model line is expanded to a calculated variable <code>?extra_permalink_revenue_URL</code>. In this case we use named graph per <strong>table row</strong>; if you use a constant URL then it would be graph per <strong>table</strong>. This way the query can handle both initial data loading and updates.</li>
-<li>Crunchbase tables include <code>updated_at</code> timestamps in every row that we compare to a global timestamp (recorded in the database) and find only updated rows. This is an extra filter generated by a slightly more complex script (not published).</li>
 <li><code>PROJECT_ID</code> is a placeholder that must be replaced with the actual Ontotext Refine project ID before running the query.</li>
 <li>The script has a special case for macro names matching <code>*_URL</code>, that’s why the <code>CB_AGENT_URL</code> pattern is evaluated outside of the Ontotext Refine virtual endpoint.</li>
 <li>The wildcard pattern <code>where {... graph ?extra_permalink_revenue_URL {?_s_ ?_p_ ?_o_}}</code> selects all triples in the graph, to be deleted</li>
