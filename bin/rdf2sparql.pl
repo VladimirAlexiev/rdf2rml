@@ -3,11 +3,13 @@
 our $tool = "ontorefine";
 our $form = "update";
 our ($filter, $filterColumn);
+our $endpoint = "rdf-mapper:ontorefine:PROJECT_ID";
 use Getopt::Long qw(:config no_ignore_case auto_abbrev);
 # https://perldoc.perl.org/Getopt::Long#bundling-(default:-disabled)
 GetOptions
   ('construct'      => sub {$form = "construct"},
    'tarql'          => sub {$form = "construct"; $tool = "tarql"},
+   'endpoint=s'     => \$endpoint,
    'filter=s'       => \$filter,
    'filterColumn=s' => \$filterColumn
    );
@@ -147,7 +149,7 @@ print
   $form eq "update" ? << "EOF"
 delete {graph $GRAPH {?_s_ ?_p_ ?_o_}}
 where {
-  service <rdf-mapper:ontorefine:PROJECT_ID> {
+  service <$endpoint> {
 $where[0]
   }
 $where[4]
@@ -156,7 +158,7 @@ $where[4]
 insert {graph $GRAPH {
 $output}}
 where {
-  service <rdf-mapper:ontorefine:PROJECT_ID> {
+  service <$endpoint> {
 $where[0]$where[1]$where[2]
   }
 $where[3]$where[4]};
@@ -166,7 +168,7 @@ EOF
 construct {
 $output}
 where {
-  service <rdf-mapper:ontorefine:PROJECT_ID> {
+  service <$endpoint> {
 $where[0]$where[1]$where[2]
   }
 $where[3]$where[4]}

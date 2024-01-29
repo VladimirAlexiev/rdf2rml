@@ -217,13 +217,14 @@
 </ul>
 <!-- markdown-toc end -->
 <h1 id="synopsis">SYNOPSIS</h1>
-<pre><code>perl rdf2sparql.pl             model.ttl | cat common.h prefixes.rq - | cpp -P -C -nostdinc - &gt; model-ontorefine.ru
-perl rdf2sparql.pl --construct model.ttl | cat common.h prefixes.rq - | cpp -P -C -nostdinc - &gt; model-ontorefine.rq
-perl rdf2sparql.pl --tarql     model.ttl | cat common.h prefixes.rq - | cpp -P -C -nostdinc - &gt; model.tarql
+<pre><code>perl rdf2sparql.pl             [-e endpoint] model.ttl | cat common.h prefixes.rq - | cpp -P -C -nostdinc - &gt; model-ontorefine.ru
+perl rdf2sparql.pl --construct [-e endpoint] model.ttl | cat common.h prefixes.rq - | cpp -P -C -nostdinc - &gt; model-ontorefine.rq
+perl rdf2sparql.pl --tarql                   model.ttl | cat common.h prefixes.rq - | cpp -P -C -nostdinc - &gt; model.tarql
 
 Options:
   --construct: generate CONSTRUCT query (default is UPDATE; applies only for Ontotext Refine)
-  --tarql: generate for TARQL (default is Ontotext Refine)</code></pre>
+  --tarql:     generate for TARQL (default is Ontotext Refine)
+  --endpoint:  OntoRefine endpoint, default &quot;rdf-mapper:ontorefine:PROJECT_ID&quot; (requires rewriting the SPARQL script)</code></pre>
 <h1 id="description">DESCRIPTION</h1>
 <p><strong>rdf2sparql</strong> converts an RDF example with embedded CSV/TSV column names into a SPARQL query for:</p>
 <ul>
@@ -239,7 +240,7 @@ See <a href="https://gist.github.com/VladimirAlexiev/d5d67feb002dbcfa6b3d4c3dd59
 <h2 id="options">Options</h2>
 <p>The default is to generate a SPARQL UPDATE query for Ontotext Refine.
 It encloses Ontotext Refine variables in a <code>service</code> clause that accesses the Ontotext Refine virtual SPARQL endpoint
-(see later about the handling of <code>PROJECT_ID</code>):</p>
+(see option <code>--endpoint</code> later):</p>
 <pre><code>service &lt;rdf-mapper:ontorefine:PROJECT_ID&gt; {
   ...
 }</code></pre>
@@ -275,9 +276,36 @@ You cannot
 match RDF data in a repository (see <a href="https://github.com/tarql/tarql/issues/25">TARQL issue 25</a>),
 use UPDATE (see <a href="https://github.com/tarql/tarql/issues/67">TARQL issue 67</a>),
 nor use graphs (see <a href="https://github.com/tarql/tarql/issues/98">TARQL issue 98</a>).</p>
+<p>Option <code>--endpoint</code> specifies the OntoRefine SPARQL endpoint to use.</p>
+<ul>
+<li>For Refine 1.2 (15 February 2023) and later,
+use the “project alias” feature to provide an endpoint
+that designates a specific project (tabular data loaded to Refine), eg
+<code>http://localhost:7333/repositories/ontorefine:organizations</code>. Here:
+<ul>
+<li><code>organizations</code> is the project alias,</li>
+<li>7333 is the default <code>server.port</code> on which Refine responds (see <a href="https://platform.ontotext.com/ontorefine/install-migrate.html#refine-configuration-parameters">Refine Configuration Parameters</a>)</li>
+</ul></li>
+<li>For older versions the default endpoint is <code>rdf-mapper:ontorefine:PROJECT_ID</code>.
+Capture the project identifier from the <a href="https://platform.ontotext.com/ontorefine/ontorefine-cli.html#create">ontorefine-cli create command</a>
+and rewrite the SPARQL script to put the actual endpoint to use.
+<ul>
+<li>For versions 1.0 and 1.1, use eg
+<code>http://localhost:7333/repositories/ontorefine:12345678</code>
+<ul>
+<li>Where <code>12345678</code> is the captured project identifier.</li>
+</ul></li>
+<li>For versions older than 1.0 that were embedded in GraphDB, use eg
+<code>rdf-mapper:ontorefine:12345678</code>.
+<ul>
+<li>Where <code>12345678</code> is the captured project identifier.</li>
+</ul></li>
+</ul></li>
+</ul>
 <p>You can abbreviate options. All these are equivalent:</p>
-<pre><code>--c --co --construct
---t --ta --tarql</code></pre>
+<pre><code>-c --co --construct
+-t --ta --tarql
+-e --end --endpoint</code></pre>
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
 <li>Ontotext Refine or TARQL as described above</li>
@@ -300,7 +328,7 @@ tarql -t model.tarql data.tsv &gt; data.ttl</code></pre>
 <li>Create a project, load tabular data</li>
 <li>Optionally, perform data cleaning</li>
 <li>Make sure you have a working GraphDB repository to receive the data</li>
-<li>Paste the generated SPARQL into GraphDB workbench and adjust <code>PROJECT_ID</code> to the actual Refine virtual endpoint and project ID</li>
+<li>Paste the generated SPARQL into GraphDB workbench and adjust the endpoint to the actual Refine virtual endpoint to be used</li>
 <li>Run the query to update the data in GraphDB</li>
 </ul>
 <p>If you save the Ontotext Refine cleaning script (operations JSON),
@@ -312,7 +340,7 @@ We have scripts to automate the following steps:</p>
 <li>Create an Ontotext Refine project and capture its project ID</li>
 <li>Load tabular data into the Ontotext Refine project</li>
 <li>Optionally, apply an OpenRefine data cleaning script</li>
-<li>Replace the placeholder <code>PROJECT_ID</code> in the generated query with the actual ID</li>
+<li>Optionally, replace the default endpoint in the generated query with the actual endpoint</li>
 <li>Run the query against a GraphDB repository: it will replace the defined named graph</li>
 <li>Delete the Ontotext Refine project</li>
 </ul>
@@ -682,7 +710,7 @@ where {
 };</code></pre>
 <ul>
 <li>The graph URL pattern mentioned in the first model line is expanded to a calculated variable <code>?extra_permalink_revenue_URL</code>. In this case we use named graph per <strong>table row</strong>; if you use a constant URL then it would be graph per <strong>table</strong>. This way the query can handle both initial data loading and updates.</li>
-<li><code>PROJECT_ID</code> is a placeholder that must be replaced with the actual Ontotext Refine project ID before running the query.</li>
+<li>The default endpoint <code>&lt;rdf-mapper:ontorefine:PROJECT_ID&gt;</code> must be replaced with the actual Refine endpoint before running the query (or specify the <code>--endpoint</code> option)</li>
 <li>The script has a special case for macro names matching <code>*_URL</code>, that’s why the <code>CB_AGENT_URL</code> pattern is evaluated outside of the Ontotext Refine virtual endpoint.</li>
 <li>The wildcard pattern <code>where {... graph ?extra_permalink_revenue_URL {?_s_ ?_p_ ?_o_}}</code> selects all triples in the graph, to be deleted</li>
 </ul>
