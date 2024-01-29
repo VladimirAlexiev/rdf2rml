@@ -153,20 +153,19 @@ Process `model-ontorefine.ru` with Ontotext Refine:
 - Create a project, load tabular data
 - Optionally, perform data cleaning
 - Make sure you have a working GraphDB repository to receive the data
-- Paste the generated SPARQL into GraphDB workbench and adjust the endpoint to the actual Refine virtual endpoint to be used
+- Paste the generated SPARQL into GraphDB workbench
+- Optionally, replace the default endpoint to the actual Refine virtual endpoint to be used
 - Run the query to update the data in GraphDB
 
 If you save the Ontotext Refine cleaning script (operations JSON),
-you can automate the Ontotext Refine process by using the
-[ontorefine-client](https://github.com/Ontotext-AD/ontorefine-client) CLI
-(it will become part of the Ontotext Refine distribution).
+you can automate the Refine process by using the [ontorefine-cli](https://platform.ontotext.com/ontorefine/ontorefine-cli.html).
 We have scripts to automate the following steps:
 
 - Create an Ontotext Refine project and capture its project ID
 - Load tabular data into the Ontotext Refine project
 - Optionally, apply an OpenRefine data cleaning script
 - Optionally, replace the default endpoint in the generated query with the actual endpoint
-- Run the query against a GraphDB repository: it will replace the defined named graph
+- Run the query against a GraphDB repository: it will replace the defined named graph(s)
 - Delete the Ontotext Refine project
 
 ## RDF Model Examples
