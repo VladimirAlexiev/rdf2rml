@@ -1,0 +1,38 @@
+# https://www.bobdc.com/blog/visualizing-rdf/
+# https://www.learningsparql.com/2ndeditionexamples/ex012.ttl
+
+d:i0432 ab:firstName "Richard" . 
+d:i0432 ab:lastName  "Mutt" . 
+d:i0432 ab:homeTel   "(229) 276-5135" .
+d:i0432 ab:email     "richard49@hotmail.com" . 
+
+d:i9771 ab:firstName "Cindy" . 
+d:i9771 ab:lastName  "Marshall" . 
+d:i9771 ab:homeTel   "(245) 646-5488" . 
+d:i9771 ab:email     "cindym@gmail.com" . 
+
+d:i8301 ab:firstName "Craig" . 
+d:i8301 ab:lastName  "Ellis" . 
+d:i8301 ab:email     "craigellis@yahoo.com" . 
+d:i8301 ab:email     "c.ellis@usairwaysgroup.com" . 
+
+# These links are shown in the blog, but missing from the file, let's add them:
+d:i8301 ab:follows d:i9771.
+d:i8301 ab:follows d:i0432.
+d:i0432 ab:follows d:i9771.
+
+# Let's add types:
+d:i0432 a ab:Person.
+d:i8301 a ab:Person.
+d:i9771 a ab:Person.
+
+#### rdfpuml instructions
+# See https://the-lum.github.io/puml-themes-gallery/ for themes
+
+ab:Person puml:stereotype "(P,red)Agent".
+[] puml:options """
+  hide empty members
+  hide circle
+  left to right direction
+  !theme amiga
+""".
