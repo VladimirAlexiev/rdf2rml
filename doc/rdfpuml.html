@@ -62,6 +62,10 @@
     img {
       max-width: 100%;
     }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
     h1, h2, h3, h4, h5, h6 {
       margin-top: 1.4em;
     }
@@ -154,8 +158,11 @@
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
     ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
       width: 0.8em;
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
@@ -196,6 +203,7 @@
 <li><a href="#unicode">Unicode</a></li>
 <li><a href="#prerequisites">Prerequisites</a></li>
 <li><a href="#installation">Installation</a></li>
+<li><a href="#packaged-binary">Packaged Binary</a></li>
 </ul></li>
 <li><a href="#see-also">SEE ALSO</a></li>
 </ul>
@@ -449,16 +457,18 @@ See <code>text/saref4city</code> for another way, and a trial.</p>
 <p><img src="../test/permid/sample-RobinSmith-positions.png" /></p>
 <h2 id="unicode">Unicode</h2>
 <p>The input Turtle can include Unicode chars (accented chars, Cyrillic, etc).
-Please invoke the script with option <code>-C</code> for proper processing of Unicode, eg:</p>
+See <code>test/unicode</code> for some examples.</p>
+<p>It used to be that you needed to invoke the script with option <code>-C</code>, now that is not necessary:</p>
 <pre><code>perl -C -S rdfpuml.pl file.ttl</code></pre>
-<p>(The option <code>-S</code> causes Perl to search for the script in <code>PATH</code>.)</p>
-<p>That’s how the included <code>bin/rdfpuml.bat</code> invokes the script.</p>
+<p>I include two simple files to invoke the script: <code>bin/rdfpuml.bat</code> (CMD batch) and <code>bin/rdfpuml</code> (shell script).
+- For some reason, the shell script doesn’t work ok with Unicode in Cygwin Bash (so use the BAT file).
+- If you have problems with it on Linux, please post an issue.</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
 <li><a href="http://www.graphviz.org/">GraphViz</a></li>
 <li><a href="http://plantuml.com/download">PlantUML</a>, see in particular <a href="http://plantuml.com/class-diagram">plantuml class diagrams</a>.</li>
 <li>Perl. Tested with version 5.22 on Windows (cygwin and Strawberry).</li>
-<li>Perl modules: <code>RDF::Trine</code>, <code>RDF::Query</code>, <code>Encode</code>, <code>FindBin</code>, <code>Carp::Always</code>, <code>Slurp</code>.</li>
+<li>Perl modules: <code>RDF::Trine</code>, <code>RDF::Query</code>, <code>FindBin</code>.</li>
 <li><code>RDF::Prefixes::Curie</code>. This is my own module located in <code>../lib</code>, and <strong>rdfpuml</strong> needs <code>FindBin</code> to locate it.</li>
 </ul>
 <h2 id="installation">Installation</h2>
@@ -466,9 +476,15 @@ Please invoke the script with option <code>-C</code> for proper processing of Un
 <ul>
 <li>Install the prerequisites.</li>
 <li>Add <code>rdfpuml/bin</code> to your path.</li>
-<li>Use <code>rdfpuml/bin/rdfpuml.bat</code> to run it (see “Unicode” above)</li>
+<li>Use <code>bin/rdfpuml.bat</code> or <code>bin/rdfpuml</code> to run it (but see “Unicode” above)</li>
 <li>See <code>test/*/Makefile</code> for examples how to set up make.</li>
 </ul>
+<h2 id="packaged-binary">Packaged Binary</h2>
+<p>I now use the <a href="https://metacpan.org/pod/pp">pp</a> script (part of <a href="https://metacpan.org/dist/PAR-Packer">PAR-Packer</a>) to make a self-contained binary <code>rdfpuml.exe</code> for Windows.
+- It includes Perl, all required modules and the script.
+- On first run it’s slower since it unzips the distribution (over 4k files)
+- It caches the unzipped distribution to a folder, so on sunbsequent runs it’s much faster</p>
+<p>Big thanks to <code>@rschupp</code> who helped me fix this issue: https://github.com/rschupp/PAR-Packer/issues/88 !</p>
 <h1 id="see-also">SEE ALSO</h1>
 <ul>
 <li><strong>rdf2rml</strong>: a tool to generate R2RML transformations from RDF examples.</li>
