@@ -1,19 +1,17 @@
 #!perl -w
 
-# #!/bin/sh
-# #! -*-perl-*-
-# eval 'exec perl -x -wS "$( cygpath -w "$0" )" ${1+"$@"}'
-#     if 0;
-
 use strict;
+
+use utf8; # Unicode chars in the source below
+use open ":std", ":utf8"; # instead of -C, see https://github.com/rschupp/PAR-Packer/issues/89
 # use Encode; # decode_utf8
+
 # use Carp::Always; # http://search.cpan.org/~ferreira/Carp-Always-0.13/lib/Carp/Always.pm
   # https://github.com/VladimirAlexiev/rdf2rml/issues/2
   # It'll show a stack trace on every die but who needs this for a missing file?
   # stronger than $Carp::Verbose = 1;
 use RDF::Trine;
 use RDF::Query;
-use Slurp;
 use FindBin;
 use lib "$FindBin::Bin/../lib"; # Curie is my own module, not yet on CPAN
 use RDF::Prefixes::Curie;
@@ -38,7 +36,6 @@ my %HEAD = (none => "", tri => "|>", star => "*", o => "o");
 my $HEAD_RE = join '|', keys %HEAD;
 my $LINE_RE = "dotted|dashed|bold|hidden"; # http://plantuml.com/activity-diagram-beta#arrow
 
-use utf8; # Unicode chars below
 my %ARROW = (left => "←", right => "→", up => "↑", down => "↓");
 my %OPPOSITE = (left => "right", right => "left", up => "down", down => "up");
 
@@ -90,11 +87,11 @@ $fname =~ s{\.ttl$}{};
 
 my $prefixes = -e "prefixes.ttl" ? slurp("prefixes.ttl") : "";
 my $file = slurp("$fname.ttl");
-my $turtle = "$PREFIXES_TURTLE\n$prefixes\n$file"; # omitted decode_utf8 as I now expect Perl to be called with -C
-my $prefixes_all = "$PREFIXES_TURTLE\n$prefixes";  # omitted decode_utf8 as I now expect Perl to be called with -C
-open (STDOUT, "> $fname.puml") or die "can't create $fname.puml: $!\n"; # omitted  ">:encoding(UTF-8)" as I now expect Perl to be called with -C
-#binmode STDERR, ":encoding(UTF-8)"; # omitted ">:encoding(UTF-8)" as I now expect Perl to be called with -C
-#print STDERR $turtle; die;
+my $turtle = "$PREFIXES_TURTLE\n$prefixes\n$file"; 
+my $prefixes_all = "$PREFIXES_TURTLE\n$prefixes";  
+open STDOUT, '>:encoding(UTF-8)', "$fname.puml" or die "can't create $fname.puml: $!\n";
+binmode STDERR, ":encoding(UTF-8)";
+# print STDERR $turtle; die;
 
 my $store = RDF::Trine::Store::Memory->new();
 our $model = RDF::Trine::Model->new($store) or die "can't create model: $!\n";
@@ -117,6 +114,13 @@ for my $s ($model->subjects(undef,undef)) {
 reification();
 
 myprint ("\@enduml\n");
+
+sub slurp {
+  my $file = shift;
+  open my $fh, '<:encoding(UTF-8)', $file or die "Can't open $file: $!\n";
+  local $/ = undef;
+  <$fh>
+}
 
 sub print_types {
   my ($s, $s1) = @_;

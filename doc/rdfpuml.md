@@ -25,6 +25,7 @@ date: 2023-06-02
     - [Unicode](#unicode)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
+    - [Packaged Binary](#packaged-binary)
 - [SEE ALSO](#see-also)
 
 <!-- markdown-toc end -->
@@ -384,19 +385,21 @@ Second example (`test/permid`):
 ## Unicode
 
 The input Turtle can include Unicode chars (accented chars, Cyrillic, etc).
-Please invoke the script with option `-C` for proper processing of Unicode, eg:
+See `test/unicode` for some examples.
+
+It used to be that you needed to invoke the script with option `-C`, now that is not necessary:
 
     perl -C -S rdfpuml.pl file.ttl
 
-(The option `-S` causes Perl to search for the script in `PATH`.)
-
-That's how the included `bin/rdfpuml.bat` invokes the script.
+I include two simple files to invoke the script: `bin/rdfpuml.bat` (CMD batch) and `bin/rdfpuml` (shell script).
+- For some reason, the shell script doesn't work ok with Unicode in Cygwin Bash (so use the BAT file).
+- If you have problems with it on Linux, please post an issue.
 
 ## Prerequisites
 - [GraphViz](http://www.graphviz.org/)
 - [PlantUML](http://plantuml.com/download), see in particular [plantuml class diagrams](http://plantuml.com/class-diagram).
 - Perl. Tested with version 5.22 on Windows (cygwin and Strawberry).
-- Perl modules: `RDF::Trine`, `RDF::Query`, `Encode`, `FindBin`, `Carp::Always`, `Slurp`.
+- Perl modules: `RDF::Trine`, `RDF::Query`, `FindBin`.
 - `RDF::Prefixes::Curie`. This is my own module located in `../lib`, and **rdfpuml** needs `FindBin` to locate it.
 
 ## Installation
@@ -405,8 +408,17 @@ Until **rdfpuml** is published as a proper perl package, use the following proce
 
 - Install the prerequisites.
 - Add `rdfpuml/bin` to your path.
-- Use `rdfpuml/bin/rdfpuml.bat` to run it (see "Unicode" above)
+- Use `bin/rdfpuml.bat` or `bin/rdfpuml` to run it (but see "Unicode" above)
 - See `test/*/Makefile` for examples how to set up make.
+
+## Packaged Binary
+
+I now use the [pp](https://metacpan.org/pod/pp) script (part of [PAR-Packer](https://metacpan.org/dist/PAR-Packer)) to make a self-contained binary `rdfpuml.exe` for Windows.
+- It includes Perl, all required modules and the script.
+- On first run it's slower since it unzips the distribution (over 4k files)
+- It caches the unzipped distribution to a folder, so on sunbsequent runs it's much faster
+
+Big thanks to `@rschupp` who helped me fix this issue: https://github.com/rschupp/PAR-Packer/issues/88 !
 
 # SEE ALSO
 

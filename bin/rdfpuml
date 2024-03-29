@@ -1,2 +1,2 @@
 #!/bin/sh
-perl -S -C rdfpuml.pl $1
+perl -S rdfpuml.pl $1

@@ -1,0 +1,29 @@
+ex:Zmrzlina a rdfs:Class;
+  rdfs:label "icecream"@en, "zmrzlina"@cs, "сладолед"@bg.
+
+ex:Vůně a rdfs:Class;
+  rdfs:label "flavor"@en, "vůně"@cs, "аромат"@bg.
+
+ex:JahodováZmrzlina a rdfs:Class;
+  rdfs:label "straberry icecream"@en, "jahodová zmrzlina"@cs, "ягодов сладолед"@bg;
+  rdfs:subClassOf ex:Zmrzlina,
+    [ a owl:Restriction ;
+      owl:onProperty ex:vůně;
+      owl:hasValue ex:jahoda].
+
+ex:vůně a rdf:Property;
+  rdfs:label "flavor"@en, "vůně"@cs, "аромат"@bg;
+  rdfs:domain ex:Zmrzlina; rdfs:range ex:Vůně.
+
+ex:jahoda a ex:Vůně;
+  rdfs:label "strawberry"@en, "jahoda"@cs, "ягода"@bg.
+
+####################
+
+rdfs:Class      puml:stereotype "(C,pink)".
+rdf:Property    puml:stereotype "(P,orange)".
+owl:Restriction puml:stereotype "(R,red)".
+ex:jahoda       puml:stereotype "(I,lightgreen)". # Instance
+rdfs:subClassOf puml:arrow puml:tri-up.
+rdfs:domain     puml:arrow puml:up.
+rdfs:range      puml:arrow puml:up.

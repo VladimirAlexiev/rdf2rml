@@ -1,0 +1,40 @@
+@startuml
+hide empty members
+hide circle
+skinparam classAttributeIconSize 0
+class ex_Zmrzlina as "ex:Zmrzlina"
+class ex_Zmrzlina <<(C,pink)>>
+show ex_Zmrzlina circle
+class ex_Vůně as "ex:Vůně"
+class ex_Vůně <<(C,pink)>>
+show ex_Vůně circle
+class ex_JahodováZmrzlina as "ex:JahodováZmrzlina"
+class ex_JahodováZmrzlina <<(C,pink)>>
+show ex_JahodováZmrzlina circle
+class ex_vůně as "ex:vůně"
+class ex_vůně <<(P,orange)>>
+show ex_vůně circle
+class _r1711715942r0_ as " "
+class _r1711715942r0_ <<(R,red)>>
+show _r1711715942r0_ circle
+class ex_jahoda as "ex:jahoda"
+class ex_jahoda <<(I,lightgreen)>>
+show ex_jahoda circle
+ex_Vůně : {field} a rdfs:Class
+ex_Vůně : {field} rdfs:label\n  "flavor"@en,\n  "vůně"@cs,\n  "аромат"@bg
+ex_JahodováZmrzlina : {field} a rdfs:Class
+ex_JahodováZmrzlina -up-|> ex_Zmrzlina : rdfs:subClassOf
+ex_JahodováZmrzlina -up-|> _r1711715942r0_ : rdfs:subClassOf
+ex_JahodováZmrzlina : {field} rdfs:label\n  "jahodová zmrzlina"@cs,\n  "straberry icecream"@en,\n  "ягодов сладолед"@bg
+_r1711715942r0_ : {field} a owl:Restriction
+_r1711715942r0_ -down-> ex_vůně : owl:onProperty
+_r1711715942r0_ -down-> ex_jahoda : owl:hasValue
+ex_Zmrzlina : {field} a rdfs:Class
+ex_Zmrzlina : {field} rdfs:label\n  "icecream"@en,\n  "zmrzlina"@cs,\n  "сладолед"@bg
+ex_jahoda : {field} a ex:Vůně
+ex_jahoda : {field} rdfs:label\n  "jahoda"@cs,\n  "strawberry"@en,\n  "ягода"@bg
+ex_vůně : {field} a rdf:Property
+ex_vůně -up-> ex_Vůně : rdfs:range
+ex_vůně -up-> ex_Zmrzlina : rdfs:domain
+ex_vůně : {field} rdfs:label\n  "flavor"@en,\n  "vůně"@cs,\n  "аромат"@bg
+@enduml
