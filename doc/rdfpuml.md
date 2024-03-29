@@ -413,7 +413,7 @@ Until **rdfpuml** is published as a proper perl package, use the following proce
 
 ## Packaged Binary
 
-I now use the [pp](https://metacpan.org/pod/pp) script (part of [PAR-Packer](https://metacpan.org/dist/PAR-Packer)) to make a self-contained binary `rdfpuml.exe` for Windows.
+I now use the [pp](https://metacpan.org/pod/pp) script (part of [PAR-Packer](https://metacpan.org/dist/PAR-Packer)) to make a self-contained binary for Windows: [rdfpuml.exe](../bin/rdfpuml.exe).
 - It includes Perl, all required modules and the script.
 - On first run it's slower since it unzips the distribution (over 4k files)
 - It caches the unzipped distribution to a folder, so on sunbsequent runs it's much faster
