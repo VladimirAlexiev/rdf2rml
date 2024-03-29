@@ -1,0 +1,469 @@
+@prefix besluit: <http://data.vlaanderen.be/ns/besluit#> .
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix eu: <http://data.europa.eu/m8g/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix locn: <http://www.w3.org/ns/locn#> .
+@prefix ns1: <http://www.w3.org/2001/02pd/rec54#> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix person: <http://www.w3.org/ns/person#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rov: <http://www.w3.org/ns/regorg#> .
+@prefix sat: <http://data.europa.eu/stateaidtransparency/sat#> .
+@prefix schema: <http://schema.org/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+skos:Concept a rdfs:Class .
+
+person:Person a rdfs:Class ;
+    rdfs:label "Persoon"@nl .
+
+schema:contactPoint a rdf:Property ;
+    rdfs:label "contactpunt"@nl .
+
+person:birthName a rdf:Property ;
+    rdfs:label "geboortenaam"@nl .
+
+person:citizenship a rdf:Property ;
+    rdfs:label "staatsburgerschap"@nl .
+
+person:patronymicName a rdf:Property ;
+    rdfs:label "patroniem"@nl .
+
+person:residency a rdf:Property ;
+    rdfs:label "inwonerschap"@nl .
+
+foaf:familyName a rdf:Property ;
+    rdfs:label "familienaam"@nl .
+
+<https://data.vlaanderen.be/ns/persoon#Domicilie> a owl:Class ;
+    rdfs:label "Domicilie"@nl ;
+    vann:usageNote "Plaats waar.."@nl ;
+    rdfs:comment "Hoofdverblijfplaats ve persoon."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:subClassOf <https://data.vlaanderen.be/ns/persoon#Verblijfplaats> .
+
+<https://data.vlaanderen.be/ns/persoon#GeenInwoner> a owl:Class ;
+    rdfs:label "Geen Inwoner"@nl ;
+    vann:usageNote "Plaats of land..."@nl ;
+    rdfs:comment "Persoon die niet..."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:subClassOf <https://data.vlaanderen.be/ns/persoon#Inwonerschap> .
+
+<https://data.vlaanderen.be/ns/persoon#Huwelijk> a owl:Class ;
+    rdfs:label "Huwelijk"@nl ;
+    vann:usageNote "Kan, net als..."@nl ;
+    rdfs:comment "Een door burgerlijk..."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:subClassOf <https://data.vlaanderen.be/ns/persoon#Persoonsrelatie> .
+
+<https://data.vlaanderen.be/ns/persoon#Inwonerschap.binnenJurisdictie> a owl:ObjectProperty ;
+    rdfs:label "binnen jurisdictie"@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Jurisdictie waarbinnen het..."@nl ;
+    rdfs:domain <https://data.vlaanderen.be/ns/persoon#Inwonerschap> ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range dcterms:Jurisdiction .
+
+<https://data.vlaanderen.be/ns/persoon#PermanentInwoner> a owl:Class ;
+    rdfs:label "Permanent Inwoner"@nl ;
+    vann:usageNote "Is een verblijfsrecht..."@nl ;
+    rdfs:comment "Persoon die permanent..."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:subClassOf <https://data.vlaanderen.be/ns/persoon#Inwoner> .
+
+<https://data.vlaanderen.be/ns/persoon#Samenwonen> a owl:Class ;
+    rdfs:label "Samenwonen"@nl ;
+    vann:usageNote "Kan, net als.."@nl ;
+    rdfs:comment "Regeling waarbij twee..."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:subClassOf <https://data.vlaanderen.be/ns/persoon#Persoonsrelatie> .
+
+<https://data.vlaanderen.be/ns/persoon#Staatsburger> a owl:Class ;
+    rdfs:label "Staatsburger"@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Persoon die juridisch..."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:subClassOf <https://data.vlaanderen.be/ns/persoon#Staatsburgerschap> .
+
+<https://data.vlaanderen.be/ns/persoon#Staatsburgerschap.binnenJurisdictie> a owl:ObjectProperty ;
+    rdfs:label "binnen jurisdictie"@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Jurisdictie waarbinnen het..."@nl ;
+    rdfs:domain <https://data.vlaanderen.be/ns/persoon#Staatsburgerschap> ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range dcterms:Jurisdiction .
+
+<https://data.vlaanderen.be/ns/persoon#TijdelijkInwoner> a owl:Class ;
+    rdfs:label "Tijdelijk Inwoner"@nl ;
+    vann:usageNote "Is een verblijfsrecht..."@nl ;
+    rdfs:comment "Persoon die tijdelijk..."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:subClassOf <https://data.vlaanderen.be/ns/persoon#Inwoner> .
+
+<https://data.vlaanderen.be/ns/persoon#Voogdij> a owl:Class ;
+    rdfs:label "Voogdij"@nl ;
+    vann:usageNote "Dit is bv..."@nl ;
+    rdfs:comment "Situatie waarbij een..."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:subClassOf <https://data.vlaanderen.be/ns/persoon#Persoonsrelatie> .
+
+<https://data.vlaanderen.be/ns/persoon#Vreemdeling> a owl:Class ;
+    rdfs:label "Vreemdeling"@nl ;
+    vann:usageNote "Daardoor kan de..."@nl ;
+    rdfs:comment "Persoon die niet..."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:subClassOf <https://data.vlaanderen.be/ns/persoon#Staatsburgerschap> .
+
+<https://data.vlaanderen.be/ns/persoon#afstammingsType> a owl:ObjectProperty ;
+    rdfs:label "afstammingstype"@nl ;
+    vann:usageNote "Bv geadopteerd, kind..."@nl ;
+    rdfs:comment "Aard vd afstamming..."@nl ;
+    rdfs:domain <https://data.vlaanderen.be/ns/persoon#Afstamming> ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range skos:Concept .
+
+<https://data.vlaanderen.be/ns/persoon#alternatieveNaam> a owl:DatatypeProperty ;
+    rdfs:label "alternatieve naam"@nl ;
+    rdfs:comment "Alternatief voor de..."@nl ;
+    rdfs:domain person:Person ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range xsd:string ;
+    rdfs:subPropertyOf foaf:name .
+
+<https://data.vlaanderen.be/ns/persoon#datum> a owl:DatatypeProperty ;
+    rdfs:label "datum"@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Datum waarop de..."@nl ;
+    rdfs:domain <https://data.vlaanderen.be/ns/persoon#Persoonsgebeurtenis> ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range rdfs:Literal ;
+    rdfs:subPropertyOf <http://purl.org/vocab/bio/0.1/date> .
+
+<https://data.vlaanderen.be/ns/persoon#datumVanAfstamming> a owl:DatatypeProperty ;
+    rdfs:label "datum van afstamming..."@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "De datum waarop..."@nl ;
+    rdfs:domain <https://data.vlaanderen.be/ns/persoon#Afstamming> ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range rdfs:Literal ;
+    rdfs:subPropertyOf dcterms:date .
+
+<https://data.vlaanderen.be/ns/persoon#gebruikteVoornaam> a owl:DatatypeProperty ;
+    rdfs:label "gebruikte voornaam"@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Belangrijkste vd voornamen..."@nl ;
+    rdfs:domain person:Person ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range xsd:string ;
+    rdfs:subPropertyOf foaf:givenName .
+
+<https://data.vlaanderen.be/ns/persoon#geslacht> a owl:ObjectProperty ;
+    rdfs:label "geslacht"@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Het feit of..."@nl ;
+    rdfs:domain person:Person ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range skos:Concept .
+
+<https://data.vlaanderen.be/ns/persoon#gezinsadres> a owl:ObjectProperty ;
+    rdfs:label "gezinsadres"@nl ;
+    vann:usageNote "Dikwijls een criterium..."@nl ;
+    rdfs:comment "Verblijfplaats vh gezin..."@nl ;
+    rdfs:domain <https://data.vlaanderen.be/ns/persoon#Gezin> ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range locn:Address .
+
+<https://data.vlaanderen.be/ns/persoon#gezinsrelatietype> a owl:ObjectProperty ;
+    rdfs:label "gezinsrelatietype"@nl ;
+    vann:usageNote "Wordt typisch bepaald..."@nl ;
+    rdfs:comment "Aard vd relatie..."@nl ;
+    rdfs:domain <https://data.vlaanderen.be/ns/persoon#Gezinsrelatie> ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range skos:Concept .
+
+<https://data.vlaanderen.be/ns/persoon#heeftBurgerlijkeStaat> a owl:ObjectProperty ;
+    rdfs:label "heeft burgerlijke staat..."@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Burgerlijke staat vd..."@nl ;
+    rdfs:domain person:Person ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range <https://data.vlaanderen.be/ns/persoon#BurgerlijkeStaat> .
+
+<https://data.vlaanderen.be/ns/persoon#heeftGeboorte> a owl:ObjectProperty ;
+    rdfs:label "heeft geboorte"@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Verwijst naar de..."@nl ;
+    rdfs:domain person:Person ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range <https://data.vlaanderen.be/ns/persoon#Geboorte> ;
+    rdfs:subPropertyOf <http://purl.org/vocab/bio/0.1/birth> .
+
+<https://data.vlaanderen.be/ns/persoon#heeftInwonerschap> a owl:ObjectProperty ;
+    rdfs:label "heeft inwonerschap"@nl ;
+    vann:usageNote "De entiteit inwonerschap..."@nl ;
+    rdfs:comment "Inwonerschap vd persoon..."@nl ;
+    rdfs:domain person:Person ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range <https://data.vlaanderen.be/ns/persoon#Inwonerschap> .
+
+<https://data.vlaanderen.be/ns/persoon#heeftNationaliteit> a owl:ObjectProperty ;
+    rdfs:label "heeft nationaliteit"@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Nationaliteit vd persoon..."@nl ;
+    rdfs:domain person:Person ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range <https://data.vlaanderen.be/ns/persoon#Nationaliteit> .
+
+<https://data.vlaanderen.be/ns/persoon#heeftOverlijden> a owl:ObjectProperty ;
+    rdfs:label "heeft overlijden"@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Verwijst naar de..."@nl ;
+    rdfs:domain person:Person ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range <https://data.vlaanderen.be/ns/persoon#Overlijden> ;
+    rdfs:subPropertyOf <http://purl.org/vocab/bio/0.1/death> .
+
+<https://data.vlaanderen.be/ns/persoon#heeftPersoonsrelatie> a owl:ObjectProperty ;
+    rdfs:label "heeft persoonsrelatie"@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Relatie van een..."@nl ;
+    rdfs:domain person:Person ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range <https://data.vlaanderen.be/ns/persoon#Persoonsrelatie> .
+
+<https://data.vlaanderen.be/ns/persoon#heeftStaatsburgerschap> a owl:ObjectProperty ;
+    rdfs:label "heeft staatsburgerschap"@nl ;
+    vann:usageNote "De entiteit staatsburgerschap..."@nl ;
+    rdfs:comment "Staatsburgerschap vd persoon..."@nl ;
+    rdfs:domain person:Person ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range <https://data.vlaanderen.be/ns/persoon#Staatsburgerschap> .
+
+<https://data.vlaanderen.be/ns/persoon#heeftVerblijfplaats> a owl:ObjectProperty ;
+    rdfs:label "heeft verblijfplaats"@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Plaats waar een..."@nl ;
+    rdfs:domain <https://data.vlaanderen.be/ns/persoon#Inwonerschap> ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range <https://data.vlaanderen.be/ns/persoon#Verblijfplaats> .
+
+<https://data.vlaanderen.be/ns/persoon#isHoofdVan> a owl:ObjectProperty ;
+    rdfs:label "is hoofd van..."@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Persoon die standaard..."@nl ;
+    rdfs:domain person:Person ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range <https://data.vlaanderen.be/ns/persoon#Gezin> ;
+    rdfs:subPropertyOf org:headOf,
+        <https://data.vlaanderen.be/ns/persoon#isLidVan> .
+
+<https://data.vlaanderen.be/ns/persoon#isRelatieMet> a owl:ObjectProperty ;
+    rdfs:label "is relatie met..."@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Persoon waarmee de..."@nl ;
+    rdfs:domain <https://data.vlaanderen.be/ns/persoon#Persoonsrelatie> ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range person:Person .
+
+<https://data.vlaanderen.be/ns/persoon#land> a owl:ObjectProperty ;
+    rdfs:label "land"@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Land waar de..."@nl ;
+    rdfs:domain <https://data.vlaanderen.be/ns/persoon#Persoonsgebeurtenis> ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range dcterms:Location ;
+    rdfs:subPropertyOf <http://purl.org/vocab/bio/0.1/place> .
+
+<https://data.vlaanderen.be/ns/persoon#nationaliteit> a owl:ObjectProperty ;
+    rdfs:label "nationaliteit"@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "De nationaliteit vd..."@nl ;
+    rdfs:domain <https://data.vlaanderen.be/ns/persoon#Nationaliteit> ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range <https://data.vlaanderen.be/ns/persoon#Nationaliteitscode> .
+
+<https://data.vlaanderen.be/ns/persoon#plaats> a owl:ObjectProperty ;
+    rdfs:label "plaats"@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Plaats in een..."@nl ;
+    rdfs:domain <https://data.vlaanderen.be/ns/persoon#Persoonsgebeurtenis> ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range dcterms:Location ;
+    rdfs:subPropertyOf <http://purl.org/vocab/bio/0.1/place> .
+
+<https://data.vlaanderen.be/ns/persoon#registratie> a owl:ObjectProperty ;
+    rdfs:label "registratie"@nl ;
+    rdfs:comment "Identificatiecode vd persoon..."@nl ;
+    rdfs:domain <https://data.vlaanderen.be/ns/persoon#GeregistreerdPersoon> ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range <http://www.w3.org/ns/adms#Identifier> ;
+    rdfs:subPropertyOf <http://www.w3.org/ns/adms#Identifier> .
+
+<https://data.vlaanderen.be/ns/persoon#type> a owl:ObjectProperty ;
+    rdfs:label "type"@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Aard vd burgerlijke..."@nl ;
+    rdfs:domain <https://data.vlaanderen.be/ns/persoon#BurgerlijkeStaat> ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range skos:Concept ;
+    rdfs:subPropertyOf <http://purl.org/dc/elements/1.1/type> .
+
+<https://data.vlaanderen.be/ns/persoon#verblijfsadres> a owl:ObjectProperty ;
+    rdfs:label "verblijfsadres"@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Plaats waar een..."@nl ;
+    rdfs:domain <https://data.vlaanderen.be/ns/persoon#Verblijfplaats> ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range locn:Address .
+
+<https://data.vlaanderen.be/ns/persoon#volledigeNaam> a owl:DatatypeProperty ;
+    rdfs:label "volledige naam"@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "De volledige naam..."@nl ;
+    rdfs:domain person:Person ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range xsd:string ;
+    rdfs:subPropertyOf foaf:name .
+
+foaf:givenName a rdf:Property ;
+    rdfs:label "gegeven naam"@nl .
+
+<https://data.vlaanderen.be/ns/persoon#Geboorte> a owl:Class ;
+    rdfs:label "Geboorte"@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Het ter wereld..."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:subClassOf <https://data.vlaanderen.be/ns/persoon#Persoonsgebeurtenis> ;
+    owl:equivalentClass <http://purl.org/vocab/bio/0.1/Birth> .
+
+<https://data.vlaanderen.be/ns/persoon#GeregistreerdPersoon> a owl:Class ;
+    rdfs:label "Geregistreerd Persoon"@nl ;
+    vann:usageNote "Doorgaans is dit..."@nl ;
+    rdfs:comment "Persoon waarvan de..."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:subClassOf person:Person .
+
+<https://data.vlaanderen.be/ns/persoon#Gezinsrelatie> a owl:Class ;
+    rdfs:label "Gezinsrelatie"@nl ;
+    vann:usageNote "Bv echtgenoot, zoon, schoonmoeder."@nl ;
+    rdfs:comment "Relatie tussen leden..."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:subClassOf <https://data.vlaanderen.be/ns/persoon#Persoonsrelatie> .
+
+<https://data.vlaanderen.be/ns/persoon#Overlijden> a owl:Class ;
+    rdfs:label "Overlijden"@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Het doodgaan vd..."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:subClassOf <https://data.vlaanderen.be/ns/persoon#Persoonsgebeurtenis> ;
+    owl:equivalentClass <http://purl.org/vocab/bio/0.1/Death> .
+
+<https://data.vlaanderen.be/ns/persoon#isLidVan> a owl:ObjectProperty ;
+    rdfs:label "is lid van..."@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Persoon die tot..."@nl ;
+    rdfs:domain person:Person ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:range <https://data.vlaanderen.be/ns/persoon#Gezin> ;
+    rdfs:subPropertyOf org:memberOf .
+
+<https://data.vlaanderen.be/ns/persoon#Afstamming> a owl:Class ;
+    rdfs:label "Afstamming"@nl ;
+    vann:usageNote "De afstamming kan..."@nl ;
+    rdfs:comment "Afstamming is de dalende..."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:subClassOf <https://data.vlaanderen.be/ns/persoon#Persoonsrelatie> .
+
+<https://data.vlaanderen.be/ns/persoon#BurgerlijkeStaat> a owl:Class ;
+    rdfs:label "Burgerlijke Staat"@nl ;
+    vann:usageNote "Slaat op huwelijk..."@nl ;
+    rdfs:comment "Burgerrechtelijke toestand van..."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> .
+
+<https://data.vlaanderen.be/ns/persoon#Inwoner> a owl:Class ;
+    rdfs:label "Inwoner"@nl ;
+    vann:usageNote "Plaats of land..."@nl ;
+    rdfs:comment "Persoon die in..."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:subClassOf <https://data.vlaanderen.be/ns/persoon#Inwonerschap> .
+
+<https://data.vlaanderen.be/ns/persoon#Nationaliteit> a owl:Class ;
+    rdfs:label "Nationaliteit"@nl ;
+    vann:usageNote "Merk op dat..."@nl ;
+    rdfs:comment "De relatie tussen..."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> .
+
+<https://data.vlaanderen.be/ns/persoon#Gezin> a owl:Class ;
+    rdfs:label "Gezin"@nl ;
+    vann:usageNote "Ruimer begrip dan..."@nl ;
+    rdfs:comment "Samenwerkingsvorm die een..."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> ;
+    rdfs:subClassOf org:Organization .
+
+<https://data.vlaanderen.be/ns/persoon#Verblijfplaats> a owl:Class ;
+    rdfs:label "Verblijfplaats"@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Plaats waar een..."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> .
+
+<https://data.vlaanderen.be/ns/persoon#Staatsburgerschap> a owl:Class ;
+    rdfs:label "Staatburgerschap"@nl ;
+    vann:usageNote "Vloeit meestal voort..."@nl ;
+    rdfs:comment "Juridische band ve..."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> .
+
+<https://data.vlaanderen.be/ns/persoon#Inwonerschap> a owl:Class ;
+    rdfs:label "Inwonerschap"@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Het feit dat..."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> .
+
+<https://data.vlaanderen.be/ns/persoon#Persoonsgebeurtenis> a owl:Class ;
+    rdfs:label "Persoonsgebeurtenis"@nl ;
+    vann:usageNote " "@nl ;
+    rdfs:comment "Belangrijke gebeurtenis ih..."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> .
+
+<https://data.vlaanderen.be/ns/persoon#Persoonsrelatie> a owl:Class ;
+    rdfs:label "Persoonsrelatie"@nl ;
+    vann:usageNote "Typisch zijn dit..."@nl ;
+    rdfs:comment "Relatie tussen twee..."@nl ;
+    rdfs:isDefinedBy <https://data.vlaanderen.be/ns/persoon> .
+
+####################
+
+rdfs:isDefinedBy      a puml:InlineProperty.
+adms:Identifier       a puml:Inline.
+bio:Birth             a puml:Inline.
+bio:Death             a puml:Inline.
+bio:birth             a puml:Inline.
+bio:date              a puml:Inline.
+bio:death             a puml:Inline.
+bio:place             a puml:Inline.
+dc:type               a puml:Inline.
+dcterms:Jurisdiction  a puml:Inline.
+dcterms:Location      a puml:Inline.
+dcterms:date          a puml:Inline.
+foaf:givenName        a puml:Inline.
+foaf:name             a puml:Inline.
+locn:Address          a puml:Inline.
+org:Organization      a puml:Inline.
+org:memberOf          a puml:Inline.
+rdfs:Literal          a puml:Inline.
+skos:Concept          a puml:Inline.
+skos:Concept          a puml:Inline.
+xsd:string            a puml:Inline.
+
+[] puml:options """
+hide empty members
+hide circles
+left to right direction
+""".
