@@ -327,12 +327,10 @@ This is used quite often for lookup values, e.g.</p>
 <p>Declares a property to be inlined, i.e. all its objects are shown inlined, e.g.</p>
 <pre><code>  fn:annotationSetFrame a puml:InlineProperty.
   fn:annotationSetLU    a puml:InlineProperty.</code></pre>
-<p>E.g. this is used in this complex diagram showing FrameNet nodes.</p>
-<div>
-<pre><code>      &lt;img src=&quot;img/MS-Frame-complex.png&quot;&gt;</code></pre>
-</div></li>
+<p>E.g. this is used in this complex diagram showing FrameNet nodes.</p></li>
 </ul>
-<h2 id="labels">Labels</h2>
+<p><img src="img/MS-Frame-complex.png" />
+## Labels</p>
 <p>Nodes can have labels: <code>puml:label, rdfs:label, skos:prefLabel</code>.</p>
 <ul>
 <li>If a node is inlined, its label is added as a comment. If several nodes are inlined at the same property, all their comments are also gathered together.</li>
@@ -361,36 +359,34 @@ and in the empty namespace (to show an arrow label).</p>
    &lt;x&gt; puml:dotted-bold &lt;y3&gt;. &lt;x&gt; :dotted-bold &lt;y3&gt;. 
    &lt;x&gt; puml:up-black    &lt;y4&gt;. &lt;x&gt; :up-black    &lt;y4&gt;. 
    &lt;x&gt; puml:tri-up      &lt;y5&gt;. &lt;x&gt; :tri-up      &lt;y5&gt;. 
-   &lt;x&gt; puml:left-blue   &lt;y6&gt;. &lt;x&gt; :left-blue   &lt;y6&gt;. </code></pre>
-<div>
-<pre><code>      &lt;img src=&quot;img/arrowStyles.png&quot;&gt;</code></pre>
-</div></li>
-<li><p>COLOR</p>
-<p>Line color: name (e.g. <code>red</code>) or hex-code (e.g. <code>FF0000</code>)
-To see the full list of color names supported by PlantUML, use this command and search for <code>;color</code></p>
-<pre><code>  java -jar plantuml.jar -language</code></pre>
-<p>For example, 4 of the arrows on this diagram are colored (1 green, 3 red):</p>
-<div>
-<pre><code>      &lt;img src=&quot;img/colorArrow-ciq-cropped.png&quot;&gt;</code></pre>
-</div></li>
-<li><p>LEN</p>
-<p>Length: a number of 1 or 2 digits. This applies only to vertical arrows (<code>up,down</code>).
-You can use this to adjust the layout and in some cases avoid the need for parasitic <code>hidden</code> arrows.</p>
-<p>See <a href="http://www.plantuml.com/plantuml/uml/JOvB3iCW30NtFeKlm2B_NPMhq80A4YGH6DMvVLCtZM0tCvOUSoQTgCG0pXkBDkvqe2PA_bd8vjf6IsupbrfyMiBPbw1pHcw06rHcUw_gWST9BQgogo-qmDsLX3lW_XS5U-3Xpc86u54E_c84dgeJSPDC9FzofEft3zH9VZ7RrPGOFW00">this example</a>
-and its remake in rdfpuml below.</p>
-<pre><code>   &lt;x1&gt; puml:down     &lt;y1&gt;.
-   &lt;x2&gt; puml:up-2     &lt;y2&gt;.
-   &lt;x3&gt; puml:down-3   &lt;y3&gt;.
-   &lt;x4&gt; puml:up-4     &lt;y4&gt;.
-   &lt;x5&gt; puml:down-5   &lt;y5&gt;.
-   &lt;x6&gt; puml:up-6     &lt;y6&gt;.
-   &lt;x7&gt; puml:down-7   &lt;y7&gt;.
-   &lt;x2&gt; puml:right-9  &lt;y3&gt;.
-   &lt;x4&gt; puml:right-7  &lt;y2&gt;.</code></pre>
-<div>
-<pre><code>      &lt;img src=&quot;img/arrowLen.png&quot;&gt;</code></pre>
-</div></li>
+   &lt;x&gt; puml:left-blue   &lt;y6&gt;. &lt;x&gt; :left-blue   &lt;y6&gt;. </code></pre></li>
 </ul>
+<p><img src="img/arrowStyles.png" />
+- COLOR</p>
+<pre><code>Line color: name (e.g. `red`) or hex-code (e.g. `FF0000`)
+To see the full list of color names supported by PlantUML, use this command and search for `;color`
+
+    java -jar plantuml.jar -language
+
+For example, 4 of the arrows on this diagram are colored (1 green, 3 red):</code></pre>
+<p><img src="img/colorArrow-ciq-cropped.png" />
+- LEN</p>
+<pre><code>Length: a number of 1 or 2 digits. This applies only to vertical arrows (`up,down`).
+You can use this to adjust the layout and in some cases avoid the need for parasitic `hidden` arrows.
+
+See [this example](http://www.plantuml.com/plantuml/uml/JOvB3iCW30NtFeKlm2B_NPMhq80A4YGH6DMvVLCtZM0tCvOUSoQTgCG0pXkBDkvqe2PA_bd8vjf6IsupbrfyMiBPbw1pHcw06rHcUw_gWST9BQgogo-qmDsLX3lW_XS5U-3Xpc86u54E_c84dgeJSPDC9FzofEft3zH9VZ7RrPGOFW00)
+and its remake in rdfpuml below.
+
+     &lt;x1&gt; puml:down     &lt;y1&gt;.
+     &lt;x2&gt; puml:up-2     &lt;y2&gt;.
+     &lt;x3&gt; puml:down-3   &lt;y3&gt;.
+     &lt;x4&gt; puml:up-4     &lt;y4&gt;.
+     &lt;x5&gt; puml:down-5   &lt;y5&gt;.
+     &lt;x6&gt; puml:up-6     &lt;y6&gt;.
+     &lt;x7&gt; puml:down-7   &lt;y7&gt;.
+     &lt;x2&gt; puml:right-9  &lt;y3&gt;.
+     &lt;x4&gt; puml:right-7  &lt;y2&gt;.</code></pre>
+<p><img src="img/arrowLen.png" /></p>
 <h3 id="arrow-per-edge">Arrow Per Edge</h3>
 <p>To customize the arrow of one relation connecting two nodes, use:</p>
 <pre><code>&lt;node1&gt; &lt;prop&gt; &lt;node2&gt;

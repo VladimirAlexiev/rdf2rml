@@ -192,11 +192,7 @@ In addition, you can inline other nodes by using the following.
 
     E.g. this is used in this complex diagram showing FrameNet nodes.
 
-    <div>
-
-            <img src="img/MS-Frame-complex.png">
-    </div>
-
+![](img/MS-Frame-complex.png)
 ## Labels
 
 Nodes can have labels: `puml:label, rdfs:label, skos:prefLabel`.
@@ -240,11 +236,7 @@ You can combine the different parts freely (each is optional) and even write the
          <x> puml:tri-up      <y5>. <x> :tri-up      <y5>. 
          <x> puml:left-blue   <y6>. <x> :left-blue   <y6>. 
 
-    <div>
-
-            <img src="img/arrowStyles.png">
-    </div>
-
+![](img/arrowStyles.png)
 - COLOR
 
     Line color: name (e.g. `red`) or hex-code (e.g. `FF0000`)
@@ -254,11 +246,7 @@ You can combine the different parts freely (each is optional) and even write the
 
     For example, 4 of the arrows on this diagram are colored (1 green, 3 red):
 
-    <div>
-
-            <img src="img/colorArrow-ciq-cropped.png">
-    </div>
-
+![](img/colorArrow-ciq-cropped.png)
 - LEN
 
     Length: a number of 1 or 2 digits. This applies only to vertical arrows (`up,down`).
@@ -277,10 +265,7 @@ You can combine the different parts freely (each is optional) and even write the
          <x2> puml:right-9  <y3>.
          <x4> puml:right-7  <y2>.
 
-    <div>
-
-            <img src="img/arrowLen.png">
-    </div>
+![](img/arrowLen.png)
 
 ### Arrow Per Edge
 
