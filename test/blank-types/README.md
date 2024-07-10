@@ -56,7 +56,7 @@ A type is defined by Intersection and Restriction of other types.
 
 ## IDO Example
 
-This example from the Industrial Data Ontology (IDO) 
+This example from the Industrial Data Ontology (IDO)
 shows 2 instances (a Person and an Assembly) with their types and a relation.
 
 [example-technician.ttl](example-technician.ttl):
@@ -69,10 +69,48 @@ Before fixing issue 10, the instances showed the types inline, losing the connec
 
 ## IOF Example
 
+The Industrial Ontology Foundry (IOF) have a style guide described in [this closed wiki](https://oagi.atlassian.net/wiki/x/AoBmKgE).
+Instances are shown in pink and classes in dark yellow.
+This is done by hand-crafting PlantUML files that use both `class` and `object`,
+eg [example-iof-puml.puml](example-iof-puml.puml):
+
+![](example-iof-puml.png)
+
+
+We can emulate this closely with a pure Turtle file
 [example-iof.ttl](example-iof.ttl):
 
+![](example-iof.png)
+
+We first declare the used classes:
+```ttl
+bfo:quality                  a owl:Class.
+ont:Temperature              a owl:Class; rdfs:subClassOf bfo:quality.
+iof:MeasuredValueExpression  a owl:Class.
+qudt:Unit                    a owl:Class.
+```
+
+Then we describe instance data:
+```ttl
+<temperature1> a ont:Temperature.
+<temperature-value-expression> a iof:MeasuredValueExpression;
+  iof:isMeasurementValueOfAtSomeTime <temperature1>;
+  qudt:unit unit:DEG_F;
+  iof:hasSimpleValueExpression 98.6.
+unit:DEG_F a qudt:Unit.
+```
+
+Finally, we specify arrow directions to match the hand-crafted example: 
+note that this is not necessary in most cases, or you can limit it to the two ontological properties.
+```ttl
+iof:isMeasurementValueOfAtSomeTime puml:arrow puml:left.
+qudt:unit                          puml:arrow puml:right.
+rdf:type                           puml:arrow puml:up-dashed.
+rdfs:subClassOf                    puml:arrow puml:up-tri.
+```
+
 # Open Issues
-- You need to specify the `-|>` arrow for `rdfs:subClassOf`, 
+- You need to specify the `-|>` arrow for `rdfs:subClassOf`,
   which is the normal subclass convention in UML:
 ```ttl
 rdfs:subClassOf puml:arrow puml:tri.
@@ -92,4 +130,4 @@ rdfs:subClassOf puml:arrow puml:tri-up-2.
 - I see a bit of clash on `puml:stereotype`:
   - When applied on an instance, the stereotype is used for that node only.
   - When applied on a class, the stereotype is used for all instances of the class.
-  - But when you start treating classes as instances as well... Should `ex:InstrumentationTechnician` show `(C)` because it's a class or `(P)` because that's the stereotype for its instances? 
+  - But when you start treating classes as instances as well... Should `ex:InstrumentationTechnician` show `(C)` because it's a class or `(P)` because that's the stereotype for its instances?
