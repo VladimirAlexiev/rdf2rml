@@ -8,6 +8,7 @@
 @prefix bfo:         <http://purl.obolibrary.org/obo/> .
 @prefix iof:         <https://spec.industrialontologies.org/ontology/core/Core/>.
 @prefix lis:         <http://rds.posccaesar.org/ontology/lis14/rdl/>.
+@prefix lis12:       <http://standards.iso.org/iso/15926/ontology/life-cycle-integration/> .
 @prefix obo:         <http://purl.obolibrary.org/obo/>.
 @prefix om:          <http://www.ontology-of-units-of-measure.org/resource/om-2/>.
 @prefix owl:         <http://www.w3.org/2002/07/owl#> .

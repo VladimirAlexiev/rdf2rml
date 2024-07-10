@@ -1,0 +1,14 @@
+lis:Person a owl:Class.
+lis:Artefact a owl:Class.
+ont:InstrumentationTechnician a owl:Class; rdfs:subClassOf lis:Person.
+ont:PressureGaugeAssembly a owl:Class; rdfs:subClassOf lis:Artefact.
+ont:P-12345-PA-01 a ont:PressureGaugeAssembly.
+ont:John a ont:InstrumentationTechnician.
+ont:John ont:makes ont:P-12345-PA-01.
+
+####################
+ont:InstrumentationTechnician puml:stereotype "(P,pink)".
+ont:PressureGaugeAssembly     puml:stereotype "(A,green)".
+rdf:type                      puml:arrow puml:up.
+rdfs:subClassOf               puml:arrow puml:tri-up.
+ont:makes                     puml:arrow puml:right.

@@ -35,3 +35,5 @@ ont:CTODEV18198000  rdf:type  owl:Class ;
 
 ont:CTODEV70164000  a puml:Inline.
 ont:CTODEV54509000  a puml:Inline.
+rdfs:subClassOf       puml:arrow puml:tri.
+owl:equivalentClass   puml:arrow puml:none.
