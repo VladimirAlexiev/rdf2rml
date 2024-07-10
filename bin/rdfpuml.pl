@@ -122,10 +122,23 @@ sub slurp {
   <$fh>
 }
 
+sub is_inline_type {
+  # Return whether type $t should be inlined:
+  # it's named (not blank node as used in owl:Restriction),
+  # and has no outgoing relations (eg "a owl:Class; rdfs:subClassOf X")
+  # except puml:* (eg puml:stereotype)
+  my $t = shift;
+  ! $t->is_blank()
+    && ! (grep !m{^puml:}, map puml_qname($_), $model->predicates ($t, undef, undef))
+}
+
 sub print_types {
   my ($s, $s1) = @_;
-  # collect only named types; blank node types (that occur on owl:Restriction) are handled in print_relations
-  my @types = map puml_qname($_), $model->objects ($s, U("rdf:type"), undef, type=>'resource');
+  # Collect types that should be inlined (others handled in print_relations).
+  my @types = grep is_inline_type($_), $model->objects ($s, U("rdf:type"), undef, type=>'resource');
+  @types = map puml_qname($_), @types;
+
+  # puml:NoReify is a marker class that shows the resource should not be reified. Omit from class list, return as boolean result
   my $noReify = grep m{puml:NoReify}, @types;
   my $types = join ", ", grep !m{puml:NoReify}, @types;
   myprint (qq{$s1 : {field} a $types\n}) if $types; # See #21
@@ -136,10 +149,11 @@ sub print_relations {
   my ($s, $s1, $noReify) = @_;
   for my $o ($model->objects ($s, undef, undef, type=>'resource'),
              $model->objects ($s, undef, undef, type=>'blank')) {
-    # collect all relations between the nodes $s and $o
-    # Allow the predicate to be rdf:type only if $0 is a blank type (that occurs on owl:Restriction)
+    # Collect relations between the nodes $s and $o.
+    # If rdf:type, allow only $o that shouldn't be inlined (see print_types)
+    my @predicates = grep !m{rdf:type} || !is_inline_type($o),
+      map puml_predicate($_), $model->predicates ($s, $o);
     # TODO: also collect inverse relations? Then be careful for reifications!
-    my @predicates = grep $o->is_blank() || !m{rdf:type}, map puml_predicate($_), $model->predicates ($s, $o);
     # TODO: remove actually reified predicates (see reification()), not potentially reifiable ($NOREL)
     @predicates = grep !m{$NOREL}o, @predicates if !$noReify;
     next unless @predicates;

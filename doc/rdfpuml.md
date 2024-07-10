@@ -21,7 +21,9 @@ date: 2023-06-02
         - [Arrow Per Property](#arrow-per-property)
     - [Stereotypes and Colored Circles](#stereotypes-and-colored-circles)
     - [Blank Nodes](#blank-nodes)
+    - [Complex Types](#complex-types)
     - [PlantUML Options](#plantuml-options)
+    - [Handling Large Diagrams](#handling-large-diagrams)
     - [Unicode](#unicode)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
@@ -33,7 +35,7 @@ date: 2023-06-02
 
 # SYNOPSIS
 
-    perl -C -S rdfpuml.pl file.ttl                   # makes file.puml
+    perl -S rdfpuml.pl file.ttl                      # makes file.puml
     java -jar plantuml.jar -charset UTF-8 file.puml  # makes file.png
 
 # DESCRIPTION
@@ -319,6 +321,9 @@ is tracked as [duraspace/pcdm#46](https://github.com/duraspace/pcdm/issues/46))
 
 ![](img/PCDM_Multi_Page_Text-circles.png)
 
+NOTE: Always specify color, else the stereotype text will include the parenthesized letter, eg `(C)`.
+This is bug [plantuml#1854](https://github.com/plantuml/plantuml/issues/1854)
+
 ## Blank Nodes
 
 Although the use of blank nodes is not recommended in semantic modeling, they are supported by **rdfpuml**.
@@ -333,6 +338,19 @@ It should have had a type `rdf:List`, this is an omission in the example.
 
 ![](img/OA-eg41.png)
 
+## Complex Types
+
+If you want to visualize not only instances (A-Box) but also class statements and expressions (T-Box), 
+see [test/blank-types](https://github.com/VladimirAlexiev/rdf2rml/tree/master/test/blank-types#readme) with its own README.
+
+Here is an example closely mirroring the style of the Industrial Ontology Foundry (IOF):
+
+![](https://rawgit2.com/VladimirAlexiev/rdf2rml/master/test/blank-types/example-iof.png)
+
+Note: `blank-types` is a historical misnomer. 
+I'll change this to `complex-types` as soon as git unlocks some files on my local drive :-)
+
+
 ## PlantUML Options
 
 You can pass options and pragmas to PlantUML using the `puml:options` property (attached to an empty node).
@@ -344,14 +362,20 @@ The default options are as per `plantuml.cfg`:
       skinparam classAttributeIconSize 0
     """;
 
+Option descriptions:
+- `hide empty members` removes the 2 blank compartments that appear for nodes with no attributes.
+- `hide circle` hides the parasitic circled letter `(C)`. Only nodes with `puml:stereotype` are shown a circled letter.
+- `skinparam classAttributeIconSize 0` removes UML attribute visibility flags (public, private, protected)
+
 You can use `left to right direction` to fit diagrams with large nodes (see two examples below).
 Don't forget to add the `hide` options, else you'll get unwanted compartments and circles in nodes:
 
     [] puml:options """
       hide empty members
       hide circle
+      skinparam classAttributeIconSize 0
       left to right direction
-    """;
+    """.
 
 You can also try your luck with [smetana](https://plantuml.com/smetana02), which uses an internal Java implementation of GraphViz instead of an external C program.
 One way to invoke `smetana` is by adding a pragma to `puml:options`.
@@ -366,6 +390,21 @@ First example (`test/saref4city`):
 Second example (`test/permid`):
 
 ![](../test/permid/sample-RobinSmith-positions.png)
+
+## Handling Large Diagrams
+
+By default, PlantUML uses a drawing canvas of 4096 pixels.
+This causes really big diagrams (eg ones that need `left to right direction` as described above) to be cut off.
+
+To avoid this, add the following command-line option:
+```
+-DPLANTUML_LIMIT_SIZE=8192 
+```
+
+For example in a batch file:
+```
+java -jar ".../plantuml.jar" -charset UTF-8 -DPLANTUML_LIMIT_SIZE=8192 "$@"
+```
 
 ## Unicode
 
@@ -382,10 +421,14 @@ I include two simple files to invoke the script: `bin/rdfpuml.bat` (CMD batch) a
 
 ## Prerequisites
 - [GraphViz](http://www.graphviz.org/)
+- Java (JDK or JRE)
 - [PlantUML](http://plantuml.com/download), see in particular [plantuml class diagrams](http://plantuml.com/class-diagram).
 - Perl. Tested with version 5.22 on Windows (cygwin and Strawberry).
-- Perl modules: `RDF::Trine`, `RDF::Query`, `FindBin`.
-- `RDF::Prefixes::Curie`. This is my own module located in `../lib`, and **rdfpuml** needs `FindBin` to locate it.
+- Perl modules:
+  - `RDF::Trine`, `RDF::Query`, `FindBin`. Install them with `cpan`, `cpanm` (works best on Strawberry) or `cpanp`.
+  - `RDF::Prefixes::Curie`. This is my own module located in `../lib`, and **rdfpuml** needs `FindBin` to locate it.
+
+
 
 ## Installation
 
@@ -394,6 +437,18 @@ Until **rdfpuml** is published as a proper perl package, use the following proce
 - Install the prerequisites.
 - Add `rdfpuml/bin` to your path.
 - Use `bin/rdfpuml.bat` or `bin/rdfpuml` to run it (but see "Unicode" above)
+- You may want to create a batch file to invoke plantuml (call it `plantuml` or `puml` for short):
+  - Linux/Cygwin:
+```
+#!/bin/sh
+java -jar c:/prog/plantuml/plantuml.jar -charset UTF-8 $*
+```
+  - Windows:
+```
+@echo off
+java -jar c:\prog\plantuml\plantuml.jar -charset UTF-8 %*
+```
+  - (If you use the [scoop](https://scoop.sh/) package manager, `scoop install plantuml` already makes such batch files called `plantuml`)
 - See `test/*/Makefile` for examples how to set up make.
 
 ## Packaged Binary

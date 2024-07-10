@@ -169,9 +169,6 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
 </head>
 <body>
 <header id="title-block-header">
@@ -199,7 +196,9 @@
 </ul></li>
 <li><a href="#stereotypes-and-colored-circles">Stereotypes and Colored Circles</a></li>
 <li><a href="#blank-nodes">Blank Nodes</a></li>
+<li><a href="#complex-types">Complex Types</a></li>
 <li><a href="#plantuml-options">PlantUML Options</a></li>
+<li><a href="#handling-large-diagrams">Handling Large Diagrams</a></li>
 <li><a href="#unicode">Unicode</a></li>
 <li><a href="#prerequisites">Prerequisites</a></li>
 <li><a href="#installation">Installation</a></li>
@@ -209,7 +208,7 @@
 </ul>
 <!-- markdown-toc end -->
 <h1 id="synopsis">SYNOPSIS</h1>
-<pre><code>perl -C -S rdfpuml.pl file.ttl                   # makes file.puml
+<pre><code>perl -S rdfpuml.pl file.ttl                      # makes file.puml
 java -jar plantuml.jar -charset UTF-8 file.puml  # makes file.png</code></pre>
 <h1 id="description">DESCRIPTION</h1>
 <p>Converts an RDF Turtle file to a readable diagram using <a href="http://plantuml.com">PlantUML</a>.</p>
@@ -419,6 +418,8 @@ a remake of one of the <a href="https://wiki.duraspace.org/display/FF/PCDM%2BMap
 (A proposal to make <a href="https://github.com/duraspace/pcdm/wiki/Diagrams-with-rdfpuml">PCDM diagrams with rdfpuml</a>
 is tracked as <a href="https://github.com/duraspace/pcdm/issues/46">duraspace/pcdm#46</a>)</p>
 <p><img src="img/PCDM_Multi_Page_Text-circles.png" /></p>
+<p>NOTE: Always specify color, else the stereotype text will include the parenthesized letter, eg <code>(C)</code>.
+This is bug <a href="https://github.com/plantuml/plantuml/issues/1854">plantuml#1854</a></p>
 <h2 id="blank-nodes">Blank Nodes</h2>
 <p>Although the use of blank nodes is not recommended in semantic modeling, they are supported by <strong>rdfpuml</strong>.
 No special triples are needed for this.</p>
@@ -428,6 +429,13 @@ from the <a href="https://www.w3.org/TR/annotation-model/">Web Annotation Data M
 The tiny one in the middle has no attributes whatsoever, only the <code>rdf:first, rdf:next</code> outgoing links.
 It should have had a type <code>rdf:List</code>, this is an omission in the example.</p>
 <p><img src="img/OA-eg41.png" /></p>
+<h2 id="complex-types">Complex Types</h2>
+<p>If you want to visualize not only instances (A-Box) but also class statements and expressions (T-Box),
+see <a href="https://github.com/VladimirAlexiev/rdf2rml/tree/master/test/blank-types#readme">test/blank-types</a> with its own README.</p>
+<p>Here is an example closely mirroring the style of the Industrial Ontology Foundry (IOF):</p>
+<p><img src="https://rawgit2.com/VladimirAlexiev/rdf2rml/master/test/blank-types/example-iof.png" /></p>
+<p>Note: <code>blank-types</code> is a historical misnomer.
+I’ll change this to <code>complex-types</code> as soon as git unlocks some files on my local drive :-)</p>
 <h2 id="plantuml-options">PlantUML Options</h2>
 <p>You can pass options and pragmas to PlantUML using the <code>puml:options</code> property (attached to an empty node).
 The default options are as per <code>plantuml.cfg</code>:</p>
@@ -436,13 +444,18 @@ The default options are as per <code>plantuml.cfg</code>:</p>
   hide circle
   skinparam classAttributeIconSize 0
 &quot;&quot;&quot;;</code></pre>
+<p>Option descriptions:
+- <code>hide empty members</code> removes the 2 blank compartments that appear for nodes with no attributes.
+- <code>hide circle</code> hides the parasitic circled letter <code>(C)</code>. Only nodes with <code>puml:stereotype</code> are shown a circled letter.
+- <code>skinparam classAttributeIconSize 0</code> removes UML attribute visibility flags (public, private, protected)</p>
 <p>You can use <code>left to right direction</code> to fit diagrams with large nodes (see two examples below).
 Don’t forget to add the <code>hide</code> options, else you’ll get unwanted compartments and circles in nodes:</p>
 <pre><code>[] puml:options &quot;&quot;&quot;
   hide empty members
   hide circle
+  skinparam classAttributeIconSize 0
   left to right direction
-&quot;&quot;&quot;;</code></pre>
+&quot;&quot;&quot;.</code></pre>
 <p>You can also try your luck with <a href="https://plantuml.com/smetana02">smetana</a>, which uses an internal Java implementation of GraphViz instead of an external C program.
 One way to invoke <code>smetana</code> is by adding a pragma to <code>puml:options</code>.
 See <code>text/saref4city</code> for another way, and a trial.</p>
@@ -451,6 +464,13 @@ See <code>text/saref4city</code> for another way, and a trial.</p>
 <p><img src="../test/saref4city/example1-saref4city.png" /></p>
 <p>Second example (<code>test/permid</code>):</p>
 <p><img src="../test/permid/sample-RobinSmith-positions.png" /></p>
+<h2 id="handling-large-diagrams">Handling Large Diagrams</h2>
+<p>By default, PlantUML uses a drawing canvas of 4096 pixels.
+This causes really big diagrams (eg ones that need <code>left to right direction</code> as described above) to be cut off.</p>
+<p>To avoid this, add the following command-line option:</p>
+<pre><code>-DPLANTUML_LIMIT_SIZE=8192 </code></pre>
+<p>For example in a batch file:</p>
+<pre><code>java -jar &quot;.../plantuml.jar&quot; -charset UTF-8 -DPLANTUML_LIMIT_SIZE=8192 &quot;$@&quot;</code></pre>
 <h2 id="unicode">Unicode</h2>
 <p>The input Turtle can include Unicode chars (accented chars, Cyrillic, etc).
 See <code>test/unicode</code> for some examples.</p>
@@ -462,10 +482,14 @@ See <code>test/unicode</code> for some examples.</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
 <li><a href="http://www.graphviz.org/">GraphViz</a></li>
+<li>Java (JDK or JRE)</li>
 <li><a href="http://plantuml.com/download">PlantUML</a>, see in particular <a href="http://plantuml.com/class-diagram">plantuml class diagrams</a>.</li>
 <li>Perl. Tested with version 5.22 on Windows (cygwin and Strawberry).</li>
-<li>Perl modules: <code>RDF::Trine</code>, <code>RDF::Query</code>, <code>FindBin</code>.</li>
+<li>Perl modules:
+<ul>
+<li><code>RDF::Trine</code>, <code>RDF::Query</code>, <code>FindBin</code>. Install them with <code>cpan</code>, <code>cpanm</code> (works best on Strawberry) or <code>cpanp</code>.</li>
 <li><code>RDF::Prefixes::Curie</code>. This is my own module located in <code>../lib</code>, and <strong>rdfpuml</strong> needs <code>FindBin</code> to locate it.</li>
+</ul></li>
 </ul>
 <h2 id="installation">Installation</h2>
 <p>Until <strong>rdfpuml</strong> is published as a proper perl package, use the following procedure:</p>
@@ -473,6 +497,20 @@ See <code>test/unicode</code> for some examples.</p>
 <li>Install the prerequisites.</li>
 <li>Add <code>rdfpuml/bin</code> to your path.</li>
 <li>Use <code>bin/rdfpuml.bat</code> or <code>bin/rdfpuml</code> to run it (but see “Unicode” above)</li>
+<li>You may want to create a batch file to invoke plantuml (call it <code>plantuml</code> or <code>puml</code> for short):
+<ul>
+<li>Linux/Cygwin:</li>
+</ul>
+<pre><code>#!/bin/sh
+java -jar c:/prog/plantuml/plantuml.jar -charset UTF-8 $*</code></pre>
+<ul>
+<li>Windows:</li>
+</ul>
+<pre><code>@echo off
+java -jar c:\prog\plantuml\plantuml.jar -charset UTF-8 %*</code></pre>
+<ul>
+<li>(If you use the <a href="https://scoop.sh/">scoop</a> package manager, <code>scoop install plantuml</code> already makes such batch files called <code>plantuml</code>)</li>
+</ul></li>
 <li>See <code>test/*/Makefile</code> for examples how to set up make.</li>
 </ul>
 <h2 id="packaged-binary">Packaged Binary</h2>
