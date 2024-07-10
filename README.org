@@ -25,13 +25,15 @@
 
 :CONTENTS:
 - [[#introduction][Introduction]]
-  - [[#citation][Citation]]
+  - [[#license-and-citation][License and Citation]]
   - [[#documentation][Documentation]]
   - [[#related-work][Related Work]]
 - [[#installation][Installation]]
   - [[#docker-image][Docker Image]]
 - [[#debian-repo][Debian Repo]]
 - [[#change-log][Change Log]]
+  - [[#2024-07-10-clarify-licensing][2024-07-10 clarify licensing]]
+  - [[#2024-07-10-rdfpumlpl-handle-complex-types][2024-07-10 rdfpuml.pl: handle complex types]]
   - [[#2023-06-07-rdf2sparqlpl-minimize-binds-in-delete-clause][2023-06-07 rdf2sparql.pl: minimize binds in delete clause]]
   - [[#2023-06-06-rdf2sparqlpl-global---filter-options][2023-06-06 rdf2sparql.pl: global --filter options]]
   - [[#2023-06-01-rdfpumlpl-remove-carpalways][2023-06-01 rdfpuml.pl: remove Carp::Always]]
@@ -116,7 +118,9 @@ I've implemented a few more tools to generate transformations:
 
 See http://twitter.com/hashtag/rdfpuml for news, diagrams and announcements.
 
-** Citation
+** License and Citation
+This work is covered by the [[https://www.perlfoundation.org/artistic-license-20.html][Artistic-2.0]] license.
+
 If you use this software, please cite it as shown above.
 - Github shows a link "About> Cite this repository" (see [[https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-citation-files][about-citation-files]])
 - [[CITATION.cff]] describes both the software and the above publications.
@@ -206,15 +210,20 @@ To adopt changes, do something like this.
   #+end_src
 
 * Change Log
+** 2024-07-10 clarify licensing
+- [[https://github.com/VladimirAlexiev/rdf2rml/issues/31][Issue 31]]: settle on Artistic-2.0 license
+** 2024-07-10 rdfpuml.pl: handle complex types
+- [[https://github.com/VladimirAlexiev/rdf2rml/issues/10][Issue 10]], [[https://github.com/VladimirAlexiev/rdf2rml/issues/14][Issue 14]]
+- See [[https://github.com/VladimirAlexiev/rdf2rml/tree/master/test/blank-types#readme][test/blank-types]]
 ** 2023-06-07 rdf2sparql.pl: minimize binds in ~delete~ clause
 [[https://github.com/VladimirAlexiev/rdf2rml/issues/27][Issue 27]]: minimize the ~delete~ clause to include only necessary binds:
 - ~--filterColumn~ variable prebind
 - templated GRAPH URL and its constituent variables
 ** 2023-06-06 rdf2sparql.pl: global ~--filter~ options
-[[https://github.com/VladimirAlexiev/rdf2rml/issues/26][Issue 26]]: add command-line options ~--filterColumn, --filter~ that are useful for handling both initial loading and data updates.
-See [[https://github.com/VladimirAlexiev/rdf2rml/blob/master/doc/rdf2sparql.md#global-filtering][global filtering]] and ~test/graphs-crunchbase~
+- [[https://github.com/VladimirAlexiev/rdf2rml/issues/26][Issue 26]]: add command-line options ~--filterColumn, --filter~ that are useful for handling both initial loading and data updates.
+- See [[https://github.com/VladimirAlexiev/rdf2rml/blob/master/doc/rdf2sparql.md#global-filtering][global filtering]] and ~test/graphs-crunchbase~
 ** 2023-06-01 rdfpuml.pl: remove Carp::Always
-[[https://github.com/VladimirAlexiev/rdf2rml/issues/2][Issue 2]] remove ~Carp::Always~ since it produces a stack trace that's too verbose
+- [[https://github.com/VladimirAlexiev/rdf2rml/issues/2][Issue 2]] remove ~Carp::Always~ since it produces a stack trace that's too verbose
 ** 2023-05-17 rdf2sparql.pl: Conditional Nodes
 - Support "Conditional Nodes", i.e. URLs that are conditional on the existence of some fields.
 - [[https://github.com/VladimirAlexiev/rdf2rml/issues/22][issue 22]] fixed (2023-05-31)

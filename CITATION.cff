@@ -8,9 +8,9 @@ authors:
     orcid: https://orcid.org/0000-0001-7508-7428
     email: vladimir.alexiev@ontotext.com
     affiliation: Ontotext Corp
-version: 2.0
-date-released: 2023-06-02
-license: Apache-2.0
+version: 2.1
+date-released: 2024-07-10
+license: Artistic-2.0
 repository-code: https://github.com/VladimirAlexiev/rdf2rml
 url: https://github.com/VladimirAlexiev/rdf2rml
 keywords:
