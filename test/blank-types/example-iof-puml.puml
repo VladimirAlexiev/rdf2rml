@@ -1,0 +1,29 @@
+@startuml
+skinparam class {
+ BackgroundColor DFA702
+ FontColor White
+ FontStyle bold
+}
+
+skinparam object {
+ BackgroundColor 76608A
+ FontColor White
+ FontStyle bold
+}
+
+class "bfo:quality" as Q
+class "ns1:Temperature" as T
+T -u-|> Q
+object temperature1
+temperature1 .u.> T
+class "iof:MeasuredValueExpression" as M
+object "temperature-value-expression" as I {
+iof:hasSimpleValueExpression = 98.6^^xsd::decimal
+}
+I .u.> M
+I-l-> temperature1: "iof:isMeasurementValueOfAtSomeTime"
+class "qudt:Unit" as U
+object DEG_F
+DEG_F .u.> U
+I-r-> DEG_F : "qudt:unit"
+@enduml

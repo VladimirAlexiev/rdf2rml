@@ -1,0 +1,31 @@
+@startuml
+hide empty members
+hide circle
+skinparam classAttributeIconSize 0
+class bfo_quality as "bfo:quality"
+class bfo_quality <<(C,red)>>
+show bfo_quality circle
+class ont_Temperature as "ont:Temperature"
+class ont_Temperature <<(C,red)>>
+show ont_Temperature circle
+class iof_MeasuredValueExpression as "iof:MeasuredValueExpression"
+class iof_MeasuredValueExpression <<(C,red)>>
+show iof_MeasuredValueExpression circle
+class qudt_Unit as "qudt:Unit"
+class qudt_Unit <<(C,red)>>
+show qudt_Unit circle
+ont_Temperature : {field} a owl:Class
+ont_Temperature -up-|> bfo_quality : rdfs:subClassOf
+iof_MeasuredValueExpression : {field} a owl:Class
+class _temperature1_ as "<temperature1>"
+_temperature1_ -up[dashed]-> ont_Temperature : rdf:type
+qudt_Unit : {field} a owl:Class
+class _temperature_value_expression_ as "<temperature-value-expression>"
+class unit_DEG_F as "unit:DEG_F"
+_temperature_value_expression_ -right-> unit_DEG_F : qudt:unit
+_temperature_value_expression_ -up[dashed]-> iof_MeasuredValueExpression : rdf:type
+_temperature_value_expression_ -left-> _temperature1_ : iof:isMeasurementValueOfAtSomeTime
+_temperature_value_expression_ : {field} iof:hasSimpleValueExpression 98.6
+unit_DEG_F -up[dashed]-> qudt_Unit : rdf:type
+bfo_quality : {field} a owl:Class
+@enduml

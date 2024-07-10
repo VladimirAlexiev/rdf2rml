@@ -1,24 +1,32 @@
+@base                <http://example.org/resource/>.
+@prefix ont:         <http://example.org/ontology/>.
+
+@prefix GO:          <http://amigo.geneontology.org/amigo/term/>.
+@prefix OBO_REL:     <http://www.obofoundry.org/OBO_REL/>.
+@prefix PATO:        <http://purl.obolibrary.org/obo/>.
+@prefix SWAT4LS2011: <http://example.org/properties_populous_tutorial_SWAT4LS2011/>.
+@prefix bfo:         <http://purl.obolibrary.org/obo/> .
+@prefix iof:         <https://spec.industrialontologies.org/ontology/core/Core/>.
+@prefix lis:         <http://rds.posccaesar.org/ontology/lis14/rdl/>.
+@prefix obo:         <http://purl.obolibrary.org/obo/>.
+@prefix om:          <http://www.ontology-of-units-of-measure.org/resource/om-2/>.
 @prefix owl:         <http://www.w3.org/2002/07/owl#> .
+@prefix puml:        <http://plantuml.com/ontology#> .
+@prefix qudt:        <http://qudt.org/schema/qudt/> .
 @prefix rdf:         <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:        <http://www.w3.org/2000/01/rdf-schema#> .
-
-@prefix lis:         <http://rds.posccaesar.org/ontology/lis14/rdl/>.
-@prefix om:          <http://www.ontology-of-units-of-measure.org/resource/om-2/>.
 @prefix rdl:         <https://rds.posccaesar.org/ontology/plm/rdl/>.
+@prefix unit:        <http://qudt.org/vocab/unit/> .
+@prefix xsd:         <http://www.w3.org/2001/XMLSchema#> .
 
-@prefix ont:         <http://example.org/ontology/>.
-@prefix SWAT4LS2011: <http://example.org/properties_populous_tutorial_SWAT4LS2011/>.
-@prefix PATO:        <http://purl.obolibrary.org/obo/>.
-@prefix obo:         <http://purl.obolibrary.org/obo/>.
-@prefix OBO_REL:     <http://www.obofoundry.org/OBO_REL/>.
-@prefix GO:          <http://amigo.geneontology.org/amigo/term/>.
 
-######
+###### plantuml instructions
 
 # these are inlined only if they carry a constant node, not if they carry a blank node. (It's a happy coincidence, I can't guarantee that happens in all cases)
-owl:onProperty      a puml:InlineProperty.
-owl:someValuesFrom  a puml:InlineProperty.
-owl:allValuesFrom   a puml:InlineProperty.
-owl:inverseOf       a puml:InlineProperty.
-rdf:first           a puml:InlineProperty.
-rdf:rest            a puml:InlineProperty.
+owl:onProperty                   a puml:InlineProperty.
+owl:someValuesFrom               a puml:InlineProperty.
+owl:allValuesFrom                a puml:InlineProperty.
+owl:inverseOf                    a puml:InlineProperty.
+rdf:first                        a puml:InlineProperty.
+rdf:rest                         a puml:InlineProperty.
+owl:Class                          puml:stereotype "(C,red)".

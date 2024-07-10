@@ -1,6 +1,8 @@
-all: example.png example2.png
+all: example.png example2.png example-iof.puml example-iof.png example-iof-puml.png
 
-%.png : %.ttl prefixes.ttl
-	rdfpuml $*.ttl
-	puml $*.puml
-	rm $*.puml
+%.puml: %.ttl | prefixes.ttl
+	rdfpuml.bat $^
+
+%.png: %.puml
+	plantuml $^
+

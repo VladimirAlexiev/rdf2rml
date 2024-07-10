@@ -1,0 +1,18 @@
+bfo:quality                  a owl:Class.
+ont:Temperature              a owl:Class; rdfs:subClassOf bfo:quality.
+iof:MeasuredValueExpression  a owl:Class.
+qudt:Unit                    a owl:Class.
+
+<temperature1> a ont:Temperature.
+<temperature-value-expression> a iof:MeasuredValueExpression;
+  iof:isMeasurementValueOfAtSomeTime <temperature1>;
+  qudt:unit unit:DEG_F;
+  iof:hasSimpleValueExpression 98.6.
+unit:DEG_F a qudt:Unit.  
+
+#################### set arrow directions to match example-iof-puml. This is not necessary in most cases.
+
+iof:isMeasurementValueOfAtSomeTime puml:arrow puml:left.
+qudt:unit                          puml:arrow puml:right.
+rdf:type                           puml:arrow puml:up-dashed.
+rdfs:subClassOf                    puml:arrow puml:up-tri.

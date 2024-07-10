@@ -1,4 +1,4 @@
-rdl:PCA_100003953  a  owl:NamedIndividual , lis:Scale ;
+rdl:PCA_100003953  a owl:NamedIndividual , lis:Scale ;
         rdfs:type   [ a                 owl:Restriction ;
                       owl:allValuesFrom  rdl:PCA_100003891 ;
                       owl:onProperty     [ owl:inverseOf  lis:datumUOM ]
