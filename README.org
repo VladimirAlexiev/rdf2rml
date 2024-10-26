@@ -134,29 +134,32 @@ If you use this software, please cite it as shown above.
 
 ** Related Work
 
-The following works use or mention this software:
+Software:
+- Matjaz Rihtar (2018). https://github.com/mrihtar/rdfgraph:
+  inspired by ~rdfpuml~, written in Python 2.7, uses Redland's ~librdf~ library.
+  I worked with Matjaz in the euBusinessGraph project.
 
-- V. Alexiev, A. Kiryakov, P. Tarkalanov (2017)
-  [[https://www.researchgate.net/profile/Plamen-Tarkalanov/publication/342956150_euBusinessGraph_Company_and_Economic_Data_for_Innovative_Products_and_Services/links/5f0efda445851512999b206b/euBusinessGraph-Company-and-Economic-Data-for-Innovative-Products-and-Services.pdf][euBusinessGraph: Company and economic data for innovative products and services]].
-  13th International Conference on Semantic Systems (Semantics 2017)
-- L. Zhuhadar, M. Ciampa (2017). [[https://www.sciencedirect.com/science/article/abs/pii/S0747563217306933?via%3Dihub][Leveraging learning innovations in cognitive computing with massive data sets: Using the offshore Panama papers leak to discover patterns]]. Computers in Human Behavior. doi:10.1016/j.chb.2017.12.013
+The following papers use or mention this software:
+- Ademar Crotti (2019).
+  [[http://www.tara.tcd.ie/bitstream/handle/2262/86157/AdemarCrotti-thesis_final.pdf][A Jigsaw Puzzle Metaphor for Representing Linked Data Mappings]].
+  PhD Thesis, Knowledge and Data Engineering Group (KDEG), Trinity College, Dublin, Ireland
 - C. Debruyne, D. Lewis, D. O’Sullivan (October 2018).
   [[https://link.springer.com/chapter/10.1007/978-3-030-02671-4_21][Generating Executable Mappings from RDF Data Cube Data Structure Definitions]].
-  In Confederated International Conferences "On the Move to Meaningful Internet Systems" (OTM 2018),
-  pages 333-350. doi:10.1007/978-3-030-02671-4_21
+  On the Move to Meaningful Internet Systems" (OTM 2018).
+  LNCS vol 11230. DOI 10.1007/978-3-030-02671-4_21
+- L. Zhuhadar, M. Ciampa (2017).
+  [[https://www.sciencedirect.com/science/article/abs/pii/S0747563217306933?via%3Dihub][Leveraging learning innovations in cognitive computing with massive data sets: Using the offshore Panama papers leak to discover patterns]].
+  Computers in Human Behavior. doi:10.1016/j.chb.2017.12.013
 - V. Alexiev (2018).
   [[http://dipp.math.bas.bg/images/2018/019-050_32_11-iDiPP2018-34.pdf][Museum Linked Open Data: Ontologies, Datasets, Projects (invited report)]].
   In Digital Presentation and Preservation of Cultural and Scientific Heritage (DIPP 2018).
   Volume 8, pages 19-50. Burgas, Bulgaria, September 2018
-- A.D. Junior (2019).
-  [[http://www.tara.tcd.ie/bitstream/handle/2262/86157/AdemarCrotti-thesis_final.pdf][A Jigsaw Puzzle Metaphor for Representing Linked Data Mappings]].
-  PhD Thesis, Knowledge and Data Engineering Group (KDEG), Trinity College, Dublin, Ireland
+- V. Alexiev, A. Kiryakov, P. Tarkalanov (2017)
+  [[https://www.researchgate.net/profile/Plamen-Tarkalanov/publication/342956150_euBusinessGraph_Company_and_Economic_Data_for_Innovative_Products_and_Services/links/5f0efda445851512999b206b/euBusinessGraph-Company-and-Economic-Data-for-Innovative-Products-and-Services.pdf][euBusinessGraph: Company and economic data for innovative products and services]].
+  13th International Conference on Semantic Systems (Semantics 2017)
 - V. Alexiev, P. Tarkalanov, N. Georgiev, L. Pavlova (2020).
   [[https://dipp.math.bas.bg/images/2020/045-064_1.2_iDiPP2020-24_v.1c.pdf][Bulgarian Icons in Wikidata and EDM]].
   Digital Presentation and Preservation of Cultural and Scientific Heritage (DIPP 2020).
-- Matjaz Rihtar. https://github.com/mrihtar/rdfgraph:
-  inspired by ~rdfpuml~, written in Python 2.7, uses Redland's ~librdf~ library.
-  I worked with Matjaz in the euBusinessGraph project.
 
 * Installation
 Checkout this repo and add ~rdf2rml/bin~ to your path.
