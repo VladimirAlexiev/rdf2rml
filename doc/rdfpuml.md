@@ -354,7 +354,7 @@ I'll change this to `complex-types` as soon as git unlocks some files on my loca
 ## PlantUML Options
 
 You can pass options and pragmas to PlantUML using the `puml:options` property (attached to an empty node).
-The default options are as per `plantuml.cfg`:
+The default options are:
 
     [] puml:options """
       hide empty members
@@ -391,6 +391,12 @@ Second example (`test/permid`):
 
 ![](../test/permid/sample-RobinSmith-positions.png)
 
+You can pass additional options to PlantUML to select a skin, set colors, etc by using a global config file (eg `plantuml.cfg`). For example:
+```
+perl -S rdfpuml.pl       file.ttl
+plantuml -Iplantuml.cfg  file.puml
+```
+ 
 ## Handling Large Diagrams
 
 By default, PlantUML uses a drawing canvas of 4096 pixels.
