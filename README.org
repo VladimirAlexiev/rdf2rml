@@ -182,13 +182,13 @@ If you prefer to work with Docker so you don't need to install software manually
 you can use this [[https://docker-registry.ontotext.com/#browse/search=keyword%3Drdf2rml][rdf2rml image]] from the public Nexus (Docker Registry) of Ontotext.
 To run it, use:
 
-: docker run -v <directory>:/files --rm docker-registry.ontotext.com/rdf2rml:latest`
+: docker run -v <directory>:/files --rm docker-registry.ontotext.com/rdf2rml:latest
 
 Where ~<directory>~ is the local directory holding your ~.ttl~ files.
 It was made on 31 May 2023 and uses the following versions:
-- [[https://github.com/VladimirAlexiev/rdf2rml][rdf2rml]]: 31 May 2023, with fixed [[https://github.com/VladimirAlexiev/rdf2rml/issues/22][issue 22]]
-- [[https://plantuml.com/download][PlantUML]]: 1.2023.7
-- [[https://jena.apache.org/download/][Jena]]: 4.8.0
+- [[https://github.com/VladimirAlexiev/rdf2rml][rdf2rml]]: commit [1805b90](https://github.com/VladimirAlexiev/rdf2rml/commit/1805b90d3e33ace2f7227633d85fdf2fdd995648)
+- [[https://plantuml.com/download][PlantUML]]: 1.2024.8
+- [[https://jena.apache.org/download/][Jena]]: 5.2.0
 
 Note: [[https://github.com/VladimirAlexiev/rdf2rml/pull/7][pull request 7]] of  17 Sep 2019 by Jem Rayfield (~@jazzyray~)
 dockerizes the installation, and makes extra changes related to input/output and configuration.
