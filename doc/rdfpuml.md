@@ -341,14 +341,11 @@ It should have had a type `rdf:List`, this is an omission in the example.
 ## Complex Types
 
 If you want to visualize not only instances (A-Box) but also class statements and expressions (T-Box), 
-see [test/blank-types](https://github.com/VladimirAlexiev/rdf2rml/tree/master/test/blank-types#readme) with its own README.
+see [test/complex-types](https://github.com/VladimirAlexiev/rdf2rml/tree/master/test/complex-types#readme) with its own README.
 
 Here is an example closely mirroring the style of the Industrial Ontology Foundry (IOF):
 
 ![](https://rawgit2.com/VladimirAlexiev/rdf2rml/master/test/blank-types/example-iof.png)
-
-Note: `blank-types` is a historical misnomer. 
-I'll change this to `complex-types` as soon as git unlocks some files on my local drive :-)
 
 
 ## PlantUML Options

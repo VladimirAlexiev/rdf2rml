@@ -217,7 +217,7 @@ To adopt changes, do something like this.
 - [[https://github.com/VladimirAlexiev/rdf2rml/issues/31][Issue 31]]: settle on Artistic-2.0 license
 ** 2024-07-10 rdfpuml.pl: handle complex types
 - [[https://github.com/VladimirAlexiev/rdf2rml/issues/10][Issue 10]], [[https://github.com/VladimirAlexiev/rdf2rml/issues/14][Issue 14]]
-- See [[https://github.com/VladimirAlexiev/rdf2rml/tree/master/test/blank-types#readme][test/blank-types]]
+- See [[https://github.com/VladimirAlexiev/rdf2rml/tree/master/test/complex-types#readme][test/complex-types]]
 ** 2023-06-07 rdf2sparql.pl: minimize binds in ~delete~ clause
 [[https://github.com/VladimirAlexiev/rdf2rml/issues/27][Issue 27]]: minimize the ~delete~ clause to include only necessary binds:
 - ~--filterColumn~ variable prebind
