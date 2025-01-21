@@ -20,13 +20,14 @@ date: 2023-06-02
         - [Per-model Filtering](#per-model-filtering)
         - [Global Filtering](#global-filtering)
         - [Conditional Nodes](#conditional-nodes)
+        - [Multiple Variable Interpolation in Literals](#multiple-variable-interpolation-in-literals)
+        - [Interpolate A Variable in Prefixed URL](#interpolate-a-variable-in-prefixed-url)
         - [RDF Model Concatenation](#rdf-model-concatenation)
     - [Preprocessor Macros](#preprocessor-macros)
         - [Macro Best Practices](#macro-best-practices)
     - [Generated SPARQL](#generated-sparql)
         - [Insert Patterns: Crunchbase Organizations](#insert-patterns-crunchbase-organizations)
         - [Generated Pre-Binds](#generated-pre-binds)
-        - [Generated Binds: Crunchbase Organizations](#generated-binds-crunchbase-organizations)
         - [Generated Binds: Customers](#generated-binds-customers)
         - [Generated Update: Annual Revenue by Permalink](#generated-update-annual-revenue-by-permalink)
         - [Generated Binds: Spending Categories](#generated-binds-spending-categories)
@@ -106,8 +107,8 @@ nor use graphs (see [TARQL issue 98](https://github.com/tarql/tarql/issues/98)).
 
 Option `--endpoint` specifies the OntoRefine SPARQL endpoint to use.
 
-- For Refine 1.2 (15 February 2023) and later, 
-  use the "project alias" feature to provide an endpoint 
+- For Refine 1.2 (15 February 2023) and later,
+  use the "project alias" feature to provide an endpoint
   that designates a specific project (tabular data loaded to Refine), eg
   `http://localhost:7333/repositories/ontorefine:organizations`. Here:
   - `organizations` is the project alias,
@@ -186,7 +187,7 @@ See also `test/customer` for a separate example (includes a `Makefile`).
 The first example is a simple semantic representation of Crunchbase's `organizations.csv` table:
 
     # GRAPH <graph/organizations/(uuid)>
-    
+
     <cb/agent/(uuid)> a cb:Organization;
       cb:uuid '(uuid)';
       cb:name '(name)';
@@ -355,7 +356,7 @@ Notes:
 ### Global Filtering
 
 In addition to per-model filtering (see previous section), you can also use global filtering specified with command-line options.
-The best use of this feature is to generate transformation scripts that handle both initial loading and data updates, 
+The best use of this feature is to generate transformation scripts that handle both initial loading and data updates,
 assuming that the tabular source data has update timestamps: see `test/graphs-crunchbase` for details.
 
 - Each Crunchbase table includes an `updated_at` timestamp in every row
@@ -432,11 +433,11 @@ about iteration over `__VA_ARGS_` variadic extra arguments (in this case, limite
 Several things are going on here:
 
 - First we define 5 macros that handle the cases of 1..5 extra arguments.
-- They use a disjunction of `bound()` to check if any of the extra arguments are bound. 
+- They use a disjunction of `bound()` to check if any of the extra arguments are bound.
 - If so, the "stringify" macro operator `#` returns the "string representation" of the first argument.
 - Otherwise, the `?UNDEF` variable is returned, which by convention is never bound.
 - Be careful about the output variable: we need to write out the question mark before it (since the same name `x` is also used in its stringified form), and we follow it by one underscore `_` even though the macro name itself starts with underscore.
-- The macro `__IF_BOUND_PICK_N` uses the `##` token concatenation operator to pick one of the 5 macros. 
+- The macro `__IF_BOUND_PICK_N` uses the `##` token concatenation operator to pick one of the 5 macros.
 - The final macro `_IF_BOUND` calls `__IF_BOUND_PICK_N` with a carefully crafted tail sequence `5,4,3,2,1`. Eg if `__VA_ARGS__` has 4 elements, they will be eaten up by the argumentss `_1,_2,_3,_4`. The constant `5` will be eaten by the argument `_5`, so the argument `N` will be bound to the next constant `4`, so the macro `__IF_BOUND_4` will be picked.
 - After the correct macro is picked, all arguments `(x,__VA_ARGS__)` are passed to it. So you see that in the implementation of `_IF_BOUND`, `__VA_ARGS__` is used twice: first to pick the correct numbered macro, then to provide it with arguments.
 
@@ -456,6 +457,43 @@ first we check if any of the "business payload" fields are bound, and return the
 Then we concat this string with some constant and variabel parts to form a URL.
 If the string is unbound, then the URL will be unbound.
 Then any triple using the unbound URL will **not** be emitted, avoiding the creation of a parasitic node.
+
+### Multiple Variable Interpolation in Literals
+
+Above you've seen many examples where a single column is used as the value of a literal (with optional datatype attached).
+Now it is also possible to use several variables, and to intersperse fixed text with variables, eg:
+```ttl
+<tag/refinery-compressor/URLIFY(tag)> a skos:Concept, sosa:FeatureOfInterest;
+  skos:inScheme <tag>;
+  skos:prefLabel "(tag)";                        ## only a variable
+  skos:description "Refinery compressor (tag)".  ## new: fixed text interspersed with variable
+```
+
+### Interpolate A Variable in Prefixed URL
+
+Above you've seen many examples of templated URLs that use fixed and variable parts.
+Now you can also use a variable with prefixed URLs.
+
+Consider this example of describing Refinery sensor data columns:
+```ttl
+@prefix unit: <http://qudt.org/vocab/unit/(unit)>.
+@prefix qk:   <http://qudt.org/schema/quantityKind/(quantityKind)>.
+
+<schema/refinery/(n)> a csvw:Column, sosa:ObservableProperty;
+  sosa:hasFeatureOfInterest <feature/URLIFY(SPLIT(features))>;
+  un:qualifier              <qualifier/SPLIT(statisticalQualifiers)>;
+  qudt:hasQuantityKind      qk:\(quantityKind\);  ## new
+  qudt:hasUnit              unit:\(unit\).        ## new
+```
+- The first 3 lines use relative templated URLs
+- The next 2 lines (marked `new`) use prefixed URLs with a variable.
+  - Parentheses need to be escaped in a prefixed URL (but they display without backslashes in `rdfpuml`)
+  - We could have written them as as follows, but it's better not to use full URLs, in order to avoid mistakes:
+```ttl
+  qudt:hasQuantityKind <http://qudt.org/vocab/unit/(unit)>;
+  qudt:hasUnit         <http://qudt.org/schema/quantityKind/(quantityKind)>.
+```
+
 
 ### RDF Model Concatenation
 
@@ -858,4 +896,3 @@ As you can see, the `CB_AGENT_URL` macro is evaluated outside of the Ontotext Re
   [paper](https://drive.google.com/open?id=1Cq5o9th_P812paqGkDsaEomJyAmnypkD), [presentation](https://docs.google.com/presentation/d/1JCMQEH8Tw_F-ta6haIToXMLYJxQ9LRv6/edit), [video](https://youtu.be/yL5nI_3ccxs)
 - **rdfpuml**: a tool that generates PlantUML diagrams from RDF examples.
 - **rdf2rml**: a tool that generates R2RML transformations from RDF examples.
-

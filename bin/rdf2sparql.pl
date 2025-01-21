@@ -89,13 +89,33 @@ sub typecast($$) {
   $var_dt
 }
 
+sub templated_string($$) {
+  my $index = shift;
+  my $string = shift;
+  my $var = $string;
+  $var =~ s{\W}{_}g;
+  $var =~ s{__+}{_}g;
+  $var =~ s{^_}{};
+  $var =~ s{_$}{};
+  $var = "?" . $var;
+  $bound{$var} && $bound{$var} ne "templated_string" and die "$var is used for both templated_string and $bound{$var}\n";
+  $bound{$var} and return $var;
+  $bound{$var} = "templated_string";
+  $string =~ s{\(([\w.]+)\)}{ontorefine($index,$1); qq{",?$1,"}}ge;
+  $string = qq{"$string"};
+  $string =~ s{,""}{}g;
+  $string =~ s{^"",}{};
+  addWhere($index,"bind(concat($string) as $var)");
+  $var
+}
+
 sub templated_url($$) {
   my $index = shift;
   my $url = shift;
   # simple case: URL consists of a single var that's already a URL
   return "?$1" if $url =~ m{^\((\w+url)\)$}i;
   # complex case: URL consists of several parts, and/or needs to be converted to iri()
-  $var = $url . "_URL";
+  my $var = $url . "_URL";
   $var =~ s{\W}{_}g;
   $var =~ s{__+}{_}g;
   $var =~ s{^_}{};
@@ -109,6 +129,22 @@ sub templated_url($$) {
   $url =~ s{,""}{}g;
   $url =~ s{^"",}{};
   addWhere($index,"bind(iri(concat($url)) as $var)");
+  $var
+}
+
+sub prefixed_url($$$) {
+  my $index = shift;
+  my $prefix = shift;
+  my $localname = shift;
+  ontorefine($index,$localname);
+  my $var = $prefix."_".$localname;
+  $var =~ s{-}{_};
+  $var = "?".$var."_URL";
+  $localname = "?".$localname;
+  $bound{$var} && $bound{$var} ne "prefixed_URL" and die "$var is used for both prefixed_URL and $bound{$var}\n";
+  $bound{$var} and return $var;
+  $bound{$var} = "prefixed_URL";
+  addWhere($index,"bind(iri(concat(str($prefix:),$localname)) as $var)");
   $var
 }
 
@@ -135,11 +171,13 @@ while ($_ = <>) {
   while (s{(\w+)\((\w+)([,?\w]*)\)}{function(2,$1,$2,$3)}ge)
     # recursively replace function calls.
     # <industry/urlify(foo)> -> <industry/(foo_URLIFY)>: single parentheses needed to enact templated_url
-    # <industry/urlify(split(foo))> -> <industry/urlify((foo_SPLIT))> -> <industry/urlify((foo_SPLIT))>: double parens, reduce them -> <industry/urlify(foo_SPLIT)> -> <industry/(foo_SPLIT_URLIFY)>
+    # <industry/urlify(split(foo))> -> <industry/urlify((foo_SPLIT))> : double parens, reduce them -> <industry/urlify(foo_SPLIT)> -> <industry/(foo_SPLIT_URLIFY)>
     {s{\(\((\w+)\)}{($1}g}; # reduce double parens
   s{['"]\((\w+)\)['"]\^\^([\w:]+)}{typecast($1,$2)}ge;
   s{['"]\((\w+)\)['"]}{?$1}g; # simple var
+  s{['"]([^'"]+\([^'"]*)['"]}{templated_string(2,$1)}ge;
   s{<([^\s>]*\([^\s>]*)>}{templated_url(2,$1)}ge;
+  s{([\w-]+):\\\((\w+)\\\)}{prefixed_url(2,$1,$2)}ge; # localname must escape parens, eg: qk:\(quantityKind\)
   $_ = "  $_" if $_;
   $output = "$output$_";
 };

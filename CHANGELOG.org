@@ -1,0 +1,82 @@
+﻿#+STARTUP: nonum
+
+** 2025-01-21 rdf2sparql: interpolate variables in prefixed URL and strings
+- Implement https://github.com/VladimirAlexiev/rdf2rml/issues/47
+- Implement https://github.com/VladimirAlexiev/rdf2rml/issues/48
+** 2024-07-10 clarify licensing
+- [[https://github.com/VladimirAlexiev/rdf2rml/issues/31][Issue 31]]: settle on Artistic-2.0 license
+** 2024-07-10 rdfpuml.pl: handle complex types
+- [[https://github.com/VladimirAlexiev/rdf2rml/issues/10][Issue 10]], [[https://github.com/VladimirAlexiev/rdf2rml/issues/14][Issue 14]]
+- See [[https://github.com/VladimirAlexiev/rdf2rml/tree/master/test/complex-types#readme][test/complex-types]]
+** 2023-06-07 rdf2sparql.pl: minimize binds in ~delete~ clause
+[[https://github.com/VladimirAlexiev/rdf2rml/issues/27][Issue 27]]: minimize the ~delete~ clause to include only necessary binds:
+- ~--filterColumn~ variable prebind
+- templated GRAPH URL and its constituent variables
+** 2023-06-06 rdf2sparql.pl: global ~--filter~ options
+- [[https://github.com/VladimirAlexiev/rdf2rml/issues/26][Issue 26]]: add command-line options ~--filterColumn, --filter~ that are useful for handling both initial loading and data updates.
+- See [[https://github.com/VladimirAlexiev/rdf2rml/blob/master/doc/rdf2sparql.md#global-filtering][global filtering]] and ~test/graphs-crunchbase~
+** 2023-06-01 rdfpuml.pl: remove Carp::Always
+- [[https://github.com/VladimirAlexiev/rdf2rml/issues/2][Issue 2]] remove ~Carp::Always~ since it produces a stack trace that's too verbose
+** 2023-05-17 rdf2sparql.pl: Conditional Nodes
+- Support "Conditional Nodes", i.e. URLs that are conditional on the existence of some fields.
+- [[https://github.com/VladimirAlexiev/rdf2rml/issues/22][issue 22]] fixed (2023-05-31)
+** 2023-05-05 rdfpuml.pl: don't mangle round brackets
+- [[https://github.com/VladimirAlexiev/rdf2rml/issues/21][issue 21]]: Round brackets in fields (eg "(name)") and URLs (eg <type/(type)>) are not mangled to square brackets anymore
+** 2023-04-29 rdfpuml.pl: puml:option
+- [[https://github.com/VladimirAlexiev/rdf2rml/issues/18][issue 18]] Add ~puml:option~ for ~left to right direction~ etc
+** 2023-04-19 rdf2sparql.pl: per-model filter, dynamic graph
+- [[https://github.com/VladimirAlexiev/rdf2rml/issues/19][issue 19]] Implement filter function, see ~test/filter-content~
+- [[https://github.com/VladimirAlexiev/rdf2rml/issues/20][issue 20]] Allow dynamic graph (computed from a data column), see ~test/graphs-crunchbase~
+** 2022-08-23 rdf2sparql.pl: add datatype to var name instead of UPPERCASING
+Datatype attachment eg ~strdt(?var,xsd:date)~ now outputs to ~?var_xsd_date~ to avoid conflict with input field names in ALL_UPPERCASE
+** 2022-08-23 rdfpuml.pl: handle blank-node types; add shell scripts
+- [[https://github.com/VladimirAlexiev/rdf2rml/issues/10][issue 10]] Handle blank-node types that occur on owl:Restriction (see ~test/blank-node~)
+- Duplicate ~rdfpuml.bat, puml.bat~ as shell scripts ~rdfpuml, puml~ for use in Makefiles across Linux and Windows
+** 2022-08-15 rdf2sparql.pl: merge to one tool
+Merge ~rdf2tarql~ and ~rdf2ontorefine~ to one tool ~rdf2sparql~
+** 2022-04-08 rdf2ontorefine.pl: generate OntoRefine Update queries
+Add script to generate OntoRefine SPARQL Update queries from model.
+** 2021-09-02 rdfpuml.pl: Unicode Processing
+Use Perl option ~-C~ when invoking for proper Unicode processing.
+See doc section ~rdfpuml.html#Unicode~
+** 2020-09-17 rdf2rml: logicalTable
+Use URL for logicalTable instead of blank node, so that R2RML generated from different models for different tables can be merged more easily.
+Warning: this assumes that all instances of one subjectMap use the same query.
+** 2020-06-01 rdf2tarql.pl: generate TARQL scripts
+Add rdf2tarql.pl script to generate TARQL script (CSV-RDF conversion) from model.
+** 2020-06-01 rdf2rml: improve scripts, SQL query/table propagation
+- Improve script to abort if the first pipeline step ("update") fails
+- Improve script to work on Cygwin (invokes the Jena tools as ~riot.bat~ and ~update.bat~)
+- Filter out harmless warnings from Jena update's error log
+  for datatypes like ~xsd:integer, xsd:date~ etc since the mention of a source field doesn't match the syntax of such literals.
+- If a node has single outgoing link and no SQL query/table (~puml:label~),
+  propagate that property backward across the link into the node
+  (previously that was done only for incoming links)
+** 2020-05-30 rdf2rml: handle inverse edge
+When an edge ~Y-P-X~ is recorded in the RDB table of ~X~ (as foreign key) or in an association table,
+it is awkward to specify that table in the node ~Y~.
+So I added this SPARQL UPDATE clause:
+- If a node ?y has no SQL, is not Inlined, has a single outgoing edge, then add the SQL of its counterparty ?x as default
+** 2018-11-14 rdfpuml.pl: avoid puml:stereotype class node
+I often define ~puml:stereotype~ for some classes in prefixes.ttl.
+If the class is not used in some particular turtle, it should avoid emitting a disconnected puml class.
+- ~stereotypes()~: Avoid emitting
+- ~has_statements_different_from()~: Check that a node has statements other than puml:stereotype
+** 2018-06-29 rdfpuml.pl bug: class and puml:InlineProperty
+When a type is also used with ~puml:InlineProperty~, it caused this error:
+: Can't locate object method "uri_value" via package "RDF::Trine::Node::Literal" at rdfpuml.pl line 261.
+:    main::puml_qname(RDF::Trine::Node::Literal=ARRAY(0x4fd0920)) called at rdfpuml.pl line 279
+:    main::puml_node2(RDF::Trine::Node::Literal=ARRAY(0x4fd0920)) called at rdfpuml.pl line 128
+An inline is converted to a literal, but rdf:type is always assumed to be a URL.
+Test: [[./test/regression/type-inlineProperty.ttl]]
+** 2018-04-05 rdfpuml.pl: Arrow Attributes
+Add arrow attributes (dotted, dashed, bold) and length
+Test: [[./test/regression/arrowLen.ttl]]
+** 2018-02-25 rdfpuml.pl: Arrow Color
+Support arrow color (named or hex)
+** 2017-08-25 rdfpuml.pl: decorative arrows
+Fix unicode of "decorative arrows" on links going to a Reified Relation:
+: left => "←", right => "→", up => "↑", down => "↓"
+** 2016-02-10 rdfpuml.pl: blank nodes, hidden links
+- support blank nodes
+- support new puml "hidden" links that can sometimes help the layout: http://plantuml.com/class-diagram#layout
