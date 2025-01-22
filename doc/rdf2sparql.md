@@ -1,7 +1,7 @@
 ---
 title: rdf2sparql - Convert RDF examples to SPARQL queries (Ontotext Refine or TARQL)
 author: Vladimir Alexiev, Ontotext Corp
-date: 2023-06-02
+date: 2025-01-22
 ---
 
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
@@ -132,10 +132,10 @@ You can abbreviate options. All these are equivalent:
 
 ## Screenshot
 To illustrate the benefits of the tool, here is an illustration:
-declarative model (left) vs generated SPARQL Update for Ontorefine (right two).
+declarative model (left) vs generated SPARQL Update for OntoRefine (right two).
 This is from [test/graphs-crunchbase](../test/graphs-crunchbase):
 
-![](doc/img/rdf2sparql-organizations.png)
+![](../doc/img/rdf2sparql-organizations.png)
 
 ## Prerequisites
 

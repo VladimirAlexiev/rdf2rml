@@ -134,7 +134,7 @@ Intersections and restrictions, represented using blank nodes and ~rdf:List~:
 **** Shot: CIDOC CRM and Reification
 The tool can depict reification using ~rdf:Statement~ and various other constructs, in this case ~crm:E17_Type_Assignment~:
 
-[doc/img/CONA-types-reification.png]
+[[doc/img/CONA-types-reification.png]]
 
 **** Shot: Arrow Styles
 
@@ -148,7 +148,7 @@ Unicode (actual) and semantic URL links for each node and property (idea).
 
 *** rdf2sparql shots
 
-Declarative model (left) vs generated SPARQL Update for Ontorefine (right two):
+Declarative model (left) vs generated SPARQL Update for OntoRefine (right two):
 
 [[doc/img/rdf2sparql-organizations.png]]
 
