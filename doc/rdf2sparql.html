@@ -169,9 +169,6 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
 </head>
 <body>
 <header id="title-block-header">
@@ -186,6 +183,7 @@
 <li><a href="#description">DESCRIPTION</a>
 <ul>
 <li><a href="#options">Options</a></li>
+<li><a href="#screenshot">Screenshot</a></li>
 <li><a href="#prerequisites">Prerequisites</a></li>
 <li><a href="#process">Process</a></li>
 <li><a href="#rdf-model-examples">RDF Model Examples</a>
@@ -197,6 +195,8 @@
 <li><a href="#per-model-filtering">Per-model Filtering</a></li>
 <li><a href="#global-filtering">Global Filtering</a></li>
 <li><a href="#conditional-nodes">Conditional Nodes</a></li>
+<li><a href="#multiple-variable-interpolation-in-literals">Multiple Variable Interpolation in Literals</a></li>
+<li><a href="#interpolate-a-variable-in-prefixed-url">Interpolate A Variable in Prefixed URL</a></li>
 <li><a href="#rdf-model-concatenation">RDF Model Concatenation</a></li>
 </ul></li>
 <li><a href="#preprocessor-macros">Preprocessor Macros</a>
@@ -207,7 +207,6 @@
 <ul>
 <li><a href="#insert-patterns-crunchbase-organizations">Insert Patterns: Crunchbase Organizations</a></li>
 <li><a href="#generated-pre-binds">Generated Pre-Binds</a></li>
-<li><a href="#generated-binds-crunchbase-organizations">Generated Binds: Crunchbase Organizations</a></li>
 <li><a href="#generated-binds-customers">Generated Binds: Customers</a></li>
 <li><a href="#generated-update-annual-revenue-by-permalink">Generated Update: Annual Revenue by Permalink</a></li>
 <li><a href="#generated-binds-spending-categories">Generated Binds: Spending Categories</a></li>
@@ -306,6 +305,11 @@ and rewrite the SPARQL script to put the actual endpoint to use.
 <pre><code>-c --co --construct
 -t --ta --tarql
 -e --end --endpoint</code></pre>
+<h2 id="screenshot">Screenshot</h2>
+<p>To illustrate the benefits of the tool, here is an illustration:
+declarative model (left) vs generated SPARQL Update for Ontorefine (right two).
+This is from <a href="../test/graphs-crunchbase">test/graphs-crunchbase</a>:</p>
+<p><img src="doc/img/rdf2sparql-organizations.png" /></p>
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
 <li>Ontotext Refine or TARQL as described above</li>
@@ -585,6 +589,35 @@ first we check if any of the “business payload” fields are bound, and return
 Then we concat this string with some constant and variabel parts to form a URL.
 If the string is unbound, then the URL will be unbound.
 Then any triple using the unbound URL will <strong>not</strong> be emitted, avoiding the creation of a parasitic node.</p>
+<h3 id="multiple-variable-interpolation-in-literals">Multiple Variable Interpolation in Literals</h3>
+<p>Above you’ve seen many examples where a single column is used as the value of a literal (with optional datatype attached).
+Now it is also possible to use several variables, and to intersperse fixed text with variables, eg:</p>
+<pre class="ttl"><code>&lt;tag/refinery-compressor/URLIFY(tag)&gt; a skos:Concept, sosa:FeatureOfInterest;
+  skos:inScheme &lt;tag&gt;;
+  skos:prefLabel &quot;(tag)&quot;;                        ## only a variable
+  skos:description &quot;Refinery compressor (tag)&quot;.  ## new: fixed text interspersed with variable</code></pre>
+<h3 id="interpolate-a-variable-in-prefixed-url">Interpolate A Variable in Prefixed URL</h3>
+<p>Above you’ve seen many examples of templated URLs that use fixed and variable parts.
+Now you can also use a variable with prefixed URLs.</p>
+<p>Consider this example of describing Refinery sensor data columns:</p>
+<pre class="ttl"><code>@prefix unit: &lt;http://qudt.org/vocab/unit/(unit)&gt;.
+@prefix qk:   &lt;http://qudt.org/schema/quantityKind/(quantityKind)&gt;.
+
+&lt;schema/refinery/(n)&gt; a csvw:Column, sosa:ObservableProperty;
+  sosa:hasFeatureOfInterest &lt;feature/URLIFY(SPLIT(features))&gt;;
+  un:qualifier              &lt;qualifier/SPLIT(statisticalQualifiers)&gt;;
+  qudt:hasQuantityKind      qk:\(quantityKind\);  ## new
+  qudt:hasUnit              unit:\(unit\).        ## new</code></pre>
+<ul>
+<li>The first 3 lines use relative templated URLs</li>
+<li>The next 2 lines (marked <code>new</code>) use prefixed URLs with a variable.
+<ul>
+<li>Parentheses need to be escaped in a prefixed URL (but they display without backslashes in <code>rdfpuml</code>)</li>
+<li>We could have written them as as follows, but it’s better not to use full URLs, in order to avoid mistakes:</li>
+</ul>
+<pre class="ttl"><code>qudt:hasQuantityKind &lt;http://qudt.org/vocab/unit/(unit)&gt;;
+qudt:hasUnit         &lt;http://qudt.org/schema/quantityKind/(quantityKind)&gt;.</code></pre></li>
+</ul>
 <h3 id="rdf-model-concatenation">RDF Model Concatenation</h3>
 <p><strong>rdf2sparql</strong> works on a single CSV table at a time (<strong>rdf2rml</strong> does not have this limitation).
 Furthermore, as seen above, you may need to split a model

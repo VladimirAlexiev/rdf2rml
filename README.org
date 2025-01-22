@@ -17,7 +17,6 @@
 #+DESCRIPTION:
 #+KEYWORDS: RDF, visualization, PlantUML, R2RML, generation, model-driven, RDF by Example, rdfpuml, rdf2rml, rdf2sparql, rdf2tarql, rdf2ontorefine
 
-
 * Table of Contents                                 :TOC:noexport:
 :PROPERTIES:
 :TOC:      :include all
@@ -27,6 +26,13 @@
 - [[#introduction][Introduction]]
   - [[#license-and-citation][License and Citation]]
   - [[#documentation][Documentation]]
+    - [[#rdfpuml-shots][rdfpuml shots]]
+      - [[#shot-company-and-person-info][Shot: Company and Person Info]]
+      - [[#shot-complex-class-expressions][Shot: Complex Class Expressions]]
+      - [[#shot-cidoc-crm-and-reification][Shot: CIDOC CRM and Reification]]
+      - [[#shot-arrow-styles][Shot: Arrow Styles]]
+      - [[#shot-unicode-and-links][Shot: Unicode and Links]]
+    - [[#rdf2sparql-shots][rdf2sparql shots]]
   - [[#related-work][Related Work]]
 - [[#installation][Installation]]
   - [[#docker-image][Docker Image]]
@@ -106,6 +112,45 @@ If you use this software, please cite it as shown above.
 - [[https://github.com/VladimirAlexiev/rdf2rml/blob/master/doc/rdfpuml.md][rdfpuml.md]] or [[http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdfpuml.html][rdfpuml.html]]
 - [[https://github.com/VladimirAlexiev/rdf2rml/blob/master/doc/rdf2rml.md][rdf2rml.md]] or [[http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdf2rml.html][rdf2rml.html]]
 - [[https://github.com/VladimirAlexiev/rdf2rml/blob/master/doc/rdf2sparql.md][rdf2sparql.md]] or [[http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdf2sparql.html][rdf2sparql.html]] (subsumes ~rdf2tarql~ and ~rdf2ontorefine~)
+
+*** rdfpuml shots
+Everyone likes screenshots!
+- There are some shots that illustrate each feature in the documentation ([[https://github.com/VladimirAlexiev/rdf2rml/blob/master/doc/rdfpuml.md][rdfpuml.md]] or [[http://rawgit2.com/VladimirAlexiev/rdf2rml/master/doc/rdfpuml.html][rdfpuml.html]]).
+- There are more shots in individual tests in [[test]].
+- I'm planning to create a Gallery of all shots in tests
+
+But until I do it, here are a couple of shots.
+
+**** Shot: Company and Person Info
+Information about Sirma Group and Atanas Kiryakov from Refinitiv PermID:
+
+[[test/permid/sample-SirmaGroup-AtanasKiryakov.png]]
+
+**** Shot: Complex Class Expressions
+Intersections and restrictions, represented using blank nodes and ~rdf:List~:
+
+[[test/complex-types/example2.png]]
+
+**** Shot: CIDOC CRM and Reification
+The tool can depict reification using ~rdf:Statement~ and various other constructs, in this case ~crm:E17_Type_Assignment~:
+
+[doc/img/CONA-types-reification.png]
+
+**** Shot: Arrow Styles
+
+[[doc/img/arrowStyles.png]]
+
+**** Shot: Unicode and Links
+Unicode (actual) and semantic URL links for each node and property (idea).
+"Zmrzlina" is Czech for "icecream" and may have the highest concentration of consonants in the world:
+
+[[test/unicode/svg-links.png]]
+
+*** rdf2sparql shots
+
+Declarative model (left) vs generated SPARQL Update for Ontorefine (right two):
+
+[[doc/img/rdf2sparql-organizations.png]]
 
 ** Related Work
 
@@ -188,7 +233,7 @@ To adopt changes, do something like this.
   #+end_src
 
 * ToDo Tasks
-See [[CHANGELOG.org][CHANGELOG.org]].
+See [[CHANGELOG.org][CHANGELOG.org]] for implemented features and fixes.
 
 Help needed for the following tasks.
 Post bugs and enhancement requests to this repo!

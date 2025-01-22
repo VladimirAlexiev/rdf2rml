@@ -10,6 +10,7 @@ date: 2023-06-02
 - [SYNOPSIS](#synopsis)
 - [DESCRIPTION](#description)
     - [Options](#options)
+    - [Screenshot](#screenshot)
     - [Prerequisites](#prerequisites)
     - [Process](#process)
     - [RDF Model Examples](#rdf-model-examples)
@@ -128,6 +129,13 @@ You can abbreviate options. All these are equivalent:
     -c --co --construct
     -t --ta --tarql
     -e --end --endpoint
+
+## Screenshot
+To illustrate the benefits of the tool, here is an illustration:
+declarative model (left) vs generated SPARQL Update for Ontorefine (right two).
+This is from [test/graphs-crunchbase](../test/graphs-crunchbase):
+
+![](doc/img/rdf2sparql-organizations.png)
 
 ## Prerequisites
 

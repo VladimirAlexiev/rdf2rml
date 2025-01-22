@@ -431,14 +431,12 @@ It should have had a type <code>rdf:List</code>, this is an omission in the exam
 <p><img src="img/OA-eg41.png" /></p>
 <h2 id="complex-types">Complex Types</h2>
 <p>If you want to visualize not only instances (A-Box) but also class statements and expressions (T-Box),
-see <a href="https://github.com/VladimirAlexiev/rdf2rml/tree/master/test/blank-types#readme">test/blank-types</a> with its own README.</p>
+see <a href="https://github.com/VladimirAlexiev/rdf2rml/tree/master/test/complex-types#readme">test/complex-types</a> with its own README.</p>
 <p>Here is an example closely mirroring the style of the Industrial Ontology Foundry (IOF):</p>
 <p><img src="https://rawgit2.com/VladimirAlexiev/rdf2rml/master/test/blank-types/example-iof.png" /></p>
-<p>Note: <code>blank-types</code> is a historical misnomer.
-I’ll change this to <code>complex-types</code> as soon as git unlocks some files on my local drive :-)</p>
 <h2 id="plantuml-options">PlantUML Options</h2>
 <p>You can pass options and pragmas to PlantUML using the <code>puml:options</code> property (attached to an empty node).
-The default options are as per <code>plantuml.cfg</code>:</p>
+The default options are:</p>
 <pre><code>[] puml:options &quot;&quot;&quot;
   hide empty members
   hide circle
@@ -464,6 +462,9 @@ See <code>text/saref4city</code> for another way, and a trial.</p>
 <p><img src="../test/saref4city/example1-saref4city.png" /></p>
 <p>Second example (<code>test/permid</code>):</p>
 <p><img src="../test/permid/sample-RobinSmith-positions.png" /></p>
+<p>You can pass additional options to PlantUML to select a skin, set colors, etc by using a global config file (eg <code>plantuml.cfg</code>). For example:</p>
+<pre><code>perl -S rdfpuml.pl       file.ttl
+plantuml -Iplantuml.cfg  file.puml</code></pre>
 <h2 id="handling-large-diagrams">Handling Large Diagrams</h2>
 <p>By default, PlantUML uses a drawing canvas of 4096 pixels.
 This causes really big diagrams (eg ones that need <code>left to right direction</code> as described above) to be cut off.</p>
