@@ -6,11 +6,11 @@ prefix skos: <http://www.w3.org/2004/02/skos/core#>
 prefix xsd: <http://www.w3.org/2001/XMLSchema#>
 delete {graph ?graph_organizations_uuid_URL {?_s_ ?_p_ ?_o_}}
 where {
-  service <rdf-mapper:ontorefine:PROJECT_ID> {
+  {select * { service <rdf-mapper:ontorefine:PROJECT_ID> {
     bind(?c_uuid as ?uuid)
     bind(iri(concat("graph/organizations/",?uuid)) as ?graph_organizations_uuid_URL)
     bind(?c_updated_at as ?updated_at)
-  }
+  }}}
   <cb> cb:updatedAt ?UPDATED_AT_DT bind(replace(str(?UPDATED_AT_DT),'T',' ') as ?UPDATED_AT) filter(?updated_at > ?UPDATED_AT)
   graph ?graph_organizations_uuid_URL {?_s_ ?_p_ ?_o_}};
 insert {graph ?graph_organizations_uuid_URL {
@@ -56,7 +56,7 @@ insert {graph ?graph_organizations_uuid_URL {
     cb:numExits ?num_exits_xsd_integer.
 }}
 where {
-  service <rdf-mapper:ontorefine:PROJECT_ID> {
+  {select * { service <rdf-mapper:ontorefine:PROJECT_ID> {
     bind(?c_uuid as ?uuid)
     bind(iri(concat("graph/organizations/",?uuid)) as ?graph_organizations_uuid_URL)
     bind(?c_updated_at as ?updated_at)
@@ -129,5 +129,5 @@ where {
     bind(LCASE(REPLACE(REPLACE(REPLACE(?primary_role, "[^\\p{L}0-9]", "_"), "_+", "_"), "^_|_$", "")) as ?primary_role_URLIFY)
     bind(iri(concat("cb/organizationRole/",?primary_role_URLIFY)) as ?cb_organizationRole_primary_role_URLIFY_URL)
     bind(strdt(?num_exits,xsd:integer) as ?num_exits_xsd_integer)
-  }
+  }}}
   <cb> cb:updatedAt ?UPDATED_AT_DT bind(replace(str(?UPDATED_AT_DT),'T',' ') as ?UPDATED_AT) filter(?updated_at > ?UPDATED_AT)};

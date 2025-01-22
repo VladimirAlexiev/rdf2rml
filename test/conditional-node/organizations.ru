@@ -8,10 +8,10 @@ prefix schema: <http://schema.org/>
 prefix skos: <http://www.w3.org/2004/02/skos/core#>
 delete {graph ?graph_cb_organizations_uuid_URL {?_s_ ?_p_ ?_o_}}
 where {
-  service <rdf-mapper:ontorefine:PROJECT_ID> {
+  {select * { service <rdf-mapper:ontorefine:PROJECT_ID> {
     bind(?c_uuid as ?uuid)
     bind(iri(concat("graph/cb/organizations/",?uuid)) as ?graph_cb_organizations_uuid_URL)
-  }
+  }}}
   graph ?graph_cb_organizations_uuid_URL {?_s_ ?_p_ ?_o_}};
 insert {graph ?graph_cb_organizations_uuid_URL {
   ?cb_agent_uuid_URL a org:Organization;

@@ -182,23 +182,31 @@ while ($_ = <>) {
   $output = "$output$_";
 };
 
+# If "update" accesses patterns outside "service", wrap in a subquery to enforce execution there
+# https://github.com/VladimirAlexiev/rdf2rml/issues/46
+# https://ontotext.atlassian.net/issues/GDB-8365
+my $delete_subquery_open  = " {select * {";
+my $delete_subquery_close = "}}";
+my $insert_subquery_open  = $where[3] || $where[4] ? $delete_subquery_open  : "";
+my $insert_subquery_close = $where[3] || $where[4] ? $delete_subquery_close : "";
+
 print
 
   $form eq "update" ? << "EOF"
 delete {graph $GRAPH {?_s_ ?_p_ ?_o_}}
 where {
-  service <$endpoint> {
+ $delete_subquery_open service <$endpoint> {
 $where[0]
-  }
+  }$delete_subquery_close
 $where[4]
   graph $GRAPH {?_s_ ?_p_ ?_o_}};
 
 insert {graph $GRAPH {
 $output}}
 where {
-  service <$endpoint> {
+ $insert_subquery_open service <$endpoint> {
 $where[0]$where[1]$where[2]
-  }
+  }$insert_subquery_close
 $where[3]$where[4]};
 EOF
 
@@ -206,9 +214,9 @@ EOF
 construct {
 $output}
 where {
-  service <$endpoint> {
+ $insert_subquery_open service <$endpoint> {
 $where[0]$where[1]$where[2]
-  }
+  }$insert_subquery_close
 $where[3]$where[4]}
 EOF
 

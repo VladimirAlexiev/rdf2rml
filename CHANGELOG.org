@@ -1,5 +1,7 @@
 ﻿#+STARTUP: nonum
 
+** 2025-01-22 rdf2sparql: move SERVICE clause to subquery
+- Fix https://github.com/VladimirAlexiev/rdf2rml/issues/46
 ** 2025-01-21 rdf2sparql: interpolate variables in prefixed URL and strings
 - Implement https://github.com/VladimirAlexiev/rdf2rml/issues/47
 - Implement https://github.com/VladimirAlexiev/rdf2rml/issues/48
