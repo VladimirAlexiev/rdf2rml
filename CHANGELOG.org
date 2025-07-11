@@ -1,5 +1,6 @@
 ﻿#+STARTUP: nonum
-
+  * 2025-07-11 github pages
+    Move documentation to https://github.io/VladimirAlexiev/rdf2rml, README.org to index.org
 ** 2025-01-22 rdf2sparql: move SERVICE clause to subquery
 - Fix https://github.com/VladimirAlexiev/rdf2rml/issues/46
 ** 2025-01-21 rdf2sparql: interpolate variables in prefixed URL and strings

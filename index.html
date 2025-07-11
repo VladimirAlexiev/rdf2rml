@@ -218,7 +218,7 @@
 <body>
 <div id="preamble" class="status">
 <p class="author">Author: Vladimir Alexiev (<a href="mailto:vladimir.alexiev@ontotext.com">vladimir.alexiev@ontotext.com</a>)</p>
-<p class="date">Date: 2022-09-20</p>
+<p class="date">Date: 2025-07-11</p>
 </div>
 <div id="content" class="content">
 <h1 class="title">RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation</h1>
@@ -226,78 +226,78 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org43cc4da">Introduction</a>
+<li><a href="#org7a07ef6">Introduction</a>
 <ul>
-<li><a href="#org90d5f1e">License and Citation</a></li>
-<li><a href="#org2f943c6">Documentation</a>
+<li><a href="#orgcea7720">License and Citation</a></li>
+<li><a href="#org0e3ac87">Documentation</a>
 <ul>
-<li><a href="#org4bd0d84">rdfpuml shots</a>
+<li><a href="#org757cb37">rdfpuml shots</a>
 <ul>
-<li><a href="#org6ac4686">Shot: Company and Person Info</a></li>
-<li><a href="#orgcf3708a">Shot: Complex Class Expressions</a></li>
-<li><a href="#org6a4ba25">Shot: CIDOC CRM and Reification</a></li>
-<li><a href="#org92413b2">Shot: Arrow Styles</a></li>
-<li><a href="#orgde1dc5c">Shot: Unicode and Links</a></li>
+<li><a href="#orgce400cb">Shot: Company and Person Info</a></li>
+<li><a href="#orgabf8834">Shot: Complex Class Expressions</a></li>
+<li><a href="#org6296eef">Shot: CIDOC CRM and Reification</a></li>
+<li><a href="#org350c1b7">Shot: Arrow Styles</a></li>
+<li><a href="#org8f5fac5">Shot: Unicode and Links</a></li>
 </ul>
 </li>
-<li><a href="#org696db31">rdf2sparql shots</a></li>
+<li><a href="#org8938c19">rdf2sparql shots</a></li>
 </ul>
 </li>
-<li><a href="#org8acad9f">Related Work</a></li>
+<li><a href="#org3aae790">Related Work</a></li>
 </ul>
 </li>
-<li><a href="#orga277516">Installation</a>
+<li><a href="#org5845475">Installation</a>
 <ul>
-<li><a href="#orgd2d27b4">Docker Image</a></li>
+<li><a href="#org482652c">Docker Image</a></li>
 </ul>
 </li>
-<li><a href="#orgbdd5a2a">Debian Repo</a></li>
-<li><a href="#org6aa23cd">ToDo Tasks</a>
+<li><a href="#org97a5c1b">Debian Repo</a></li>
+<li><a href="#orgd75698b">ToDo Tasks</a>
 <ul>
-<li><a href="#org394f780">Near-term</a>
+<li><a href="#orgd6d901e">Near-term</a>
 <ul>
-<li><a href="#orgd3b359f">Modularize and Package Better</a></li>
-<li><a href="#org66eafa8">Regression Tests</a></li>
-<li><a href="#org69239f9">rdf2rml: disentangle inverse edge</a></li>
-<li><a href="#org345a76c">Release on CPAN</a></li>
-<li><a href="#org4878d53">Add Unicode tests</a></li>
-<li><a href="#orgd9a169b">Prefixes</a>
+<li><a href="#org76359b1">Modularize and Package Better</a></li>
+<li><a href="#org36277ed">Regression Tests</a></li>
+<li><a href="#org2624bdd">rdf2rml: disentangle inverse edge</a></li>
+<li><a href="#org010e7cd">Release on CPAN</a></li>
+<li><a href="#orgd1aaeeb">Add Unicode tests</a></li>
+<li><a href="#org6bafc96">Prefixes</a>
 <ul>
-<li><a href="#org733eb22">Allow specifying the prefixes file</a></li>
-<li><a href="#org2cc78d5">Eliminate Curie.pm</a></li>
-<li><a href="#orgcf3ac9f">Remember prefixes from input file</a></li>
+<li><a href="#org1f59df6">Allow specifying the prefixes file</a></li>
+<li><a href="#org129efe8">Eliminate Curie.pm</a></li>
+<li><a href="#orgcffc261">Remember prefixes from input file</a></li>
 </ul>
 </li>
-<li><a href="#orgf0d0161">Support more RDF Formats</a></li>
-<li><a href="#org91d6a51">Batch Processing</a>
+<li><a href="#org8473996">Support more RDF Formats</a></li>
+<li><a href="#org68a428d">Batch Processing</a>
 <ul>
-<li><a href="#orgd6e0d4b">"Manual" Batching</a></li>
+<li><a href="#org5616a05">"Manual" Batching</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org3fb8abf">Mid-Term</a>
+<li><a href="#orgcb7fcec">Mid-Term</a>
 <ul>
-<li><a href="#org5503792">Upgrade to use Attean</a></li>
-<li><a href="#org50df987">Integrate in Emacs <code>org-mode</code></a></li>
-<li><a href="#orgcce4542">Node colors, icons, tooltips</a></li>
-<li><a href="#org99d1a0d">More arrow types and styles</a></li>
-<li><a href="#orga536d6b">Extra Layout Options</a></li>
-<li><a href="#orgf372931">Custom Reification</a></li>
-<li><a href="#org8e1cdbb">Use MindMap/WBS for Hierarchies</a></li>
+<li><a href="#orgc4b5db7">Upgrade to use Attean</a></li>
+<li><a href="#orge98957e">Integrate in Emacs <code>org-mode</code></a></li>
+<li><a href="#org79e2639">Node colors, icons, tooltips</a></li>
+<li><a href="#orgdab1352">More arrow types and styles</a></li>
+<li><a href="#org81d16f4">Extra Layout Options</a></li>
+<li><a href="#orgd00f698">Custom Reification</a></li>
+<li><a href="#orgceb4c72">Use MindMap/WBS for Hierarchies</a></li>
 </ul>
 </li>
-<li><a href="#org239939f">Long-Term</a>
+<li><a href="#orgf237b48">Long-Term</a>
 <ul>
-<li><a href="#orgc5d692e">rdf2soml to Generate Semantic Object Models</a>
+<li><a href="#org7335a3a">rdf2soml to Generate Semantic Object Models</a>
 <ul>
-<li><a href="#org1ed7b9d">Cardinality With RDF*</a></li>
-<li><a href="#orgf0512bd">Cardinality With Blank Node</a></li>
+<li><a href="#org6df966b">Cardinality With RDF*</a></li>
+<li><a href="#org4125b03">Cardinality With Blank Node</a></li>
 </ul>
 </li>
-<li><a href="#org75b1ca8">rdf2shape to Describe &amp; Generate RDF Shapes</a></li>
-<li><a href="#org811cfb9">Visualize RDF Shapes (SHACL and ShEx)</a></li>
-<li><a href="#orgc413825">Generate transformations for other than relational sources</a></li>
+<li><a href="#org1a3ffde">rdf2shape to Describe &amp; Generate RDF Shapes</a></li>
+<li><a href="#orge1e92ad">Visualize RDF Shapes (SHACL and ShEx)</a></li>
+<li><a href="#org92389c0">Generate transformations for other than relational sources</a></li>
 </ul>
 </li>
 </ul>
@@ -306,9 +306,9 @@
 </div>
 </div>
 
-<div id="outline-container-org43cc4da" class="outline-2">
-<h2 id="org43cc4da">Introduction</h2>
-<div class="outline-text-2" id="text-org43cc4da">
+<div id="outline-container-org7a07ef6" class="outline-2">
+<h2 id="org7a07ef6">Introduction</h2>
+<div class="outline-text-2" id="text-org7a07ef6">
 <p>
 See these publications:
 </p>
@@ -354,9 +354,9 @@ See <a href="http://x.com/hashtag/rdfpuml">http://x.com/hashtag/rdfpuml</a> for 
 </p>
 </div>
 
-<div id="outline-container-org90d5f1e" class="outline-3">
-<h3 id="org90d5f1e">License and Citation</h3>
-<div class="outline-text-3" id="text-org90d5f1e">
+<div id="outline-container-orgcea7720" class="outline-3">
+<h3 id="orgcea7720">License and Citation</h3>
+<div class="outline-text-3" id="text-orgcea7720">
 <p>
 This work is covered by the <a href="https://www.perlfoundation.org/artistic-license-20.html">Artistic-2.0</a> license.
 </p>
@@ -373,19 +373,19 @@ It's a YAML CFF file, see <a href="https://citation-file-format.github.io/">http
 </div>
 </div>
 
-<div id="outline-container-org2f943c6" class="outline-3">
-<h3 id="org2f943c6">Documentation</h3>
-<div class="outline-text-3" id="text-org2f943c6">
+<div id="outline-container-org0e3ac87" class="outline-3">
+<h3 id="org0e3ac87">Documentation</h3>
+<div class="outline-text-3" id="text-org0e3ac87">
 <ul class="org-ul">
 <li><a href="https://github.com/VladimirAlexiev/rdf2rml/blob/master/doc/rdfpuml.md">rdfpuml.md</a> or <a href="http://vladimiralexiev.github.io/rdf2rml/doc/rdfpuml.html">rdfpuml.html</a></li>
-<li><a href="https://github.com/VladimirAlexiev/rdf2rml/blob/master/doc/rdf2rml.md">rdf2rml.md</a> or <a href="https://github.io/VladimirAlexiev/rdf2rml/doc/rdf2rml.html">rdf2rml.html</a></li>
+<li><a href="https://github.com/VladimirAlexiev/rdf2rml/blob/master/doc/rdf2rml.md">rdf2rml.md</a> or <a href="https://vladimiralexiev.github.io/rdf2rml/doc/rdf2rml.html">rdf2rml.html</a></li>
 <li><a href="https://github.com/VladimirAlexiev/rdf2rml/blob/master/doc/rdf2sparql.md">rdf2sparql.md</a> or <a href="http://vladimiralexiev.github.io/rdf2rml/doc/rdf2sparql.html">rdf2sparql.html</a> (subsumes <code>rdf2tarql</code> and <code>rdf2ontorefine</code>)</li>
 </ul>
 </div>
 
-<div id="outline-container-org4bd0d84" class="outline-4">
-<h4 id="org4bd0d84">rdfpuml shots</h4>
-<div class="outline-text-4" id="text-org4bd0d84">
+<div id="outline-container-org757cb37" class="outline-4">
+<h4 id="org757cb37">rdfpuml shots</h4>
+<div class="outline-text-4" id="text-org757cb37">
 <p>
 Everyone likes screenshots!
 </p>
@@ -400,72 +400,72 @@ But until I do it, here are a couple of shots.
 </p>
 </div>
 
-<div id="outline-container-org6ac4686" class="outline-5">
-<h5 id="org6ac4686">Shot: Company and Person Info</h5>
-<div class="outline-text-5" id="text-org6ac4686">
+<div id="outline-container-orgce400cb" class="outline-5">
+<h5 id="orgce400cb">Shot: Company and Person Info</h5>
+<div class="outline-text-5" id="text-orgce400cb">
 <p>
 Information about Sirma Group and Atanas Kiryakov from Refinitiv PermID:
 </p>
 
 
-<div id="orgba5d5ad" class="figure">
+<div id="orgc1f8a28" class="figure">
 <p><img src="./test/permid/sample-SirmaGroup-AtanasKiryakov.png" alt="sample-SirmaGroup-AtanasKiryakov.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgcf3708a" class="outline-5">
-<h5 id="orgcf3708a">Shot: Complex Class Expressions</h5>
-<div class="outline-text-5" id="text-orgcf3708a">
+<div id="outline-container-orgabf8834" class="outline-5">
+<h5 id="orgabf8834">Shot: Complex Class Expressions</h5>
+<div class="outline-text-5" id="text-orgabf8834">
 <p>
 Intersections and restrictions, represented using blank nodes and <code>rdf:List</code>:
 </p>
 
 
-<div id="org9e0946c" class="figure">
+<div id="orgfb64d95" class="figure">
 <p><img src="./test/complex-types/example2.png" alt="example2.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org6a4ba25" class="outline-5">
-<h5 id="org6a4ba25">Shot: CIDOC CRM and Reification</h5>
-<div class="outline-text-5" id="text-org6a4ba25">
+<div id="outline-container-org6296eef" class="outline-5">
+<h5 id="org6296eef">Shot: CIDOC CRM and Reification</h5>
+<div class="outline-text-5" id="text-org6296eef">
 <p>
 The tool can depict reification using <code>rdf:Statement</code> and various other constructs, in this case <code>crm:E17_Type_Assignment</code>:
 </p>
 
 
-<div id="orgfc89b32" class="figure">
+<div id="orgab6dbe2" class="figure">
 <p><img src="./doc/img/CONA-types-reification.png" alt="CONA-types-reification.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org92413b2" class="outline-5">
-<h5 id="org92413b2">Shot: Arrow Styles</h5>
-<div class="outline-text-5" id="text-org92413b2">
+<div id="outline-container-org350c1b7" class="outline-5">
+<h5 id="org350c1b7">Shot: Arrow Styles</h5>
+<div class="outline-text-5" id="text-org350c1b7">
 
-<div id="orgfe75e26" class="figure">
+<div id="orge920593" class="figure">
 <p><img src="./doc/img/arrowStyles.png" alt="arrowStyles.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgde1dc5c" class="outline-5">
-<h5 id="orgde1dc5c">Shot: Unicode and Links</h5>
-<div class="outline-text-5" id="text-orgde1dc5c">
+<div id="outline-container-org8f5fac5" class="outline-5">
+<h5 id="org8f5fac5">Shot: Unicode and Links</h5>
+<div class="outline-text-5" id="text-org8f5fac5">
 <p>
 Unicode (actual) and semantic URL links for each node and property (idea).
 "Zmrzlina" is Czech for "icecream" and may have the highest concentration of consonants in the world:
 </p>
 
 
-<div id="org6324760" class="figure">
+<div id="org338b6a2" class="figure">
 <p><img src="./test/unicode/svg-links.png" alt="svg-links.png" />
 </p>
 </div>
@@ -473,15 +473,15 @@ Unicode (actual) and semantic URL links for each node and property (idea).
 </div>
 </div>
 
-<div id="outline-container-org696db31" class="outline-4">
-<h4 id="org696db31">rdf2sparql shots</h4>
-<div class="outline-text-4" id="text-org696db31">
+<div id="outline-container-org8938c19" class="outline-4">
+<h4 id="org8938c19">rdf2sparql shots</h4>
+<div class="outline-text-4" id="text-org8938c19">
 <p>
 Declarative model (left) vs generated SPARQL Update for OntoRefine (right two):
 </p>
 
 
-<div id="org982e843" class="figure">
+<div id="orgd2bc347" class="figure">
 <p><img src="./doc/img/rdf2sparql-organizations.png" alt="rdf2sparql-organizations.png" />
 </p>
 </div>
@@ -489,9 +489,9 @@ Declarative model (left) vs generated SPARQL Update for OntoRefine (right two):
 </div>
 </div>
 
-<div id="outline-container-org8acad9f" class="outline-3">
-<h3 id="org8acad9f">Related Work</h3>
-<div class="outline-text-3" id="text-org8acad9f">
+<div id="outline-container-org3aae790" class="outline-3">
+<h3 id="org3aae790">Related Work</h3>
+<div class="outline-text-3" id="text-org3aae790">
 <p>
 Software:
 </p>
@@ -530,9 +530,9 @@ Digital Presentation and Preservation of Cultural and Scientific Heritage (DIPP 
 </div>
 </div>
 
-<div id="outline-container-orga277516" class="outline-2">
-<h2 id="orga277516">Installation</h2>
-<div class="outline-text-2" id="text-orga277516">
+<div id="outline-container-org5845475" class="outline-2">
+<h2 id="org5845475">Installation</h2>
+<div class="outline-text-2" id="text-org5845475">
 <p>
 Checkout this repo and add <code>rdf2rml/bin</code> to your path.
 Install the following prerequisites:
@@ -557,9 +557,9 @@ See in particular <a href="http://plantuml.com/class-diagram">plantuml class dia
 </ul>
 </div>
 
-<div id="outline-container-orgd2d27b4" class="outline-3">
-<h3 id="orgd2d27b4">Docker Image</h3>
-<div class="outline-text-3" id="text-orgd2d27b4">
+<div id="outline-container-org482652c" class="outline-3">
+<h3 id="org482652c">Docker Image</h3>
+<div class="outline-text-3" id="text-org482652c">
 <p>
 If you prefer to work with Docker so you don't need to install software manually,
 you can use this <a href="https://docker-registry.ontotext.com/#browse/search=keyword%3Drdf2rml">rdf2rml image</a> from the public Nexus (Docker Registry) of Ontotext.
@@ -590,9 +590,9 @@ However, it has not been merged yet
 </div>
 </div>
 
-<div id="outline-container-orgbdd5a2a" class="outline-2">
-<h2 id="orgbdd5a2a">Debian Repo</h2>
-<div class="outline-text-2" id="text-orgbdd5a2a">
+<div id="outline-container-org97a5c1b" class="outline-2">
+<h2 id="org97a5c1b">Debian Repo</h2>
+<div class="outline-text-2" id="text-org97a5c1b">
 <p>
 Jonas Smedegaard (<code>@jonassmedegaard</code>, dr at jones fullstop dk) has volunteered for some of the tasks below.
 His development is at <a href="https://salsa.debian.org/debian/rdf2rml/branches">https://salsa.debian.org/debian/rdf2rml/branches</a>.
@@ -622,9 +622,9 @@ To adopt only single commits from the <code>salsa/develop</code> branch, issue <
 </div>
 </div>
 
-<div id="outline-container-org6aa23cd" class="outline-2">
-<h2 id="org6aa23cd">ToDo Tasks</h2>
-<div class="outline-text-2" id="text-org6aa23cd">
+<div id="outline-container-orgd75698b" class="outline-2">
+<h2 id="orgd75698b">ToDo Tasks</h2>
+<div class="outline-text-2" id="text-orgd75698b">
 <p>
 See <a href="./CHANGELOG.html">CHANGELOG.org</a> for implemented features and fixes.
 </p>
@@ -635,17 +635,17 @@ Post bugs and enhancement requests to this repo!
 </p>
 </div>
 
-<div id="outline-container-org394f780" class="outline-3">
-<h3 id="org394f780">Near-term</h3>
-<div class="outline-text-3" id="text-org394f780">
+<div id="outline-container-orgd6d901e" class="outline-3">
+<h3 id="orgd6d901e">Near-term</h3>
+<div class="outline-text-3" id="text-orgd6d901e">
 </div>
-<div id="outline-container-orgd3b359f" class="outline-4">
-<h4 id="orgd3b359f">Modularize and Package Better</h4>
+<div id="outline-container-org76359b1" class="outline-4">
+<h4 id="org76359b1">Modularize and Package Better</h4>
 </div>
 
-<div id="outline-container-org66eafa8" class="outline-4">
-<h4 id="org66eafa8">Regression Tests</h4>
-<div class="outline-text-4" id="text-org66eafa8">
+<div id="outline-container-org36277ed" class="outline-4">
+<h4 id="org36277ed">Regression Tests</h4>
+<div class="outline-text-4" id="text-org36277ed">
 <ul class="org-ul">
 <li><code>sort</code> is added at various places to make the tool more deterministic, i.e. independent of order of RDF statements in the input file.
 However, this will interfere with the ability to control the layout, especially of disconnected components (see <a href="https://forum.plantuml.net/2538">layout_new_line</a>)</li>
@@ -654,9 +654,9 @@ However, this will interfere with the ability to control the layout, especially 
 </div>
 </div>
 
-<div id="outline-container-org69239f9" class="outline-4">
-<h4 id="org69239f9">rdf2rml: disentangle inverse edge</h4>
-<div class="outline-text-4" id="text-org69239f9">
+<div id="outline-container-org2624bdd" class="outline-4">
+<h4 id="org2624bdd">rdf2rml: disentangle inverse edge</h4>
+<div class="outline-text-4" id="text-org2624bdd">
 <p>
 In the case  <code>Y-P-X</code> described above:
 </p>
@@ -670,13 +670,13 @@ In the case  <code>Y-P-X</code> described above:
 </div>
 </div>
 
-<div id="outline-container-org345a76c" class="outline-4">
-<h4 id="org345a76c">Release on CPAN</h4>
+<div id="outline-container-org010e7cd" class="outline-4">
+<h4 id="org010e7cd">Release on CPAN</h4>
 </div>
 
-<div id="outline-container-org4878d53" class="outline-4">
-<h4 id="org4878d53">Add Unicode tests</h4>
-<div class="outline-text-4" id="text-org4878d53">
+<div id="outline-container-orgd1aaeeb" class="outline-4">
+<h4 id="orgd1aaeeb">Add Unicode tests</h4>
+<div class="outline-text-4" id="text-orgd1aaeeb">
 <p>
 Add ttl with non-ASCII chars: Accented, Cyrillic, French, etc.
 </p>
@@ -686,39 +686,39 @@ Add ttl with non-ASCII chars: Accented, Cyrillic, French, etc.
 </div>
 </div>
 
-<div id="outline-container-orgd9a169b" class="outline-4">
-<h4 id="orgd9a169b">Prefixes</h4>
-<div class="outline-text-4" id="text-orgd9a169b">
+<div id="outline-container-org6bafc96" class="outline-4">
+<h4 id="org6bafc96">Prefixes</h4>
+<div class="outline-text-4" id="text-org6bafc96">
 </div>
-<div id="outline-container-org733eb22" class="outline-5">
-<h5 id="org733eb22">Allow specifying the prefixes file</h5>
-<div class="outline-text-5" id="text-org733eb22">
+<div id="outline-container-org1f59df6" class="outline-5">
+<h5 id="org1f59df6">Allow specifying the prefixes file</h5>
+<div class="outline-text-5" id="text-org1f59df6">
 <p>
 See <a href="https://github.com/VladimirAlexiev/rdf2rml/pull/7">https://github.com/VladimirAlexiev/rdf2rml/pull/7</a>
 </p>
 </div>
 </div>
-<div id="outline-container-org2cc78d5" class="outline-5">
-<h5 id="org2cc78d5">Eliminate Curie.pm</h5>
-<div class="outline-text-5" id="text-org2cc78d5">
+<div id="outline-container-org129efe8" class="outline-5">
+<h5 id="org129efe8">Eliminate Curie.pm</h5>
+<div class="outline-text-5" id="text-org129efe8">
 <p>
 <a href="./lib/RDF/Prefixes/Curie.pm">./lib/RDF/Prefixes/Curie.pm</a> remembers <code>@base</code> and uses that for URL shortening.
 Once <a href="https://github.com/kasei/perlrdf/issues/131">perlrdf#131</a> is fixed, eliminate this dependency (local module)
 </p>
 </div>
 </div>
-<div id="outline-container-orgcf3ac9f" class="outline-5">
-<h5 id="orgcf3ac9f">Remember prefixes from input file</h5>
-<div class="outline-text-5" id="text-orgcf3ac9f">
+<div id="outline-container-orgcffc261" class="outline-5">
+<h5 id="orgcffc261">Remember prefixes from input file</h5>
+<div class="outline-text-5" id="text-orgcffc261">
 <p>
 <code>rdfpuml</code> shortens URLs using prefixes only from <code>prefixes.ttl</code>, but should also use prefixes defined in the individual input file.
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-orgf0d0161" class="outline-4">
-<h4 id="orgf0d0161">Support more RDF Formats</h4>
-<div class="outline-text-4" id="text-orgf0d0161">
+<div id="outline-container-org8473996" class="outline-4">
+<h4 id="org8473996">Support more RDF Formats</h4>
+<div class="outline-text-4" id="text-org8473996">
 <p>
 Now it only supports Turtle, because it concatenates <code>prefixes.ttl</code> to the main file.
 If it can collect all prefixes from RDF files, such concatenation won't be needed
@@ -726,9 +726,9 @@ If it can collect all prefixes from RDF files, such concatenation won't be neede
 </div>
 </div>
 
-<div id="outline-container-org91d6a51" class="outline-4">
-<h4 id="org91d6a51">Batch Processing</h4>
-<div class="outline-text-4" id="text-org91d6a51">
+<div id="outline-container-org68a428d" class="outline-4">
+<h4 id="org68a428d">Batch Processing</h4>
+<div class="outline-text-4" id="text-org68a428d">
 <p>
 Issue <a href="https://github.com/VladimirAlexiev/rdf2rml/issues/1">#1</a>: plantuml is slow to start up, so we'd like to process a bunch of <code>puml</code> files at once.
 The best way is to have a smarter script or <code>Makefile</code> that uses the following <a href="http://plantuml.com/command-line">http://plantuml.com/command-line</a> features:
@@ -743,14 +743,14 @@ so <code>plantuml</code> can quickly check that there are no changes)</li>
 </ul>
 </div>
 
-<div id="outline-container-orgd6e0d4b" class="outline-5">
-<h5 id="orgd6e0d4b">"Manual" Batching</h5>
-<div class="outline-text-5" id="text-orgd6e0d4b">
+<div id="outline-container-org5616a05" class="outline-5">
+<h5 id="org5616a05">"Manual" Batching</h5>
+<div class="outline-text-5" id="text-org5616a05">
 <p>
 Before I discovered the <code>-checkmetadata</code> option,
 I had the idea that <code>rdfpuml</code> could put several diagrams in one <code>puml</code> file:
 </p>
-<pre class="example" id="org8a3c080">
+<pre class="example" id="org698be37">
 @startuml file1.png
   # made from file1.ttl
 @enduml
@@ -767,40 +767,40 @@ and makes things less modular overall.
 </div>
 </div>
 
-<div id="outline-container-org3fb8abf" class="outline-3">
-<h3 id="org3fb8abf">Mid-Term</h3>
-<div class="outline-text-3" id="text-org3fb8abf">
+<div id="outline-container-orgcb7fcec" class="outline-3">
+<h3 id="orgcb7fcec">Mid-Term</h3>
+<div class="outline-text-3" id="text-orgcb7fcec">
 </div>
-<div id="outline-container-org5503792" class="outline-4">
-<h4 id="org5503792">Upgrade to use Attean</h4>
-<div class="outline-text-4" id="text-org5503792">
+<div id="outline-container-orgc4b5db7" class="outline-4">
+<h4 id="orgc4b5db7">Upgrade to use Attean</h4>
+<div class="outline-text-4" id="text-orgc4b5db7">
 <p>
 <a href="https://github.com/kasei/perlrdf">Trine (Perl RDF)</a> is end of life. <a href="https://github.com/kasei/attean">Attean</a> is the new generation
 </p>
 </div>
 </div>
 
-<div id="outline-container-org50df987" class="outline-4">
-<h4 id="org50df987">Integrate in Emacs <code>org-mode</code></h4>
-<div class="outline-text-4" id="text-org50df987">
+<div id="outline-container-orge98957e" class="outline-4">
+<h4 id="orge98957e">Integrate in Emacs <code>org-mode</code></h4>
+<div class="outline-text-4" id="text-orge98957e">
 <p>
 Write Turtle, see diagram (easy to do)
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgcce4542" class="outline-4">
-<h4 id="orgcce4542">Node colors, icons, tooltips</h4>
-<div class="outline-text-4" id="text-orgcce4542">
+<div id="outline-container-org79e2639" class="outline-4">
+<h4 id="org79e2639">Node colors, icons, tooltips</h4>
+<div class="outline-text-4" id="text-org79e2639">
 <p>
 See <a href="./ideas">./ideas</a>
 </p>
 </div>
 </div>
 
-<div id="outline-container-org99d1a0d" class="outline-4">
-<h4 id="org99d1a0d">More arrow types and styles</h4>
-<div class="outline-text-4" id="text-org99d1a0d">
+<div id="outline-container-orgdab1352" class="outline-4">
+<h4 id="orgdab1352">More arrow types and styles</h4>
+<div class="outline-text-4" id="text-orgdab1352">
 <ul class="org-ul">
 <li>See <code>arrows arrows-2</code> from <a href="https://github.com/anoff/blog/tree/master/static/assets/plantuml/diagrams">https://github.com/anoff/blog/tree/master/static/assets/plantuml/diagrams</a>:</li>
 </ul>
@@ -820,9 +820,9 @@ dotted|dashed|plain|bold|hidden|norank|single|thickness
 </div>
 </div>
 
-<div id="outline-container-orga536d6b" class="outline-4">
-<h4 id="orga536d6b">Extra Layout Options</h4>
-<div class="outline-text-4" id="text-orga536d6b">
+<div id="outline-container-org81d16f4" class="outline-4">
+<h4 id="org81d16f4">Extra Layout Options</h4>
+<div class="outline-text-4" id="text-org81d16f4">
 <p>
 Local layout options are described in <a href="http://wiki.plantuml.net/site/class-diagram#help_on_layout">Help on Layout</a>:
 </p>
@@ -835,7 +835,7 @@ Local layout options are described in <a href="http://wiki.plantuml.net/site/cla
 <p>
 Global options include (eg see <a href="http://www.plantuml.com/plantuml/uml/bP8nQmCn38Lt_mfnoq7XGZgrGoYXMJeqIpfqTkwKdeXi7xRI4kYFBvSORCSGg8OGdlJfFPbR1z5UJePLsuuq8FJaUqPr-OzcaZCOD7lq8PUqYAVzIJ2eS2GxQQyDC5cKyuJWl8mkQuHH3-w7x1SSD0TKRMfjoMvOX_19WupmjCnxrWqOS8BdGlNQ7gEg55b1Vz0zmlOIyfs2e4LVDNQECHFVDFC7-c_giHfLgct18siXPmEqhL8R9hG2LNNTIodaUyj4QMRrs-N8TNTbqJmsLuleq2mNYuS6ydDKvXQfsY66kacJzdM5NnoUVnAVtzj16MVdd56pK3350IMmSLQyOyOXldQTB8AhsIsl2arl0RVtH_G-MK2HlC_DvwPsdXN-mQMw-NxYzBruXT6hauYiqGudmty0">this diagram</a>):
 </p>
-<div class="plantuml" id="org4f0ef72">
+<div class="plantuml" id="org3d5743a">
 <p>
 skinparam Linetype ortho
 skinparam NodeSep 80
@@ -853,18 +853,18 @@ And there are a lot more undocumented features: <a href="https://forum.plantuml.
 </div>
 </div>
 
-<div id="outline-container-orgf372931" class="outline-4">
-<h4 id="orgf372931">Custom Reification</h4>
-<div class="outline-text-4" id="text-orgf372931">
+<div id="outline-container-orgd00f698" class="outline-4">
+<h4 id="orgd00f698">Custom Reification</h4>
+<div class="outline-text-4" id="text-orgd00f698">
 <p>
 Ability to describe custom reification situations using the Property Reification Vocabulary (PRV)
 </p>
 </div>
 </div>
 
-<div id="outline-container-org8e1cdbb" class="outline-4">
-<h4 id="org8e1cdbb">Use MindMap/WBS for Hierarchies</h4>
-<div class="outline-text-4" id="text-org8e1cdbb">
+<div id="outline-container-orgceb4c72" class="outline-4">
+<h4 id="orgceb4c72">Use MindMap/WBS for Hierarchies</h4>
+<div class="outline-text-4" id="text-orgceb4c72">
 <p>
 Plantuml now has <a href="http://plantuml.com/mindmap-diagram">MindMap</a> and <a href="http://plantuml.com/wbs-diagram">WBS (or OBS)</a> diagrams that use a simple bulleted syntax to draw hierarchies.
 </p>
@@ -884,13 +884,13 @@ Here are examples of the two styles:
 </div>
 </div>
 
-<div id="outline-container-org239939f" class="outline-3">
-<h3 id="org239939f">Long-Term</h3>
-<div class="outline-text-3" id="text-org239939f">
+<div id="outline-container-orgf237b48" class="outline-3">
+<h3 id="orgf237b48">Long-Term</h3>
+<div class="outline-text-3" id="text-orgf237b48">
 </div>
-<div id="outline-container-orgc5d692e" class="outline-4">
-<h4 id="orgc5d692e">rdf2soml to Generate Semantic Object Models</h4>
-<div class="outline-text-4" id="text-orgc5d692e">
+<div id="outline-container-org7335a3a" class="outline-4">
+<h4 id="org7335a3a">rdf2soml to Generate Semantic Object Models</h4>
+<div class="outline-text-4" id="text-org7335a3a">
 <p>
 A new tool <code>rdf2soml</code> to generate Ontotext Platform SOML from RDF examples.
 </p>
@@ -911,7 +911,7 @@ Is depicted as follows:
 </p>
 
 
-<div id="orgda6af8d" class="figure">
+<div id="org8176efa" class="figure">
 <p><img src="./ideas/cardinality-and-inverse.png" alt="cardinality-and-inverse.png" />
 </p>
 </div>
@@ -921,9 +921,9 @@ We have two options how to express this in triples:
 </p>
 </div>
 
-<div id="outline-container-org1ed7b9d" class="outline-5">
-<h5 id="org1ed7b9d">Cardinality With RDF*</h5>
-<div class="outline-text-5" id="text-org1ed7b9d">
+<div id="outline-container-org6df966b" class="outline-5">
+<h5 id="org6df966b">Cardinality With RDF*</h5>
+<div class="outline-text-5" id="text-org6df966b">
 <div class="org-src-container">
 <pre class="src src-turtle"><span style="color: #b22222;">##### model triples</span>
 <span style="color: #228b22;">:</span><span style="color: #008b8b;">X</span> <span style="color: #228b22;">:</span><span style="color: #008b8b;">prop</span> <span style="color: #228b22;">:</span><span style="color: #008b8b;">Y</span>.
@@ -945,9 +945,9 @@ We have two options how to express this in triples:
 </div>
 </div>
 
-<div id="outline-container-orgf0512bd" class="outline-5">
-<h5 id="orgf0512bd">Cardinality With Blank Node</h5>
-<div class="outline-text-5" id="text-orgf0512bd">
+<div id="outline-container-org4125b03" class="outline-5">
+<h5 id="org4125b03">Cardinality With Blank Node</h5>
+<div class="outline-text-5" id="text-org4125b03">
 <div class="org-src-container">
 <pre class="src src-turtle"><span style="color: #b22222;">##### model triples</span>
 <span style="color: #228b22;">:</span><span style="color: #008b8b;">X</span> <span style="color: #228b22;">:</span><span style="color: #008b8b;">prop</span> <span style="color: #228b22;">:</span><span style="color: #008b8b;">Y</span>.
@@ -963,12 +963,12 @@ We have two options how to express this in triples:
 </div>
 </div>
 </div>
-<div id="outline-container-org75b1ca8" class="outline-4">
-<h4 id="org75b1ca8">rdf2shape to Describe &amp; Generate RDF Shapes</h4>
+<div id="outline-container-org1a3ffde" class="outline-4">
+<h4 id="org1a3ffde">rdf2shape to Describe &amp; Generate RDF Shapes</h4>
 </div>
-<div id="outline-container-org811cfb9" class="outline-4">
-<h4 id="org811cfb9">Visualize RDF Shapes (SHACL and ShEx)</h4>
-<div class="outline-text-4" id="text-org811cfb9">
+<div id="outline-container-orge1e92ad" class="outline-4">
+<h4 id="orge1e92ad">Visualize RDF Shapes (SHACL and ShEx)</h4>
+<div class="outline-text-4" id="text-orge1e92ad">
 <p>
 Issue <a href="https://github.com/VladimirAlexiev/rdf2rml/issues/8">#8</a>: discussion with Thomas Francart of Sparna
 </p>
@@ -994,9 +994,9 @@ But this changes the structure of the example graph itself, which might not be c
 </div>
 </div>
 
-<div id="outline-container-orgc413825" class="outline-4">
-<h4 id="orgc413825">Generate transformations for other than relational sources</h4>
-<div class="outline-text-4" id="text-orgc413825">
+<div id="outline-container-org92389c0" class="outline-4">
+<h4 id="org92389c0">Generate transformations for other than relational sources</h4>
+<div class="outline-text-4" id="text-org92389c0">
 <p>
 R2RML works great for RDBMS, but how about other sources?
 Extend rdf2rml to generate:
@@ -1013,7 +1013,7 @@ Extend rdf2rml to generate:
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Date: 2022-09-20</p>
+<p class="date">Date: 2025-07-11</p>
 <p class="author">Author: Vladimir Alexiev</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
