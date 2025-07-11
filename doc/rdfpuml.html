@@ -344,7 +344,7 @@ You can combine the different parts freely (each is optional) and even write the
 <p>Arrow direction: <code>left, right, up</code> or <code>down</code> (default)</p></li>
 <li><p>HEAD</p>
 <p>Arrowhead (end): <code>none</code> (use for symmetric properties), <code>tri</code> (hollow triangle), <code>star</code> (filled dot), <code>o</code> (empty dot).</p>
-<p>WARNING: <code>o</code> <a href="https://forum.plantuml.net/12278/o-sets-wrong-arrow-direction">has a bug</a>: it sets the arrow direction to the opposite of what was specified.</p>
+<p>Note: <code>o</code> <a href="https://forum.plantuml.net/12278/o-sets-wrong-arrow-direction">had a bug</a>: set the arrow direction to the opposite of what was specified; now fixed.</p>
 <p>TODO: allow customizing the arrowtail (beginning).</p></li>
 <li><p>LINE</p>
 <p>Line style: <code>dotted, dashed, bold, hidden</code>.</p>
@@ -360,14 +360,14 @@ and in the empty namespace (to show an arrow label).</p>
    &lt;x&gt; puml:tri-up      &lt;y5&gt;. &lt;x&gt; :tri-up      &lt;y5&gt;. 
    &lt;x&gt; puml:left-blue   &lt;y6&gt;. &lt;x&gt; :left-blue   &lt;y6&gt;. </code></pre></li>
 </ul>
-<p><img src="img/arrowStyles.png" />
-- COLOR</p>
-<pre><code>Line color: name (e.g. `red`) or hex-code (e.g. `FF0000`)
-To see the full list of color names supported by PlantUML, use this command and search for `;color`
-
-    java -jar plantuml.jar -language
-
-For example, 4 of the arrows on this diagram are colored (1 green, 3 red):</code></pre>
+<p><img src="img/arrowStyles.png" /></p>
+<ul>
+<li><p>COLOR</p>
+<p>Line color: name (e.g. <code>red</code>) or hex-code (e.g. <code>FF0000</code>)
+To see the full list of color names supported by PlantUML, use this command and search for <code>;color</code></p>
+<pre><code>  java -jar plantuml.jar -language</code></pre>
+<p>For example, 4 of the arrows on this diagram are colored (1 green, 3 red):</p></li>
+</ul>
 <p><img src="img/colorArrow-ciq-cropped.png" />
 - LEN</p>
 <pre><code>Length: a number of 1 or 2 digits. This applies only to vertical arrows (`up,down`).
@@ -408,8 +408,8 @@ In PlantUML these include a «guillemetted italic label» and colored circle.</p
 <pre><code>&lt;#char=32,34_annoSet&gt; puml:stereotype &quot;(F)Frame&quot;
 fn:AnnotationSet      puml:stereotype &quot;(F)Frame&quot;</code></pre>
 <p>Here is an example that also sets stereotype labels:</p>
-<pre><code>gvp:GuideTerm      puml:stereotype &quot;(G,green) Concept&quot;.
-gvp:Concept        puml:stereotype &quot;(C,lightblue) ThesaurusArray, OrderedCollection&quot;.
+<pre><code>gvp:GuideTerm      puml:stereotype &quot;(G,green) ThesaurusArray, OrderedCollection&quot;.
+gvp:Concept        puml:stereotype &quot;(C,lightblue) Concept&quot;.
 iso:ThesaurusArray puml:stereotype &quot;(A,red) ThesaurusArray, OrderedCollection&quot;.</code></pre>
 <p><img src="img/GVP-ordered-collection-Stereotype.png" /></p>
 <p>Here is a bigger example that also shows how arrow directions are handled.
@@ -433,7 +433,7 @@ It should have had a type <code>rdf:List</code>, this is an omission in the exam
 <p>If you want to visualize not only instances (A-Box) but also class statements and expressions (T-Box),
 see <a href="https://github.com/VladimirAlexiev/rdf2rml/tree/master/test/complex-types#readme">test/complex-types</a> with its own README.</p>
 <p>Here is an example closely mirroring the style of the Industrial Ontology Foundry (IOF):</p>
-<p><img src="https://rawgit2.com/VladimirAlexiev/rdf2rml/master/test/blank-types/example-iof.png" /></p>
+<p><img src="https://VladimirAlexiev.github.io/rdf2rml/test/blank-types/example-iof.png" /></p>
 <h2 id="plantuml-options">PlantUML Options</h2>
 <p>You can pass options and pragmas to PlantUML using the <code>puml:options</code> property (attached to an empty node).
 The default options are:</p>
@@ -522,12 +522,18 @@ java -jar c:\prog\plantuml\plantuml.jar -charset UTF-8 %*</code></pre>
 <p>Big thanks to <code>@rschupp</code> who helped me fix this issue: https://github.com/rschupp/PAR-Packer/issues/88 !</p>
 <h1 id="see-also">SEE ALSO</h1>
 <ul>
-<li><strong>rdf2rml</strong>: a tool to generate R2RML transformations from RDF examples.</li>
-<li>If you use <strong>rdfpuml</strong> or <strong>rdf2rml</strong>, please cite them as follows. See this presentation for numerous examples.</li>
+<li><strong>rdf2rml</strong> and <strong>rdf2sparql</strong>: a tool to generate R2RML and SPARQL transformations from RDF examples.</li>
+<li>If you use these tools, please cite them as follows. See these presentations for numerous examples.
+<ul>
 <li>RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation
 Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16), Bonn, Germany, November 2016.
-<a href="http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index.html">Presentation</a>, <a href="http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index-full.html">HTML</a>, <a href="http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf">PDF</a>, <a href="https://youtu.be/4WoYlaGF6DE">Video</a></li>
-<li><a href="https://twitter.com/hashtag/rdfpuml">https://twitter.com/hashtag/rdfpuml</a> for news, screenshots and announcements</li>
+<a href="https://github.io/VladimirAlexiev/my/pres/20161128-rdfpuml-rdf2rml/index.html">Presentation</a>, <a href="https://github.io/VladimirAlexiev/my/pres/20161128-rdfpuml-rdf2rml/index-full.html">HTML</a>, <a href="https://github.io/VladimirAlexiev/my/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf">PDF</a>, <a href="https://youtu.be/4WoYlaGF6DE">Video</a></li>
+<li>Generation of Declarative Transformations from Semantic Models.
+Alexiev, V. In European Data Conference on Reference Data and Semantics (ENDORSE 2023), pages 33, 42-59, March 2023.
+European Commission: Directorate-General for Informatics, Publications Office of the European Union.
+<a href="https://drive.google.com/open?id=1Cq5o9th_P812paqGkDsaEomJyAmnypkD">Paper</a>, <a href="https://docs.google.com/presentation/d/1JCMQEH8Tw_F-ta6haIToXMLYJxQ9LRv6/edit">ppt</a>, <a href="https://youtu.be/yL5nI_3ccxs">video</a>, <a href="https://op.europa.eu/en/publication-detail/-/publication/4db67b35-34df-11ee-bdc3-01aa75ed71a1">proceedings</a>, <a href="http://doi.org/10.2830/343811">doi</a></li>
+</ul></li>
+<li>See <a href="https://twitter.com/hashtag/rdfpuml">https://x.com/hashtag/rdfpuml</a> for news, screenshots and announcements</li>
 </ul>
 </body>
 </html>

@@ -67,16 +67,16 @@ references:
       name: Semantic Web in Libraries 2016 (SWIB 16)
       date-start: 2019-11-01
       address: Bonn, Germany
-    url: http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index.html
+    url: https://github.io/VladimirAlexiev/my/pres/20161128-rdfpuml-rdf2rml/index.html
     identifiers:
       - type: url
-        value: http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index.html
+        value: https://github.io/VladimirAlexiev/my/pres/20161128-rdfpuml-rdf2rml/index.html
         description: Presentation slides
       - type: url
-        value: http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index-full.html
+        value: https://github.io/VladimirAlexiev/my/pres/20161128-rdfpuml-rdf2rml/index-full.html
         description: HTML version (one page)
       - type: url
-        value: http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf
+        value: https://github.io/VladimirAlexiev/my/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf
         description: PDF version 
       - type: url
         value: https://youtu.be/4WoYlaGF6DE

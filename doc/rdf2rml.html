@@ -62,6 +62,10 @@
     img {
       max-width: 100%;
     }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
     h1, h2, h3, h4, h5, h6 {
       margin-top: 1.4em;
     }
@@ -154,17 +158,17 @@
     div.columns{display: flex; gap: min(4vw, 1.5em);}
     div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
     ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
       width: 0.8em;
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
 </head>
 <body>
 <header id="title-block-header">
@@ -540,14 +544,20 @@ because a parenthesized string is not a valid lexical form for such literals.
 But the conversion will work fine despite of the warning.</p>
 <h1 id="see-also">SEE ALSO</h1>
 <ul>
-<li><strong>rdfpuml</strong>: a tool that generates PlantUML diagrams from RDF examples.</li>
-<li>If you use <strong>rdfpuml</strong> or <strong>rdf2rml</strong>, please cite them as follows. See this presentation for numerous examples.</li>
-<li>RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation.
-Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16), Bonn, Germany, November 2016.
-<a href="http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index.html">Presentation</a>, <a href="http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index-full.html">HTML</a>, <a href="http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf">PDF</a>, <a href="https://youtu.be/4WoYlaGF6DE">Video</a></li>
 <li>The <a href="https://www.stardog.com/docs/#_stardog_mapping_syntax">Stardog Mapping Syntax</a>
 uses a similar idea, but doesn’t use valid RDF to represent the model.
 The benefit of using actual RDF is that it can be validated and diagrammed with <strong>rdfpuml</strong>.</li>
+<li><strong>rdf2rml</strong> and <strong>rdf2sparql</strong>: a tool to generate R2RML and SPARQL transformations from RDF examples.</li>
+<li>If you use these tools, please cite them as follows. See these presentations for numerous examples.
+<ul>
+<li>RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation
+Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16), Bonn, Germany, November 2016.
+<a href="https://github.io/VladimirAlexiev/my/pres/20161128-rdfpuml-rdf2rml/index.html">Presentation</a>, <a href="https://github.io/VladimirAlexiev/my/pres/20161128-rdfpuml-rdf2rml/index-full.html">HTML</a>, <a href="https://github.io/VladimirAlexiev/my/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf">PDF</a>, <a href="https://youtu.be/4WoYlaGF6DE">Video</a></li>
+<li>Generation of Declarative Transformations from Semantic Models.
+Alexiev, V. In European Data Conference on Reference Data and Semantics (ENDORSE 2023), pages 33, 42-59, March 2023.
+European Commission: Directorate-General for Informatics, Publications Office of the European Union.
+<a href="https://drive.google.com/open?id=1Cq5o9th_P812paqGkDsaEomJyAmnypkD">Paper</a>, <a href="https://docs.google.com/presentation/d/1JCMQEH8Tw_F-ta6haIToXMLYJxQ9LRv6/edit">ppt</a>, <a href="https://youtu.be/yL5nI_3ccxs">video</a>, <a href="https://op.europa.eu/en/publication-detail/-/publication/4db67b35-34df-11ee-bdc3-01aa75ed71a1">proceedings</a>, <a href="http://doi.org/10.2830/343811">doi</a></li>
+</ul></li>
 </ul>
 </body>
 </html>

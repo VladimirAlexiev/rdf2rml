@@ -29,6 +29,7 @@ date: 2025-01-22
     - [Generated SPARQL](#generated-sparql)
         - [Insert Patterns: Crunchbase Organizations](#insert-patterns-crunchbase-organizations)
         - [Generated Pre-Binds](#generated-pre-binds)
+        - [Generated Binds: Crunchbase Organizations](#generated-binds-crunchbase-organizations)
         - [Generated Binds: Customers](#generated-binds-customers)
         - [Generated Update: Annual Revenue by Permalink](#generated-update-annual-revenue-by-permalink)
         - [Generated Binds: Spending Categories](#generated-binds-spending-categories)
@@ -898,9 +899,12 @@ As you can see, the `CB_AGENT_URL` macro is evaluated outside of the Ontotext Re
 - The gist [Crunchbase Semantic Model and Challenge](https://gist.github.com/VladimirAlexiev/d5d67feb002dbcfa6b3d4c3dd59b52da) that publishes all our Crunchbase models.
   It also shows an overall model diagram made by `rdfpuml`
 - The issue [Generate Transforms and Shapes from Models](https://github.com/kg-construct/best-practices/issues/7) in the Knowledge Graph Construct W3C community group "Best Practices" github project.
-- Generation of Declarative Transformations from Semantic Models,
-  Vladimir Alexiev,
-  European Data Conference on Reference Data and Semantics (ENDORSE 2023):
-  [paper](https://drive.google.com/open?id=1Cq5o9th_P812paqGkDsaEomJyAmnypkD), [presentation](https://docs.google.com/presentation/d/1JCMQEH8Tw_F-ta6haIToXMLYJxQ9LRv6/edit), [video](https://youtu.be/yL5nI_3ccxs)
-- **rdfpuml**: a tool that generates PlantUML diagrams from RDF examples.
-- **rdf2rml**: a tool that generates R2RML transformations from RDF examples.
+- **rdf2rml** and **rdf2sparql**: a tool to generate R2RML and SPARQL transformations from RDF examples.
+- If you use these tools, please cite them as follows. See these presentations for numerous examples.
+  - RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation
+    Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16), Bonn, Germany, November 2016.
+    [Presentation](https://github.io/VladimirAlexiev/my/pres/20161128-rdfpuml-rdf2rml/index.html), [HTML](https://github.io/VladimirAlexiev/my/pres/20161128-rdfpuml-rdf2rml/index-full.html), [PDF](https://github.io/VladimirAlexiev/my/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf), [Video](https://youtu.be/4WoYlaGF6DE)
+  - Generation of Declarative Transformations from Semantic Models. 
+    Alexiev, V. In European Data Conference on Reference Data and Semantics (ENDORSE 2023), pages 33, 42-59, March 2023. 
+    European Commission: Directorate-General for Informatics, Publications Office of the European Union.
+    [Paper](https://drive.google.com/open?id=1Cq5o9th_P812paqGkDsaEomJyAmnypkD), [ppt](https://docs.google.com/presentation/d/1JCMQEH8Tw_F-ta6haIToXMLYJxQ9LRv6/edit), [video](https://youtu.be/yL5nI_3ccxs), [proceedings](https://op.europa.eu/en/publication-detail/-/publication/4db67b35-34df-11ee-bdc3-01aa75ed71a1), [doi](http://doi.org/10.2830/343811)

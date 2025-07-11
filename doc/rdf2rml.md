@@ -240,11 +240,15 @@ But the conversion will work fine despite of the warning.
 
 # SEE ALSO
 
-- **rdfpuml**: a tool that generates PlantUML diagrams from RDF examples.
-- If you use **rdfpuml** or **rdf2rml**, please cite them as follows. See this presentation for numerous examples.
-- RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation.
-  Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16), Bonn, Germany, November 2016.
-  [Presentation](http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index.html), [HTML](http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index-full.html), [PDF](http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf), [Video](https://youtu.be/4WoYlaGF6DE)
 - The [Stardog Mapping Syntax](https://www.stardog.com/docs/#_stardog_mapping_syntax)
   uses a similar idea, but doesn't use valid RDF to represent the model.
   The benefit of using actual RDF is that it can be validated and diagrammed with **rdfpuml**.
+- **rdf2rml** and **rdf2sparql**: a tool to generate R2RML and SPARQL transformations from RDF examples.
+- If you use these tools, please cite them as follows. See these presentations for numerous examples.
+  - RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation
+    Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16), Bonn, Germany, November 2016.
+    [Presentation](https://github.io/VladimirAlexiev/my/pres/20161128-rdfpuml-rdf2rml/index.html), [HTML](https://github.io/VladimirAlexiev/my/pres/20161128-rdfpuml-rdf2rml/index-full.html), [PDF](https://github.io/VladimirAlexiev/my/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf), [Video](https://youtu.be/4WoYlaGF6DE)
+  - Generation of Declarative Transformations from Semantic Models. 
+    Alexiev, V. In European Data Conference on Reference Data and Semantics (ENDORSE 2023), pages 33, 42-59, March 2023. 
+    European Commission: Directorate-General for Informatics, Publications Office of the European Union.
+    [Paper](https://drive.google.com/open?id=1Cq5o9th_P812paqGkDsaEomJyAmnypkD), [ppt](https://docs.google.com/presentation/d/1JCMQEH8Tw_F-ta6haIToXMLYJxQ9LRv6/edit), [video](https://youtu.be/yL5nI_3ccxs), [proceedings](https://op.europa.eu/en/publication-detail/-/publication/4db67b35-34df-11ee-bdc3-01aa75ed71a1), [doi](http://doi.org/10.2830/343811)

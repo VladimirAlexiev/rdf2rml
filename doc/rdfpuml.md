@@ -114,9 +114,8 @@ with 3 "addressing" properties and then additional properties are added to elabo
 (eg probability, effective date range, who assigned the statement, etc).
 
 This approach has been used in RDF for many years using the [RDF Reification vocabulary](http://www.w3.org/TR/rdf-primer/#reification).
-It was developed for CIDOC CRM in the paper [Types and Annotations for CIDOC CRM Properties](http://vladimiralexiev.github.io/pubs/Alexiev2012-CRM-Properties.pdf)
-and is used for British Museum data (`bmo:EX_Association, bmo:PX_property`),
-see [Reified Association](https://confluence.ontotext.com/display/ResearchSpace/BM+Association+Mapping+v2#BMAssociationMappingv2-TranslatedCodeInReifiedAssociation).
+It was developed for CIDOC CRM in the paper [Types and Annotations for CIDOC CRM Properties](http://vladimiralexiev.github.io/my/pubs/Alexiev2012-CRM-Properties.pdf)
+and is used for British Museum data (eg `bmo:EX_Association, bmo:PX_property`).
 
 **rdfpuml** recognizes a number of reification "situations" and renders them as a [UML Association](http://plantuml.com/classes.html#Association_classes), for example
 
@@ -216,7 +215,7 @@ You can combine the different parts freely (each is optional) and even write the
 
     Arrowhead (end): `none` (use for symmetric properties), `tri` (hollow triangle), `star` (filled dot), `o` (empty dot).
 
-    WARNING: `o` [has a bug](https://forum.plantuml.net/12278/o-sets-wrong-arrow-direction): it sets the arrow direction to the opposite of what was specified.
+    Note: `o` [had a bug](https://forum.plantuml.net/12278/o-sets-wrong-arrow-direction): set the arrow direction to the opposite of what was specified; now fixed.
 
     TODO: allow customizing the arrowtail (beginning).
 
@@ -239,6 +238,7 @@ You can combine the different parts freely (each is optional) and even write the
          <x> puml:left-blue   <y6>. <x> :left-blue   <y6>. 
 
 ![](img/arrowStyles.png)
+
 - COLOR
 
     Line color: name (e.g. `red`) or hex-code (e.g. `FF0000`)
@@ -307,8 +307,8 @@ You can set stereotype on an individual node or a whole class, e.g.
 
 Here is an example that also sets stereotype labels:
 
-    gvp:GuideTerm      puml:stereotype "(G,green) Concept".
-    gvp:Concept        puml:stereotype "(C,lightblue) ThesaurusArray, OrderedCollection".
+    gvp:GuideTerm      puml:stereotype "(G,green) ThesaurusArray, OrderedCollection".
+    gvp:Concept        puml:stereotype "(C,lightblue) Concept".
     iso:ThesaurusArray puml:stereotype "(A,red) ThesaurusArray, OrderedCollection".
 
 ![](img/GVP-ordered-collection-Stereotype.png)
@@ -345,7 +345,7 @@ see [test/complex-types](https://github.com/VladimirAlexiev/rdf2rml/tree/master/
 
 Here is an example closely mirroring the style of the Industrial Ontology Foundry (IOF):
 
-![](https://rawgit2.com/VladimirAlexiev/rdf2rml/master/test/blank-types/example-iof.png)
+![](https://VladimirAlexiev.github.io/rdf2rml/test/blank-types/example-iof.png)
 
 
 ## PlantUML Options
@@ -465,10 +465,14 @@ Big thanks to `@rschupp` who helped me fix this issue: https://github.com/rschup
 
 # SEE ALSO
 
-- **rdf2rml**: a tool to generate R2RML transformations from RDF examples.
-- If you use **rdfpuml** or **rdf2rml**, please cite them as follows. See this presentation for numerous examples.
-- RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation
-  Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16), Bonn, Germany, November 2016.
-  [Presentation](http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index.html), [HTML](http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index-full.html), [PDF](http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf), [Video](https://youtu.be/4WoYlaGF6DE)
-- [https://twitter.com/hashtag/rdfpuml](https://twitter.com/hashtag/rdfpuml) for news, screenshots and announcements
+- **rdf2rml** and **rdf2sparql**: a tool to generate R2RML and SPARQL transformations from RDF examples.
+- If you use these tools, please cite them as follows. See these presentations for numerous examples.
+  - RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation
+    Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16), Bonn, Germany, November 2016.
+    [Presentation](https://github.io/VladimirAlexiev/my/pres/20161128-rdfpuml-rdf2rml/index.html), [HTML](https://github.io/VladimirAlexiev/my/pres/20161128-rdfpuml-rdf2rml/index-full.html), [PDF](https://github.io/VladimirAlexiev/my/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf), [Video](https://youtu.be/4WoYlaGF6DE)
+  - Generation of Declarative Transformations from Semantic Models. 
+    Alexiev, V. In European Data Conference on Reference Data and Semantics (ENDORSE 2023), pages 33, 42-59, March 2023. 
+    European Commission: Directorate-General for Informatics, Publications Office of the European Union.
+    [Paper](https://drive.google.com/open?id=1Cq5o9th_P812paqGkDsaEomJyAmnypkD), [ppt](https://docs.google.com/presentation/d/1JCMQEH8Tw_F-ta6haIToXMLYJxQ9LRv6/edit), [video](https://youtu.be/yL5nI_3ccxs), [proceedings](https://op.europa.eu/en/publication-detail/-/publication/4db67b35-34df-11ee-bdc3-01aa75ed71a1), [doi](http://doi.org/10.2830/343811)
+- See [https://x.com/hashtag/rdfpuml](https://twitter.com/hashtag/rdfpuml) for news, screenshots and announcements
 
