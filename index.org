@@ -158,6 +158,11 @@ Software:
 - Matjaz Rihtar (2018). https://github.com/mrihtar/rdfgraph:
   inspired by ~rdfpuml~, written in Python 2.7, uses Redland's ~librdf~ library.
   I worked with Matjaz in the euBusinessGraph project.
+- Hossein Rimaz (2025). [[https://aas.metaphacts.cloud/conversion/][AAS Conversion]] at Metaphacts, [[https://hub.docker.com/repository/docker/mhrimaz/aas-rdf-util/general][aas-rdf-util]] on DockerHub.
+  Graphwise hopes to collaborate with Metaphacts on semantic representation, storage and querying of Asset Administration Shell data.
+
+[[./gallery/AAS-Convertor.png][AAS-Convertor.png]]
+
 
 The following papers use or mention this software:
 - Ademar Crotti (2019).
