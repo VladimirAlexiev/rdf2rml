@@ -184,7 +184,10 @@
 <ul>
 <li><a href="#motivation">Motivation</a></li>
 <li><a href="#features">Features</a></li>
-<li><a href="#prefixes">Prefixes</a></li>
+<li><a href="#prefixes">Prefixes</a>
+<ul>
+<li><a href="#predefined-prefixes">Predefined Prefixes</a></li>
+</ul></li>
 <li><a href="#parallel-arrows">Parallel Arrows</a></li>
 <li><a href="#reification">Reification</a></li>
 <li><a href="#inlines">Inlines</a></li>
@@ -247,8 +250,35 @@ with a small amount of tweaking that can be done with <code>puml:</code> formatt
 </ul>
 <h2 id="prefixes">Prefixes</h2>
 <p><strong>rdfpuml</strong> prepends <code>prefixes.ttl</code> if it finds such a fule,
-so when you make a set of examples, you can keep all your prefixes in one file.</p>
-<p>It also predefines the following prefixes:</p>
+so when you make a set of examples, you can keep all your prefixes in one file.
+The prefixes from the same file are used to shorten URLs in the output.</p>
+<p>You can also use <code>@base</code> to shorten instance URLs.
+For example, to get a nice output from the following IOF example (see <a href="https://github.com/VladimirAlexiev/rdf2rml/issues/49">issue#49</a>:</p>
+<pre class="ttl"><code>bfo:quality                  a owl:Class.
+ont:Temperature              a owl:Class; rdfs:subClassOf bfo:quality.
+iof:MeasuredValueExpression  a owl:Class.
+qudt:Unit                    a owl:Class.
+
+&lt;temperature1&gt; a ont:Temperature.
+&lt;temperature-value-expression&gt; a iof:MeasuredValueExpression;
+  iof:isMeasurementValueOfAtSomeTime &lt;temperature1&gt;;
+  qudt:unit unit:DEG_F;
+  iof:hasSimpleValueExpression 98.6.
+unit:DEG_F a qudt:Unit.</code></pre>
+<p>You need a <code>prefixes.ttl</code> with the following:</p>
+<pre class="ttl"><code>@base        &lt;https://example.org/&gt;.
+@prefix ont: &lt;https://example.org/ontology/&gt;.
+
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;.
+@prefix owl:  &lt;http://www.w3.org/2002/07/owl#&gt;.
+@prefix bfo:  &lt;http://purl.obolibrary.org/obo/&gt;.
+@prefix iof:  &lt;https://IOF-not-yet-registered.org/&gt;.
+@prefix qudt: &lt;http://qudt.org/schema/qudt/&gt;.
+@prefix unit: &lt;http://qudt.org/vocab/unit/&gt;.</code></pre>
+<p>Many editors can use the https://prefix.cc service to add a namespace when a prefix is used, making this easier.
+If you use a prefix (like <code>iof</code> above) that is not</p>
+<h3 id="predefined-prefixes">Predefined Prefixes</h3>
+<p><strong>rdfpuml</strong> also predefines the following prefixes:</p>
 <pre><code>puml   =&gt; &#39;http://plantuml.com/ontology#&#39;
 rdf    =&gt; &#39;http://www.w3.org/1999/02/22-rdf-syntax-ns#&#39;
 rdfs   =&gt; &#39;http://www.w3.org/2000/01/rdf-schema#&#39;
@@ -344,7 +374,7 @@ You can combine the different parts freely (each is optional) and even write the
 <p>Arrow direction: <code>left, right, up</code> or <code>down</code> (default)</p></li>
 <li><p>HEAD</p>
 <p>Arrowhead (end): <code>none</code> (use for symmetric properties), <code>tri</code> (hollow triangle), <code>star</code> (filled dot), <code>o</code> (empty dot).</p>
-<p>Note: <code>o</code> <a href="https://forum.plantuml.net/12278/o-sets-wrong-arrow-direction">had a bug</a>: set the arrow direction to the opposite of what was specified; now fixed.</p>
+<p>WARNING: <code>o</code> <a href="https://forum.plantuml.net/12278/o-sets-wrong-arrow-direction">has a bug</a>: it sets the arrow direction to the opposite of what was specified.</p>
 <p>TODO: allow customizing the arrowtail (beginning).</p></li>
 <li><p>LINE</p>
 <p>Line style: <code>dotted, dashed, bold, hidden</code>.</p>
@@ -353,21 +383,21 @@ You can combine the different parts freely (each is optional) and even write the
 <p>This example shows using the parameters <code>DIR-HEAD-LINE-COLOR</code>.
 We emit the same relations in the <code>puml:</code> namespace (to customize the arrow)
 and in the empty namespace (to show an arrow label).</p>
-<pre><code>   &lt;x&gt; puml:none-right  &lt;y1&gt;. &lt;x&gt; :none-right  &lt;y1&gt;. 
-   &lt;x&gt; puml:dashed      &lt;y2&gt;. &lt;x&gt; :dashed      &lt;y2&gt;. 
-   &lt;x&gt; puml:dotted-bold &lt;y3&gt;. &lt;x&gt; :dotted-bold &lt;y3&gt;. 
-   &lt;x&gt; puml:up-black    &lt;y4&gt;. &lt;x&gt; :up-black    &lt;y4&gt;. 
-   &lt;x&gt; puml:tri-up      &lt;y5&gt;. &lt;x&gt; :tri-up      &lt;y5&gt;. 
-   &lt;x&gt; puml:left-blue   &lt;y6&gt;. &lt;x&gt; :left-blue   &lt;y6&gt;. </code></pre></li>
+<pre><code>   &lt;x&gt; puml:none-right  &lt;y1&gt;. &lt;x&gt; :none-right  &lt;y1&gt;.
+   &lt;x&gt; puml:dashed      &lt;y2&gt;. &lt;x&gt; :dashed      &lt;y2&gt;.
+   &lt;x&gt; puml:dotted-bold &lt;y3&gt;. &lt;x&gt; :dotted-bold &lt;y3&gt;.
+   &lt;x&gt; puml:up-black    &lt;y4&gt;. &lt;x&gt; :up-black    &lt;y4&gt;.
+   &lt;x&gt; puml:tri-up      &lt;y5&gt;. &lt;x&gt; :tri-up      &lt;y5&gt;.
+   &lt;x&gt; puml:left-blue   &lt;y6&gt;. &lt;x&gt; :left-blue   &lt;y6&gt;.</code></pre></li>
 </ul>
-<p><img src="img/arrowStyles.png" /></p>
-<ul>
-<li><p>COLOR</p>
-<p>Line color: name (e.g. <code>red</code>) or hex-code (e.g. <code>FF0000</code>)
-To see the full list of color names supported by PlantUML, use this command and search for <code>;color</code></p>
-<pre><code>  java -jar plantuml.jar -language</code></pre>
-<p>For example, 4 of the arrows on this diagram are colored (1 green, 3 red):</p></li>
-</ul>
+<p><img src="img/arrowStyles.png" />
+- COLOR</p>
+<pre><code>Line color: name (e.g. `red`) or hex-code (e.g. `FF0000`)
+To see the full list of color names supported by PlantUML, use this command and search for `;color`
+
+    java -jar plantuml.jar -language
+
+For example, 4 of the arrows on this diagram are colored (1 green, 3 red):</code></pre>
 <p><img src="img/colorArrow-ciq-cropped.png" />
 - LEN</p>
 <pre><code>Length: a number of 1 or 2 digits. This applies only to vertical arrows (`up,down`).
@@ -408,8 +438,8 @@ In PlantUML these include a «guillemetted italic label» and colored circle.</p
 <pre><code>&lt;#char=32,34_annoSet&gt; puml:stereotype &quot;(F)Frame&quot;
 fn:AnnotationSet      puml:stereotype &quot;(F)Frame&quot;</code></pre>
 <p>Here is an example that also sets stereotype labels:</p>
-<pre><code>gvp:GuideTerm      puml:stereotype &quot;(G,green) ThesaurusArray, OrderedCollection&quot;.
-gvp:Concept        puml:stereotype &quot;(C,lightblue) Concept&quot;.
+<pre><code>gvp:GuideTerm      puml:stereotype &quot;(G,green) Concept&quot;.
+gvp:Concept        puml:stereotype &quot;(C,lightblue) ThesaurusArray, OrderedCollection&quot;.
 iso:ThesaurusArray puml:stereotype &quot;(A,red) ThesaurusArray, OrderedCollection&quot;.</code></pre>
 <p><img src="img/GVP-ordered-collection-Stereotype.png" /></p>
 <p>Here is a bigger example that also shows how arrow directions are handled.
@@ -469,7 +499,7 @@ plantuml -Iplantuml.cfg  file.puml</code></pre>
 <p>By default, PlantUML uses a drawing canvas of 4096 pixels.
 This causes really big diagrams (eg ones that need <code>left to right direction</code> as described above) to be cut off.</p>
 <p>To avoid this, add the following command-line option:</p>
-<pre><code>-DPLANTUML_LIMIT_SIZE=8192 </code></pre>
+<pre><code>-DPLANTUML_LIMIT_SIZE=8192</code></pre>
 <p>For example in a batch file:</p>
 <pre><code>java -jar &quot;.../plantuml.jar&quot; -charset UTF-8 -DPLANTUML_LIMIT_SIZE=8192 &quot;$@&quot;</code></pre>
 <h2 id="unicode">Unicode</h2>
@@ -522,18 +552,12 @@ java -jar c:\prog\plantuml\plantuml.jar -charset UTF-8 %*</code></pre>
 <p>Big thanks to <code>@rschupp</code> who helped me fix this issue: https://github.com/rschupp/PAR-Packer/issues/88 !</p>
 <h1 id="see-also">SEE ALSO</h1>
 <ul>
-<li><strong>rdf2rml</strong> and <strong>rdf2sparql</strong>: a tool to generate R2RML and SPARQL transformations from RDF examples.</li>
-<li>If you use these tools, please cite them as follows. See these presentations for numerous examples.
-<ul>
+<li><strong>rdf2rml</strong>: a tool to generate R2RML transformations from RDF examples.</li>
+<li>If you use <strong>rdfpuml</strong> or <strong>rdf2rml</strong>, please cite them as follows. See this presentation for numerous examples.</li>
 <li>RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation
 Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16), Bonn, Germany, November 2016.
-<a href="https://github.io/VladimirAlexiev/my/pres/20161128-rdfpuml-rdf2rml/index.html">Presentation</a>, <a href="https://github.io/VladimirAlexiev/my/pres/20161128-rdfpuml-rdf2rml/index-full.html">HTML</a>, <a href="https://github.io/VladimirAlexiev/my/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf">PDF</a>, <a href="https://youtu.be/4WoYlaGF6DE">Video</a></li>
-<li>Generation of Declarative Transformations from Semantic Models.
-Alexiev, V. In European Data Conference on Reference Data and Semantics (ENDORSE 2023), pages 33, 42-59, March 2023.
-European Commission: Directorate-General for Informatics, Publications Office of the European Union.
-<a href="https://drive.google.com/open?id=1Cq5o9th_P812paqGkDsaEomJyAmnypkD">Paper</a>, <a href="https://docs.google.com/presentation/d/1JCMQEH8Tw_F-ta6haIToXMLYJxQ9LRv6/edit">ppt</a>, <a href="https://youtu.be/yL5nI_3ccxs">video</a>, <a href="https://op.europa.eu/en/publication-detail/-/publication/4db67b35-34df-11ee-bdc3-01aa75ed71a1">proceedings</a>, <a href="http://doi.org/10.2830/343811">doi</a></li>
-</ul></li>
-<li>See <a href="https://twitter.com/hashtag/rdfpuml">https://x.com/hashtag/rdfpuml</a> for news, screenshots and announcements</li>
+<a href="http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index.html">Presentation</a>, <a href="http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index-full.html">HTML</a>, <a href="http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf">PDF</a>, <a href="https://youtu.be/4WoYlaGF6DE">Video</a></li>
+<li><a href="https://twitter.com/hashtag/rdfpuml">https://twitter.com/hashtag/rdfpuml</a> for news, screenshots and announcements</li>
 </ul>
 </body>
 </html>

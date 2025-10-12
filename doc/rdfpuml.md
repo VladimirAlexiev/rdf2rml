@@ -12,6 +12,7 @@ date: 2023-06-02
     - [Motivation](#motivation)
     - [Features](#features)
     - [Prefixes](#prefixes)
+        - [Predefined Prefixes](#predefined-prefixes)
     - [Parallel Arrows](#parallel-arrows)
     - [Reification](#reification)
     - [Inlines](#inlines)
@@ -80,10 +81,46 @@ Diagram readability is a prime concern. **rdfpuml** implements the following fea
 
 ## Prefixes
 
-**rdfpuml** prepends `prefixes.ttl` if it finds such a fule, 
+**rdfpuml** prepends `prefixes.ttl` if it finds such a fule,
 so when you make a set of examples, you can keep all your prefixes in one file.
+The prefixes from the same file are used to shorten URLs in the output.
 
-It also predefines the following prefixes:
+You can also use `@base` to shorten instance URLs.
+For example, to get a nice output from the following IOF example (see [issue#49](https://github.com/VladimirAlexiev/rdf2rml/issues/49):
+
+```ttl
+bfo:quality                  a owl:Class.
+ont:Temperature              a owl:Class; rdfs:subClassOf bfo:quality.
+iof:MeasuredValueExpression  a owl:Class.
+qudt:Unit                    a owl:Class.
+
+<temperature1> a ont:Temperature.
+<temperature-value-expression> a iof:MeasuredValueExpression;
+  iof:isMeasurementValueOfAtSomeTime <temperature1>;
+  qudt:unit unit:DEG_F;
+  iof:hasSimpleValueExpression 98.6.
+unit:DEG_F a qudt:Unit.
+```
+
+You need a `prefixes.ttl` with the following:
+```ttl
+@base        <https://example.org/>.
+@prefix ont: <https://example.org/ontology/>.
+
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl:  <http://www.w3.org/2002/07/owl#>.
+@prefix bfo:  <http://purl.obolibrary.org/obo/>.
+@prefix iof:  <https://IOF-not-yet-registered.org/>.
+@prefix qudt: <http://qudt.org/schema/qudt/>.
+@prefix unit: <http://qudt.org/vocab/unit/>.
+```
+Many editors can use the https://prefix.cc service to add a namespace when a prefix is used, making this easier.
+If you use a prefix (like `iof` above) that is not 
+
+
+### Predefined Prefixes
+
+**rdfpuml** also predefines the following prefixes:
 
     puml   => 'http://plantuml.com/ontology#'
     rdf    => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
@@ -125,7 +162,7 @@ see [Reified Association](https://confluence.ontotext.com/display/ResearchSpace/
 RDF Reification looks like this:
 
     [] a rdf:Statement; rdf:subject s; rdf:predicate p; rdf:object o; <statement metadata>
-    
+
 
 `rdf:Statement` is the reification class,
 `rdf:subject, rdf:predicate, rdf:object` are the addressing properties,
@@ -231,12 +268,12 @@ You can combine the different parts freely (each is optional) and even write the
     We emit the same relations in the `puml:` namespace (to customize the arrow)
     and in the empty namespace (to show an arrow label).
 
-         <x> puml:none-right  <y1>. <x> :none-right  <y1>. 
-         <x> puml:dashed      <y2>. <x> :dashed      <y2>. 
-         <x> puml:dotted-bold <y3>. <x> :dotted-bold <y3>. 
-         <x> puml:up-black    <y4>. <x> :up-black    <y4>. 
-         <x> puml:tri-up      <y5>. <x> :tri-up      <y5>. 
-         <x> puml:left-blue   <y6>. <x> :left-blue   <y6>. 
+         <x> puml:none-right  <y1>. <x> :none-right  <y1>.
+         <x> puml:dashed      <y2>. <x> :dashed      <y2>.
+         <x> puml:dotted-bold <y3>. <x> :dotted-bold <y3>.
+         <x> puml:up-black    <y4>. <x> :up-black    <y4>.
+         <x> puml:tri-up      <y5>. <x> :tri-up      <y5>.
+         <x> puml:left-blue   <y6>. <x> :left-blue   <y6>.
 
 ![](img/arrowStyles.png)
 - COLOR
@@ -340,7 +377,7 @@ It should have had a type `rdf:List`, this is an omission in the example.
 
 ## Complex Types
 
-If you want to visualize not only instances (A-Box) but also class statements and expressions (T-Box), 
+If you want to visualize not only instances (A-Box) but also class statements and expressions (T-Box),
 see [test/complex-types](https://github.com/VladimirAlexiev/rdf2rml/tree/master/test/complex-types#readme) with its own README.
 
 Here is an example closely mirroring the style of the Industrial Ontology Foundry (IOF):
@@ -393,7 +430,7 @@ You can pass additional options to PlantUML to select a skin, set colors, etc by
 perl -S rdfpuml.pl       file.ttl
 plantuml -Iplantuml.cfg  file.puml
 ```
- 
+
 ## Handling Large Diagrams
 
 By default, PlantUML uses a drawing canvas of 4096 pixels.
@@ -401,7 +438,7 @@ This causes really big diagrams (eg ones that need `left to right direction` as 
 
 To avoid this, add the following command-line option:
 ```
--DPLANTUML_LIMIT_SIZE=8192 
+-DPLANTUML_LIMIT_SIZE=8192
 ```
 
 For example in a batch file:
@@ -471,4 +508,3 @@ Big thanks to `@rschupp` who helped me fix this issue: https://github.com/rschup
   Alexiev, V. In Semantic Web in Libraries 2016 (SWIB 16), Bonn, Germany, November 2016.
   [Presentation](http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index.html), [HTML](http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/index-full.html), [PDF](http://rawgit2.com/VladimirAlexiev/my/master/pres/20161128-rdfpuml-rdf2rml/RDF_by_Example.pdf), [Video](https://youtu.be/4WoYlaGF6DE)
 - [https://twitter.com/hashtag/rdfpuml](https://twitter.com/hashtag/rdfpuml) for news, screenshots and announcements
-
