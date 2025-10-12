@@ -86,7 +86,7 @@ so when you make a set of examples, you can keep all your prefixes in one file.
 The prefixes from the same file are used to shorten URLs in the output.
 
 You can also use `@base` to shorten instance URLs.
-For example, to get a nice output from the following IOF example (see [issue#49](https://github.com/VladimirAlexiev/rdf2rml/issues/49):
+For example, to get a nice output from the following IOF example (see [issue#49](https://github.com/VladimirAlexiev/rdf2rml/issues/49)):
 
 ```ttl
 bfo:quality                  a owl:Class.
@@ -114,8 +114,9 @@ You need a `prefixes.ttl` with the following:
 @prefix qudt: <http://qudt.org/schema/qudt/>.
 @prefix unit: <http://qudt.org/vocab/unit/>.
 ```
-Many editors can use the https://prefix.cc service to add a namespace when a prefix is used, making this easier.
-If you use a prefix (like `iof` above) that is not 
+Many editors can use the https://prefix.cc service to add a namespace when a prefix is used, making this process easier.
+If you use a prefix (like `iof` above) that is not yet registered there, please take the time to do it.
+The services accepts only alphanumeric all-lowercase prefixes, and you can register only one per day.
 
 
 ### Predefined Prefixes
