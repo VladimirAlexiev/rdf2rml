@@ -89,6 +89,21 @@ sub typecast($$) {
   $var_dt
 }
 
+sub strlang($$) {
+  # convert 'var'@xx to strlang(var,"xx") as var_lang_xx. xx is a constant
+  my $var = shift;
+  my $lang = shift;
+  my $var_lang = "${var}_lang_$lang";
+  $var_lang =~ s{([^\w])}{_}g; # replace punctuation with underscore
+  $var = "?$var";
+  $var_lang = "?$var_lang";
+  $bound{$var_lang} && $bound{$var_lang} ne "strlang" and die "$var_lang is used for both strlang and $bound{$var_lang}\n";
+  $bound{$var_lang} and return $var_lang;
+  $bound{$var_lang} = "strlang";
+  addWhere(2,"bind(strlang($var,$lang) as $var_lang)");
+  $var_lang
+}
+
 sub templated_string($$) {
   my $index = shift;
   my $string = shift;
@@ -174,6 +189,7 @@ while ($_ = <>) {
     # <industry/urlify(split(foo))> -> <industry/urlify((foo_SPLIT))> : double parens, reduce them -> <industry/urlify(foo_SPLIT)> -> <industry/(foo_SPLIT_URLIFY)>
     {s{\(\((\w+)\)}{($1}g}; # reduce double parens
   s{['"]\((\w+)\)['"]\^\^([\w:]+)}{typecast($1,$2)}ge;
+  s{['"]\((\w+)\)['"]\@([\w-]+)}{strlang($1,qq{"$2"})}ge;
   s{['"]\((\w+)\)['"]}{?$1}g; # simple var
   s{['"]([^'"]+\([^'"]*)['"]}{templated_string(2,$1)}ge;
   s{<([^\s>]*\([^\s>]*)>}{templated_url(2,$1)}ge;

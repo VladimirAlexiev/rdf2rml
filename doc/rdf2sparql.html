@@ -192,6 +192,7 @@
 <li><a href="#rdf-model-customers">RDF Model: Customers</a></li>
 <li><a href="#rdf-model-annual-revenue-by-permalink">RDF Model: Annual Revenue by Permalink</a></li>
 <li><a href="#rdf-model-grant-spending-categories">RDF Model: Grant Spending Categories</a></li>
+<li><a href="#rdf-model-relative-urls-prefixed-urls-language-tags">RDF Model: Relative URLs, Prefixed URLs, Language Tags</a></li>
 <li><a href="#per-model-filtering">Per-model Filtering</a></li>
 <li><a href="#global-filtering">Global Filtering</a></li>
 <li><a href="#conditional-nodes">Conditional Nodes</a></li>
@@ -350,7 +351,7 @@ We have scripts to automate the following steps:</p>
 </ul>
 <h2 id="rdf-model-examples">RDF Model Examples</h2>
 <p><strong>rdfpuml</strong> models are RDF Turtle examples that use parenthesized column names
-in URLs (“templated URLs”) and in attribute values (which can be datatyped).</p>
+in URLs (“templated URLs”) and in attribute values (which can be datatyped or fitted with a language tag).</p>
 <p>They are valid Turtle, with the exception that RDF tools issue warnings
 about templated literals such as <code>"(some_date)"^^xsd:date</code> or <code>"(amount)"^^xsd:decimal</code>.</p>
 <p>You can also use “functions” that you need to implement as CPP macros.
@@ -466,6 +467,22 @@ However, if this data redundancy is bothersome, you can
 normalize the Concept data to a separate file of unique concepts;
 and move the ConceptScheme into a separate “constant” RDF file
 that doesn’t need to be processed with <strong>rdf2sparql</strong>.</p>
+<h3 id="rdf-model-relative-urls-prefixed-urls-language-tags">RDF Model: Relative URLs, Prefixed URLs, Language Tags</h3>
+<p>Assume a German use case,
+and that the prefixes <code>otl, otlb</code> and the <code>@base</code> are properly set.</p>
+<p>Then you can use a model like this:</p>
+<pre class="ttl"><code>otl:\(IRI_Objekt\) a owl:Class;
+  rdfs:subClassOf otlb:\(Objektart\);
+  rdfs:label &quot;(Objektname)&quot;@de;
+  rdfs:isDefinedBy otl:;
+  vs:status &lt;status/(Status)&gt;;
+  otlb:betriebsmittelkategorie &quot;(Betriebsmittelkategorie)&quot;@de;</code></pre>
+<p>Notice the following features:
+- Prefixed URLs are combined with field names;
+but you need to escape the parens like <code>otl:\(IRI_Objekt\)</code>
+since using bare parens in a prefixed name is not allowed by Turtle.
+- The relative URL <code>&lt;status/(Status)&gt;</code> is resolved against the base.
+- You can attach (constant) lang tags to fields as in <code>"(Objektname)"@de</code></p>
 <h3 id="per-model-filtering">Per-model Filtering</h3>
 <p>You can use the field <code>puml:label</code> to specify a filter condition to be applied for each row of a table (model).
 For example, let’s say we have a table of some content (web pages)

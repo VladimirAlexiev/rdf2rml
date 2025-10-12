@@ -18,6 +18,7 @@ date: 2025-01-22
         - [RDF Model: Customers](#rdf-model-customers)
         - [RDF Model: Annual Revenue by Permalink](#rdf-model-annual-revenue-by-permalink)
         - [RDF Model: Grant Spending Categories](#rdf-model-grant-spending-categories)
+        - [RDF Model: Relative URLs, Prefixed URLs, Language Tags](#rdf-model-relative-urls-prefixed-urls-language-tags)
         - [Per-model Filtering](#per-model-filtering)
         - [Global Filtering](#global-filtering)
         - [Conditional Nodes](#conditional-nodes)
@@ -181,7 +182,7 @@ We have scripts to automate the following steps:
 ## RDF Model Examples
 
 **rdfpuml** models are RDF Turtle examples that use parenthesized column names
-in URLs ("templated URLs") and in attribute values (which can be datatyped).
+in URLs ("templated URLs") and in attribute values (which can be datatyped or fitted with a language tag).
 
 They are valid Turtle, with the exception that RDF tools issue warnings
 about templated literals such as `"(some_date)"^^xsd:date` or `"(amount)"^^xsd:decimal`.
@@ -317,6 +318,27 @@ However, if this data redundancy is bothersome, you can
 normalize the Concept data to a separate file of unique concepts;
 and move the ConceptScheme into a separate "constant" RDF file
 that doesn't need to be processed with **rdf2sparql**.
+
+### RDF Model: Relative URLs, Prefixed URLs, Language Tags
+
+Assume a German use case, 
+and that the prefixes `otl, otlb` and the `@base` are properly set.
+
+Then you can use a model like this:
+```ttl
+otl:\(IRI_Objekt\) a owl:Class;
+  rdfs:subClassOf otlb:\(Objektart\);
+  rdfs:label "(Objektname)"@de;
+  rdfs:isDefinedBy otl:;
+  vs:status <status/(Status)>;
+  otlb:betriebsmittelkategorie "(Betriebsmittelkategorie)"@de;
+```
+Notice the following features:
+- Prefixed URLs are combined with field names;
+  but you need to escape the parens like `otl:\(IRI_Objekt\)`
+  since using bare parens in a prefixed name is not allowed by Turtle.
+- The relative URL `<status/(Status)>` is resolved against the base.
+- You can attach (constant) lang tags to fields as in `"(Objektname)"@de`
 
 ### Per-model Filtering
 

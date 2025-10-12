@@ -1,9 +1,13 @@
 ﻿#+STARTUP: nonum
-  * 2025-07-11 github pages
-    Move documentation to https://github.io/VladimirAlexiev/rdf2rml, README.org to index.org
+  * 2025-10-12 rdf2sparql: allow lang tags
+    - Allow adding lang tag to fields (by using ~strlang()~)
+    - See 
+  * 2025-10-12 rdf2sparql: allow lang tags
+  * 2025-07-11 docs: github pages
+    - Move documentation to https://github.io/VladimirAlexiev/rdf2rml, README.org to index.org
 ** 2025-01-22 rdf2sparql: move SERVICE clause to subquery
 - Fix https://github.com/VladimirAlexiev/rdf2rml/issues/46
-** 2025-01-21 rdf2sparql: interpolate variables in prefixed URL and strings
+** 2025-01-21 rdf2sparql: interpolate variables in prefixed URLs and strings
 - Implement https://github.com/VladimirAlexiev/rdf2rml/issues/47
 - Implement https://github.com/VladimirAlexiev/rdf2rml/issues/48
 ** 2024-07-10 clarify licensing
