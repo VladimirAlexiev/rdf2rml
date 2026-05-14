@@ -143,6 +143,11 @@ This is from [test/graphs-crunchbase](../test/graphs-crunchbase):
 
 - Ontotext Refine or TARQL as described above
 - Perl. Tested with 5.32.1 (Straberry Perl on Cygwin)
+- A standard module. Use one of these to install it:
+```
+cpan install Getopt::Long 
+cpanm Getopt::Long
+```
 - Working CPP preprocessor. Tested with 8.3.0 (x86_64-posix-seh, Built by strawberryperl.com project)
 - A file (eg `prefixes.rq`) that defines all common prefixes and is prepended to the generated query
 - A file (eg `common.h`) that defines CPP preprocessor macros

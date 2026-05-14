@@ -176,6 +176,7 @@ can be used to describe other reification situations, using terms like in the ta
     REIFICATION CLASS             SUBJECT PROP                   SHORTCUT PROP                    OBJECT PROP                 SHORTCUT
     _____________________________ ______________________________ ________________________________ ___________________________ __________________________________________
     rdf:Statement                 rdf:subject                    rdf:predicate                    rdf:object                  <any>
+    owl:Axiom                     owl:annotatedSource            owl:annotatedProperty            owl:annotatedTarget         <any>
     crm:E13_Attribute_Assignment  crm:P140_assigned_attribute_to crmx:property                    crm:P141_assigned           <any CRM prop>
     crm:E14_Condition_Assessment  crm:P34_concerned              crmx:property                    crm:P35_has_identified      crm:P44_has_condition
     crm:E15_Identifier_Assignment crm:P140_assigned_attribute_to crmx:property                    crm:P37_assigned            crm:P1_is_identified_by, crm:P102_has_title
@@ -186,8 +187,14 @@ can be used to describe other reification situations, using terms like in the ta
     crmsci:S4_Observation         crmsci:O8_observed             crmsci:O9_observed_property_type crmsci:O16_observed_value
     leak:Edge                     leak:hasSource                 <none>                           leak:hasTarget
 
+References:
+- [RDF 1.1 Semantics: Reification](https://www.w3.org/TR/rdf11-mt/#Reif)
+- [OWL2 Primer: Annotating Axioms and Entities](https://www.w3.org/TR/owl2-primer/#Annotating_Axioms_and_Entities)
+- `crm:E13_Attribute_Assignment` [at CIDOC CRM](https://cidoc-crm.org/taxonomy/term/37) and [at ResearchSpace](https://documentation.researchspace.org/resource/crm:E13_Attribute_Assignment)
+- [Offshore Leaks as LOD](https://github.com/Ontotext-AD/leaks), Github repo, Ontotext AD, 2016-05
+
 For CIDOC CRM we need a new extension `crmx:property` to point to the property being reified (the shortcut), similar to how `rdf:predicate` is used.
-Even for a specific CRM reification class like E17\_Type\_Assignment,
+Even for a specific CRM reification class like `E17_Type_Assignment`,
 the shortcut property is not fixed to `crm:P2_has_type`:
 we may need to reify a sub-property thereof, e.g. `crm:P72_has_language`.
 

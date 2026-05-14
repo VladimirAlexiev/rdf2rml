@@ -47,6 +47,7 @@ use constant {RE_CLASS=>0, RE_SUBJ_PROP=>1, RE_SHORTCUT_PROP=>2, RE_OBJ_PROP=>3}
 my @RE =
   (
    [qw(rdf:Statement                 rdf:subject                    rdf:predicate                    rdf:object                )],
+   [qw(owl:Axiom                     owl:annotatedSource            owl:annotatedProperty            owl:annotatedTarget       )],
    [qw(crm:E13_Attribute_Assignment  crm:P140_assigned_attribute_to crmx:property                    crm:P141_assigned         )],
    [qw(crm:E14_Condition_Assessment  crm:P34_concerned              crmx:property                    crm:P35_has_identified    )],
    [qw(crm:E15_Identifier_Assignment crm:P140_assigned_attribute_to crmx:property                    crm:P37_assigned          )],

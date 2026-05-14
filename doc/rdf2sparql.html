@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
@@ -8,6 +8,9 @@
   <meta name="dcterms.date" content="2025-01-22" />
   <title>rdf2sparql - Convert RDF examples to SPARQL queries (Ontotext Refine or TARQL)</title>
   <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     html {
       color: #1a1a1a;
       background-color: #fdfdfd;
@@ -109,8 +112,8 @@
      overflow: visible;
     }
     hr {
-      background-color: #1a1a1a;
       border: none;
+      border-top: 1px solid #1a1a1a;
       height: 1px;
       margin: 1em 0;
     }
@@ -316,6 +319,11 @@ This is from <a href="../test/graphs-crunchbase">test/graphs-crunchbase</a>:</p>
 <ul>
 <li>Ontotext Refine or TARQL as described above</li>
 <li>Perl. Tested with 5.32.1 (Straberry Perl on Cygwin)</li>
+<li>A standard module. Use one of these to install it:</li>
+</ul>
+<pre><code>cpan install Getopt::Long 
+cpanm Getopt::Long</code></pre>
+<ul>
 <li>Working CPP preprocessor. Tested with 8.3.0 (x86_64-posix-seh, Built by strawberryperl.com project)</li>
 <li>A file (eg <code>prefixes.rq</code>) that defines all common prefixes and is prepended to the generated query</li>
 <li>A file (eg <code>common.h</code>) that defines CPP preprocessor macros</li>
