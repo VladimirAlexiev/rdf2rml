@@ -228,7 +228,7 @@ See [../test/reification](../test/reification) for some examples.
 
 - We can also try it with "left to right direction":
 
-![](../test/reification-owl_Axiom-left-to-right.png)
+![](../test/reification/reification-owl_Axiom-left-to-right.png)
 
 - Or we can try to point `rdfs:domain` up, to give the two reification nodes more space (while keeping the original "top to bottom direction").
   Unfortunately PlantUML has a bug [association-node-breaks-link-direction](https://forum.plantuml.net/4037/association-node-breaks-link-direction) so we cannot use this:
