@@ -336,15 +336,19 @@ leak:Edge                     leak:hasSource                 &lt;none&gt;       
 - <a href="https://www.w3.org/TR/owl2-primer/#Annotating_Axioms_and_Entities">OWL2 Primer: Annotating Axioms and Entities</a>
 - <code>crm:E13_Attribute_Assignment</code> <a href="https://cidoc-crm.org/taxonomy/term/37">at CIDOC CRM</a> and <a href="https://documentation.researchspace.org/resource/crm:E13_Attribute_Assignment">at ResearchSpace</a>
 - <a href="https://github.com/Ontotext-AD/leaks">Offshore Leaks as LOD</a>, Github repo, Ontotext AD, 2016-05</p>
+<p>See <a href="../test/reification">../test/reification</a> for some examples.
+Here is an OWL Reification example contributed by <code>@johanwk</code> (issue <a href="https://github.com/VladimirAlexiev/rdf2rml/issues/15">rdf2rml#15</a>):</p>
+<p><img src="../test/reification/reification-owl_Axiom.png" /></p>
 <p>For CIDOC CRM we need a new extension <code>crmx:property</code> to point to the property being reified (the shortcut), similar to how <code>rdf:predicate</code> is used.
 Even for a specific CRM reification class like <code>E17_Type_Assignment</code>,
 the shortcut property is not fixed to <code>crm:P2_has_type</code>:
 we may need to reify a sub-property thereof, e.g. <code>crm:P72_has_language</code>.</p>
-<p>Visuals: the shortcut is shown as a normal relation.
-The reification node is attached to the relation usign a dashed line.
-It is automatically positioned below or to the right of the relation, depending on the relation’s direction.
-The 3 “addressing” properties are shown inside the reification class,
-and there are little characters in front of them to point to the
+<p>Visuals:
+- The shortcut is shown as a normal relation.
+- The reification node is attached to the relation using a dashed line.
+- The reification node is automatically positioned below or to the right of the relation, depending on the relation’s direction.
+- The 3 “addressing” properties are shown inside the reification class
+- There are little characters in front of them to point to the
 subject (“←” or “↑”), property (“..” or “:”) and object (“→” or “↓”).</p>
 <p>Limitation: you can show as reified a maximum of 2 relations between the same nodes, and even that is ugly.</p>
 <p><img src="img/CONA-titles-NoReify.png" /></p>
