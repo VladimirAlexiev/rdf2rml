@@ -1,0 +1,26 @@
+# https://github.com/VladimirAlexiev/rdf2rml/issues/15
+
+rdfs:domain puml:arrow puml:up.
+
+ex:cat  a       owl:Class .
+
+ex:dog  a       owl:Class .
+
+ex:chases  a         owl:ObjectProperty ;
+        rdfs:domain  ex:dog ;
+        rdfs:range   ex:cat .
+
+[ a                      owl:Axiom ;
+  rdfs:comment           "Certain dogs have found this axiom offensive. Others, not." , "Consult popular cartoons for excellent evidence of this domain axiom." ;
+  owl:annotatedProperty  rdfs:domain ;
+  owl:annotatedSource    ex:chases ;
+  owl:annotatedTarget    ex:dog
+] .
+
+[ a                      owl:Axiom ;
+  rdfs:seeAlso           <https://www.wikidata.org/wiki/Q1839152> ;
+  owl:annotatedProperty  rdfs:range ;
+  owl:annotatedSource    ex:chases ;
+  owl:annotatedTarget    ex:cat ;
+  skos:example           "Tom Cat is chased by Spike, AKA Butch or Killer."
+] .

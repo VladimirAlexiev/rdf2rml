@@ -1,0 +1,38 @@
+@startuml
+hide empty members
+hide circle
+skinparam classAttributeIconSize 0
+class _r1779121709r0_ as " "
+class _r1779121709r0_ <<(@,lightyellow)>>
+show _r1779121709r0_ circle
+class _r1779121709r1_ as " "
+class _r1779121709r1_ <<(@,lightyellow)>>
+show _r1779121709r1_ circle
+class ex_cat as "ex:cat"
+class ex_cat <<(C,orange)>>
+show ex_cat circle
+class ex_dog as "ex:dog"
+class ex_dog <<(C,orange)>>
+show ex_dog circle
+class ex_chases as "ex:chases"
+class ex_chases <<(O,lightblue)>>
+show ex_chases circle
+_r1779121709r1_ : {field} a owl:Axiom
+_r1779121709r1_ : {field} rdfs:seeAlso <https://www.wikidata.org/wiki/Q1839152>
+_r1779121709r1_ : {field} skos:example "Tom Cat is chased by Spike, AKA Butch or Killer."
+_r1779121709r0_ : {field} a owl:Axiom
+_r1779121709r0_ : {field} rdfs:comment\n  "Certain dogs have found this axiom offensive. Others, not.",\n  "Consult popular cartoons for excellent evidence of this domain axiom."
+ex_chases : {field} a owl:ObjectProperty
+ex_chases -down-> ex_cat : rdfs:range
+ex_chases -up-> ex_dog : rdfs:domain
+ex_dog : {field} a owl:Class
+ex_cat : {field} a owl:Class
+(ex_dog, ex_chases) . _r1779121709r0_
+_r1779121709r0_ : ↓ owl:annotatedSource ex:chases
+_r1779121709r0_ : .. owl:annotatedProperty rdfs:domain
+_r1779121709r0_ : ↑ owl:annotatedTarget ex:dog
+(ex_chases, ex_cat) . _r1779121709r1_
+_r1779121709r1_ : ↑ owl:annotatedSource ex:chases
+_r1779121709r1_ : .. owl:annotatedProperty rdfs:range
+_r1779121709r1_ : ↓ owl:annotatedTarget ex:cat
+@enduml

@@ -267,10 +267,10 @@ sub reification {
     my $arr1 = $ARROW{$dir1};
     my $arr2 = $ARROW{$dir2};
     # http://plantuml.com/classes.html#Association_classes
-    # http://plantuml.sourceforge.net/qa/?qa=3788/set-direction-of-association-class
+    # http://forum.plantuml.net/3788/set-direction-of-association-class
     my $orient = $dir1 =~ m(left|right) ? '..' : '.';
     my $dash   = $dir1 =~ m(left|right) ? ':' : '..';
-    # http://plantuml.sourceforge.net/qa/?qa=4037/association-node-breaks-link-direction
+    # https://forum.plantuml.net/4037/association-node-breaks-link-direction
     my $pair   = $dir2 =~ m{down|right} ? "$s1, $o1" : "$o1, $s1";
     myprint qq{($pair) $orient $re\n};
     # print prop names with decorative Unicode arrows. Do not use myprint() below, as the arrows are already Unicode chars

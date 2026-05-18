@@ -15,6 +15,7 @@ date: 2023-06-02
         - [Predefined Prefixes](#predefined-prefixes)
     - [Parallel Arrows](#parallel-arrows)
     - [Reification](#reification)
+        - [OWL Reification and Orientation](#owl-reification-and-orientation)
     - [Inlines](#inlines)
     - [Labels](#labels)
     - [Arrow Customization](#arrow-customization)
@@ -193,10 +194,6 @@ References:
 - `crm:E13_Attribute_Assignment` [at CIDOC CRM](https://cidoc-crm.org/taxonomy/term/37) and [at ResearchSpace](https://documentation.researchspace.org/resource/crm:E13_Attribute_Assignment)
 - [Offshore Leaks as LOD](https://github.com/Ontotext-AD/leaks), Github repo, Ontotext AD, 2016-05
 
-See [../test/reification](../test/reification) for some examples.
-Here is an OWL Reification example contributed by `@johanwk` (issue [rdf2rml#15](https://github.com/VladimirAlexiev/rdf2rml/issues/15)):
-
-![](../test/reification/reification-owl_Axiom.png)
 
 For CIDOC CRM we need a new extension `crmx:property` to point to the property being reified (the shortcut), similar to how `rdf:predicate` is used.
 Even for a specific CRM reification class like `E17_Type_Assignment`,
@@ -221,6 +218,23 @@ use the `puml:NoReify` class to tell **rdfpuml** not to reify it, e.g.
     cona_term:1000000718-contrib-10000016 a puml:NoReify.
 
 ![](img/CONA-types-reification.png)
+
+### OWL Reification and Orientation
+See [../test/reification](../test/reification) for some examples.
+
+- Here is an OWL Reification example contributed by `@johanwk` (issue [rdf2rml#15](https://github.com/VladimirAlexiev/rdf2rml/issues/15)):
+
+![](../test/reification/reification-owl_Axiom.png)
+
+- We can also try it with "left to right direction":
+
+![](reification-owl_Axiom-left-to-right.png)
+
+- Or we can try to point `rdfs:domain` up, to give the two reification nodes more space (while keeping the original "top to bottom direction").
+  Unfortunately PlantUML has a bug [association-node-breaks-link-direction](https://forum.plantuml.net/4037/association-node-breaks-link-direction) so we cannot use this:
+  
+![](test/reification/reification-owl_Axiom-domain-up.png)
+
 
 ## Inlines
 
