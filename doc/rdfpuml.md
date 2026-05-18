@@ -193,17 +193,23 @@ References:
 - `crm:E13_Attribute_Assignment` [at CIDOC CRM](https://cidoc-crm.org/taxonomy/term/37) and [at ResearchSpace](https://documentation.researchspace.org/resource/crm:E13_Attribute_Assignment)
 - [Offshore Leaks as LOD](https://github.com/Ontotext-AD/leaks), Github repo, Ontotext AD, 2016-05
 
+See [../test/reification](../test/reification) for some examples.
+Here is an OWL Reification example contributed by `@johanwk` (issue [rdf2rml#15](https://github.com/VladimirAlexiev/rdf2rml/issues/15)):
+
+![](../test/reification/reification-owl_Axiom.png)
+
 For CIDOC CRM we need a new extension `crmx:property` to point to the property being reified (the shortcut), similar to how `rdf:predicate` is used.
 Even for a specific CRM reification class like `E17_Type_Assignment`,
 the shortcut property is not fixed to `crm:P2_has_type`:
 we may need to reify a sub-property thereof, e.g. `crm:P72_has_language`.
 
-Visuals: the shortcut is shown as a normal relation.
-The reification node is attached to the relation usign a dashed line.
-It is automatically positioned below or to the right of the relation, depending on the relation's direction.
-The 3 "addressing" properties are shown inside the reification class,
-and there are little characters in front of them to point to the
-subject ("←" or "↑"), property (".." or ":") and object ("→" or "↓").
+Visuals:
+- The shortcut is shown as a normal relation.
+- The reification node is attached to the relation using a dashed line.
+- The reification node is automatically positioned below or to the right of the relation, depending on the relation's direction.
+- The 3 "addressing" properties are shown inside the reification class
+- There are little characters in front of them to point to the
+  subject ("←" or "↑"), property (".." or ":") and object ("→" or "↓").
 
 Limitation: you can show as reified a maximum of 2 relations between the same nodes, and even that is ugly.
 
