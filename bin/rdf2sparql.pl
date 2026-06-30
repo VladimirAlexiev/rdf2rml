@@ -94,13 +94,14 @@ sub strlang($$) {
   my $var = shift;
   my $lang = shift;
   my $var_lang = "${var}_lang_$lang";
+  my $lang_str = qq{"$lang"};
   $var_lang =~ s{([^\w])}{_}g; # replace punctuation with underscore
   $var = "?$var";
   $var_lang = "?$var_lang";
   $bound{$var_lang} && $bound{$var_lang} ne "strlang" and die "$var_lang is used for both strlang and $bound{$var_lang}\n";
   $bound{$var_lang} and return $var_lang;
   $bound{$var_lang} = "strlang";
-  addWhere(2,"bind(strlang($var,$lang) as $var_lang)");
+  addWhere(2,"bind(strlang($var,$lang_str) as $var_lang)");
   $var_lang
 }
 
@@ -112,16 +113,16 @@ sub templated_string($$) {
   $var =~ s{__+}{_}g;
   $var =~ s{^_}{};
   $var =~ s{_$}{};
-  $var = "?" . $var;
-  $bound{$var} && $bound{$var} ne "templated_string" and die "$var is used for both templated_string and $bound{$var}\n";
-  $bound{$var} and return $var;
-  $bound{$var} = "templated_string";
+  my $var1 = "?" . $var;
+  $bound{$var1} && $bound{$var1} ne "templated_string" and die "$var1 is used for both templated_string and $bound{$var1}\n";
+  $bound{$var1} and return qq{"($var)"};
+  $bound{$var1} = "templated_string";
   $string =~ s{\(([\w.]+)\)}{ontorefine($index,$1); qq{",?$1,"}}ge;
   $string = qq{"$string"};
   $string =~ s{,""}{}g;
   $string =~ s{^"",}{};
-  addWhere($index,"bind(concat($string) as $var)");
-  $var
+  addWhere($index,"bind(concat($string) as $var1)");
+  qq{"($var)"} # so that typecast() or strlang() can still work on it
 }
 
 sub templated_url($$) {
@@ -188,10 +189,11 @@ while ($_ = <>) {
     # <industry/urlify(foo)> -> <industry/(foo_URLIFY)>: single parentheses needed to enact templated_url
     # <industry/urlify(split(foo))> -> <industry/urlify((foo_SPLIT))> : double parens, reduce them -> <industry/urlify(foo_SPLIT)> -> <industry/(foo_SPLIT_URLIFY)>
     {s{\(\((\w+)\)}{($1}g}; # reduce double parens
+  s{['"]([^'"]+\([^'"]*)['"]}{templated_string(2,$1)}ge; # starts with some constant chars
+  s{['"](\(\w+\)[^'"]+)['"]}{templated_string(2,$1)}ge; # starts with a variable
   s{['"]\((\w+)\)['"]\^\^([\w:]+)}{typecast($1,$2)}ge;
-  s{['"]\((\w+)\)['"]\@([\w-]+)}{strlang($1,qq{"$2"})}ge;
+  s{['"]\((\w+)\)['"]\@([\w-]+)}{strlang($1,$2)}ge;
   s{['"]\((\w+)\)['"]}{?$1}g; # simple var
-  s{['"]([^'"]+\([^'"]*)['"]}{templated_string(2,$1)}ge;
   s{<([^\s>]*\([^\s>]*)>}{templated_url(2,$1)}ge;
   s{([\w-]+):\\\((\w+)\\\)}{prefixed_url(2,$1,$2)}ge; # localname must escape parens, eg: qk:\(quantityKind\)
   $_ = "  $_" if $_;
