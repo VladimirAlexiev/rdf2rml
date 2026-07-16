@@ -1,0 +1,7 @@
+<enum/(Attribut_IRI)> a skos:ConceptScheme;
+  skos:prefLabel "(Attribut_IRI) enum"@de;
+  rdfs:label     "(Attribut_IRI) enum"@de.
+
+<enum/(Attribut_IRI)/URLIFY(Enumeration_DE)> a skos:Concept;
+  skos:inScheme <enum/(Attribut_IRI)>; skos:topConceptOf <enum/(Attribut_IRI)>;
+  skos:prefLabel "(Enumeration_DE)"@de, "(Enumeration_FR)"@fr, "(Enumeration_IT)"@it.

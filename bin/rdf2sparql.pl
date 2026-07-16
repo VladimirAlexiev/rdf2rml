@@ -9,6 +9,9 @@ use Getopt::Long qw(:config no_ignore_case auto_abbrev);
 GetOptions
   ('construct'      => sub {$form = "construct"},
    'tarql'          => sub {$form = "construct"; $tool = "tarql"},
+   'sparql-anything'=> sub {$form = "construct"; $tool = "fx"},
+   'sa'             => sub {$form = "construct"; $tool = "fx"},
+   'fx'             => sub {$form = "construct"; $tool = "fx"},
    'endpoint=s'     => \$endpoint,
    'filter=s'       => \$filter,
    'filterColumn=s' => \$filterColumn
@@ -20,8 +23,8 @@ our %bound;       # memoized variables, with "reason" for var existence
 
 our @where  = ('','','','',''); # Array of WHERE binds and filters, since order of binds matters:
   # [0] OntoRefine --filterColumn prebind and GRAPH variable: used for both DELETE and INSERT
-  # [1] OntoRefine prebinds: used for INSERT only
-  # [2] Normal binds inside OntoRefine service: used for INSERT only
+  # [1] Prebinds: OntoRefine (used for INSERT only) or FX "[] xyz:col ?col" 
+  # [2] Normal binds inside OntoRefine service: used for INSERT only; FX GRAPH variable
   # [3] Binds after (outside) OntoRefine service: used for INSERT only
   # [4] Binds after (outside) OntoRefine service: used for both DELETE and INSERT
 
@@ -34,17 +37,34 @@ sub addWhere($$) {
   $where[$index] .= $clause;
 }
 
+sub prebind($) {
+  # ontorefine and fx require some prebinds in Where
+  my $var = shift;
+  my $index = 1; # prebinds always go in a fixed addWhere slot
+  $tool eq "ontorefine" ? ontorefine($index,$var) :
+    $tool eq "fx" ? fx($index,$var) :
+    "($var)"
+}
+
 sub ontorefine($$) {
   # OntoRefine prefixes input cols with `c_`, and we must mention each col in WHERE
   # https://ontotext.atlassian.net/browse/GDB-6600
   my $index = shift;
   my $var = shift;
-  if ($tool eq "ontorefine") {
-    $bound{$var} && $bound{$var} ne "ontorefine" && $bound{$var} ne "function" and die "$var is used for both ontorefine and $bound{$var}\n";
-    $bound{$var} and return "($var)";
-    $bound{$var} = "ontorefine";
-    addWhere($index,"bind(?c_$var as ?$var)");
-  };
+  $bound{$var} && $bound{$var} ne "ontorefine" && $bound{$var} ne "function" and die "$var is used for both ontorefine and $bound{$var}\n";
+  $bound{$var} and return "($var)";
+  $bound{$var} = "ontorefine";
+  addWhere($index,"bind(?c_$var as ?$var)");
+  "($var)"
+}
+
+sub fx($$) {
+  my $index = shift;
+  my $var = shift;
+  $bound{$var} && $bound{$var} ne "fx" && $bound{$var} ne "function" and die "$var is used for both fx and $bound{$var}\n";
+  $bound{$var} and return "($var)";
+  $bound{$var} = "fx";
+  addWhere($index,"optional {?ROW xyz:$var ?$var}");
   "($var)"
 }
 
@@ -69,7 +89,7 @@ sub function($$$$) {
     $index > 0 or die "Macro $fun ends in 'url' and cannot be used in the GRAPH templated URL\n";
     $index = 3
   };
-  addWhere ($index, "$fun($questionMark$var$rest)");
+  addWhere($index,"$fun($questionMark$var$rest)");
   "($var1)"
 }
 
@@ -117,7 +137,7 @@ sub templated_string($$) {
   $bound{$var1} && $bound{$var1} ne "templated_string" and die "$var1 is used for both templated_string and $bound{$var1}\n";
   $bound{$var1} and return qq{"($var)"};
   $bound{$var1} = "templated_string";
-  $string =~ s{\(([\w.]+)\)}{ontorefine($index,$1); qq{",?$1,"}}ge;
+  $string =~ s{\(([\w.]+)\)}{prebind($1); qq{",?$1,"}}ge;
   $string = qq{"$string"};
   $string =~ s{,""}{}g;
   $string =~ s{^"",}{};
@@ -140,11 +160,11 @@ sub templated_url($$) {
   $bound{$var} && $bound{$var} ne "templated_URL" and die "$var is used for both templated_URL and $bound{$var}\n";
   $bound{$var} and return $var;
   $bound{$var} = "templated_URL";
-  $url =~ s{\(([\w.]+)\)}{ontorefine($index,$1); qq{",?$1,"}}ge;
+  $url =~ s{\(([\w.]+)\)}{prebind($1); qq{",?$1,"}}ge;
   $url = qq{"$url"};
   $url =~ s{,""}{}g;
   $url =~ s{^"",}{};
-  addWhere($index,"bind(iri(concat($url)) as $var)");
+  addWhere($index, "bind(iri(concat($url)) as $var)");
   $var
 }
 
@@ -152,7 +172,7 @@ sub prefixed_url($$$) {
   my $index = shift;
   my $prefix = shift;
   my $localname = shift;
-  ontorefine($index,$localname);
+  prebind($localname);
   my $var = $prefix."_".$localname;
   $var =~ s{-}{_};
   $var = "?".$var."_URL";
@@ -166,11 +186,12 @@ sub prefixed_url($$$) {
 
 ## main
 
-if ($form eq "update") {
-  $_ = <>;
-  m{#+ GRAPH <(.*)>} or die "Expected # GRAPH <...> got $_";
-  $GRAPH = templated_url(0,$1);
-};
+$_ = <>;
+my ($graph) = m{#+ GRAPH <(.*)>};
+$form eq "update" && !$graph and die "Update requires # GRAPH <...>, got $_";
+$form eq "construct" && $tool ne "fx" && $graph and die "$tool $form does not support GRAPH\n";
+my $first_line = $graph ? undef : $_;
+$GRAPH = templated_url ($tool eq "fx" ? 2 : 0, $graph) if $graph;
 
 die "--filterColumn and --filter must be used together\n" if $filter xor $filterColumn;
 if ($filterColumn) {
@@ -180,10 +201,11 @@ if ($filterColumn) {
   addWhere(4,$filter)
 };
 
-while ($_ = <>) {
+while ($first_line or $_ = <>) {
+  $first_line = undef;
   m{puml:label *['"]+(.*?)['"]+ *[;.] *( *#.*)?$} and do {addWhere(1,$1); next};
   m{puml:|plantuml} and next; # skip any other puml statements
-  s{\((\w+)\)}{ontorefine(1,$1)}ge;
+  s{\((\w+)\)}{prebind($1)}ge;
   while (s{(\w+)\((\w+)([,?\w]*)\)}{function(2,$1,$2,$3)}ge)
     # recursively replace function calls.
     # <industry/urlify(foo)> -> <industry/(foo_URLIFY)>: single parentheses needed to enact templated_url
@@ -199,6 +221,7 @@ while ($_ = <>) {
   $_ = "  $_" if $_;
   $output = "$output$_";
 };
+$output = "graph $GRAPH {\n$output\n}" if $GRAPH && $form eq "construct";
 
 # If "update" accesses patterns outside "service", wrap in a subquery to enforce execution there
 # https://github.com/VladimirAlexiev/rdf2rml/issues/46
@@ -238,6 +261,22 @@ $where[0]$where[1]$where[2]
 $where[3]$where[4]}
 EOF
 
+  : $tool eq "fx" ? << "EOF"
+construct {
+$output}
+where {
+  service <x-sparql-anything:> {
+    fx:properties
+      fx:location \$_location ;
+      fx:csv.headers "true" ;
+      fx:csv.headers.sanitize "true" ;
+      fx:csv.null-string "" ;
+    .
+    $where[0]$where[1]$where[2]
+  }
+}
+EOF
+
   # tarql construct
   : << "EOF";
 construct {
@@ -246,3 +285,6 @@ where {
 $where[0]$where[1]$where[2]
 }
 EOF
+
+# TODO use fx:read-from-std-in "true" instead of fx:location
+

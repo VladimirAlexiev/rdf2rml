@@ -9,7 +9,9 @@ date: 2025-01-22
 
 - [SYNOPSIS](#synopsis)
 - [DESCRIPTION](#description)
-    - [Options](#options)
+    - [Ontotext Refine](#ontotext-refine)
+    - [TARQL](#tarql)
+    - [Sparql Anything](#sparql-anything)
     - [Screenshot](#screenshot)
     - [Prerequisites](#prerequisites)
     - [Process](#process)
@@ -45,26 +47,30 @@ date: 2025-01-22
     perl rdf2sparql.pl --tarql                   model.ttl | cat common.h prefixes.rq - | cpp -P -C -nostdinc - > model.tarql
 
     Options:
-      --construct: generate CONSTRUCT query (default is UPDATE; applies only for Ontotext Refine)
-      --tarql:     generate for TARQL (default is Ontotext Refine)
-      --endpoint:  OntoRefine endpoint, default "rdf-mapper:ontorefine:PROJECT_ID" (requires rewriting the SPARQL script)
+      --construct:                 generate CONSTRUCT query (default is UPDATE; applies only for Ontotext Refine)
+      --tarql:                     generate for TARQL
+      --sparql-anything --sa --fx: generate for Sparql Anything (default is Ontotext Refine)
+      --endpoint:                  OntoRefine endpoint to use in SPARQL, default "rdf-mapper:ontorefine:PROJECT_ID" (requires rewriting the SPARQL script)
+
+You can abbreviate options. All these are equivalent:
+
+    -c --co --construct
+    -t --ta --tarql
+    --sp --sa --fx --sparql-anything
+    -e --end --endpoint
 
 # DESCRIPTION
 
 **rdf2sparql** converts an RDF example with embedded CSV/TSV column names into a SPARQL query for:
 
-- [TARQL](https://tarql.github.io/), which is a is a high-speed streaming convertor. It's a SPARQL processor for tabular data, where each column `col` of each row is exposed as a variable binding `?col` (punctuation is replaced with underscores). See [releases](https://github.com/tarql/tarql/releases), tested with version 1.2-SNAPSHOT, BUILD_DATE: 2017-12-07T13:33:10Z
+- [SparqlAnything](https://sparql-anything.cc/), which is a versatile convertor that can process [CSV, TSV](https://sparql-anything.readthedocs.io/stable/formats/CSV/) and any [CSVFormat](https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html) supported by Apache Commons; but also JSON, XML and a variety of other formats.
+  - See [github](https://github.com/SPARQL-Anything/sparql.anything), [releases](https://github.com/SPARQL-Anything/sparql.anything/releases)
+- [TARQL](https://tarql.github.io/), which is a is a high-speed streaming convertor. It's a SPARQL processor for tabular data, where each column `col` of each row is exposed as a variable binding `?col` (punctuation is replaced with underscores). 
+  - See [releases](https://github.com/tarql/tarql/releases)
 - [Ontotext Refine](https://graphdb.ontotext.com/documentation/standard/loading-data-using-ontorefine.html), which is an adaptation of OpenRefine for working with RDF data. It exposes a table as a virtual SPARQL endpoint (special service), where each column `col` of each row is exposed as a variable binding `?c_col`.
 
-We've used TARQL to convert large files (over 10M rows, 145 columns) using complex TARQL queries (480 lines: 110 prefixes, 33 nodes, 250 triples, 110 binds).
 
-We've used Ontotext Refine for large and complex CSV files,
-e.g. Crunchbase consisting of 18 tables, total 10.5M rows, 318 columns;
-for both initial loading and data updates.
-See [Crunchbase Challenge](https://gist.github.com/VladimirAlexiev/d5d67feb002dbcfa6b3d4c3dd59b52da) and section "Global Filtering" for details.
-(Please note that we use named graph per **table row**, not per **table**.)
-
-## Options
+## Ontotext Refine
 
 The default is to generate a SPARQL UPDATE query for Ontotext Refine.
 It encloses Ontotext Refine variables in a `service` clause that accesses the Ontotext Refine virtual SPARQL endpoint
@@ -92,21 +98,11 @@ This has several benefits:
 - You can match real triples in GraphDB, which can be used to resolve entities ("strings" to "things"). A macro name that ends in "URL" (case-insensitively), e.g. `CB_AGENT_URL(permalink)`, causes the respective patterns to be interpreted outside of the Ontotext Refine virtual service.
 - You can split several multi-valued columns (using the `SPLIT` macro) to produce multiple bindings, without fear of Cartesian Product (i.e. their values will not be combined with each other).
 
-Option `--construct` generates a SPARQL CONSTRUCT query.
-You can still match GraphDB triples and use multiple multi-valued columns.
-Any `GRAPH` comment is ignored, because CONSTRUCT does not support graphs
-(see [SPARQL 1.2 issue 31](https://github.com/w3c/sparql-12/issues/31)).
-The query produces intermediate RDF data that must be saved before loading to GraphDB,
-then you can use the [SPARQL Graph Store Protocol](https://www.w3.org/TR/sparql11-http-rdf-update/)
-to overwrite the respective graph.
-
-Option `--tarql` generates a TARQL CONSTRUCT query.
-You should put each multivalued column (together with the primary key column)
-in a distinct model to avoid Cartesian Product.
-You cannot
-match RDF data in a repository (see [TARQL issue 25](https://github.com/tarql/tarql/issues/25)),
-use UPDATE (see [TARQL issue 67](https://github.com/tarql/tarql/issues/67)),
-nor use graphs (see [TARQL issue 98](https://github.com/tarql/tarql/issues/98)).
+We've used Ontotext Refine for large and complex CSV files,
+e.g. Crunchbase consisting of 18 tables, total 10.5M rows, 318 columns;
+for both initial loading and data updates.
+See [Crunchbase Challenge](https://gist.github.com/VladimirAlexiev/d5d67feb002dbcfa6b3d4c3dd59b52da) and section "Global Filtering" for details.
+(Please note that we use named graph per **table row**, not per **table**.)
 
 Option `--endpoint` specifies the OntoRefine SPARQL endpoint to use.
 
@@ -126,14 +122,102 @@ Option `--endpoint` specifies the OntoRefine SPARQL endpoint to use.
     `rdf-mapper:ontorefine:12345678`.
     - Where `12345678` is the captured project identifier.
 
-You can abbreviate options. All these are equivalent:
+Option `--construct` generates a SPARQL CONSTRUCT query.
+You can still match GraphDB triples and use multiple multi-valued columns.
+Any `GRAPH` comment is ignored, because CONSTRUCT does not support graphs
+(see [SPARQL 1.2 issue 31](https://github.com/w3c/sparql-12/issues/31)).
+The query produces intermediate RDF data that must be saved before loading to GraphDB,
+then you can use the [SPARQL Graph Store Protocol](https://www.w3.org/TR/sparql11-http-rdf-update/)
+to overwrite the respective graph.
 
-    -c --co --construct
-    -t --ta --tarql
-    -e --end --endpoint
+## TARQL
+
+Option `--tarql` generates a TARQL CONSTRUCT query.
+Tested with version 1.2-SNAPSHOT, BUILD_DATE: 2017-12-07T13:33:10Z
+
+We've used TARQL to convert large files (over 10M rows, 145 columns) using complex queries (480 lines: 110 prefixes, 33 nodes, 250 triples, 110 binds).
+
+Unfortunately TARQL hasn't been maintained, so I don't recommend it right now
+
+You cannot:
+- match RDF data in a repository (see [TARQL issue 25](https://github.com/tarql/tarql/issues/25)),
+- use UPDATE (see [TARQL issue 67](https://github.com/tarql/tarql/issues/67)),
+- use graphs (see [TARQL issue 98](https://github.com/tarql/tarql/issues/98)).
+
+You should put each multivalued column (together with the primary key column)
+in a distinct model to avoid Cartesian Product.
+
+## Sparql Anything
+
+Options `--sparql-anything`, `--sa` or `--fx` generate a Sparql Anything CONSTRUCT query ([task #50](https://github.com/VladimirAlexiev/rdf2rml/issues/50)).
+rdf2sparql generates a query like this:
+
+```sparql
+PREFIX  fx:   <http://sparql.xyz/facade-x/ns/>
+PREFIX xyz: <http://sparql.xyz/facade-x/data/>
+CONSTRUCT {
+  ...
+} WHERE {
+  SERVICE <x-sparql-anything:> {
+    fx:properties
+      fx:location $_location ;
+      # fx:read-from-std-in "true" ;
+      fx:csv.headers "true" ;
+      fx:csv.headers.sanitize "true" ;
+      fx:csv.null-string "" .
+    optional {?ROW xyz:col1 ?col1}
+    optional {?ROW xyz:col2 ?col2}
+    ... 
+  }
+}
+```
+
+Where:
+- `$_location` allows you to pass the input file using [--values](https://sparql-anything.readthedocs.io/stable/CLI/#-v-values) as a prebound query [parameter](https://sparql-anything.readthedocs.io/stable/#query-templates-and-variable-bindings-cli-only).
+  Eg to transform `file.csv` to `file.ttl` using `transform.fx`, use this:
+```
+java -jar sparql-anything-1.2.0.jar -q transform.fx -v location=file.csv > file.ttl 
+```
+- NOTE: I prefer `fx:read-from-std-in` that allows you to pipe the input file through stdin.
+  But there's a bug [issue#641](https://github.com/SPARQL-Anything/sparql.anything/issues/641)
+```
+java -jar sparql-anything-1.2.0.jar -q transform.fx < file.csv > file.ttl 
+```
+- `fx:csv.headers` tells it that your CSV has a header row
+- `fx:csv.headers.sanitize` allows you to use col names with punctuation 
+  such as `rdfs:label@de`, `important col` or even `important \n col` (with embedded newline).
+  See [task #631](https://github.com/SPARQL-Anything/sparql.anything/issues/631), [PR#632](https://github.com/SPARQL-Anything/sparql.anything/pull/632)
+- `fx:csv.null-string` treats empty cells as UNDEF rather than "", 
+  which is important so that no triple will be produced (it's the way to do conditional processing)
+- `optional {?ROW xyz:colN ?colN}` are the prebound variables corresponding to CSV col names.
+  - It only emits bindings for the parenthesized fields that you actually used in the model, eg:
+    - `"(col1) is important"`: concatenation with constant string
+    - `(col2)^^xsd:integer`: add datatype
+    - `<example/(col3)>`: templated URL
+  - `?ROW` is a blank node that represents the current CSV row
+  - Each col is wrapped in `optional` is if it's missing, the row will still be returned
+
+If you need different `fx:properties`, please contact me.
+
+You can:
+- Match RDF data in a repository using SPARQL Federation
+  (TODO: not yet supported: ask me if you need it)
+- Use graphs (see [this comment](https://github.com/w3c-cg/sparql-dev/issues/31#issuecomment-4708611114)). 
+  In that case ask Sparql Anything to produce Trig or NQuads using the [--format](https://sparql-anything.readthedocs.io/stable/CLI/#-f-format) option.
+  Specify the graph with a comment on the first line, which can use a static or dynamic URL, eg:
+
+```
+# GRAPH <constant_graph>
+# GRAPH <graph/organizations/(uuid)>
+# GRAPH <graph/organization_descriptions/(uuid)>
+```
+
+You cannot make an UPDATE query.
+
+See some examples at [test/sparql-anything](../test/sparql-anything).
 
 ## Screenshot
-To illustrate the benefits of the tool, here is an illustration:
+To illustrate the benefits of the tool, here is a picture:
 declarative model (left) vs generated SPARQL Update for OntoRefine (right two).
 This is from [test/graphs-crunchbase](../test/graphs-crunchbase):
 
@@ -141,7 +225,7 @@ This is from [test/graphs-crunchbase](../test/graphs-crunchbase):
 
 ## Prerequisites
 
-- Ontotext Refine or TARQL as described above
+- Ontotext Refine, TARQL or Sparql Anything as described above
 - Perl. Tested with 5.32.1 (Straberry Perl on Cygwin)
 - A standard module. Use one of these to install it:
 ```

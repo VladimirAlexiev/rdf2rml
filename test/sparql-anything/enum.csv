@@ -1,0 +1,15 @@
+Attribut IRI,Enumeration DE,Enumeration (FR),Enumeration - IT
+antriebsart,Druckluft,Air comprimé,aria compressa
+antriebsart,Federspeicher elektrisch,Accumulateur à ressorts électr,accumulatore a molla elettrico
+antriebsart,Federspeicher hydraulisch,Accumulateur à ressorts hydrau,accumulatore a molla idraulico
+antriebsart,Hydraulisch,Hydraulique,idraulico
+antriebsart,Motorantrieb,Moteur,azionamento motore
+antriebsart,N2-hydraulisch-elektrisch,Pneumatique,pneumatico
+antriebsart,SF6-elektrisch,SF6 électrique,SF6 elettrico
+lifecycleStatus,Aktiv,,
+lifecycleStatus,In Planung,,
+lifecycleStatus,In Reserve,,
+lifecycleStatus,In Umsetzung,,
+lifecycleStatus,Rückgebaut,,
+lifecycleStatus,Stillgelegt,,
+lifecycleStatus,Ungültig,,

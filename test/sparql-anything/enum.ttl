@@ -1,0 +1,99 @@
+PREFIX fx:   <http://sparql.xyz/facade-x/ns/>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX xyz:  <http://sparql.xyz/facade-x/data/>
+
+<https://example.org/enum/lifecycleStatus/Ungueltig>
+        rdf:type           skos:Concept;
+        skos:inScheme      <https://example.org/enum/lifecycleStatus>;
+        skos:prefLabel     "Ungültig"@de;
+        skos:topConceptOf  <https://example.org/enum/lifecycleStatus> .
+
+<https://example.org/enum/lifecycleStatus/Stillgelegt>
+        rdf:type           skos:Concept;
+        skos:inScheme      <https://example.org/enum/lifecycleStatus>;
+        skos:prefLabel     "Stillgelegt"@de;
+        skos:topConceptOf  <https://example.org/enum/lifecycleStatus> .
+
+<https://example.org/enum/lifecycleStatus/Rueckgebaut>
+        rdf:type           skos:Concept;
+        skos:inScheme      <https://example.org/enum/lifecycleStatus>;
+        skos:prefLabel     "Rückgebaut"@de;
+        skos:topConceptOf  <https://example.org/enum/lifecycleStatus> .
+
+<https://example.org/enum/lifecycleStatus/InUmsetzung>
+        rdf:type           skos:Concept;
+        skos:inScheme      <https://example.org/enum/lifecycleStatus>;
+        skos:prefLabel     "In Umsetzung"@de;
+        skos:topConceptOf  <https://example.org/enum/lifecycleStatus> .
+
+<https://example.org/enum/lifecycleStatus/InReserve>
+        rdf:type           skos:Concept;
+        skos:inScheme      <https://example.org/enum/lifecycleStatus>;
+        skos:prefLabel     "In Reserve"@de;
+        skos:topConceptOf  <https://example.org/enum/lifecycleStatus> .
+
+<https://example.org/enum/lifecycleStatus/InPlanung>
+        rdf:type           skos:Concept;
+        skos:inScheme      <https://example.org/enum/lifecycleStatus>;
+        skos:prefLabel     "In Planung"@de;
+        skos:topConceptOf  <https://example.org/enum/lifecycleStatus> .
+
+<https://example.org/enum/lifecycleStatus/Aktiv>
+        rdf:type           skos:Concept;
+        skos:inScheme      <https://example.org/enum/lifecycleStatus>;
+        skos:prefLabel     "Aktiv"@de;
+        skos:topConceptOf  <https://example.org/enum/lifecycleStatus> .
+
+<https://example.org/enum/lifecycleStatus>
+        rdf:type        skos:ConceptScheme;
+        rdfs:label      "lifecycleStatus enum"@de;
+        skos:prefLabel  "lifecycleStatus enum"@de .
+
+<https://example.org/enum/antriebsart/SF6elektrisch>
+        rdf:type           skos:Concept;
+        skos:inScheme      <https://example.org/enum/antriebsart>;
+        skos:prefLabel     "SF6 elettrico"@it , "SF6 électrique"@fr , "SF6-elektrisch"@de;
+        skos:topConceptOf  <https://example.org/enum/antriebsart> .
+
+<https://example.org/enum/antriebsart/N2hydraulischelektrisch>
+        rdf:type           skos:Concept;
+        skos:inScheme      <https://example.org/enum/antriebsart>;
+        skos:prefLabel     "pneumatico"@it , "Pneumatique"@fr , "N2-hydraulisch-elektrisch"@de;
+        skos:topConceptOf  <https://example.org/enum/antriebsart> .
+
+<https://example.org/enum/antriebsart/Motorantrieb>
+        rdf:type           skos:Concept;
+        skos:inScheme      <https://example.org/enum/antriebsart>;
+        skos:prefLabel     "azionamento motore"@it , "Moteur"@fr , "Motorantrieb"@de;
+        skos:topConceptOf  <https://example.org/enum/antriebsart> .
+
+<https://example.org/enum/antriebsart/Hydraulisch>
+        rdf:type           skos:Concept;
+        skos:inScheme      <https://example.org/enum/antriebsart>;
+        skos:prefLabel     "idraulico"@it , "Hydraulique"@fr , "Hydraulisch"@de;
+        skos:topConceptOf  <https://example.org/enum/antriebsart> .
+
+<https://example.org/enum/antriebsart/Federspeicherhydraulisch>
+        rdf:type           skos:Concept;
+        skos:inScheme      <https://example.org/enum/antriebsart>;
+        skos:prefLabel     "accumulatore a molla idraulico"@it , "Accumulateur à ressorts hydrau"@fr , "Federspeicher hydraulisch"@de;
+        skos:topConceptOf  <https://example.org/enum/antriebsart> .
+
+<https://example.org/enum/antriebsart/Federspeicherelektrisch>
+        rdf:type           skos:Concept;
+        skos:inScheme      <https://example.org/enum/antriebsart>;
+        skos:prefLabel     "accumulatore a molla elettrico"@it , "Accumulateur à ressorts électr"@fr , "Federspeicher elektrisch"@de;
+        skos:topConceptOf  <https://example.org/enum/antriebsart> .
+
+<https://example.org/enum/antriebsart/Druckluft>
+        rdf:type           skos:Concept;
+        skos:inScheme      <https://example.org/enum/antriebsart>;
+        skos:prefLabel     "aria compressa"@it , "Air comprimé"@fr , "Druckluft"@de;
+        skos:topConceptOf  <https://example.org/enum/antriebsart> .
+
+<https://example.org/enum/antriebsart>
+        rdf:type        skos:ConceptScheme;
+        rdfs:label      "antriebsart enum"@de;
+        skos:prefLabel  "antriebsart enum"@de .

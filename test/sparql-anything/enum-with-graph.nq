@@ -1,0 +1,76 @@
+<https://example.org/enum/antriebsart/SF6elektrisch> <http://www.w3.org/2004/02/skos/core#prefLabel> "SF6 elettrico"@it <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/SF6elektrisch> <http://www.w3.org/2004/02/skos/core#prefLabel> "SF6 électrique"@fr <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/SF6elektrisch> <http://www.w3.org/2004/02/skos/core#prefLabel> "SF6-elektrisch"@de <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/SF6elektrisch> <http://www.w3.org/2004/02/skos/core#topConceptOf> <https://example.org/enum/antriebsart> <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/SF6elektrisch> <http://www.w3.org/2004/02/skos/core#inScheme> <https://example.org/enum/antriebsart> <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/SF6elektrisch> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/N2hydraulischelektrisch> <http://www.w3.org/2004/02/skos/core#prefLabel> "pneumatico"@it <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/N2hydraulischelektrisch> <http://www.w3.org/2004/02/skos/core#prefLabel> "Pneumatique"@fr <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/N2hydraulischelektrisch> <http://www.w3.org/2004/02/skos/core#prefLabel> "N2-hydraulisch-elektrisch"@de <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/N2hydraulischelektrisch> <http://www.w3.org/2004/02/skos/core#topConceptOf> <https://example.org/enum/antriebsart> <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/N2hydraulischelektrisch> <http://www.w3.org/2004/02/skos/core#inScheme> <https://example.org/enum/antriebsart> <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/N2hydraulischelektrisch> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Motorantrieb> <http://www.w3.org/2004/02/skos/core#prefLabel> "azionamento motore"@it <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Motorantrieb> <http://www.w3.org/2004/02/skos/core#prefLabel> "Moteur"@fr <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Motorantrieb> <http://www.w3.org/2004/02/skos/core#prefLabel> "Motorantrieb"@de <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Motorantrieb> <http://www.w3.org/2004/02/skos/core#topConceptOf> <https://example.org/enum/antriebsart> <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Motorantrieb> <http://www.w3.org/2004/02/skos/core#inScheme> <https://example.org/enum/antriebsart> <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Motorantrieb> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Hydraulisch> <http://www.w3.org/2004/02/skos/core#prefLabel> "idraulico"@it <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Hydraulisch> <http://www.w3.org/2004/02/skos/core#prefLabel> "Hydraulique"@fr <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Hydraulisch> <http://www.w3.org/2004/02/skos/core#prefLabel> "Hydraulisch"@de <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Hydraulisch> <http://www.w3.org/2004/02/skos/core#topConceptOf> <https://example.org/enum/antriebsart> <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Hydraulisch> <http://www.w3.org/2004/02/skos/core#inScheme> <https://example.org/enum/antriebsart> <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Hydraulisch> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Federspeicherhydraulisch> <http://www.w3.org/2004/02/skos/core#prefLabel> "accumulatore a molla idraulico"@it <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Federspeicherhydraulisch> <http://www.w3.org/2004/02/skos/core#prefLabel> "Accumulateur à ressorts hydrau"@fr <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Federspeicherhydraulisch> <http://www.w3.org/2004/02/skos/core#prefLabel> "Federspeicher hydraulisch"@de <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Federspeicherhydraulisch> <http://www.w3.org/2004/02/skos/core#topConceptOf> <https://example.org/enum/antriebsart> <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Federspeicherhydraulisch> <http://www.w3.org/2004/02/skos/core#inScheme> <https://example.org/enum/antriebsart> <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Federspeicherhydraulisch> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Federspeicherelektrisch> <http://www.w3.org/2004/02/skos/core#prefLabel> "accumulatore a molla elettrico"@it <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Federspeicherelektrisch> <http://www.w3.org/2004/02/skos/core#prefLabel> "Accumulateur à ressorts électr"@fr <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Federspeicherelektrisch> <http://www.w3.org/2004/02/skos/core#prefLabel> "Federspeicher elektrisch"@de <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Federspeicherelektrisch> <http://www.w3.org/2004/02/skos/core#topConceptOf> <https://example.org/enum/antriebsart> <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Federspeicherelektrisch> <http://www.w3.org/2004/02/skos/core#inScheme> <https://example.org/enum/antriebsart> <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Federspeicherelektrisch> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Druckluft> <http://www.w3.org/2004/02/skos/core#prefLabel> "aria compressa"@it <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Druckluft> <http://www.w3.org/2004/02/skos/core#prefLabel> "Air comprimé"@fr <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Druckluft> <http://www.w3.org/2004/02/skos/core#prefLabel> "Druckluft"@de <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Druckluft> <http://www.w3.org/2004/02/skos/core#topConceptOf> <https://example.org/enum/antriebsart> <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Druckluft> <http://www.w3.org/2004/02/skos/core#inScheme> <https://example.org/enum/antriebsart> <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart/Druckluft> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart> <http://www.w3.org/2000/01/rdf-schema#label> "antriebsart enum"@de <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart> <http://www.w3.org/2004/02/skos/core#prefLabel> "antriebsart enum"@de <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/antriebsart> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#ConceptScheme> <https://example.org/enum/antriebsart/graph> .
+<https://example.org/enum/lifecycleStatus/Ungueltig> <http://www.w3.org/2004/02/skos/core#prefLabel> "Ungültig"@de <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/Ungueltig> <http://www.w3.org/2004/02/skos/core#topConceptOf> <https://example.org/enum/lifecycleStatus> <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/Ungueltig> <http://www.w3.org/2004/02/skos/core#inScheme> <https://example.org/enum/lifecycleStatus> <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/Ungueltig> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/Stillgelegt> <http://www.w3.org/2004/02/skos/core#prefLabel> "Stillgelegt"@de <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/Stillgelegt> <http://www.w3.org/2004/02/skos/core#topConceptOf> <https://example.org/enum/lifecycleStatus> <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/Stillgelegt> <http://www.w3.org/2004/02/skos/core#inScheme> <https://example.org/enum/lifecycleStatus> <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/Stillgelegt> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/Rueckgebaut> <http://www.w3.org/2004/02/skos/core#prefLabel> "Rückgebaut"@de <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/Rueckgebaut> <http://www.w3.org/2004/02/skos/core#topConceptOf> <https://example.org/enum/lifecycleStatus> <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/Rueckgebaut> <http://www.w3.org/2004/02/skos/core#inScheme> <https://example.org/enum/lifecycleStatus> <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/Rueckgebaut> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/InUmsetzung> <http://www.w3.org/2004/02/skos/core#prefLabel> "In Umsetzung"@de <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/InUmsetzung> <http://www.w3.org/2004/02/skos/core#topConceptOf> <https://example.org/enum/lifecycleStatus> <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/InUmsetzung> <http://www.w3.org/2004/02/skos/core#inScheme> <https://example.org/enum/lifecycleStatus> <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/InUmsetzung> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/InReserve> <http://www.w3.org/2004/02/skos/core#prefLabel> "In Reserve"@de <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/InReserve> <http://www.w3.org/2004/02/skos/core#topConceptOf> <https://example.org/enum/lifecycleStatus> <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/InReserve> <http://www.w3.org/2004/02/skos/core#inScheme> <https://example.org/enum/lifecycleStatus> <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/InReserve> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/InPlanung> <http://www.w3.org/2004/02/skos/core#prefLabel> "In Planung"@de <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/InPlanung> <http://www.w3.org/2004/02/skos/core#topConceptOf> <https://example.org/enum/lifecycleStatus> <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/InPlanung> <http://www.w3.org/2004/02/skos/core#inScheme> <https://example.org/enum/lifecycleStatus> <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/InPlanung> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/Aktiv> <http://www.w3.org/2004/02/skos/core#prefLabel> "Aktiv"@de <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/Aktiv> <http://www.w3.org/2004/02/skos/core#topConceptOf> <https://example.org/enum/lifecycleStatus> <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/Aktiv> <http://www.w3.org/2004/02/skos/core#inScheme> <https://example.org/enum/lifecycleStatus> <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus/Aktiv> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus> <http://www.w3.org/2000/01/rdf-schema#label> "lifecycleStatus enum"@de <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus> <http://www.w3.org/2004/02/skos/core#prefLabel> "lifecycleStatus enum"@de <https://example.org/enum/lifecycleStatus/graph> .
+<https://example.org/enum/lifecycleStatus> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#ConceptScheme> <https://example.org/enum/lifecycleStatus/graph> .
