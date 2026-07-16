@@ -1,6 +1,6 @@
 # Using rdf2sparql with SparqlAnything
 
-Documented at [rdf2sparql#sparql-anything](../doc/rdf2sparql.md#sparql-anything).
+Documented at [rdf2sparql#sparql-anything](../../doc/rdf2sparql.md#sparql-anything).
 Files:
 - `Makefile`: run `make`
 - `common.h`: some macros
