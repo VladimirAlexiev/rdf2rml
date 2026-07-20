@@ -41,9 +41,17 @@ sub prebind($) {
   # ontorefine and fx require some prebinds in Where
   my $var = shift;
   my $index = 1; # prebinds always go in a fixed addWhere slot
-  $tool eq "ontorefine" ? ontorefine($index,$var) :
-    $tool eq "fx" ? fx($index,$var) :
-    "($var)"
+  $tool eq "ontorefine" and ontorefine($index,$var);
+  $tool eq "fx" and fx($index,$var);
+  undef
+}
+
+sub prebind_all($$) {
+  # prebind all arguments of n-ary macro
+  my $fun = shift;
+  my @args = split(/,/,shift);
+  shift @args if $fun =~ m{^_}; # macros starting with "_" leave their first arg alone
+  map {prebind($_)} @args
 }
 
 sub ontorefine($$) {
@@ -55,7 +63,7 @@ sub ontorefine($$) {
   $bound{$var} and return "($var)";
   $bound{$var} = "ontorefine";
   addWhere($index,"bind(?c_$var as ?$var)");
-  "($var)"
+  undef
 }
 
 sub fx($$) {
@@ -65,7 +73,7 @@ sub fx($$) {
   $bound{$var} and return "($var)";
   $bound{$var} = "fx";
   addWhere($index,"optional {?ROW xyz:$var ?$var}");
-  "($var)"
+  undef
 }
 
 sub function($$$$) {
@@ -205,11 +213,12 @@ while ($first_line or $_ = <>) {
   $first_line = undef;
   m{puml:label *['"]+(.*?)['"]+ *[;.] *( *#.*)?$} and do {addWhere(1,$1); next};
   m{puml:|plantuml} and next; # skip any other puml statements
-  s{\((\w+)\)}{prebind($1)}ge;
+  while (m{\((\w+)\)}gc) {prebind($1)};
+  m{(\w+)\(([\w,]+)\)} and prebind_all($1,$2);
   while (s{(\w+)\((\w+)([,?\w]*)\)}{function(2,$1,$2,$3)}ge)
     # recursively replace function calls.
-    # <industry/urlify(foo)> -> <industry/(foo_URLIFY)>: single parentheses needed to enact templated_url
-    # <industry/urlify(split(foo))> -> <industry/urlify((foo_SPLIT))> : double parens, reduce them -> <industry/urlify(foo_SPLIT)> -> <industry/(foo_SPLIT_URLIFY)>
+    # <industry/URLIFY(foo)> -> <industry/(foo_URLIFY)>: single parentheses needed to enact templated_url
+    # <industry/URLIFY(SPLIT(foo))> -> <industry/URLIFY((foo_SPLIT))> : double parens, reduce them -> <industry/URLIFY(foo_SPLIT)> -> <industry/(foo_SPLIT_URLIFY)>
     {s{\(\((\w+)\)}{($1}g}; # reduce double parens
   s{['"]([^'"]+\([^'"]*)['"]}{templated_string(2,$1)}ge; # starts with some constant chars
   s{['"](\(\w+\)[^'"]+)['"]}{templated_string(2,$1)}ge; # starts with a variable

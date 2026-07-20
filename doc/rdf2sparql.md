@@ -162,6 +162,7 @@ CONSTRUCT {
     fx:properties
       fx:location $_location ;
       # fx:read-from-std-in "true" ;
+      # fx:media-type "text/csv" ; # or "text/tab-separated-values"
       fx:csv.headers "true" ;
       fx:csv.headers.sanitize "true" ;
       fx:csv.null-string "" .
@@ -178,8 +179,9 @@ Where:
 ```
 java -jar sparql-anything-1.2.0.jar -q transform.fx -v location=file.csv > file.ttl 
 ```
-- NOTE: I prefer `fx:read-from-std-in` that allows you to pipe the input file through stdin.
-  But there's a bug [issue#641](https://github.com/SPARQL-Anything/sparql.anything/issues/641)
+- NOTE: wanted to use `fx:read-from-std-in` that allows you to pipe the input file through stdin.
+  But as explained in [issue#641](https://github.com/SPARQL-Anything/sparql.anything/issues/641), then we need to provide `fx:media-type`: 
+  "text/csv" or "text/tab-separated-values"; so it's not worth it.
 ```
 java -jar sparql-anything-1.2.0.jar -q transform.fx < file.csv > file.ttl 
 ```
@@ -197,7 +199,8 @@ java -jar sparql-anything-1.2.0.jar -q transform.fx < file.csv > file.ttl
   - `?ROW` is a blank node that represents the current CSV row
   - Each col is wrapped in `optional` is if it's missing, the row will still be returned
 
-If you need different `fx:properties`, please contact me.
+Please contact me if you need more or different `fx:properties`:
+see [CSV Options](https://sparql-anything.readthedocs.io/stable/formats/CSV/#options), in particular `csv.format, csv.delimiter`.
 
 You can:
 - Match RDF data in a repository using SPARQL Federation

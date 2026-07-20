@@ -1,5 +1,7 @@
 #+STARTUP: nonum
-** 2026-05-16 rdf2sparql: support sparql-anywhere (fx)
+** 2026-07-20 rdf2sparql: prebind vars in multi-agument macros
+- Fix https://github.com/VladimirAlexiev/rdf2rml/issues/51
+** 2026-07-16 rdf2sparql: support sparql-anywhere (fx)
 - See [[https://github.com/VladimirAlexiev/rdf2rml/blob/master/doc/rdf2sparql.md#sparql-anything][rdf2sparql#sparql-anything]]
 ** 2025-06-22 rdf2sparql: allow templated strings with ~^^~ datatype and ~@~ langTag
 ** 2025-10-12 rdf2sparql: allow lang tags
