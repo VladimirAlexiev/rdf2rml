@@ -23,8 +23,8 @@ our %bound;       # memoized variables, with "reason" for var existence
 
 our @where  = ('','','','',''); # Array of WHERE binds and filters, since order of binds matters:
   # [0] OntoRefine --filterColumn prebind and GRAPH variable: used for both DELETE and INSERT
-  # [1] Prebinds: OntoRefine (used for INSERT only) or FX "[] xyz:col ?col" 
-  # [2] Normal binds inside OntoRefine service: used for INSERT only; FX GRAPH variable
+  # [1] Prebinds: OntoRefine (used for INSERT only) or FX "[] xyz:col ?col"
+  # [2] Normal binds inside OntoRefine service: used for INSERT only; FX GRAPH variable. puml:label filter
   # [3] Binds after (outside) OntoRefine service: used for INSERT only
   # [4] Binds after (outside) OntoRefine service: used for both DELETE and INSERT
 
@@ -211,7 +211,7 @@ if ($filterColumn) {
 
 while ($first_line or $_ = <>) {
   $first_line = undef;
-  m{puml:label *['"]+(.*?)['"]+ *[;.] *( *#.*)?$} and do {addWhere(1,$1); next};
+  m{puml:label *"+(.*?)"+ *[;.] *(#.*)?$} and do {addWhere(2,$1); next};
   m{puml:|plantuml} and next; # skip any other puml statements
   while (m{\((\w+)\)}gc) {prebind($1)};
   m{(\w+)\(([\w,]+)\)} and prebind_all($1,$2);
@@ -296,4 +296,3 @@ $where[0]$where[1]$where[2]
 EOF
 
 # TODO use fx:read-from-std-in "true" instead of fx:location
-
