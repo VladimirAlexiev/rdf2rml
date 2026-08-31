@@ -9,9 +9,12 @@ date: 2025-01-22
 
 - [SYNOPSIS](#synopsis)
 - [DESCRIPTION](#description)
-    - [Ontotext Refine](#ontotext-refine)
-    - [TARQL](#tarql)
-    - [Sparql Anything](#sparql-anything)
+- [USAGE](#usage)
+    - [Support for Graphs](#support-for-graphs)
+    - [Supported Systems](#supported-systems)
+        - [Ontotext Refine](#ontotext-refine)
+        - [TARQL](#tarql)
+        - [Sparql Anything](#sparql-anything)
     - [Screenshot](#screenshot)
     - [Prerequisites](#prerequisites)
     - [Process](#process)
@@ -69,8 +72,29 @@ You can abbreviate options. All these are equivalent:
   - See [releases](https://github.com/tarql/tarql/releases)
 - [Ontotext Refine](https://graphdb.ontotext.com/documentation/standard/loading-data-using-ontorefine.html), which is an adaptation of OpenRefine for working with RDF data. It exposes a table as a virtual SPARQL endpoint (special service), where each column `col` of each row is exposed as a variable binding `?c_col`.
 
+# USAGE
 
-## Ontotext Refine
+## Support for Graphs
+
+`rdf2sparql` supports named graphs, depending on the target RDFization system that you use (see next section).
+
+You can express graphs in the model using two ways:
+- If you need SPARQL UPDATE, the tool supports only a single graph per model, where the graph is specified with a comment on the first line:
+```
+# GRAPH <constant_graph>
+# GRAPH <graph/organizations/(uuid)>
+# GRAPH <graph/organization_descriptions/(uuid)>
+```
+- If you need multiple graphs, use a `trig` file with the standard keyword `graph <...> { ... }`.
+  This is not supported for UPDATE but only for CONSTRUCT; and `CONSTRUCT graph` currently works only with SparqlAnything.
+
+With either way, you can use static or dynamic (computed) graph URLs.
+
+## Supported Systems
+
+This section describes the RDF transformation systems that `rdf2sparql` has been tested with
+
+### Ontotext Refine
 
 The default is to generate a SPARQL UPDATE query for Ontotext Refine.
 It encloses Ontotext Refine variables in a `service` clause that accesses the Ontotext Refine virtual SPARQL endpoint
@@ -83,7 +107,7 @@ It encloses Ontotext Refine variables in a `service` clause that accesses the On
 This has several benefits:
 
 - It ingests directly to GraphDB (without producing an intermediate RDF file), which is faster.
-- It overwrites a named graph, so it can be used for ingest or update.
+- It can overwrite named graphs, so it can be used for ingest or update.
   - The first model line must look like this to specify the graph to overwrite (in angle brackets).
   - You can use parenthesized variable name(s) to compute the graph at runtime.
   - An example from Crunchbase: both `organizations.csv` and `organization_descriptions.csv` contribute triples to the same node `<cb/agent/(uuid)>`.
@@ -130,7 +154,7 @@ The query produces intermediate RDF data that must be saved before loading to Gr
 then you can use the [SPARQL Graph Store Protocol](https://www.w3.org/TR/sparql11-http-rdf-update/)
 to overwrite the respective graph.
 
-## TARQL
+### TARQL
 
 Option `--tarql` generates a TARQL CONSTRUCT query.
 Tested with version 1.2-SNAPSHOT, BUILD_DATE: 2017-12-07T13:33:10Z
@@ -147,7 +171,7 @@ You cannot:
 You should put each multivalued column (together with the primary key column)
 in a distinct model to avoid Cartesian Product.
 
-## Sparql Anything
+### Sparql Anything
 
 Options `--sparql-anything`, `--sa` or `--fx` generate a Sparql Anything CONSTRUCT query ([task #50](https://github.com/VladimirAlexiev/rdf2rml/issues/50)).
 rdf2sparql generates a query like this:
@@ -207,13 +231,6 @@ You can:
   (TODO: not yet supported: ask me if you need it)
 - Use graphs (see [this comment](https://github.com/w3c-cg/sparql-dev/issues/31#issuecomment-4708611114)). 
   In that case ask Sparql Anything to produce Trig or NQuads using the [--format](https://sparql-anything.readthedocs.io/stable/CLI/#-f-format) option.
-  Specify the graph with a comment on the first line, which can use a static or dynamic URL, eg:
-
-```
-# GRAPH <constant_graph>
-# GRAPH <graph/organizations/(uuid)>
-# GRAPH <graph/organization_descriptions/(uuid)>
-```
 
 You cannot make an UPDATE query.
 

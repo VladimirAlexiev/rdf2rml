@@ -187,11 +187,16 @@
 <p><strong>Table of Contents</strong></p>
 <ul>
 <li><a href="#synopsis">SYNOPSIS</a></li>
-<li><a href="#description">DESCRIPTION</a>
+<li><a href="#description">DESCRIPTION</a></li>
+<li><a href="#usage">USAGE</a>
+<ul>
+<li><a href="#support-for-graphs">Support for Graphs</a></li>
+<li><a href="#supported-systems">Supported Systems</a>
 <ul>
 <li><a href="#ontotext-refine">Ontotext Refine</a></li>
 <li><a href="#tarql">TARQL</a></li>
 <li><a href="#sparql-anything">Sparql Anything</a></li>
+</ul></li>
 <li><a href="#screenshot">Screenshot</a></li>
 <li><a href="#prerequisites">Prerequisites</a></li>
 <li><a href="#process">Process</a></li>
@@ -254,7 +259,22 @@ Options:
 </ul></li>
 <li><a href="https://graphdb.ontotext.com/documentation/standard/loading-data-using-ontorefine.html">Ontotext Refine</a>, which is an adaptation of OpenRefine for working with RDF data. It exposes a table as a virtual SPARQL endpoint (special service), where each column <code>col</code> of each row is exposed as a variable binding <code>?c_col</code>.</li>
 </ul>
-<h2 id="ontotext-refine">Ontotext Refine</h2>
+<h1 id="usage">USAGE</h1>
+<h2 id="support-for-graphs">Support for Graphs</h2>
+<p><code>rdf2sparql</code> supports named graphs, depending on the target RDFization system that you use (see next section).</p>
+<p>You can express graphs in the model using two ways:
+- If you need SPARQL UPDATE, the tool supports only a single graph per model, where the graph is specified with a comment on the first line:</p>
+<pre><code># GRAPH &lt;constant_graph&gt;
+# GRAPH &lt;graph/organizations/(uuid)&gt;
+# GRAPH &lt;graph/organization_descriptions/(uuid)&gt;</code></pre>
+<ul>
+<li>If you need multiple graphs, use a <code>trig</code> file with the standard keyword <code>graph &lt;...&gt; { ... }</code>.
+This is not supported for UPDATE but only for CONSTRUCT; and <code>CONSTRUCT graph</code> currently works only with SparqlAnything.</li>
+</ul>
+<p>With either way, you can use static or dynamic (computed) graph URLs.</p>
+<h2 id="supported-systems">Supported Systems</h2>
+<p>This section describes the RDF transformation systems that <code>rdf2sparql</code> has been tested with</p>
+<h3 id="ontotext-refine">Ontotext Refine</h3>
 <p>The default is to generate a SPARQL UPDATE query for Ontotext Refine.
 It encloses Ontotext Refine variables in a <code>service</code> clause that accesses the Ontotext Refine virtual SPARQL endpoint
 (see option <code>--endpoint</code> later):</p>
@@ -264,7 +284,7 @@ It encloses Ontotext Refine variables in a <code>service</code> clause that acce
 <p>This has several benefits:</p>
 <ul>
 <li>It ingests directly to GraphDB (without producing an intermediate RDF file), which is faster.</li>
-<li>It overwrites a named graph, so it can be used for ingest or update.
+<li>It can overwrite named graphs, so it can be used for ingest or update.
 <ul>
 <li>The first model line must look like this to specify the graph to overwrite (in angle brackets).</li>
 <li>You can use parenthesized variable name(s) to compute the graph at runtime.</li>
@@ -317,7 +337,7 @@ Any <code>GRAPH</code> comment is ignored, because CONSTRUCT does not support gr
 The query produces intermediate RDF data that must be saved before loading to GraphDB,
 then you can use the <a href="https://www.w3.org/TR/sparql11-http-rdf-update/">SPARQL Graph Store Protocol</a>
 to overwrite the respective graph.</p>
-<h2 id="tarql">TARQL</h2>
+<h3 id="tarql">TARQL</h3>
 <p>Option <code>--tarql</code> generates a TARQL CONSTRUCT query.
 Tested with version 1.2-SNAPSHOT, BUILD_DATE: 2017-12-07T13:33:10Z</p>
 <p>We’ve used TARQL to convert large files (over 10M rows, 145 columns) using complex queries (480 lines: 110 prefixes, 33 nodes, 250 triples, 110 binds).</p>
@@ -328,7 +348,7 @@ Tested with version 1.2-SNAPSHOT, BUILD_DATE: 2017-12-07T13:33:10Z</p>
 - use graphs (see <a href="https://github.com/tarql/tarql/issues/98">TARQL issue 98</a>).</p>
 <p>You should put each multivalued column (together with the primary key column)
 in a distinct model to avoid Cartesian Product.</p>
-<h2 id="sparql-anything">Sparql Anything</h2>
+<h3 id="sparql-anything">Sparql Anything</h3>
 <p>Options <code>--sparql-anything</code>, <code>--sa</code> or <code>--fx</code> generate a Sparql Anything CONSTRUCT query (<a href="https://github.com/VladimirAlexiev/rdf2rml/issues/50">task #50</a>).
 rdf2sparql generates a query like this:</p>
 <pre class="sparql"><code>PREFIX  fx:   &lt;http://sparql.xyz/facade-x/ns/&gt;
@@ -384,11 +404,7 @@ see <a href="https://sparql-anything.readthedocs.io/stable/formats/CSV/#options"
 - Match RDF data in a repository using SPARQL Federation
 (TODO: not yet supported: ask me if you need it)
 - Use graphs (see <a href="https://github.com/w3c-cg/sparql-dev/issues/31#issuecomment-4708611114">this comment</a>).
-In that case ask Sparql Anything to produce Trig or NQuads using the <a href="https://sparql-anything.readthedocs.io/stable/CLI/#-f-format">–format</a> option.
-Specify the graph with a comment on the first line, which can use a static or dynamic URL, eg:</p>
-<pre><code># GRAPH &lt;constant_graph&gt;
-# GRAPH &lt;graph/organizations/(uuid)&gt;
-# GRAPH &lt;graph/organization_descriptions/(uuid)&gt;</code></pre>
+In that case ask Sparql Anything to produce Trig or NQuads using the <a href="https://sparql-anything.readthedocs.io/stable/CLI/#-f-format">–format</a> option.</p>
 <p>You cannot make an UPDATE query.</p>
 <p>See some examples at <a href="../test/sparql-anything">test/sparql-anything</a>.</p>
 <h2 id="screenshot">Screenshot</h2>

@@ -13,6 +13,7 @@ date: 2023-06-02
     - [Features](#features)
     - [Prefixes](#prefixes)
         - [Predefined Prefixes](#predefined-prefixes)
+    - [Trig or Turtle](#trig-or-turtle)
     - [Parallel Arrows](#parallel-arrows)
     - [Reification](#reification)
         - [OWL Reification and Orientation](#owl-reification-and-orientation)
@@ -37,12 +38,12 @@ date: 2023-06-02
 
 # SYNOPSIS
 
-    perl -S rdfpuml.pl file.ttl                      # makes file.puml
+    perl -S rdfpuml.pl file.trig|file.ttl            # makes file.puml
     java -jar plantuml.jar -charset UTF-8 file.puml  # makes file.png
 
 # DESCRIPTION
 
-Converts an RDF Turtle file to a readable diagram using [PlantUML](http://plantuml.com).
+Converts an RDF Trig or Turtle file to a readable diagram using [PlantUML](http://plantuml.com).
 
 ## Motivation
 
@@ -119,7 +120,6 @@ Many editors can use the https://prefix.cc service to add a namespace when a pre
 If you use a prefix (like `iof` above) that is not yet registered there, please take the time to do it.
 The services accepts only alphanumeric all-lowercase prefixes, and you can register only one per day.
 
-
 ### Predefined Prefixes
 
 **rdfpuml** also predefines the following prefixes:
@@ -138,6 +138,38 @@ The services accepts only alphanumeric all-lowercase prefixes, and you can regis
 `puml` is used for PlantUML formatting triples, see below.
 `rdfs` and `skos` are used to display node labels.
 The rest are used for reification (see below).
+
+## Trig or Turtle
+
+The same models can be used to make both:
+- Diagrams using `rdfpuml` (this tool)
+- Tabular transformations using `rdf2sparql` (a sibling tool)
+
+rdf2sparql supports graphs, so this tool can read `trig`, which supports them
+- Name your input files `.trig` if they use graphs, and `.ttl` otherwise.
+- `trig` is a superset of `ttl`, but `RDF::Trine` doesn't support `trig` well ([perlrdf#173](https://github.com/kasei/perlrdf/issues/173)):
+  - You must not use the `graph` keyword: use `<...> {...}` instead of `graph <...> {...}`.
+  - You cannot have a default graph (outside any brackets)
+
+See an example in [graphs-trig](../test/graphs-trig).
+This is a model with 4 graphs and complex conditional logic in `common.h`:
+```trig
+<profile/SYS_PRIMARY(IRI_Mastersystem)/graph> {
+  <otl/(Attribut_IRI)> meta:systemPraeferenz <enum/systemPraeferenz/primaer>}
+<profile/SYS_SECONDARY(IRI_Mastersystem)/graph> {
+  <otl/(Attribut_IRI)> meta:systemPraeferenz <enum/systemPraeferenz/sekundaer>}
+<profile/(IRI_Zukuenftiges_Mastersystem)/graph> {
+  <otl/(Attribut_IRI)> meta:systemPraeferenz <enum/systemPraeferenz/zukuenftigePrimaer>}
+<profile/SYSREFSYS(SPLIT_SEMI(Attribut_System_Referenz))/graph> {
+  <otl/(Attribut_IRI)> meta:systemReferenz "SYSREFID(SPLIT_SEMI(Attribut_System_Referenz))"}
+```
+Check out the resulting `.fx` SparqlAnything script.
+
+For now everything is displayed as a single graph:
+
+![](../test/graphs-trig/attr-sysRefPref.png)
+
+[#52](https://github.com/VladimirAlexiev/rdf2rml/issues/52) Displaying named graphs as packages is a future feature. Please ping me if you need it.
 
 ## Parallel Arrows
 

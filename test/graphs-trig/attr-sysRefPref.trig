@@ -1,0 +1,8 @@
+<profile/SYS_PRIMARY(IRI_Mastersystem)/graph> {
+  <otl/(Attribut_IRI)> meta:systemPraeferenz <enum/systemPraeferenz/primaer>}
+<profile/SYS_SECONDARY(IRI_Mastersystem)/graph> {
+  <otl/(Attribut_IRI)> meta:systemPraeferenz <enum/systemPraeferenz/sekundaer>}
+<profile/(IRI_Zukuenftiges_Mastersystem)/graph> {
+  <otl/(Attribut_IRI)> meta:systemPraeferenz <enum/systemPraeferenz/zukuenftigePrimaer>}
+<profile/SYSREFSYS(SPLIT_SEMI(Attribut_System_Referenz))/graph> {
+  <otl/(Attribut_IRI)> meta:systemReferenz "SYSREFID(SPLIT_SEMI(Attribut_System_Referenz))"}

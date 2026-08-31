@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
+  <meta name="generator" content="pandoc 3.10" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="Vladimir Alexiev, Ontotext Corp" />
   <meta name="dcterms.date" content="2023-06-02" />
@@ -93,6 +93,7 @@
       color: #606060;
     }
     code {
+      white-space: pre-wrap;
       font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
@@ -156,10 +157,13 @@
     #TOC a:not(:hover) {
       text-decoration: none;
     }
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     /* The extra [class] is a hack that increases specificity enough to
        override a similar rule in reveal.js */
@@ -191,6 +195,7 @@
 <ul>
 <li><a href="#predefined-prefixes">Predefined Prefixes</a></li>
 </ul></li>
+<li><a href="#trig-or-turtle">Trig or Turtle</a></li>
 <li><a href="#parallel-arrows">Parallel Arrows</a></li>
 <li><a href="#reification">Reification</a>
 <ul>
@@ -217,10 +222,10 @@
 </ul>
 <!-- markdown-toc end -->
 <h1 id="synopsis">SYNOPSIS</h1>
-<pre><code>perl -S rdfpuml.pl file.ttl                      # makes file.puml
+<pre><code>perl -S rdfpuml.pl file.trig|file.ttl            # makes file.puml
 java -jar plantuml.jar -charset UTF-8 file.puml  # makes file.png</code></pre>
 <h1 id="description">DESCRIPTION</h1>
-<p>Converts an RDF Turtle file to a readable diagram using <a href="http://plantuml.com">PlantUML</a>.</p>
+<p>Converts an RDF Trig or Turtle file to a readable diagram using <a href="http://plantuml.com">PlantUML</a>.</p>
 <h2 id="motivation">Motivation</h2>
 <p>The best way to understand RDF data schemas (ontologies, application profiles, RDF shapes) is with a diagram.
 Many RDF visualization tools exist, but they have shortcomings, eg</p>
@@ -299,6 +304,29 @@ leak   =&gt; &#39;http://data.ontotext.com/resource/leak/&#39;</code></pre>
 <p><code>puml</code> is used for PlantUML formatting triples, see below.
 <code>rdfs</code> and <code>skos</code> are used to display node labels.
 The rest are used for reification (see below).</p>
+<h2 id="trig-or-turtle">Trig or Turtle</h2>
+<p>The same models can be used to make both:
+- Diagrams using <code>rdfpuml</code> (this tool)
+- Tabular transformations using <code>rdf2sparql</code> (a sibling tool)</p>
+<p>rdf2sparql supports graphs, so this tool can read <code>trig</code>, which supports them
+- Name your input files <code>.trig</code> if they use graphs, and <code>.ttl</code> otherwise.
+- <code>trig</code> is a superset of <code>ttl</code>, but <code>RDF::Trine</code> doesn’t support <code>trig</code> well (<a href="https://github.com/kasei/perlrdf/issues/173">perlrdf#173</a>):
+- You must not use the <code>graph</code> keyword: use <code>&lt;...&gt; {...}</code> instead of <code>graph &lt;...&gt; {...}</code>.
+- You cannot have a default graph (outside any brackets)</p>
+<p>See an example in <a href="../test/graphs-trig">graphs-trig</a>.
+This is a model with 4 graphs and complex conditional logic in <code>common.h</code>:</p>
+<pre class="trig"><code>&lt;profile/SYS_PRIMARY(IRI_Mastersystem)/graph&gt; {
+  &lt;otl/(Attribut_IRI)&gt; meta:systemPraeferenz &lt;enum/systemPraeferenz/primaer&gt;}
+&lt;profile/SYS_SECONDARY(IRI_Mastersystem)/graph&gt; {
+  &lt;otl/(Attribut_IRI)&gt; meta:systemPraeferenz &lt;enum/systemPraeferenz/sekundaer&gt;}
+&lt;profile/(IRI_Zukuenftiges_Mastersystem)/graph&gt; {
+  &lt;otl/(Attribut_IRI)&gt; meta:systemPraeferenz &lt;enum/systemPraeferenz/zukuenftigePrimaer&gt;}
+&lt;profile/SYSREFSYS(SPLIT_SEMI(Attribut_System_Referenz))/graph&gt; {
+  &lt;otl/(Attribut_IRI)&gt; meta:systemReferenz &quot;SYSREFID(SPLIT_SEMI(Attribut_System_Referenz))&quot;}</code></pre>
+<p>Check out the resulting <code>.fx</code> SparqlAnything script.</p>
+<p>For now everything is displayed as a single graph:</p>
+<p><img src="../test/graphs-trig/attr-sysRefPref.png" /></p>
+<p><a href="https://github.com/VladimirAlexiev/rdf2rml/issues/52">#52</a> Displaying named graphs as packages is a future feature. Please ping me if you need it.</p>
 <h2 id="parallel-arrows">Parallel Arrows</h2>
 <p>Multiple property instances between nodes are collected in one arrow and shown as several labels.
 Inverse arrows work fine.</p>

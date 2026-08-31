@@ -84,20 +84,23 @@ filter not exists {?re a puml:NoReify}}
 SPARQL
 ## $RE_SPARQL;
 
-my $fname = shift or die "perl rdfpuml <file>: read <file>.ttl, write <file>.puml\n";
-$fname =~ s{\.ttl$}{};
+my $fname = shift or die "perl -S rdfpuml.pl <file>.(trig|ttl): make <file>.puml\n";
+my ($ext) = $fname =~ m{\.(trig|ttl)$} or die "$fname is not .(trig|ttl)";
+my $format = $ext eq 'ttl' ? 'turtle' : $ext;
+my $fname1 = $fname;
+$fname1 =~ s{\.(trig|ttl)$}{.puml};
 
 my $prefixes = -e "prefixes.ttl" ? slurp("prefixes.ttl") : "";
-my $file = slurp("$fname.ttl");
-my $turtle = "$PREFIXES_TURTLE\n$prefixes\n$file"; 
-my $prefixes_all = "$PREFIXES_TURTLE\n$prefixes";  
-open STDOUT, '>:encoding(UTF-8)', "$fname.puml" or die "can't create $fname.puml: $!\n";
+my $file = slurp("$fname");
+my $turtle = "$PREFIXES_TURTLE\n$prefixes\n$file";
+my $prefixes_all = "$PREFIXES_TURTLE\n$prefixes";
+open STDOUT, '>:encoding(UTF-8)', "$fname1" or die "can't create $fname1: $!\n";
 binmode STDERR, ":encoding(UTF-8)";
 # print STDERR $turtle; die;
 
 my $store = RDF::Trine::Store::Memory->new();
 our $model = RDF::Trine::Model->new($store) or die "can't create model: $!\n";
-my $parser = RDF::Trine::Parser->new('turtle');
+my $parser = RDF::Trine::Parser->new($format) or die "can't create $format parser: $!\n";
 $parser->parse_into_model (undef, $turtle, $model);
 my $map = RDF::Prefixes::Curie->new ($prefixes_all);
 
