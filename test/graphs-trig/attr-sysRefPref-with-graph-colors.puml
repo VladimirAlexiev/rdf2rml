@@ -1,0 +1,22 @@
+@startuml
+hide empty members
+hide circle
+skinparam classAttributeIconSize 0
+class otl_Attribut_IRI_ as "otl:(Attribut_IRI)"
+class enum_systemPraeferenz_primaer as "enum:systemPraeferenz/primaer"
+otl_Attribut_IRI_ -down-> enum_systemPraeferenz_primaer #line:red;text:red : meta:systemPraeferenz
+class enum_systemPraeferenz_sekundaer as "enum:systemPraeferenz/sekundaer"
+otl_Attribut_IRI_ -down-> enum_systemPraeferenz_sekundaer #line:blue;text:blue : meta:systemPraeferenz
+class enum_systemPraeferenz_zukuenftigePrimaer as "enum:systemPraeferenz/zukuenftigePrimaer"
+otl_Attribut_IRI_ -down-> enum_systemPraeferenz_zukuenftigePrimaer #line:green;text:green : meta:systemPraeferenz
+otl_Attribut_IRI_ : {field} <color:magenta>meta:systemReferenz "SYSREFID(SPLIT_SEMI(Attribut_System_Referenz))"</color>
+
+legend bottom
+Graph color:
+<color:red><profile/SYS_PRIMARY(IRI_Mastersystem)/graph></color>
+<color:blue><profile/SYS_SECONDARY(IRI_Mastersystem)/graph></color>
+<color:green><profile/(IRI_Zukuenftiges_Mastersystem)/graph></color>
+<color:magenta><profile/SYSREFSYS(SPLIT_SEMI(Attribut_System_Referenz))/graph></color>
+endlegend
+
+@enduml

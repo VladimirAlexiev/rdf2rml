@@ -170,6 +170,16 @@ For now everything is displayed as a single graph:
 ![](../test/graphs-trig/attr-sysRefPref.png)
 
 [#52](https://github.com/VladimirAlexiev/rdf2rml/issues/52) Displaying named graphs as packages is a future feature. Please ping me if you need it.
+- RDF graphs are containers of **edges** (statements) whereas PlantUML [packages](https://plantuml.com/class-diagram#27fe4eb3edbaff8f) are containers of **nodes** (classes or objects),
+  so it's not quite clear how to show the graph information.
+- One way is to display the graph name next to each edge/literal in red:
+
+![](../test/graphs-trig/attr-sysRefPref-with-graph-labels.png)
+
+- But if multiple quads are in the same graph, that will add a lot of textual information.
+So a better way is to distnguish the graphs by color:
+
+![](../test/graphs-trig/attr-sysRefPref-with-graph-colors.png)
 
 ## Parallel Arrows
 

@@ -1,4 +1,6 @@
 #+STARTUP: nonum
+** 2026-08-31 rdfpuml: support for named graphs
+- For now just partial: https://github.com/VladimirAlexiev/rdf2rml/issues/52
 ** 2026-07-20 rdf2sparql: prebind vars in multi-agument macros
 - Fix https://github.com/VladimirAlexiev/rdf2rml/issues/51
 ** 2026-07-16 rdf2sparql: support sparql-anywhere (fx)

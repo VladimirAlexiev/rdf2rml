@@ -326,7 +326,16 @@ This is a model with 4 graphs and complex conditional logic in <code>common.h</c
 <p>Check out the resulting <code>.fx</code> SparqlAnything script.</p>
 <p>For now everything is displayed as a single graph:</p>
 <p><img src="../test/graphs-trig/attr-sysRefPref.png" /></p>
-<p><a href="https://github.com/VladimirAlexiev/rdf2rml/issues/52">#52</a> Displaying named graphs as packages is a future feature. Please ping me if you need it.</p>
+<p><a href="https://github.com/VladimirAlexiev/rdf2rml/issues/52">#52</a> Displaying named graphs as packages is a future feature. Please ping me if you need it.
+- RDF graphs are containers of <strong>edges</strong> (statements) whereas PlantUML <a href="https://plantuml.com/class-diagram#27fe4eb3edbaff8f">packages</a> are containers of <strong>nodes</strong> (classes or objects),
+so it’s not quite clear how to show the graph information.
+- One way is to display the graph name next to each edge/literal in red:</p>
+<p><img src="../test/graphs-trig/attr-sysRefPref-with-graph-labels.png" /></p>
+<ul>
+<li>But if multiple quads are in the same graph, that will add a lot of textual information.
+So a better way is to distnguish the graphs by color:</li>
+</ul>
+<p><img src="../test/graphs-trig/attr-sysRefPref-with-graph-colors.png" /></p>
 <h2 id="parallel-arrows">Parallel Arrows</h2>
 <p>Multiple property instances between nodes are collected in one arrow and shown as several labels.
 Inverse arrows work fine.</p>
