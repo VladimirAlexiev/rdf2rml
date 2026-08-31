@@ -12,11 +12,11 @@ otl_Attribut_IRI_ -down-> enum_systemPraeferenz_zukuenftigePrimaer #line:green;t
 otl_Attribut_IRI_ : {field} <color:magenta>meta:systemReferenz "SYSREFID(SPLIT_SEMI(Attribut_System_Referenz))"</color>
 
 legend bottom
-Graph color:
-<color:red><profile/SYS_PRIMARY(IRI_Mastersystem)/graph></color>
-<color:blue><profile/SYS_SECONDARY(IRI_Mastersystem)/graph></color>
-<color:green><profile/(IRI_Zukuenftiges_Mastersystem)/graph></color>
-<color:magenta><profile/SYSREFSYS(SPLIT_SEMI(Attribut_System_Referenz))/graph></color>
+**Graph color**
+ <color:red><profile/SYS_PRIMARY(IRI_Mastersystem)/graph></color>
+ <color:blue><profile/SYS_SECONDARY(IRI_Mastersystem)/graph></color>
+ <color:green><profile/(IRI_Zukuenftiges_Mastersystem)/graph></color>
+ <color:magenta><profile/SYSREFSYS(SPLIT_SEMI(Attribut_System_Referenz))/graph></color>
 endlegend
 
 @enduml
