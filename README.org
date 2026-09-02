@@ -4,7 +4,7 @@
 #+OPTIONS: todo:t |:t
 #+OPTIONS: html-link-use-abs-url:nil html-postamble:auto html-preamble:t html-scripts:t
 #+OPTIONS: html-style:t html5-fancy:nil tex:nil
-#+STARTUP: nonum
+#+STARTUP: nonum showeverything
 #+TITLE: RDF by Example: rdfpuml for True RDF Diagrams, rdf2rml for R2RML Generation
 #+DATE: <2025-07-11>
 #+AUTHOR: Vladimir Alexiev
@@ -54,6 +54,7 @@
   - [[#mid-term][Mid-Term]]
     - [[#upgrade-to-use-attean][Upgrade to use Attean]]
     - [[#integrate-in-emacs-org-mode][Integrate in Emacs org-mode]]
+    - [[#display-named-graphs][Display Named Graphs]]
     - [[#node-colors-icons-tooltips][Node colors, icons, tooltips]]
     - [[#more-arrow-types-and-styles][More arrow types and styles]]
     - [[#extra-layout-options][Extra Layout Options]]
@@ -274,9 +275,10 @@ See https://github.com/VladimirAlexiev/rdf2rml/pull/7
 Once [[https://github.com/kasei/perlrdf/issues/131][perlrdf#131]] is fixed, eliminate this dependency (local module)
 **** Remember prefixes from input file
 ~rdfpuml~ shortens URLs using prefixes only from ~prefixes.ttl~, but should also use prefixes defined in the individual input file.
+
 *** Support more RDF Formats
-Now it only supports Turtle, because it concatenates ~prefixes.ttl~ to the main file.
-If it can collect all prefixes from RDF files, such concatenation won't be needed
+Now it only supports Turtle and Trig 1.0, because it concatenates ~prefixes.ttl~ to the main file.
+If it can collect all prefixes from RDF files, such concatenation won't be needed.
 
 *** Batch Processing
 Issue [[https://github.com/VladimirAlexiev/rdf2rml/issues/1][#1]]: plantuml is slow to start up, so we'd like to process a bunch of ~puml~ files at once.
@@ -305,10 +307,20 @@ and makes things less modular overall.
 ** Mid-Term
 
 *** Upgrade to use Attean
-[[https://github.com/kasei/perlrdf][Trine (Perl RDF)]] is end of life. [[https://github.com/kasei/attean][Attean]] is the new generation
+[[https://github.com/kasei/perlrdf][Trine (Perl RDF)]] is end of life. [[https://github.com/kasei/attean][Attean]] is the new generation.
+[[https://github.com/vladimiralexiev/rdf2rml/issues/36][#36 upgrade to Attean]] upgrade to Attean for two reasons:
+- it's faster
+- has trig 1.1 support
 
 *** Integrate in Emacs ~org-mode~
 Write Turtle, see diagram (easy to do)
+
+*** Display Named Graphs
+[[https://github.com/vladimiralexiev/rdf2rml/issues/52][#52 support named graphs]].
+- This is useful since ~rdf2sparql~ already supports named graphs (CONSTRUCT GRAPH) with SparqlAnything
+- The consensus is to use different color per graph. Example:
+
+[[./doc/img/attr-sysRefPref-with-graph-colors.png]]
 
 *** Node colors, icons, tooltips
 See [[./ideas]]
