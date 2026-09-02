@@ -280,10 +280,10 @@ If it can collect all prefixes from RDF files, such concatenation won't be neede
 
 *** Batch Processing
 Issue [[https://github.com/VladimirAlexiev/rdf2rml/issues/1][#1]]: plantuml is slow to start up, so we'd like to process a bunch of ~puml~ files at once.
-The best way is to have a smarter script or ~Makefile~ that uses the following http://plantuml.com/command-line features:
+The best way is to have a smarter script or ~Makefile~ that uses the following [[http://plantuml.com/command-line][plantuml command-line]] features:
 - Keep the intermediate ~puml~ files (the current ~Makefile~ doesn't preserve them)
 - Run ~plantuml~ on a whole folder (with ~-r[ecurse]~ it can even recurse through subfolders)
-- Use ~-checkmetadata~ to skip ~png~ files that don't need to be regenerated.
+- Use [[https://plantuml.com/command-line#ce21470ab49d1d19][-checkmetadata]] to skip ~png~ files that don't need to be regenerated.
   (The whole ~puml~ text is stored in the ~png~,
   so ~plantuml~ can quickly check that there are no changes)
 - The ~Makefile~ should start ~plantuml~ only once, if some of the ~puml~ files is newer than its respective ~png~ file
